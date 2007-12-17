@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Integration GWT with acegi.
 #labels Featured,Phase-Design
 
 = Introduction =
@@ -24,6 +24,13 @@ public interface Security {
 }}}
 
 = Implement Security =
+
+  * Login and logout
+  * we implement ApplicationEventPublisherAware too, that you can listen Security relatively events
+  * RememberMe service support
+  * logout handler support
+  * capability with acegi functions, such as httpSessionContextIntegrationFilter,rememberMeProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,concurrentSessionFilter,filterSecurityInterceptor
+
 {{{
 package com.coceler.acegi;
 
@@ -211,8 +218,3 @@ public class SecurityAcegiImpl implements Security, ApplicationEventPublisherAwa
 
 }}}
 
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
