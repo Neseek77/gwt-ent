@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="gwt-ent"
+  id="myeclipse.1197871886906"
+  context-root="/gwt-ent"
+  j2ee-spec="1.4"
+  archive="gwt-ent.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
