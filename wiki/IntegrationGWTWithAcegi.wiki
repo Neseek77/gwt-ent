@@ -29,7 +29,13 @@ public interface Security {
   * we implement ApplicationEventPublisherAware too, that you can listen Security relatively events
   * RememberMe service support
   * logout handler support
-  * capability with acegi filters, such as httpSessionContextIntegrationFilter, rememberMeProcessingFilter, anonymousProcessingFilter, exceptionTranslationFilter, concurrentSessionFilter, filterSecurityInterceptor
+  * capability with acegi filters, such as 
+  # httpSessionContextIntegrationFilter
+  # rememberMeProcessingFilter
+  # anonymousProcessingFilter
+  # exceptionTranslationFilter
+  # concurrentSessionFilter
+  # filterSecurityInterceptor
 
 {{{
 package com.coceler.acegi;
