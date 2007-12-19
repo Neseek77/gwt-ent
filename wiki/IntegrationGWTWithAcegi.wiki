@@ -30,12 +30,12 @@ public interface Security {
   * RememberMe service support
   * logout handler support
   * capability with acegi filters, such as 
-  # httpSessionContextIntegrationFilter
-  # rememberMeProcessingFilter
-  # anonymousProcessingFilter
-  # exceptionTranslationFilter
-  # concurrentSessionFilter
-  # filterSecurityInterceptor
+    # httpSessionContextIntegrationFilter
+    # rememberMeProcessingFilter
+    # anonymousProcessingFilter
+    # exceptionTranslationFilter
+    # concurrentSessionFilter
+    # filterSecurityInterceptor
 
 {{{
 package com.coceler.acegi;
