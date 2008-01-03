@@ -1,5 +1,5 @@
-#summary Why provide a UI generator
 #labels Featured
+ #summary Why provide a UI generator
 
 = Why UI generator =
 
@@ -8,8 +8,15 @@
   Especially now no visual development tools for GWT.
   * Unified User Interface
   All ui interface have same operation of habits and layout
+  * Validate
+    # Locate validate
+    # Validate Expression support
+    # Remote validate and call back
+  * Editors
+    # Scalable structure allows you to add different editor for different data types
+    # Solation system with a variety of third-party widget libraries
   * Reusable code
-    # ui layout( you can implement multi ui layout, one for 320*240 PDA, one for Desktop browser.
+    # ui layout( you can implement multi ui layout, one for 320*240 PDA, one for Desktop browser, then dynamic load the layout for different browser
     # The structure can be extended, for different data types you can add different editors, the domain object just provide data and the needn't know complexity of this.
 
 
