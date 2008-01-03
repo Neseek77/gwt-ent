@@ -1,4 +1,5 @@
 #summary this page demonstrate how to use ui generator
+#labels Featured,Phase-Design,Phase-Implementation
 
 = Introduction =
 
@@ -41,8 +42,8 @@ public class Team implements Reflection, IsSerializable {
 	}
 	
 	public void teamIDValidate(Object value){
-		if (((String)value).equals("AABB")){
-			throw new ValidateException("TeamID not named AABB");
+		if (((String)value).equals("TeamID")){
+			throw new ValidateException("TeamID cann't named TeamID");
 		}else{
 			//OK
 		}
@@ -70,6 +71,25 @@ public class Team implements Reflection, IsSerializable {
 
 
 = Generate UI =
+
+As demo, we use gwtext create new dialog, the main code is:
+{{{
+...
+Team team = new Team();
+team.setTeamID("NewTeamID");
+team.setTeamName("name");
+team.setTeamDesc("this is team description");
+Composite body = UIFactory.getInstance().gwtFactory(team, (ClassType)GWT.create(Team.class));
+VerticalPanel wrapper = new VerticalPanel();
+wrapper.add(body);
+...
+}}}
+
+the result:
+[http://gwt-ent.googlecode.com/svn/images/uigenerate1.jpg]
+we change to chinese locate:
+[http://gwt-ent.googlecode.com/svn/images/uigenerate2.jpg]
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
