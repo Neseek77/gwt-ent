@@ -1,0 +1,9 @@
+#summary How to create new editor for ui generator
+
+TODO
+
+= How to create new editor =
+
+= Create a date editor using gwtext's datepick =
+
+= Create a complex Editor =
