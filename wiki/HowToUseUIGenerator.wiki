@@ -93,11 +93,13 @@ wrapper.add(body);
 
 = Validate =
 
+  * *all validate occur when editor lose focuse or user press enter*
+
   * we change teamid to "TeamID", this may cann't pass teamIDValidate function
   * [http://gwt-ent.googlecode.com/svn/images/uigenerate_validate1.jpg]
 
+  * we change teamid to "", this may show all validate message
+  * [http://gwt-ent.googlecode.com/svn/images/uigenerate_validate2.jpg]
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * we change teamid to "ThisWillMoreThan19Words"
+  * [http://gwt-ent.googlecode.com/svn/images/uigenerate_validate3.jpg]
