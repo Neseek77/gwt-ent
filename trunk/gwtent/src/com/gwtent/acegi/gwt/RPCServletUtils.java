@@ -58,7 +58,7 @@ public class RPCServletUtils {
    *         encoding
    */
   public static boolean acceptsGzipEncoding(HttpServletRequest request) {
-    assert (request != null);
+//    assert (request != null);
 
     String acceptEncoding = request.getHeader(ACCEPT_ENCODING);
     if (null == acceptEncoding) {

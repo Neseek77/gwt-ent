@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 import org.gwtwidgets.server.spring.ServletUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.util.Assert;
 
 import com.gwtent.service.Security;
+
 
 
 public class SecurityAcegiImpl implements Security, ApplicationEventPublisherAware {

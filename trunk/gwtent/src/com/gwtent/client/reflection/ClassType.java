@@ -1,3 +1,22 @@
+/*
+ * GwtEnt - Gwt ent library.
+ * 
+ * Copyright (c) 2007, James Luo(JamesLuo.au@gmail.com)
+ * 
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
 package com.gwtent.client.reflection;
 
 import java.util.ArrayList;
@@ -13,6 +32,7 @@ import java.util.Set;
  * Type representing a Java class or interface type.
  */
 public class ClassType extends Type implements HasMetaData, AccessDef {
+
 	private final Set allSubtypes = new HashSet();
 
 	private Method[] cachedOverridableMethods;
@@ -94,7 +114,7 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 	}
 
 	public void addImplementedInterface(ClassType intf) {
-		assert (intf != null);
+//		assert (intf != null);
 		interfaces.add(intf);
 	}
 
@@ -139,7 +159,7 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 
 	public Field getField(String name) {
 		Field field = findField(name);
-		assert (field != null);
+//		assert (field != null);
 		return field;
 	}
 
@@ -416,8 +436,8 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 	}
 
 	public void setSuperclass(ClassType type) {
-		assert (type != null);
-		assert (isInterface() == null);
+//		assert (type != null);
+//		assert (isInterface() == null);
 		this.superclass = type;
 	}
 
@@ -435,7 +455,7 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 
 	protected void addField(Field field) {
 		Object existing = fields.put(field.getName(), field);
-		assert (existing == null);
+//		assert (existing == null);
 	}
 
 	public void addMethod(Method method) {
@@ -487,7 +507,7 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 
 	private void getOverridableMethodsOnSuperclassesAndThisClass(
 			Map methodsBySignature) {
-		assert (isClass() != null);
+//		assert (isClass() != null);
 
 		// Recurse first so that more derived methods will clobber less derived
 		// methods.
@@ -588,7 +608,7 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 	}
 
 	void addConstructor(Constructor ctor) {
-		assert (!constructors.contains(ctor));
+//		assert (!constructors.contains(ctor));
 		constructors.add(ctor);
 	}
 

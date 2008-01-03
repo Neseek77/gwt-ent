@@ -1,15 +1,23 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-   <name>gwtent</name>
-   <comment>gwtent project</comment>
-   <projects/>
-   <buildSpec>
-       <buildCommand>
-           <name>org.eclipse.jdt.core.javabuilder</name>
-           <arguments/>
-       </buildCommand>
-   </buildSpec>
-   <natures>
-       <nature>org.eclipse.jdt.core.javanature</nature>
-   </natures>
+	<name>gwtent</name>
+	<comment>gwtent project@key 32303037303632392D3130303020677774656E742F41646D696E6973747261746F72 </comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>com.omondo.uml.std.Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>com.omondo.uml.std.Nature</nature>
+	</natures>
 </projectDescription>

@@ -127,8 +127,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 					if (!returnType.getSimpleSourceName().equals("void")){
 						source.println("return " + boxIfNeed(returnType.getSimpleSourceName(), 
 								"content." + methodName	+ "(" + getInvokeParams(methodParameters, "args") + ")") + ";");
-						//source.println("return (" + ensureObjectType(returnType.getSimpleSourceName()) + ")" +
-						//		"content." + methodName	+ "(" + getInvokeParams(methodParameters, "args") + ")" + ";");
 					}else{
 						source.println("content." + methodName	+ "(" + getInvokeParams(methodParameters, "args") + ")" + ";");
 						source.println("return null;");

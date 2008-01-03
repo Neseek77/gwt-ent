@@ -9,4 +9,5 @@
 		<when-type-assignable class="com.gwtent.client.reflection.Reflection"/>
 	</generate-with>
 
+    <source path="client" />
 </module>

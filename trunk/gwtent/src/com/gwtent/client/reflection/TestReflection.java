@@ -1,3 +1,22 @@
+/*
+ * GwtEnt - Gwt ent library.
+ * 
+ * Copyright (c) 2007, James Luo(JamesLuo.au@gmail.com)
+ * 
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ * 
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
 package com.gwtent.client.reflection;
 
 import java.util.Date;
@@ -7,39 +26,12 @@ import com.gwtent.client.ui.model.impl.UIFriendlyDefaultImpl;
 import com.gwtent.client.ui.validate.ValidateException;
 
 public class TestReflection implements Reflection {
-	
-	private UIFriendlyDefaultImpl uiFriendly;
-	
-	/**
-	 * @Caption 出生日期
-	 */
 	private Date date;
 	private String string;
 	private boolean bool;
 	
 	public TestReflection(){
 		
-
-//		uiFriendly = new UIFriendlyDefaultImpl();
-//		
-//		uiFriendly.getFields().addFieldInfo("string", "姓名", true, "请输入姓名", new Validate(){
-//
-//			public void validate(Object value) throws ValidateException {
-//				// server validate is there the same name
-//				
-//				
-//			}
-//			
-//		});
-//		uiFriendly.getFields().addFieldInfo("bool", "性别", false, "请输入性别,只能够是男或者女");
-//		uiFriendly.getFields().addFieldInfo("date", "日期", false, "请输入出生日期", new Validate(){
-//			public void validate(Object value) throws ValidateException {
-//				if (value instanceof Date){
-//					throw new ValidateException("出错了,只能够是日期.");
-//				}
-//				
-//			}
-//		});
 	}
 	
 	public boolean getBool() {
@@ -59,16 +51,6 @@ public class TestReflection implements Reflection {
 	}
 	public void setString(String string) {
 		this.string = string;
-	}
-	
-	
-	public Fields getFields() {
-		return uiFriendly.getFields();
-	}
-	
-	public void wholeValidate(Object value) throws ValidateException {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

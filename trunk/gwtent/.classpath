@@ -7,5 +7,10 @@
 	<classpathentry kind="var" path="GWT_HOME/gwt-dev-windows.jar"/>
 	<classpathentry exported="true" kind="var" path="GWT_HOME/gwt-user.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ThirdParty"/>
+	<classpathentry kind="lib" path="/ThirdParty/lib/gwtext-0.9.3/gwtext.jar" sourcepath="D:/Java/workspace/ThirdParty/lib/gwtext-0.9.3/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Java/workspace/ThirdParty/lib/gwtext-0.9.3/doc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
