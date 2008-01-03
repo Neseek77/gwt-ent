@@ -49,6 +49,7 @@ public class Team implements Reflection, IsSerializable {
 	}
 	
 	protected String getTeamIDDesc(){
+		//this for our Internationalization function
 		return AppMsgFactory.getInstance().TeamIDDesc();
 	}
 	
