@@ -85,10 +85,16 @@ wrapper.add(body);
 ...
 }}}
 
-the result:
-[http://gwt-ent.googlecode.com/svn/images/uigenerate1.jpg]
-we change to chinese locate:
-[http://gwt-ent.googlecode.com/svn/images/uigenerate2.jpg]
+  * the result:
+  * [http://gwt-ent.googlecode.com/svn/images/uigenerate1.jpg]
+
+  * we change to chinese locate, it's from getTeamIDDesc:
+  * [http://gwt-ent.googlecode.com/svn/images/uigenerate2.jpg]
+
+= Validate =
+
+  * we change teamid to "TeamID", this may cann't pass teamIDValidate function
+  * [http://gwt-ent.googlecode.com/svn/images/uigenerate_validate1.jpg]
 
 
 Add your content here.  Format your content with:
