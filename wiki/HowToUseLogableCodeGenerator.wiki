@@ -1,0 +1,39 @@
+#summary Check your generate code at compile time and treelog
+
+= Introduction =
+
+gwt use source.println() to generator code, this is very hard
+to read what your print to, for example the fllowing code:
+{{{
+for (int i = 0; i < methods.length; i++) {
+	String methodName = methods[i].getName();
+	JParameter[] methodParameters = methods[i].getParameters();
+	JType returnType = methods[i].getReturnType();
+
+	source.println("if (methodName.equals(\""
+			+ methodName
+			+ "\")) {");
+	source.indent();
+	source.println("checkInvokeParams(methodName, " + methodParameters.length + ", args);");
+	
+	if (!returnType.getSimpleSourceName().equals("void")){
+		source.println("return " + boxIfNeed(returnType.getSimpleSourceName(), 
+				"content." + methodName	+ "(" + getInvokeParams(methodParameters, "args") + ")") + ";");
+	}else{
+		source.println("content." + methodName	+ "(" + getInvokeParams(methodParameters, "args") + ")" + ";");
+		source.println("return null;");
+	}
+	
+	source.outdent();
+	source.print("} else ");
+
+}
+}}}
+
+
+= Our approach =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
