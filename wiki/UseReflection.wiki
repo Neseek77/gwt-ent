@@ -25,6 +25,11 @@ public void testReflection(){
 	System.out.println("after SetByInvoke:" + classType.invoke(test, "getString", null));
 }
 }}}
+The output is :
+after SetByCode:set by code
+after SetByCode:set by code
+after SetByInvoke:set by invoke
+
 
 == The integrity of the source code ==
 {{{
