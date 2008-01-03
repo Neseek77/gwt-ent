@@ -8,7 +8,9 @@ For maximum efficiency, GWT compiles your Java source into a monolithic script. 
 = How to use =
 
 * add Reflection Marker interface into your pojo class
+
 * {{{ClassType classType = (ClassType)GWT.create(YourPOJO.class);}}}
+
 For example:
 {{{
 public void testReflection(){
