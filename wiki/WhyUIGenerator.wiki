@@ -6,7 +6,7 @@
   * *Accelerate the development*
   Just define domain object, the ui will generator automatic.
   Especially now no visual development tools for GWT.
-  * Unified User Interface
+  * *Unified User Interface*
   All ui interface have same operation of habits and layout
   * *Metadata support*
 
