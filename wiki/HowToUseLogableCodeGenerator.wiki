@@ -33,7 +33,28 @@ for (int i = 0; i < methods.length; i++) {
 
 = Our approach =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+[http://gwt-ent.googlecode.com/svn/images/sourcelogger.jpg]
+
+
+= How to use =
+
+== The first method ==
+we provide a class named "SourceWriterLogDecorator", a LogDecorator 
+for SourceWriter class, you just create your SourceWriter object
+normally and pass it to SourceWriterLogDecorator's constructor, 
+for example:
+{{{
+sourceWriter = doGetSourceWriter(classType);  // your normally SourceWriter 
+if (sourceWriter != null)
+	sourceWriter = new SourceWriterLogDecorator(sourceWriter, this.logger, useLog, 5);
+}}}
+SourceWriterLogDecorator use the same interface, so all of your other code not need 
+any change.
+
+== The second method ==
+we provide LogableSourceCreator abstract class, your just inherited from
+this class and implement the abstract method:
+{{{protected abstract SourceWriter doGetSourceWriter(JClassType classType);}}}
+
+= How to implement =
+The implementation uses a simplified decorator pattern
