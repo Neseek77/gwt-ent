@@ -3,14 +3,14 @@
 
 = Why UI generator =
 
-* Accelerate the development
+  * Accelerate the development
   Just define domain object, the ui will generator automatic.
   Especially now no visual development tools for GWT.
-* Unified User Interface
+  * Unified User Interface
   All ui interface have same operation of habits and layout
-* Reusable code
-  # ui layout( you can implement multi ui layout, one for 320*240 PDA, one for Desktop browser.
-  # The structure can be extended, for different data types you can add different editors, the domain object just provide data and the needn't know complexity of this.
+  * Reusable code
+    # ui layout( you can implement multi ui layout, one for 320*240 PDA, one for Desktop browser.
+    # The structure can be extended, for different data types you can add different editors, the domain object just provide data and the needn't know complexity of this.
 
 
 = Details =
