@@ -18,6 +18,7 @@
   * *Editors*
     # Scalable structure allows you to add different editor for different data types
     # Solation system with a variety of third-party widget libraries
+    # Dynamic switching editor implement, and without changing the code
 
   * *Reusable Layout*
     # you can implement multi ui layout, one for 320*240 PDA, one for Desktop browser, then dynamic load the layout for different browser
