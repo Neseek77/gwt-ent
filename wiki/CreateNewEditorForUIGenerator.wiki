@@ -91,6 +91,10 @@ public class DateEditor extends AbstractEditor {
 }
 }}}
 
+=== Register this editor ===
+  In class *UIFactory*, this is a fasade class for ui generator system, there is a function named *registerValueTypesAndEditor*, you can create new class inherited from UIFactory and override registerValueTypesAndEditor function, at here, we just put the fllowing sentence:
+{{{ValueEditorRegister.getInstance().register("java.util.Date", new ValueDefaultImpl.ValueDefaultImplCreator(), new DateEditor.DateEditorCreator());}}}
+
 = Create a date editor using gwtext's datepick =
 
 = Create a complex Editor =
