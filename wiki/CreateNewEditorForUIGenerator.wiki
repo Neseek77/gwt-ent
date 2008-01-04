@@ -4,6 +4,8 @@
 TODO
 
 = How to create new editor =
+
+= Create a date editor using gwtext's datepick =
 === 1  Create new class DateEditor ===
   Create new class DateEditor extends from AbstractEditor or just implements Editor, but extends from AbstractEditor will save your time.
   GWT now can't dynamic create class, as a supplement, we provide a creator interface to create new Editor.
@@ -100,6 +102,5 @@ ValueEditorRegister.getInstance().register("java.util.Date", new ValueDefaultImp
 === 4  Everything has done, Just test ===
   In our domain class Team, we add two fields: "registerDate" ""
 
-= Create a date editor using gwtext's datepick =
 
 = Create a complex Editor =
