@@ -84,8 +84,37 @@ public class DateExtEditor extends AbstractExtFieldEditor {
 ValueEditorRegister.getInstance().register("java.util.Date", new ValueDefaultImpl.ValueDefaultImplCreator(), new DateExtEditor.DateEditorCreator());
 }}}
 
-=== 4  Everything has done, Just test ===
-  In our domain class Team, we add two fields: "registerDate" ""
+=== 4  Everything have done, Just test ===
+  In our domain class Team, we add two fields, as you see, we just provide "get" function for field registerDate, this will make the editor readonly. 
+{{{
+	/**
+	 * @Caption "Register Date"
+	 */
+	private Date registerDate;
+	/**
+	 * @Caption "Effect Date"
+	 */
+	private Date effectDate = null; 
+
+	public Date getEffectDate() {
+		return effectDate;
+	}
+	public void setEffectDate(Date effectDate) {
+		this.effectDate = effectDate;
+	}
+	public Date getRegisterDate() {
+		if (registerDate == null)
+			registerDate = new Date();
+		
+		return registerDate;
+	}
+//	public void setRegisterDate(Date registerDate){
+//		this.registerDate = registerDate;
+//	}
+}}}
+
+
+=== The Screenshots ===
 
 
 = Create a complex Editor =
