@@ -25,4 +25,4 @@
   * *Reusable Layout*
     # you can implement multi ui layout, one for 320*240 PDA, one for Desktop browser, then dynamic load the layout for different browser
 
-  * *Reusable code*
+  * *Reusable your code*
