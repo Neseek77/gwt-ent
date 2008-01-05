@@ -1,11 +1,12 @@
 #summary How to extend new editor for ui generator
 #labels Featured,Phase-Implementation
 
-TODO
-
 = How to create new editor =
+  * If you use gwt-ext, you can create new class extends from AbstractExtFieldEditor
+  * Other wish you can create new class DateEditor extends from AbstractEditor
+  * Or just implements Editor, but extends from Abstract classes will save your time.
 
-= Create a date editor using gwtext's datepick =
+= Create a date editor using gwtext's DateField =
 === 1  Create new class DateEditor ===
   Create new class DateEditor extends from AbstractEditor or just implements Editor, but extends from AbstractEditor will save your time.
   GWT now can't dynamic create class, as a supplement, we provide a creator interface to create new Editor.
