@@ -3,6 +3,8 @@
 
 = Why UI generator =
 
+  * *High degree of flexibility and scalability*
+  The system is designed to have a high degree of flexibility and scalability, you can define your own editor, data type processor, validate check expression and user interface layout.
   * *Accelerate the development*
   Just define domain object, the ui will generator automatic.
   Especially now no visual development tools for GWT.
@@ -12,7 +14,7 @@
 
   * *Validate*
     # Locate validate
-    # Validate Expression support
+    # Validate Expression support, for example: NotNull StrLength>6
     # Remote validate and call back
 
   * *Editors*
