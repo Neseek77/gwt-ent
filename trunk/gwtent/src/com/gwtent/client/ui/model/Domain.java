@@ -17,18 +17,33 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.client.ui.generator;
+package com.gwtent.client.ui.model;
 
-import com.google.gwt.user.client.ui.Widget;
-import com.gwtent.client.ui.model.Domain;
+import java.util.Iterator;
 
 
-/**
- * UIGenerator auto generator ui for model
- * @author James Luo
- * 2007-12-21 上午11:05:13
- *
- */
-public interface UIGenerator {
-	public Widget generator(Domain fields);
+public interface Domain {
+	//not necessary for ui model
+//	public void addFieldInfo(String fieldName, FieldInfo fieldInfo);
+//	public FieldInfo addFieldInfo(String fieldName, String caption, boolean require, String desc);
+//	public FieldInfo addFieldInfo(String fieldName, String caption, boolean require, String desc, Validate validate);
+	
+//	public Field getField(String fieldName);
+//	public Set getFieldNames();
+	
+	public void addField(Field field);
+	public void addAction(Action action);
+	
+	/**
+	 * iterator of field
+	 * @return
+	 */
+	public Iterator fieldIterator();
+	public Iterator actionIterator();
+	
+	public String getCaption();
+	public void setCaption(String caption);
+	
+	public Object getInstnace();
+	public void setInstance(Object instance);
 }

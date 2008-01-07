@@ -19,17 +19,30 @@
  */
 package com.gwtent.client.ui;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.ui.transition.TransitionException;
 
 public class ClassTypeHelper {
-	public final static String CLASS_LIST_METADATA = "List";
+	public final static String CLASS_FIELD_LIST_METADATA = "Fields";
+	public final static String CLASS_ACTION_LIST_METADATA = "Actions";
+	
 	public final static String CLASS_CAPTION_METADATA = "Caption";
+	
+	public final static String FIELD_FLAG_METADATA = "Field";
 	public final static String FIELD_CPATION_METADATA = "Caption";
 	public final static String FIELD_DESC_METADATA = "Desc";
 	public final static String FIELD_VALIDATE_METADATA = "Validate";
+	
+	public final static String ACTION_FLAG_METADATA = "Action";
+	public final static String ACTION_CPATION_METADATA = "Caption";
+	
+	public final static String OBJECT_CLASS_NAME = "java.lang.Object";
 	
 	public static String getFirstMetaData(HasMetaData metaData, String tagName){
 		String[][] meta = metaData.getMetaData(tagName);
@@ -131,6 +144,25 @@ public class ClassTypeHelper {
 	
 	public static Method findAsyncValidateMethod(ClassType classType, String functionName){
 		return classType.findMethod(functionName, new String[]{"java.lang.Object", "com.coceler.gwt.client.ui.validate.ValidateCallBack"});
+	}
+	
+	
+	public static boolean queryHaveMetaData(HasMetaData metaData, String tagName){
+		Set tags = new HashSet();
+		tags.add(tagName);
+		
+		return queryHaveMetaData(metaData, tags);
+	}
+	
+	public static boolean queryHaveMetaData(HasMetaData metaData, Set tags){
+		Iterator iterator = tags.iterator();
+		while (iterator.hasNext()){
+			if (metaData.getMetaData((String)iterator.next()).length > 0){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 }

@@ -43,13 +43,13 @@ public class ValidateReflectionImpl implements Validate{
 	
 	public void AsyncValidate(Object value, ValidateCallBack callBack) throws ValidateException {
 		if (asyncMethod != null){
-			asyncMethod.invoke(instance, functionName, new Object[]{value, callBack});
+			asyncMethod.invoke(instance, new Object[]{value, callBack});
 		}
 	}
 
 	public void SyncValidate(Object value) throws ValidateException {
 		if (syncMethod != null){
-			syncMethod.invoke(instance, functionName, new Object[]{value});
+			syncMethod.invoke(instance, new Object[]{value});
 		}
 		
 	}

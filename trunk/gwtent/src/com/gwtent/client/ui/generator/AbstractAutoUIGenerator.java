@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.ui.editorFactory.EditorFactory;
 import com.gwtent.client.ui.generator.layout.VerticalLayout;
 import com.gwtent.client.ui.generator.layout.LayoutCreator;
-import com.gwtent.client.ui.model.Fields;
+import com.gwtent.client.ui.model.Domain;
 
 
 public abstract class AbstractAutoUIGenerator implements UIGenerator {
@@ -31,7 +31,7 @@ public abstract class AbstractAutoUIGenerator implements UIGenerator {
 	protected abstract EditorFactory getEditorFactory();
 
 	
-	public Widget generator(Fields fields){
+	public Widget generator(Domain fields){
 		LayoutCreator layout = new VerticalLayout();
 		return layout.generator(fields, getEditorFactory());
 	}

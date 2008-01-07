@@ -20,7 +20,7 @@
 package com.gwtent.client.ui.transition;
 
 import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.ui.model.Fields;
+import com.gwtent.client.ui.model.Domain;
 
 public interface POJOToModel {
 	/**
@@ -32,5 +32,5 @@ public interface POJOToModel {
 	 * @return
 	 * @throws TransitionException
 	 */
-	public Fields createModel(Object pojo, ClassType classType) throws TransitionException;
+	public Domain createModel(Object pojo, ClassType classType) throws TransitionException;
 }

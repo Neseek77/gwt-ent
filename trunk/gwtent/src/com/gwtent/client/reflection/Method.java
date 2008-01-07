@@ -37,8 +37,8 @@ public class Method extends AbstractMethod implements AccessDef {
 		return enclosingType;
 	}
 	
-	public Object invoke(Object instance, String methodName, Object[] args) {
-		return enclosingType.invoke(instance, methodName, args);
+	public Object invoke(Object instance, Object[] args) {
+		return enclosingType.invoke(instance, this.getName(), args);
 	}
 
 

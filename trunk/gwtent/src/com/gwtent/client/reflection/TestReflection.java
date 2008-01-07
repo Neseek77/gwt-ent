@@ -21,7 +21,7 @@ package com.gwtent.client.reflection;
 
 import java.util.Date;
 
-import com.gwtent.client.ui.model.Fields;
+import com.gwtent.client.ui.model.Domain;
 import com.gwtent.client.ui.model.impl.UIFriendlyDefaultImpl;
 import com.gwtent.client.ui.validate.ValidateException;
 

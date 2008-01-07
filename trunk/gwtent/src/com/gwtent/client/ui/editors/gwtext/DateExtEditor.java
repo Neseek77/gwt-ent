@@ -5,6 +5,7 @@ import java.util.Date;
 import com.gwtent.client.ui.editor.Editor;
 import com.gwtent.client.ui.editorFactory.EditorCreator;
 import com.gwtent.client.ui.model.Value;
+import com.gwtext.client.core.Ext;
 import com.gwtext.client.widgets.form.DateField;
 import com.gwtext.client.widgets.form.DateFieldConfig;
 
@@ -25,9 +26,8 @@ public class DateExtEditor extends AbstractExtFieldEditor {
 		
 		dateField = new DateField(new DateFieldConfig(){
 			{
-				//your config
-				 setName("username");
-	             setWidth("100%");
+				 setName(Ext.generateId());
+	             //setWidth(200);
 			}
 		});
 		
@@ -47,4 +47,7 @@ public class DateExtEditor extends AbstractExtFieldEditor {
 		return dateField.getValue();
 	}	
 
+	public void finishAddEditors(){
+		//dateField.setWidth("600px");
+	}
 }

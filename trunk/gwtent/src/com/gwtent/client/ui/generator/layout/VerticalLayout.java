@@ -33,8 +33,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.ui.editor.Editor;
 import com.gwtent.client.ui.editorFactory.EditorFactory;
 import com.gwtent.client.ui.generator.GeneratorCSSName;
+import com.gwtent.client.ui.model.Action;
+import com.gwtent.client.ui.model.ActionCallBack;
+import com.gwtent.client.ui.model.Domain;
 import com.gwtent.client.ui.model.Field;
-import com.gwtent.client.ui.model.Fields;
 import com.gwtent.client.ui.validate.ValidateCallBack;
 import com.gwtent.client.ui.validate.ValidateException;
 
@@ -52,12 +54,12 @@ public class VerticalLayout extends AbstractLayoutCreator {
 	private Grid mainPanel = new Grid(3, 1);
 	private Grid titlePanel = new Grid(1, 2);
 
-	private Fields fields;
+	private Domain domain;
 	
 	private boolean useColon = true;
 	
-	public Widget doGenerateLayout(Fields fields, EditorFactory editorFactory) {
-		this.fields = fields;
+	public Widget doGenerateLayout(Domain domain, EditorFactory editorFactory) {
+		this.domain = domain;
 		this.editorFactory = editorFactory;
 		
 		mainPanel.setWidth("100%");
@@ -73,7 +75,7 @@ public class VerticalLayout extends AbstractLayoutCreator {
 	
 	protected Widget setupTitlePanel(){
 		titlePanel.getCellFormatter().setWidth(0, 0, "100%");
-		HTML caption = new HTML(this.fields.getCaption());
+		HTML caption = new HTML(this.domain.getCaption());
 		caption.setStylePrimaryName(GeneratorCSSName.CSS_TITLE);
 		
 		titlePanel.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
@@ -88,30 +90,25 @@ public class VerticalLayout extends AbstractLayoutCreator {
 		HorizontalPanel result = new HorizontalPanel();
 		result.setSpacing(20);
 		
-		result.add(new Button("Apply", new ClickListener(){
-
-			public void onClick(Widget sender) {
-				// TODO Auto-generated method stub
-				
-			}
+		Iterator iterator = domain.actionIterator();
+		while (iterator.hasNext()) {
+			final Action element = (Action) iterator.next();
 			
-		}));
-		
-		result.add(new Button("Cancel", new ClickListener(){
+			result.add(new Button(element.getCaption(), new ClickListener(){
 
-			public void onClick(Widget sender) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		}));
+				public void onClick(Widget sender) {
+					element.doAction(domain.getInstnace());
+					element.doAsyncAction(domain.getInstnace(), new ActionCallBackImpl());
+				}
+			}));
+		}
 		
 		return result;
 	}
 	
 	private int getFieldCount(){
 		int result = 0;
-		Iterator iterator = fields.iterator();
+		Iterator iterator = domain.fieldIterator();
 		while (iterator.hasNext()){
 			iterator.next();
 			result++;	
@@ -143,7 +140,7 @@ public class VerticalLayout extends AbstractLayoutCreator {
 		
 		int row = 0;
 		Field field = null;
-		Iterator iterator = fields.iterator();
+		Iterator iterator = domain.fieldIterator();
 		while (iterator.hasNext()){
 			field = (Field)iterator.next();
 			
@@ -225,6 +222,16 @@ public class VerticalLayout extends AbstractLayoutCreator {
 
 	public void setUseColon(boolean useColon) {
 		this.useColon = useColon;
+	}
+	
+	
+	public class ActionCallBackImpl implements ActionCallBack{
+
+		public void actionCallDone() {
+			//hide waitting
+			
+		}
+		
 	}
 
 

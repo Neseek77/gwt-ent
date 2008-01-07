@@ -23,15 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.gwtent.client.ui.model.Fields;
+import com.gwtent.client.ui.model.Domain;
 import com.gwtent.client.ui.validate.ValidateException;
 
 public class UIFriendlyDefaultImpl implements UIFriendly {
 	
-	private Fields fields;
+	private Domain fields;
 	
 	public UIFriendlyDefaultImpl(){
-		fields = new FieldsImpl();
+		fields = new DomainImpl();
 	}
 
 	public void wholeValidate(Object value) throws ValidateException {
@@ -39,7 +39,7 @@ public class UIFriendlyDefaultImpl implements UIFriendly {
 
 	}
 
-	public Fields getFields() {
+	public Domain getFields() {
 		return fields;
 	}
 

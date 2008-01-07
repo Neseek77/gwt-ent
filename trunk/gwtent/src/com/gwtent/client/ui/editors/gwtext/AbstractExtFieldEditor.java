@@ -44,7 +44,7 @@ public abstract class AbstractExtFieldEditor extends AbstractEditor implements E
 		
 		form = new Form(new FormConfig(){
 			{
-				setWidth("100%");
+				setWidth(300);
 				setLabelWidth(0);
 				setHideLabels(true);
 			}
@@ -60,7 +60,7 @@ public abstract class AbstractExtFieldEditor extends AbstractEditor implements E
 	}
 	
 	public void finishAddEditors(){
-		
+//		form.setWidth(800);
 //		form.render();
 	}
 	
