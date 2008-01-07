@@ -10,7 +10,7 @@
 
 {{{
 /**
- * @List teamID teamName teamDesc
+ * @Fields teamID teamName teamDesc
  * @Caption Team Information
  * 
  * @author James Luo
