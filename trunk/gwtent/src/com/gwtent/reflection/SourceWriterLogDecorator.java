@@ -35,6 +35,8 @@ public class SourceWriterLogDecorator implements SourceWriter {
 	
 	private int lineNumber = 0;
 	
+	private String lineCache = "";
+	
 	private final TreeLogger.Type logType = TreeLogger.ERROR;
 	
 	public SourceWriterLogDecorator(SourceWriter sourceWriter, TreeLogger logger, boolean useLog, int baseLineNumber){
@@ -74,8 +76,9 @@ public class SourceWriterLogDecorator implements SourceWriter {
 
 	public void indentln(String s) {
 		sourceWriter.indentln(s);
-		lineNumber++;
+		
 		if (useLog){
+			lineNumber++;
 			push(currentTreeLogger.branch(logType, "" + s, null));
 		}
 		
@@ -94,25 +97,26 @@ public class SourceWriterLogDecorator implements SourceWriter {
 		//TODO this have a mistake, wrong line with log!
 		sourceWriter.print(s);
 		if (useLog){
-			log(s);
+			log(s, false);
 		}
 		
 	}
 
 	public void println() {
 		sourceWriter.println();
-		lineNumber++;
+		
 		if (useLog){
-			log("");
+			lineNumber++;
+			log("", true);
 		}	
 	}
 
 	public void println(String s) {
 		sourceWriter.println(s);
 		
-		lineNumber++;
 		if (useLog){
-			log(s);
+			lineNumber++;
+			log(s, true);
 		}	
 	}
 	
@@ -148,8 +152,14 @@ public class SourceWriterLogDecorator implements SourceWriter {
 		this.currentTreeLogger = logger;
 	}
 	
-	private void log(String msg){
-		currentTreeLogger.log(logType, msg + "(" + lineNumber + ")", null);
+	private void log(String msg, boolean newLine){
+		if (newLine){
+			currentTreeLogger.log(logType, lineCache + msg + "(" + lineNumber + ")", null);
+			lineCache = "";
+		}else{
+			lineCache = lineCache + msg;
+		}
+		
 	}
 
 }

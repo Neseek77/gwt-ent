@@ -81,14 +81,15 @@ public abstract class LogableSourceCreator {
 	 * return the Decorator of SourceWriter
 	 * @param classType
 	 * @param useLog
+	 * @param baseLineNumber
 	 * @return
 	 */
-	public SourceWriter getSourceWriter(JClassType classType, boolean useLog){
+	public SourceWriter getSourceWriter(JClassType classType, boolean useLog, int baseLineNumber){
 		if (sourceWriter == null){
 			sourceWriter = doGetSourceWriter(classType);
 			//Decorator it
 			if (sourceWriter != null)
-				sourceWriter = new SourceWriterLogDecorator(sourceWriter, this.logger, useLog, 5);
+				sourceWriter = new SourceWriterLogDecorator(sourceWriter, this.logger, useLog, baseLineNumber);
 		}
 		
 		return sourceWriter;

@@ -50,7 +50,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 	public String createWrapper() {
 		try {
 			JClassType classType = typeOracle.getType(typeName);
-			SourceWriter source = getSourceWriter(classType, isUseLog);
+			SourceWriter source = getSourceWriter(classType, isUseLog, 6);
 
 			if (source == null) {
 				return classType.getParameterizedQualifiedSourceName()
@@ -58,14 +58,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 			} else {
 				String className = classType.getSimpleSourceName();
 				source.indent();
-				
-//				source.println("private " + className + " content;");
-//				source.println();
-				
-//				source.println("private ClassType classType;");
-//				source.println();
-				
-				//构造函数
+
+				//source.print("public ");
 				source.println("public " + GeneratorHelper.getSimpleUnitName(classType) + "(){");
 				source.indent();
 				source.println("addClassMeta();");
@@ -73,21 +67,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				source.println("addMethods();");
 				source.outdent();
 				source.println("}");
-				
-//				source.println("public Object getContent() {");
-//				source.indent();
-//				source.println("return this.content;");
-//				source.outdent();
-//				source.println("}");
-//				source.println();
-//				
-//				source.println("public void setContent(Object content) {");
-//				source.indent();
-//				source.println("this.content = (" + className + ") content;");
-//				source.outdent();
-//				source.println("}");
-//				source.println();
-				
+						
 				source.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
 				source.indent();
 				source.println("if (args.length != paramCount){");
@@ -397,52 +377,4 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 	}
 	
-
-	public String castToString(JType type, String value) {
-		if (type.getSimpleSourceName().equals("String")) {
-			return value;
-		} else if (type.getSimpleSourceName().equals("int")) {
-			return "Integer.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("byte")) {
-			return "Byte.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("short")) {
-			return "Short.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("long")) {
-			return "Long.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("float")) {
-			return "Float.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("double")) {
-			return "Double.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("boolean")) {
-			return "Boolean.toString(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("char")) {
-			return "Character.toString(" + value + ")";
-		} else {
-			return "type not considered for the moment";
-		}
-	}
-
-	public String castFromString(JType type, String value) {
-		if (type.getSimpleSourceName().equals("String")) {
-			return value;
-		} else if (type.getSimpleSourceName().equals("int")) {
-			return "Integer.parseInt(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("byte")) {
-			return "Byte.parseByte(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("short")) {
-			return "Short.parseShort(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("long")) {
-			return "Long.parseLong(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("float")) {
-			return "Float.parseFloat(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("double")) {
-			return "Double.parseDouble(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("boolean")) {
-			return "Boolean.parseBoolean(" + value + ")";
-		} else if (type.getSimpleSourceName().equals("char")) {
-			return value + ".charAt(0)";
-		} else {
-			return null;
-		}
-	}
 }
