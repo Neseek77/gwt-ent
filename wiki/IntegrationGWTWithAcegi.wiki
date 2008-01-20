@@ -144,8 +144,42 @@ protected void setupUserInfo() {
 
 
 
+= Using in server side =
 
-= Appendix Complete Config file =
+{{{
+public class UserServiceImpl implements UserService {
+    private Security security;
+
+    public boolean login(String username, String password, boolean rememberMe) {
+		return  security.login(username, password, rememberMe);		
+	}
+
+	public void logout(String username) {
+		security.logout(username);
+	}
+
+	public Security getSecurity() {
+		return security;
+	}
+
+	public void setSecurity(Security security) {
+		this.security = security;
+	}
+
+	public String getCurrentUserName() {
+		if (SecurityContextHolder.getContext().getAuthentication() != null){
+			return SecurityContextHolder.getContext().getAuthentication().getName();
+		}else{
+			return null;
+		}
+	}
+
+}
+
+}}}
+
+
+= Appendix: Complete Config file =
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
