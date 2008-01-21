@@ -59,7 +59,39 @@ public interface Security {
 				<ref bean="rememberMeServices" />
 			</list>
 		</property>
-	</bean>
+	</bean> 
+}}}
+
+= Configs in web.xml =
+{{{
+
+	<filter>
+		<filter-name>AcegiFilterChainProxy</filter-name>
+		<filter-class>
+			org.acegisecurity.util.FilterToBeanProxy
+		</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value>
+				org.acegisecurity.util.FilterChainProxy
+			</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>AcegiFilterChainProxy</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.acegisecurity.ui.session.HttpSessionEventPublisher
+		</listener-class>
+	</listener>
+
 }}}
 
 = Using in gwt client  =
