@@ -1,0 +1,17 @@
+<module>
+    <inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.http.HTTP"/>
+    <inherits name="com.google.gwt.xml.XML"/>
+    
+    <!-- <inherits name="com.gwtext.GwtExt"/> -->
+    
+    <!--  
+    <inherits name="com.thapar.gwt.user.ui.SimpleDatePicker"/>
+    -->
+    
+    <generate-with class="com.gwtent.reflection.ReflectionProxyGenerator">
+		<when-type-assignable class="com.gwtent.client.reflection.Reflection"/>
+	</generate-with>
+
+    <source path="client" />
+</module>
