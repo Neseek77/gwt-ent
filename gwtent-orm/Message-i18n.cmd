@@ -1,0 +1,1 @@
+@java -cp "%~dp0\src;%~dp0\bin;C:/eclipse/gwt-windows-1.5.0/gwt-user.jar;C:/eclipse/gwt-windows-1.5.0/gwt-dev-windows.jar" com.google.gwt.i18n.tools.I18NSync -out "%~dp0\src" com.gwtent.client.orm.i18n.Message 
