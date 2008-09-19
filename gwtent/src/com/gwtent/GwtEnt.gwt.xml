@@ -5,10 +5,6 @@
     
     <!-- <inherits name="com.gwtext.GwtExt"/> -->
     
-    <!--  
-    <inherits name="com.thapar.gwt.user.ui.SimpleDatePicker"/>
-    -->
-    
     <generate-with class="com.gwtent.reflection.ReflectionProxyGenerator">
 		<when-type-assignable class="com.gwtent.client.reflection.Reflection"/>
 	</generate-with>

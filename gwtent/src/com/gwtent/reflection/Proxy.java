@@ -20,10 +20,16 @@
 package com.gwtent.reflection;
 
 import com.google.gwt.core.ext.typeinfo.JParameter;
+
+import com.gwtent.client.reflection.AnnotationStoreImpl;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Parameter;
+
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Proxy extends ClassType {
@@ -34,6 +40,17 @@ public class Proxy extends ClassType {
 		addMethods();
 	}
 
+	protected Map<Class<? extends Annotation>, Annotation> AnnotationsArrayToMaps(Annotation[] annotations){
+	  Map<Class<? extends Annotation>, Annotation> result = new HashMap<Class<? extends Annotation>, Annotation>();
+	  for (Annotation annotation : annotations) {
+     result.put(annotation.getClass(), annotation); 
+    }
+	  return result;
+	}
+	
+	public void addAnnotations(){
+	  
+	}
 	
 	protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{
 		if (args.length != paramCount){
@@ -79,6 +96,11 @@ public class Proxy extends ClassType {
 	}
 	
 	
+	protected void addAnnotation(Annotation[] annotations){
+	  Map<String, Object> values = new HashMap<String, Object>();
+	  values.put("name", "Test_Table");
+	  //AnnotationStoreImpl store = new AnnotationStoreImpl(com.gwtent.test.TestAnnotation.class, values);
+	}
 
 
 }

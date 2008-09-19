@@ -19,6 +19,8 @@
  */
 package com.gwtent.client.reflection;
 
+
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,29 +33,30 @@ import java.util.Set;
 /**
  * Type representing a Java class or interface type.
  */
-public class ClassType extends Type implements HasMetaData, AccessDef {
+public class ClassType extends Type implements HasMetaData, AccessDef, HasAnnotations {
 
-	private final Set allSubtypes = new HashSet();
+	private final Set<ClassType> allSubtypes = new HashSet<ClassType>();
+	private final Annotations annotations = new Annotations();
 
 	private Method[] cachedOverridableMethods;
 
-	private final List constructors = new ArrayList();
+	private final List<Constructor> constructors = new ArrayList<Constructor>();
 
 	private ClassType enclosingType;
 
-	private final Map fields = new HashMap();
+	private final Map<String, Field> fields = new HashMap<String, Field>();
 
-	private final List interfaces = new ArrayList();
+	private final List<ClassType> interfaces = new ArrayList<ClassType>();
 
 	private boolean isInterface = false;
 
 	private boolean isLocalType = true;
 
-	private String lazyHash;
+	//private String lazyHash;
 
 	private String lazyQualifiedName;
 
-	private final Map methods = new HashMap();
+	private final Map methods = new HashMap<String, List>();
 
 	private int modifierBits;
 
@@ -439,6 +442,15 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 //		assert (type != null);
 //		assert (isInterface() == null);
 		this.superclass = type;
+//		ClassType realSuperType;
+//    if (type.isParameterized() != null) {
+//      realSuperType = type.isParameterized().getBaseType();
+//    } else if (type.isRawType() != null) {
+//      realSuperType = type.isRawType().getGenericType();
+//    } else {
+//      realSuperType = (JRealClassType) type;
+//    }
+    annotations.setParent(type.annotations);
 	}
 
 	public String toString() {
@@ -455,7 +467,7 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 
 	protected void addField(Field field) {
 		Object existing = fields.put(field.getName(), field);
-//		assert (existing == null);
+		assert (existing == null);
 	}
 
 	public void addMethod(Method method) {
@@ -611,5 +623,26 @@ public class ClassType extends Type implements HasMetaData, AccessDef {
 //		assert (!constructors.contains(ctor));
 		constructors.add(ctor);
 	}
+	
+  public void addAnnotations(
+      List<AnnotationStore> declaredAnnotations) {
+    annotations.addAnnotations(declaredAnnotations);
+  }
+  
+  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+    return annotations.getAnnotation(annotationClass);
+  }
+  
+  public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+    return annotations.isAnnotationPresent(annotationClass);
+  }
+  
+  AnnotationStore[] getAnnotations() {
+    return annotations.getAnnotations();
+  }
+
+  AnnotationStore[] getDeclaredAnnotations() {
+    return annotations.getDeclaredAnnotations();
+  }
 
 }

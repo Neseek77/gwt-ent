@@ -15,34 +15,36 @@
  */
 package com.gwtent.reflection;
 
+import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JRealClassType;
+import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-
+import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Field;
+import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.Package;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
-import com.gwtent.client.test.annotations.Entity;
 
-import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-
-public class ReflectionCreator extends LogableSourceCreator {
+public class ReflectionCreator5 extends LogableSourceCreator {
 	
 
 	private final boolean isUseLog = true;
 
-	public ReflectionCreator(TreeLogger logger, GeneratorContext context, String typeName) {
+	public ReflectionCreator5(TreeLogger logger, GeneratorContext context, String typeName) {
 		super(logger, context, typeName);
 	}
 	
@@ -127,11 +129,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 				source.println("}");
 				source.println();
 				
-				
 				//-----Add Class MetaData--------------------------------
 				addClassMeta(classType, source);
-				//-----Add Class Annotation------------------------------------
-				addClassAnnotation(classType, source);
+				//-----Add Annotation------------------------------------
+				addAnnotation(classType, source);
 				//-----Add fields----------------------------------------
 				addFields(classType, source);
 				//-----Add methods---------------------------------------
@@ -147,7 +148,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 	}
 	
-	
 	protected void addClassMeta(JClassType classType, SourceWriter source) {
 		source.println();
 		source.println("	//add fields");
@@ -162,17 +162,31 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("}");
 	}
 	
-	protected void addClassAnnotation(JClassType classType, SourceWriter source) {
+	protected void addAnnotation(JClassType classType, SourceWriter source) {
     source.println();
-    source.println("  //add annotations of class");
+    source.println("  //add annotations");
     source.println();
     
     source.println("protected void addAnnotations(){");
     source.indent();
     
-    Annotation[] annotations = AnnotationsHelper.getAnnotations((JRealClassType)classType);
-    GeneratorHelper.addAnnotations(this.typeOracle, "this", source, annotations);
-    
+//    source.println("Annotation annotation = null;");
+//    
+//    Annotation[] annotations = AnnotationsHelper.getAnnotations((JRealClassType)classType);
+//    
+//    for (int i = 0; i < annotations.length; i++){
+//      Annotation annotation = annotations[i];
+//      
+//      source.println("field = new Field(this, \"" + field.getName() + "\");");
+//      source.println("field.addModifierBits(" + GeneratorHelper.AccessDefToInt(field) + "); ");
+//      source.println("field.setTypeName(\"" + field.getType().getQualifiedSourceName() + "\");");
+//      
+//      GeneratorHelper.addMetaDatas("field", source, field);
+//      
+//      source.println();
+//      
+//    }
+//    
     source.outdent();
     source.println("}");
   }
@@ -187,20 +201,17 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("protected void addFields(){");
 		source.indent();
 		
-		source.println("Field field = null;");
+		source.println("JField field = null;");
 		
 		JField[] fields = classType.getFields();
 		
 		for (int i = 0; i < fields.length; i++){
 			JField field = fields[i];
-			source.println("field = new Field(this, \"" + field.getName() + "\");");
+			source.println("field = new JField(this, \"" + field.getName() + "\");");
 			source.println("field.addModifierBits(" + GeneratorHelper.AccessDefToInt(field) + "); ");
 			source.println("field.setTypeName(\"" + field.getType().getQualifiedSourceName() + "\");");
 			
 			GeneratorHelper.addMetaDatas("field", source, field);
-			
-			Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
-	    GeneratorHelper.addAnnotations(this.typeOracle, "field", source, annotations);
 			
 			source.println();
 			
@@ -218,13 +229,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("protected void addMethods(){");
 		source.indent();
 		
-		source.println("Method method = null;");
+		source.println("JMethod method = null;");
 		
 		JMethod[] methods = classType.getMethods();
 		
 		for (int i = 0; i < methods.length; i++){
 			JMethod method = methods[i];
-			source.println("method = new Method(this, \"" + method.getName() + "\");");
+			source.println("method = new JMethod(this, \"" + method.getName() + "\");");
 			source.println("method.addModifierBits(" + GeneratorHelper.AccessDefToInt(method) + "); ");
 			source.println("method.setReturnTypeName(\"" + method.getReturnType().getQualifiedSourceName() + "\");");
 			
@@ -233,11 +244,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			for (int j = 0; j < params.length; j++){
 				JParameter param = params[j];
 				source.println("new Parameter(method, \"" + param.getType().getQualifiedSourceName() + "\", \"" + param.getName() + "\");");
-				//TODO Support annotation of Parameter
 			}
-			
-			Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
-      GeneratorHelper.addAnnotations(this.typeOracle, "method", source, annotations);
 			
 			source.println();
 			
@@ -258,10 +265,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String simpleName = classType.getSimpleSourceName() + "Wrapper";
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
-		composer.setSuperclass("com.gwtent.client.reflection.ClassType");
+		composer.setSuperclass("com.gwtent.client.reflection5.JRealClassType");
 		//composer.addImplementedInterface("com.coceler.gwt.client.reflection.Class");
-		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("com.gwtent.client.reflection5.*");
 		composer.addImport("java.util.*");
+		composer.addImport("java.lang.annotation.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 		
 //		JPackage[] packages = classType.getOracle().getPackages();

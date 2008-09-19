@@ -19,11 +19,17 @@
  */
 package com.gwtent.client.reflection;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
 
-public class Field implements HasMetaData, AccessDef{
+
+public class Field implements HasMetaData, AccessDef, HasAnnotations{
 
 
 	private final ClassType enclosingType;
+	
+	private final Annotations annotations = new Annotations();
 
 	  private int modifierBits;
 
@@ -117,4 +123,31 @@ public class Field implements HasMetaData, AccessDef{
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
+	
+  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+    return annotations.getAnnotation(annotationClass);
+  }
+  
+  public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+    return annotations.isAnnotationPresent(annotationClass);
+  }
+  
+  /**
+   * NOTE: This method is for testing purposes only.
+   */
+  AnnotationStore[] getAnnotations() {
+    return annotations.getAnnotations();
+  }
+
+  /**
+   * NOTE: This method is for testing purposes only.
+   */
+  AnnotationStore[] getDeclaredAnnotations() {
+    return annotations.getDeclaredAnnotations();
+  }
+
+  public void addAnnotations(
+      List<AnnotationStore> annotations) {
+    this.annotations.addAnnotations(annotations);
+  }
 }
