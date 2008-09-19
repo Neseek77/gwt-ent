@@ -2,6 +2,7 @@ package com.gwtent.sample.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Label;
@@ -9,7 +10,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.TestReflection;
+
+import java.lang.annotation.Annotation;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -28,12 +30,16 @@ public class Application implements EntryPoint {
     System.out.println("after SetByInvoke:" + classType.invoke(test, "getString", null));
   }
   
+  public void addAnnotations(Annotation[] annotations){
+    
+  }
+  
   /**
    * This is the entry point method.
    */
   public void onModuleLoad() {
     testReflection();
-    
+
     final Button button = new Button("Click me");
     final Label label = new Label();
 
