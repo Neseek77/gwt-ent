@@ -19,16 +19,19 @@
  */
 package com.gwtent.client.reflection;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractMethod implements HasMetaData {
+public abstract class AbstractMethod implements HasMetaData, HasAnnotations {
 
 	private boolean isVarArgs = false;
 
 	private final HasMetaData metaData = new MetaData();
+	
+	private final Annotations annotations =  new Annotations();
 
 
 	private int modifierBits;
@@ -226,4 +229,31 @@ public abstract class AbstractMethod implements HasMetaData {
 		}
 		return true;
 	}
+	
+  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+    return annotations.getAnnotation(annotationClass);
+  }
+  
+  public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+    return annotations.isAnnotationPresent(annotationClass);
+  }
+  
+  /**
+   * NOTE: This method is for testing purposes only.
+   */
+  AnnotationStore[] getAnnotations() {
+    return annotations.getAnnotations();
+  }
+
+  /**
+   * NOTE: This method is for testing purposes only.
+   */
+  AnnotationStore[] getDeclaredAnnotations() {
+    return annotations.getDeclaredAnnotations();
+  }
+  
+  public void addAnnotations(
+      List<AnnotationStore> annotations) {
+    this.annotations.addAnnotations(annotations);
+  }
 }

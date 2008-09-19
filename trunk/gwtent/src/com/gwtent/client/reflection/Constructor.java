@@ -19,7 +19,6 @@
  */
 package com.gwtent.client.reflection;
 
-import java.util.Map;
 
 
 public class Constructor  extends AbstractMethod {

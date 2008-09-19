@@ -19,11 +19,8 @@
  */
 package com.gwtent.client.reflection;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-public class Method extends AbstractMethod implements AccessDef {
+public class Method extends AbstractMethod implements AccessDef, HasAnnotations {
 
 	private final ClassType enclosingType;
 

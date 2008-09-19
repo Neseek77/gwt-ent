@@ -19,8 +19,14 @@
  */
 package com.gwtent.client.reflection;
 
-public class Parameter {
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
+
+public class Parameter implements HasAnnotations {
 	private final String name;
+	
+	private final Annotations annotations = new Annotations();
 
 	private Type type;
 
@@ -83,4 +89,31 @@ public class Parameter {
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
+	
+  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+    return annotations.getAnnotation(annotationClass);
+  }
+  
+  public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+    return annotations.isAnnotationPresent(annotationClass);
+  }
+  
+  /**
+   * NOTE: This method is for testing purposes only.
+   */
+  AnnotationStore[] getAnnotations() {
+    return annotations.getAnnotations();
+  }
+
+  /**
+   * NOTE: This method is for testing purposes only.
+   */
+  AnnotationStore[] getDeclaredAnnotations() {
+    return annotations.getDeclaredAnnotations();
+  }
+  
+  public void addAnnotations(
+      List<AnnotationStore> annotations) {
+    this.annotations.addAnnotations(annotations);
+  }
 }

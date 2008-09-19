@@ -17,20 +17,54 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.reflection;
+package com.gwtent.client.test;
 
-import com.google.gwt.core.ext.Generator;
-import com.google.gwt.core.ext.GeneratorContext;
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
+import com.gwtent.client.reflection.Reflection;
+import com.gwtent.client.test.annotations.*;
 
-public class ReflectionProxyGenerator extends Generator {
+import java.util.Date;
 
+@Entity(name="TestReflection")
+@Table(name="Table_Test")
+public class TestReflection implements Reflection {
+	private Date date;
+	private String string;
+	private boolean bool;
+	
+	@Id
+  private String id;
+	
+	public TestReflection(){
+		
+	}
+	
+	@Id
+  public String getId() {
+    return id;
+  }
 
-	public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
-	  ReflectionCreator binder = new ReflectionCreator(logger, context, typeName);
-		String className = binder.createWrapper();
-		return className;
+  public void setId(String Id) {
+    this.id = Id;
+  }
+
+	
+	public boolean getBool() {
+		return bool;
+	}
+	public void setBool(boolean bool) {
+		this.bool = bool;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public String getString() {
+		return string;
+	}
+	public void setString(String string) {
+		this.string = string;
 	}
 
 }

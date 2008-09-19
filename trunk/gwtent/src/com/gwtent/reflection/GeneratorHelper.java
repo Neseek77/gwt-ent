@@ -19,14 +19,26 @@
  */
 package com.gwtent.reflection;
 
+import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
+import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.AccessDef;
+import com.gwtent.client.reflection.AnnotationStore;
+import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.reflection.accessadapter.JMethodAdapter;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GeneratorHelper {
 	public static int AccessDefToInt(AccessDef accessDef){
@@ -89,7 +101,6 @@ public class GeneratorHelper {
 			for (int k = 0; k < metas.length; k++){
 				source.println(dest + ".addMetaData(\"" + tags[j] + "\", " + GeneratorHelper.stringArrayToCode(metas[k]) +  ");");
 			}
-			
 		}
 	}
 	
@@ -107,6 +118,95 @@ public class GeneratorHelper {
 		}
 		return sb.toString();
 		
+	}
+	
+	/**
+	 * 
+	 * @param typeOracle
+	 * @param mapValueName
+	 * @param source
+	 * @param annotation
+	 * 
+	 * Must declare values first 
+	 * 
+	 * Map<String, Object> values = new HashMap<String, Object>();
+	 * values.clear();
+	 * values.put("name", "Test_Table");
+	 * values.put("name1", "value1");
+	 * AnnotationStoreImpl store = new AnnotationStoreImpl(com.gwtent.test.TestAnnotation.class, values);
+	 */
+	public static void addAnnotation(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, 
+	    String AnnotationStoreVarName, SourceWriter source, Annotation annotation){
+	  source.println("{");
+	  source.println("Map<String, Object> values = new HashMap<String, Object>();");
+	  String mapVarName = "values";
+	  //source.println(mapVarName + ".clear();");
+	  try {
+      JClassType classType = typeOracle.getType(annotation.annotationType().getName());
+      JAnnotationType annoType = classType.isAnnotation();
+      JAnnotationMethod[] methods = annoType.getMethods();
+      for (JAnnotationMethod method : methods) {
+        Object value = null;
+        try {
+          //Currently just support mothod without parameters
+          value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
+          source.println(mapVarName + ".put(\"" + method.getName() + "\", \"" + value.toString() + "\");");
+        } catch (IllegalArgumentException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (SecurityException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (IllegalAccessException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (InvocationTargetException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    } catch (NotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    source.println(AnnotationStoreVarName + " = new AnnotationStoreImpl(" + annotation.annotationType().getName() + ".class, " + mapVarName + ");");
+    source.println("}");
+	}
+	
+	/**
+	 * 
+	 * @param dest
+	 * @param source
+	 * @param annotations
+	 * 
+	 * {@code}
+	 * List<AnnotationStore> list = new ArrayList<AnnotationStore>();
+	 * AnnotationStoreImpl store = null;
+	 * 
+	 * addAnnotation(values, store); //this will create AnnotationStoreImpl
+	 * list.add(store);
+	 * ...repeat last two lines
+	 * xx.addAnnotations(list);
+	 * 
+	 */
+	public static void addAnnotations(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
+	    String dest, SourceWriter source, Annotation[] annotations){
+	  source.indent();
+	  source.println("{");
+	  source.println("List<AnnotationStore> list = new ArrayList<AnnotationStore>();");
+	  source.println("AnnotationStoreImpl store = null;");
+	  
+	  for (Annotation annotation : annotations) {
+	    addAnnotation(typeOracle, "store", source, annotation);
+	    source.println("list.add(store);");
+    }
+	  
+	  source.println(dest + ".addAnnotations(list);");
+	  source.println("}");
+	  source.outdent();
 	}
 	
 	
