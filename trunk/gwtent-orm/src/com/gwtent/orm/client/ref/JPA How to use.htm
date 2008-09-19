@@ -1,0 +1,1322 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>Java Persistence API</title>
+</head>
+
+<body>
+
+<div class="titlepage">
+  <div>
+    <div>
+      <h2 class="title">Java Persistence API (JPA) with EclipseLink or Apache 
+      OpenJPA- Tutorial </h2>
+    </div>
+    <div>
+      <div class="author">
+        <h3 class="author"><span class="firstname">Lars</span>
+        <span class="surname">Vogel</span> </h3>
+        <div class="affiliation">
+          <div class="address">
+            <span style="white-space: pre"><code class="email">&lt;<a class="email" href="mailto:Lars.Vogel@gmail.com">Lars.Vogel@gmail.com</a>&gt;</code>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="releaseinfo">　</p>
+      <p>Version 0.6</p>
+      <p>　</div>
+    <div>
+      <p class="copyright">Copyright &copy; 2007 Lars Vogel
+    </div>
+    <div>
+      <p class="pubdate">29.04.2008</div>
+    <div>
+      <div class="abstract">
+        <p class="title"><b>Abstract</b> </p>
+        <p>This article explains how to use the Java Persistence API for Java 
+        applications. The Java Persistence API (JPA) is a specification defined 
+        in JSR 220 for the persistence of Java objects to any relational 
+        database. The Java Persistence API and let the developer easily map, 
+        store, update and retrieve data from relational database tables into 
+        Java Objects. </p>
+        <p>EclipseLink is currently the Sun reference implementation of JPA. The 
+        following describes the usage of the EclipseLink JPA and the Apache 
+        OpenJPA implementation in a Java application. </p>
+        <p>The Java Persistence API simplifies the life of a developer to a 
+        great degree. It permits the developer to work with objects rather then 
+        with SQL statements.
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+<div class="toc">
+  <b>Table of Contents</b>
+  <dl>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaintro">
+    1. Java Persistence API</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaintro_s2a">
+      1.1. Overview</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaintro_s2b">
+      1.2. Changing the classpath</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaintro_s2c">
+      1.3. Using EclipseLink</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaintro_s2d">
+      1.4. Using Apache OpenJPA</a></span> </dt>
+    </dl>
+    </dd>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaannotations">
+    2. Using the JPA with Annotations</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaannotations_s2a">
+      2.1. Entity</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaannotations_s2b">
+      2.2. Fields and Property setters and getters</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaannotations_s2c">
+      2.3. Relationships</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaannotations_s2c">
+      2.4. Example</a></span> </dt>
+    </dl>
+    </dd>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaorm">
+    3. Using the JPA with XML metadata</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaorm_s2a">
+      3.1. XML Metadata</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#jpaorm_s2b">
+      3.2. Example</a></span> </dt>
+    </dl>
+    </dd>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#persistenceunits">
+    4. Persistence Units</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#persistenceunits_s2a">
+      4.1. Overview</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#persistenceunits_s2b">
+      4.2. EcliseLink</a></span> </dt>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#persistenceunits_s2c">
+      4.3. Apache OpenJPA</a></span> </dt>
+    </dl>
+    </dd>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#entitymanager">
+    5. Entity Manager</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#entitymanager_s2a">
+      5.1. Overview</a></span> </dt>
+    </dl>
+    </dd>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#reversemapping">
+    6. Reverse Mapping with OpenJPA</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#reversemapping_s2a">
+      6.1. Overview</a></span> </dt>
+    </dl>
+    </dd>
+    <dt><span class="sect1">
+    <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#resources">
+    7. Links and Literature</a></span> </dt>
+    <dd>
+    <dl>
+      <dt><span class="sect2">
+      <a href="http://www.vogella.de/articles/JavaPersistenceAPI/article.html#resources_s1s2a">
+      7.1. Java Persistence API Resources</a></span> </dt>
+    </dl>
+    </dd>
+  </dl>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">1.&nbsp;Java Persistence API</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">1.1.&nbsp;Overview</h3>
+        </div>
+      </div>
+    </div>
+    <p>The Java persistence API (JPA) allows you to store data from POJO's 
+    (Plain old Java Objects) into database tables. </p>
+    <p>The persistence metadata is specified using Java annotations, XML mapping 
+    files or acombination of both. In case both are used then the XML 
+    information overwrites the annotations in the Java code. This persistence 
+    metadata defines the mapping to the database and the relationship between 
+    the objects. </p>
+    <p>The JPA requires that you identify the classes that you will store in a 
+    database. JPA uses the term <span class="emphasis"><em>Entity</em></span> to 
+    define classes / interfaces that it will map to a relational database. </p>
+    <p>The Java compiler will use the metadata information (from the annotations 
+    or the XML file) to perform the correct database operations. </p>
+    <p>Although this should not be used in a production environment OpenJPA has 
+    also the option to create the necessary database tables automatically from 
+    the classes.
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">1.2.&nbsp;Changing the classpath</h3>
+        </div>
+      </div>
+    </div>
+    <p>Both EclipseLink and OpenJPA requires that the JPA library are added to 
+    the classpath to use JPA. </p>
+    <p>See
+    <a class="ulink" href="http://www.vogella.de/articles/Eclipse/article.html#jartoclasspath" target="_top">
+    for details on how to add jars to the class path in case your are using 
+    Eclipse as an IDE. </a></p>
+    <p>My example will be using Derby as a database. Download Derby and add 
+    Derby.jar to your classpath.
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">1.3.&nbsp;Using EclipseLink</h3>
+        </div>
+      </div>
+    </div>
+    <p>Download the EclipseLink implementation from
+    <a class="ulink" href="http://www.eclipse.org/eclipselink/downloads/" target="_top">
+    http://www.eclipse.org/eclipselink/downloads/ </a>and unpack it to a folder 
+    &quot;ecliselink&quot;. The download contains several jars. Add the following jars to 
+    your project classpath: </p>
+    <div class="itemizedlist">
+      <ul type="disc">
+        <li>eclipselink.jar</li>
+        <li>persistence.jar</li>
+      </ul>
+    </div>
+    <p>　</div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">1.4.&nbsp;Using Apache OpenJPA</h3>
+        </div>
+      </div>
+    </div>
+    <p>Alternative to the EclipseLink JPA implementation you could also use the 
+    Apache OpenJPA implementation. </p>
+    <p>Download the Apache OpenJPA implementation from
+    <a class="ulink" href="http://openjpa.apache.org" target="_top">
+    http://openjpa.apache.org </a>and unpack it to a folder &quot;myopenjpa&quot;. The 
+    download contains several jars. Add these jars to your project classpath.
+    </p>
+    <p>　</p>
+    <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in">
+      <h3 class="title">Tip</h3>
+      <p>Please note that you need the openjpa-*.jar from the folder &quot;myopenjpa&quot; 
+      as well as all the library out of the folder &quot;myopenjpa/lib&quot; folder.
+    </div>
+    <p>　</div>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">2.&nbsp;Using the JPA with Annotations</h2>
+      </div>
+    </div>
+  </div>
+  <p>The following describes the usage of annotations for describing the 
+  persistence metadata. </p>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">2.1.&nbsp;Entity</h3>
+        </div>
+      </div>
+    </div>
+    <p>A persistable class must be annotated with javax.persistence.Entity. 
+    Entity classes will become a table in a relational database. The instances 
+    of the class will be a row in the table. The Java Persistence API 
+    implementation will create a table for the entity in your relational 
+    database. By default, the table name corresponds to the class name. You can 
+    change this with the addition to the annotation @Table(name=&quot;NEWTABLENAME&quot;)
+    </p>
+    <p>All entities must have a primary key. Keys can be a single field or a 
+    combination of fields. </p>
+    <p>JPA allows also to auto generate the primary key in the database via the 
+    @GeneratedValue annotation.
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">2.2.&nbsp;Fields and Property setters and getters</h3>
+        </div>
+      </div>
+    </div>
+    <p>The Java Persistence API supports that you can either uses your instance 
+    variables or your uses your Java Bean conform property getters and setters 
+    for reading and saving the elements from and to the database. </p>
+    <p>If you would to use the instance variables you annotate the variable. If 
+    you want to use the getter and setting you annotate them. You are not 
+    allowed to mix both methods. </p>
+    <p>　</p>
+    <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in">
+      <h3 class="title">Tip</h3>
+      <p>If you annotate the instance variables then the persistence 
+      implementation will directly access them. This is for example useful if 
+      you don't want to implement a setter method.
+    </div>
+    <p>　</p>
+    <p>All properties or fields that should not be persisted must be explicitly 
+    marked with @Transient. </p>
+    <p>By default the entity field or property name is used for the column name 
+    in the table. You can change the default name via @Column(name=&quot;newColumnName&quot;).
+    </p>
+    <p>The following annotations can be used for fields and / or getter and 
+    setters. </p>
+    <p>　</p>
+    <div class="table">
+      <p class="title"><b>Table&nbsp;1.&nbsp; Annotations for fields / getter and setter
+      </b></p>
+      <div class="table-contents">
+        <table summary="Annotations for fields / getter and setter" border="1">
+          <colgroup>
+            <col align="left"><col align="left">
+          </colgroup>
+          <tr>
+            <td align="left">@Id</td>
+            <td align="left">Identifies the uniqui ID of the database entry </td>
+          </tr>
+          <tr>
+            <td align="left">@GeneratedValue</td>
+            <td align="left">Together with ID defines that this value is 
+            generated automatically. </td>
+          </tr>
+          <tr>
+            <td align="left">@Transient</td>
+            <td align="left">Field will not be saved in database </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <p><br class="table-break">
+　</p>
+    <p>　</div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">2.3.&nbsp;Relationships</h3>
+        </div>
+      </div>
+    </div>
+    <p>Relationships between classes can be expressed. Classes can have one to 
+    one, one to many, many to one, and many to many relationships with other 
+    classes. </p>
+    <p>A relationship can be bidirectional or unidirectional, e.g. in a 
+    bidirectional relationship both classes store a reference to each other 
+    while in an unidirectional case only one class has a reference to the other 
+    class. </p>
+    <p>　</p>
+    <div class="table">
+      <p class="title"><b>Table&nbsp;2.&nbsp;Relationship annotations</b> </p>
+      <div class="table-contents">
+        <table summary="Relationship annotations" border="1">
+          <colgroup>
+            <col align="left">
+          </colgroup>
+          <tr>
+            <td align="left">OneToOne</td>
+          </tr>
+          <tr>
+            <td align="left">OneToMany</td>
+          </tr>
+          <tr>
+            <td align="left">ManyToOne</td>
+          </tr>
+          <tr>
+            <td align="left">ManyToMany</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <p><br class="table-break">
+　</p>
+    <p>　</div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">2.4.&nbsp;Example</h3>
+        </div>
+      </div>
+    </div>
+    <p>The following shows our example class with the annotations for the 
+    persistence metadata. The ID will be automatically be created by the 
+    database. The field nonsenseField will not be persisted to the database. </p>
+    <p>　</p>
+    <pre class="programlisting">				
+package datamodel;
+
+import java.util.List;
+
+import javax.persistence.ManyToOne;
+
+import datamodel.impl.Family;
+import datamodel.impl.Job;
+
+
+public interface IPerson {
+
+	public abstract String getId();
+
+	public abstract void setId(String Id);
+
+	public abstract String getFirstName();
+
+	public abstract void setFirstName(String firstName);
+
+	public abstract String getLastName();
+
+	public abstract void setLastName(String lastName);
+	
+	public Family getFamily();
+
+	public void setFamily(Family family);
+	
+	public abstract List&lt;Job&gt; getJobList();
+	
+	public abstract void setJobList(List&lt;Job&gt;  jobs);
+	
+	public abstract String getNonsenseField();
+
+	public abstract void setNonsenseField(String nonsenseField);
+
+}
+
+			</pre>
+    <p>　</p>
+    <p>　</p>
+    <pre class="programlisting">				
+package datamodel.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Transient;
+
+
+import datamodel.IPerson;
+
+@Entity
+public class Person implements IPerson {
+
+	
+	private String id;
+	private String firstName;
+	private String lastName;
+	
+	private Family family;
+	
+	private String nonsenseField = &quot;&quot;;
+	
+	
+	private List&lt;Job&gt; jobList = new ArrayList&lt;Job&gt;();
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String Id) {
+		this.id = Id;
+	}
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	// Leave the standard column name of the table
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	
+	@ManyToOne
+	public Family getFamily() {
+		return family;
+	}
+
+	public void setFamily(Family family) {
+		this.family = family;
+	}
+
+	@Transient
+	public String getNonsenseField() {
+		return nonsenseField;
+	}
+
+	public void setNonsenseField(String nonsenseField) {
+		this.nonsenseField = nonsenseField;
+	}
+
+	@OneToMany
+	public List&lt;Job&gt; getJobList() {
+		return this.jobList;
+	}
+
+	public void setJobList(List&lt;Job&gt; nickName) {
+		this.jobList = nickName;
+	}
+
+	
+}
+
+			</pre>
+    <p>　</p>
+    <p>　</p>
+    <pre class="programlisting">				
+package datamodel;
+
+public interface IJob {
+
+	public abstract String getId();
+
+	public abstract void setId(String id);
+
+	public abstract double getSalery();
+
+	public abstract void setSalery(double salery);
+
+	public abstract String getJobDescr();
+
+	public abstract void setJobDescr(String jobDescr);
+
+}
+
+			</pre>
+    <p>　</p>
+    <p>　</p>
+    <pre class="programlisting">				
+package datamodel.impl;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import datamodel.IJob;
+
+
+@Entity
+public class Job implements IJob {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private String id;
+	private double salery;
+	private String jobDescr;
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public double getSalery() {
+		return salery;
+	}
+
+	public void setSalery(double salery) {
+		this.salery = salery;
+	}
+
+	public String getJobDescr() {
+		return jobDescr;
+	}
+
+	public void setJobDescr(String jobDescr) {
+		this.jobDescr = jobDescr;
+	}
+
+}
+
+			</pre>
+    <p>　</div>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">3.&nbsp;Using the JPA with XML metadata</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">3.1.&nbsp;XML Metadata</h3>
+        </div>
+      </div>
+    </div>
+    <p>Alternative to the annotations you can also use XML metadata to define 
+    the persistence metadata. </p>
+    <p>You can create a file orm.xml within the META-INF directory to describes 
+    this data.
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">3.2.&nbsp;Example</h3>
+        </div>
+      </div>
+    </div>
+    <p>The following file describes the persistence data in an external file 
+    orm.xml. No annotations are required in Person.java. We use for illustration 
+    a simplified example of person. </p>
+    <p>　</p>
+    <pre class="programlisting">				
+package datamodel;
+
+
+public interface IPerson {
+
+	public abstract String getId();
+
+	public abstract void setId(String Id);
+
+	public abstract String getFirstName();
+
+	public abstract void setFirstName(String firstName);
+
+	public abstract String getLastName();
+
+	public abstract void setLastName(String lastName);
+
+	public abstract String getNonsenseField();
+
+	public abstract void setNonsenseField(String nonsenseField);
+
+}
+
+			</pre>
+    <p>　</p>
+    <p>　</p>
+    <pre class="programlisting">				
+package datamodel;
+
+import javax.persistence.*;
+
+@Entity 
+@Table(name=&quot;MYAPPLICATION.PEOPLETABLE&quot;)
+
+public class Person implements IPerson {
+	private String id;
+	private String firstName;
+	private String lastName;
+	private String nonsenseField=&quot;&quot;; 
+
+	@Id
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String Id) {
+		this.id = Id;
+	}
+	
+	// Name the column to &quot;MYFIRST&quot;
+	@Column(name=&quot;MYFIRST&quot;)
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	// Leave the standard column name of the table
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	@Transient
+	public String getNonsenseField() {
+		return nonsenseField;
+	}
+
+	public void setNonsenseField(String nonsenseField) {
+		this.nonsenseField = nonsenseField;
+	}
+}
+
+			</pre>
+    <p>　</p>
+    <p>This is required orm.xml for this mapping.</p>
+    <p>　</p>
+    <pre class="programlisting">				
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;entity-mappings xmlns=&quot;http://java.sun.com/xml/ns/persistence/orm&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd&quot; version=&quot;1.0&quot;&gt;
+
+    &lt;package&gt;
+
+        datamodel
+
+    &lt;/package&gt;
+
+    &lt;access&gt;
+
+        PROPERTY
+
+    &lt;/access&gt;
+
+    &lt;entity class=&quot;Person&quot;&gt;
+
+        &lt;table schema=&quot;MYAPPLICATION&quot; name=&quot;PEOPLETABLE&quot;/&gt;
+
+        &lt;attributes&gt;
+
+            &lt;id name=&quot;id&quot;&gt;
+
+                &lt;column name=&quot;ID&quot;/&gt;
+
+            &lt;/id&gt;
+
+            &lt;basic name=&quot;lastName&quot;&gt;
+
+                &lt;column name=&quot;LASTNAME&quot;/&gt;
+
+            &lt;/basic&gt;
+
+            &lt;basic name=&quot;firstName&quot;&gt;
+
+                &lt;column name=&quot;MYFIRST&quot;/&gt;
+
+            &lt;/basic&gt;
+
+            &lt;transient name=&quot;nonsenseField&quot; /&gt;
+
+        &lt;/attributes&gt;
+
+    &lt;/entity&gt;
+
+&lt;/entity-mappings&gt;
+			</pre>
+    <p>　</div>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">4.&nbsp;Persistence Units</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">4.1.&nbsp;Overview</h3>
+        </div>
+      </div>
+    </div>
+    <p>A set of entities which are logical connected will be grouped via a 
+    persistence unit. These persistence units are described via a file 
+    persistence.xml in the directory META-INF in the source folder. </p>
+    <p>This directory must be part of the build path otherwise it will not be 
+    found. </p>
+    <p>In this file the database driver, the database location, the user and the 
+    password is specified. </p>
+    <p>Each JPA provider is free to define its own parameter values for the 
+    database connection, user, password, etc.
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">4.2.&nbsp;EcliseLink</h3>
+        </div>
+      </div>
+    </div>
+    <p>The following is the persistence file for EclipseLink. </p>
+    <p>Please adjust the path of your database which will be created to your 
+    liking. </p>
+    <p>　</p>
+    <pre class="programlisting">				
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;persistence version=&quot;1.0&quot;
+
+	xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot;
+
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+
+	xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd&quot;&gt;
+
+	&lt;persistence-unit name=&quot;people&quot;&gt;
+
+	
+
+		&lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt;
+
+
+
+		&lt;class&gt;datamodel.impl.Family&lt;/class&gt;
+
+		&lt;class&gt;datamodel.impl.Person&lt;/class&gt;
+
+		&lt;class&gt;datamodel.impl.Job&lt;/class&gt;
+
+		&lt;properties&gt;
+
+			&lt;property name=&quot;eclipselink.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.EmbeddedDriver&quot; /&gt;
+
+			&lt;property name=&quot;eclipselink.jdbc.url&quot; value=&quot;jdbc:derby:C:/DerbyDatabases/hellojpa-database8;create=true&quot; /&gt;
+
+			&lt;!-- I work in this example without user / password.--&gt;
+
+			&lt;property name=&quot;eclipselink.jdbc.user&quot; value=&quot;&quot; /&gt;
+
+			&lt;property name=&quot;eclipselink.jdbc.password&quot; value=&quot;&quot; /&gt;
+
+			
+
+
+
+
+
+			&lt;!-- EclipseLink should create the database schema automatically --&gt;
+
+
+
+			&lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot; /&gt;
+
+			&lt;property name=&quot;eclipselink.ddl-generation.output-mode&quot; value=&quot;database&quot; /&gt;
+
+		&lt;/properties&gt;
+
+
+
+	&lt;/persistence-unit&gt;
+
+&lt;/persistence&gt;
+			</pre>
+    <p>　</div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">4.3.&nbsp;Apache OpenJPA</h3>
+        </div>
+      </div>
+    </div>
+    <p>The following is the persistence file for OpenJPA.</p>
+    <p>Please adjust the path of your database which will be created to your 
+    liking. </p>
+    <p>　</p>
+    <pre class="programlisting">				
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;!--
+
+	Licensed to the Apache Software Foundation (ASF) under one
+
+	or more contributor license agreements.  See the NOTICE file
+
+	distributed with this work for additional information
+
+	regarding copyright ownership.  The ASF licenses this file
+
+	to you under the Apache License, Version 2.0 (the
+
+	&quot;License&quot;); you may not use this file except in compliance
+
+	with the License.  You may obtain a copy of the License at
+
+	
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	
+
+	Unless required by applicable law or agreed to in writing,
+
+	software distributed under the License is distributed on an
+
+	&quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+
+	KIND, either express or implied.  See the License for the
+
+	specific language governing permissions and limitations
+
+	under the License.   
+
+--&gt;
+
+&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot;
+
+	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; version=&quot;1.0&quot;&gt;
+
+
+
+	&lt;!--
+
+		A persistence unit is a set of listed persistent entities as well
+
+		the configuration of an EntityManagerFactory. We configure each
+
+		example in a separate persistence-unit.
+
+	--&gt;
+
+	&lt;persistence-unit name=&quot;people&quot;
+
+		transaction-type=&quot;RESOURCE_LOCAL&quot;&gt;
+
+		&lt;!--
+
+			The default provider can be OpenJPA, or some other product.
+
+			This element is optional if OpenJPA is the only JPA provider
+
+			in the current classloading environment, but can be specified
+
+			in cases where there are multiple JPA implementations available.
+
+		--&gt;
+
+
+
+		&lt;provider&gt;
+
+			org.apache.openjpa.persistence.PersistenceProviderImpl
+
+		&lt;/provider&gt;
+
+
+
+
+
+		&lt;!-- We must enumerate each entity in the persistence unit --&gt;
+
+		&lt;class&gt;datamodel.impl.Person&lt;/class&gt;
+
+		&lt;class&gt;datamodel.impl.Job&lt;/class&gt;
+
+
+
+		&lt;properties&gt;
+
+			&lt;property name=&quot;openjpa.ConnectionURL&quot;
+
+				value=&quot;jdbc:derby:C:/DerbyDatabases/hellojpa-database7;create=true&quot; /&gt;
+
+			&lt;property name=&quot;openjpa.ConnectionDriverName&quot;
+
+				value=&quot;org.apache.derby.jdbc.EmbeddedDriver&quot; /&gt;
+
+			&lt;property name=&quot;openjpa.ConnectionUserName&quot; value=&quot;&quot; /&gt;
+
+			&lt;property name=&quot;openjpa.ConnectionPassword&quot; value=&quot;&quot; /&gt;
+
+
+
+			&lt;!--
+
+				Tell OpenJPA to automatically create tables in the database
+
+				for entities. Note that this should be disabled when
+
+				running against a production database, since you probably
+
+				don't want to be altering the schema at runtime.
+
+			--&gt;
+
+			&lt;property name=&quot;openjpa.jdbc.SynchronizeMappings&quot;
+
+				value=&quot;buildSchema&quot; /&gt;
+
+
+
+		&lt;/properties&gt;
+
+	&lt;/persistence-unit&gt;
+
+
+
+&lt;/persistence&gt;
+
+
+			</pre>
+    <p>　</div>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">5.&nbsp;Entity Manager</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">5.1.&nbsp;Overview</h3>
+        </div>
+      </div>
+    </div>
+    <p>The class Entity Manager is used to persists the Java Classes. </p>
+    <p>Implement the the following coding. This code will create the database 
+    tables if started the first time and create a few test entries. After the 
+    test entries are created, they will be read and the one field of the entries 
+    is changed and saved to the database. </p>
+    <p>　</p>
+    <pre class="programlisting">				
+package main;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
+import datamodel.IFamily;
+import datamodel.IJob;
+import datamodel.IPerson;
+import datamodel.impl.Family;
+import datamodel.impl.Job;
+import datamodel.impl.Person;
+
+public class Main {
+	public static void main(String[] args) {
+		// Create the Entity Manager
+		EntityManagerFactory factory = Persistence
+				.createEntityManagerFactory(&quot;people&quot;);
+		EntityManager em = factory.createEntityManager();
+
+		// Begin a new local transaction so that we can persist a new entity
+		em.getTransaction().begin();
+
+		// Read the existing entries
+		Query q = em.createQuery(&quot;select m from Person m&quot;);
+		// Do we have entries?
+		boolean createNewEntries = (q.getResultList().size() == 0);
+		// No, so lets create new entries
+		if (createNewEntries) {
+			Family family = new Family();
+			family.setDescription(&quot;MyFamily&quot;);
+			
+			
+			for (int i = 0; i &lt; 40; i++) {
+				Person newPerson = new Person();
+				newPerson.setFirstName(&quot;Lars &quot; + i);
+				newPerson.setLastName(&quot;Vogel &quot; + i);
+				Job job = new Job();
+				job.setJobDescr(&quot;Hacker &quot; + i);
+				job.setSalery(10.3 * i);
+				newPerson.getJobList().add(job);
+				newPerson.setFamily(family);
+				family.getMembers().add(newPerson);
+				em.persist(family);
+				// First we have to persists the job
+				em.persist(job);
+				// Now persists the new person
+				em.persist(newPerson);
+			}
+		}
+
+		// Commit the transaction, which will cause the entity to
+		// be stored in the database
+		em.getTransaction().commit();
+
+		// It is always good practice to close the EntityManager so that
+		// resources are conserved.
+		em.close();
+
+		// Now lets check the database and see if the created entries are there
+		// Create a fresh, new EntityManager
+		EntityManager em2 = factory.createEntityManager();
+
+		// Perform a simple query for all the Message entities
+		q = em2.createQuery(&quot;select m from Person m&quot;);
+
+		// Go through each of the entities and print out each of their
+		// messages, as well as the date on which it was created
+		for (Person m : (List&lt;Person&gt;) q.getResultList()) {
+			System.out.println(&quot;Say hello to &quot; + m.getFirstName() + &quot; &quot;
+					+ m.getLastName());
+			// Job will always be filled in this example
+			IJob job = m.getJobList().get(0);
+			System.out.println(&quot;He earns &quot; + job.getSalery()
+					+ &quot; in his job as &quot; + job.getJobDescr());
+			// Lets printout the family he belongs to
+			System.out.println(&quot;Family &quot; +m.getFamily().getDescription());
+			// Same here, nickname will in this example always be filled.
+		}
+
+	}
+}
+
+			</pre>
+    <p>　</div>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">6.&nbsp;Reverse Mapping with OpenJPA</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">6.1.&nbsp;Overview</h3>
+        </div>
+      </div>
+    </div>
+    <p>OpenJPA includes a tools for creating persistence metadata from an 
+    existing data, e.g. databases and annotated classes. The following show an 
+    example on how to create a valid orm.xml file from an annotated class. </p>
+    <p>Put the following ant script in your folder src of the example with an 
+    annotated java file and run it. It will create under the folder build a 
+    valid orm.xml from your annotations. </p>
+    <p>　</p>
+    <pre class="programlisting">				
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;project default=&quot;reversemap&quot; name=&quot;test&quot; basedir=&quot;.&quot;&gt;
+
+
+
+	&lt;property name=&quot;library&quot; value=&quot;C:\Documents and Settings\d034797\Desktop\Documents\08_MyDocuments\15_EclipseLibs&quot; /&gt;
+
+	&lt;property name=&quot;package.name&quot; value=&quot;datamodel&quot; /&gt;
+
+	&lt;property name=&quot;dbdriver&quot; value=&quot;org.apache.derby.jdbc.EmbeddedDriver&quot; /&gt;
+
+	&lt;property name=&quot;dburl&quot; value=&quot;jdbc:derby:C:/DerbyDatabases/hellojpa-database7&quot; /&gt;
+
+	&lt;property name=&quot;dbuser&quot; value=&quot;myusername&quot; /&gt;
+
+	&lt;property name=&quot;dbpass&quot; value=&quot;mypassword&quot; /&gt;
+
+
+
+	&lt;path id=&quot;classpath&quot;&gt;
+
+		&lt;pathelement path=&quot;${basedir}&quot; /&gt;
+
+		&lt;pathelement path=&quot;${basedir}/META-INF&quot; /&gt;
+
+		&lt;fileset dir=&quot;${library}&quot;&gt;
+
+			&lt;include name=&quot;**/*.jar&quot; /&gt;
+
+		&lt;/fileset&gt;
+
+	&lt;/path&gt;
+
+
+
+
+
+	&lt;!-- =========================================== --&gt;
+
+	&lt;!-- Runs against the database to create an orm.xml
+
+	    file and java classes --&gt;
+
+	&lt;!-- =========================================== --&gt;
+
+	&lt;target name=&quot;reversemap&quot;&gt;
+
+
+
+		&lt;!-- Removes any previously generated orm.xml --&gt;
+
+		&lt;delete&gt;
+
+			&lt;fileset dir=&quot;${basedir}&quot;&gt;
+
+				&lt;include name=&quot;orm.xml&quot; /&gt;
+
+			&lt;/fileset&gt;
+
+		&lt;/delete&gt;
+
+
+
+		&lt;taskdef name=&quot;reversemappingtool&quot; classpathref=&quot;classpath&quot; classname=&quot;org.apache.openjpa.jdbc.ant.ReverseMappingToolTask&quot; /&gt;
+
+
+
+
+
+		&lt;reversemappingtool package=&quot;${package.name}&quot; directory=&quot;${basedir}/build&quot;&gt;
+
+
+
+			&lt;!-- This must be set to your database --&gt;
+
+			&lt;config connectiondrivername=&quot;${dbdriver}&quot; connectionurl=&quot;${dburl}&quot; connectionusername=&quot;${dbuser}&quot; connectionpassword=&quot;${dbpass}&quot; propertiesfile=&quot;META-INF/persistence.xml&quot; /&gt;
+
+
+
+			&lt;classpath&gt;
+
+				&lt;pathelement path=&quot;${classpath}&quot; /&gt;
+
+				&lt;pathelement path=&quot;${basedir}&quot; /&gt;
+
+				&lt;pathelement path=&quot;${basedir}/META-INF&quot; /&gt;
+
+	  &lt;/classpath&gt;
+
+
+
+	  &lt;codeformat tabSpaces=&quot;4&quot; spaceBeforeParen=&quot;true&quot; braceOnSameLine=&quot;false&quot; /&gt;
+
+
+
+	  &lt;/reversemappingtool&gt;
+
+
+
+	  &lt;!-- This copies the persistence.xml and orm.xml
+
+	into
+
+	       the directory where the java classes were
+
+	generated --&gt;
+
+
+
+	  &lt;mkdir dir=&quot;${basedir}/build&quot; /&gt;
+
+	  &lt;copy todir=&quot;${basedir}/build/META-INF&quot;&gt;
+
+	     &lt;fileset dir=&quot;${basedir}&quot;&gt;
+
+	        &lt;include name=&quot;orm.xml&quot; /&gt;
+
+	     &lt;/fileset&gt;
+
+	     &lt;fileset dir=&quot;${basedir}/META-INF&quot;&gt;
+
+	        &lt;include name=&quot;persistence.xml&quot; /&gt;
+
+	     &lt;/fileset&gt;
+
+	  &lt;/copy&gt;
+
+
+
+
+
+	&lt;/target&gt;
+
+
+
+	&lt;/project&gt;
+			</pre>
+    <p>　</div>
+</div>
+<div class="sect1" lang="en">
+  <div class="titlepage">
+    <div>
+      <div>
+        <h2 class="title" style="clear: both">7.&nbsp;Links and Literature</h2>
+      </div>
+    </div>
+  </div>
+  <div class="sect2" lang="en">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h3 class="title">7.1.&nbsp;Java Persistence API Resources</h3>
+        </div>
+      </div>
+    </div>
+    <p><a class="ulink" href="http://openjpa.apache.org" target="_top">
+    http://openjpa.apache.org </a>The Apache OpenJPA implementation </p>
+    <p>
+    <a class="ulink" href="http://openjpa.apache.org/documentation.html" target="_top">
+    http://openjpa.apache.org/documentation.html </a>The Apache OpenJPA 
+    implementation documentation </p>
+    <p>
+    <a class="ulink" href="http://java.sun.com/developer/technicalArticles/J2SE/Desktop/persistenceapi/" target="_top">
+    http://java.sun.com/developer/technicalArticles/J2SE/Desktop/persistenceapi/
+    </a>Using the Java Persistence API in Desktop Applications
+  </div>
+</div>
+
+</body>
+
+</html>
