@@ -1,0 +1,515 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>JPA 试用</title>
+</head>
+
+<body>
+
+<h1>JPA 试用</h1>
+<p><br>
+<em>作者：Samudra Gupta</em> </p>
+<p>　</p>
+<p><strong>有关使用和部署 Java 持久性体系结构 (JPA) 的案例研究</strong> </p>
+<p><span class="legalese">2006 年 11 月发布</span> </p>
+<p>2006 年夏天发布的 EJB 3.0 规范提供了一个大大简化但功能更为强大的 EJB 框架，该框架演示了批注与传统 EJB 2.x 
+部署描述符相比的显著优势。J2SE 5.0 中引入的批注是修饰符，可以在类、字段、方法、参数、本地变量、构造符、枚举和程序包中使用。大量 EJB 3.0 
+新特性中都强调了批注的使用，这些特性包括：基于普通旧式 Java 对象的 EJB 类、EJB 
+管理器类的相关性注入、引入可以拦截其他业务方法调用的拦截器或方法，以及显著增强的 Java 持久性 API (JPA) 等。 </p>
+<p>为了说明 JPA 
+的概念，我们来看一个实际示例。最近，我的办公室需要实施税务登记系统。与大多数系统一样，该系统具有自己的复杂性和挑战性。由于其特殊的挑战涉及了数据访问和对象关系映射 
+(ORM)，因此我们决定在实施该系统的同时试用新的 JPA。 </p>
+<p>在该项目期间，我们面临以下几个挑战：</p>
+<ul>
+  <li>应用程序中使用的实体之间存在多种关系。</li>
+  <li>应用程序支持对关系数据进行复杂搜索。</li>
+  <li>应用程序必须确保数据完整性。</li>
+  <li>应用程序在持久保存数据之前需要对其进行验证。</li>
+  <li>需要批量操作。</li>
+</ul>
+<h2>数据模型</h2>
+<p>首先来看看我们的关系数据模型的简化版本，该版本足以解释 JPA 
+的细微之处。从业务角度而言，主申请人提交税务登记申请。申请人可以有零个或多个合伙人。申请人和合伙人必须指定两个地址，即注册地址和经营地址。主申请人还必须声明和描述其过去受到的所有处罚。</p>
+<div align="center">
+  <img src="http://oracleimg.com/technology/pub/images/gupta-jpa-f1.jpg" alt="图 1" border="0" width="650" height="371">
+</div>
+<p><strong>定义实体。</strong>我们通过将实体映射到单独的表定义了以下实体：</p>
+<p>　</p>
+<table class="bodycopy" border="1" cellpadding="7" cellspacing="0" width="560">
+  <colgroup>
+    <col width="261"><col width="269">
+  </colgroup>
+  <tr bgcolor="#999999" valign="top">
+    <td width="261" height="9">实体</td>
+    <td width="269">映射到的表</td>
+  </tr>
+  <tr valign="top">
+    <td width="261" height="10">Registration</td>
+    <td width="269">REGISTRATION</td>
+  </tr>
+  <tr valign="top">
+    <td width="261" height="10">Party</td>
+    <td width="269">PARTY</td>
+  </tr>
+  <tr valign="top">
+    <td width="261" height="10">Address</td>
+    <td width="269">ADDRESS</td>
+  </tr>
+  <tr valign="top">
+    <td width="261" height="10">Penalty</td>
+    <td width="269">PENALTY</td>
+  </tr>
+  <tr valign="top">
+    <td width="261" height="9">CaseOfficer</td>
+    <td width="269">CASE_OFFICER</td>
+  </tr>
+</table>
+<p><strong><br>
+表 1.</strong> 实体-表映射 </p>
+<p>　</p>
+<p>识别要映射到数据库表和列的实体很容易。下面是一个简化的 Registration 实体示例。（我将在后面介绍该实体的其他映射和配置。）</p>
+<pre>@Entity
+@Table(name=&quot;REGISTRATION&quot;)
+
+public class Registration implements Serializable{
+
+    @Id
+    private int id;
+
+    @Column(name=&quot;REFERENCE_NUBER&quot;)
+    private String referenceNumber;
+
+    
+
+   ..........
+    }
+</pre>
+<p>对我们而言，使用 JPA 实体的主要好处是我们感觉就像对常规的 Java 
+类进行编码一样：无需再使用复杂的生命周期方法。我们可以使用批注将持久性特性分配给实体。我们发现无需使用其他数据传输对象 (DTO) 
+层，并且可以重用实体以便在层之间移动。数据的可移动性突然变得更好了。</p>
+<p><strong>支持多态性。</strong>通过查看我们的数据模型，我们注意到我们使用了 PARTY 
+表同时存储申请人和合伙人记录。这些记录不但具有一些相同的属性，而且还具有各自特有的属性。 </p>
+<p>我们希望在继承层次中对此模型进行建模。利用 EJB 2.x，我们只能使用一个 Party 实体 bean，然后通过在代码内实施逻辑来根据 party 
+类型创建申请人或合伙人对象。另一方面，JPA 使我们可以在实体级别指定继承层次。 </p>
+<p>我们决定通过一个抽象的实体 Party 和两个具体的实体 Partner 和 Applicant 对继承层次进行建模： </p>
+<pre>@Entity
+@Table(name=&quot;PARTY_DATA&quot;)
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name=&quot;PARTY_TYPE&quot;)
+
+public abstract class Party  implements Serializable{
+
+    @Id
+    protected int id;
+
+    @Column(name=&quot;REG_ID&quot;)
+    protected int regID;
+
+
+   
+    protected String name;
+
+   .........
+
+ }
+</pre>
+<p>两个具体的类 Partner 和 Applicant 现在将继承抽象的 Party 类的特征。</p>
+<pre>@Entity
+@DiscriminatorValue(&quot;0&quot;)
+public class Applicant extends Party{
+
+    @Column(name=&quot;TAX_REF_NO&quot;)
+    private String taxRefNumber;
+
+    @Column(name=&quot;INCORP_DATE&quot;)
+    private String incorporationDate;
+
+  ........
+<br></br>}
+</pre>
+<p>如果 party_type 列的值为 0，则持久性提供程序将返回一个 Applicant 实体的实例；如果该列的值为 1，持久性提供程序将返回一个 
+Partner 实体的实例。</p>
+<p><strong>构建关系。</strong>我们的应用程序数据模型中的 PARTY 表包含 REGISTRATION 表的一个外键列 (reg_id)。在该结构中，Party 
+实体成为实体的拥有方或关系的源，因为我们在其中指定连接列。Registration 成为关系的目标。 </p>
+<p>每个 ManyToOne 关系都很可能是双向的；即两个实体之间还存在 OneToMany 关系。下表显示我们的关系定义：</p>
+<p>　</p>
+<table class="bodycopy" border="1" cellpadding="0" cellspacing="0" width="529">
+  <colgroup>
+    <col width="184"><col width="162"><col width="181">
+  </colgroup>
+  <tr bgcolor="#999999" valign="top">
+    <td width="184" height="23">关系</td>
+    <td width="162">拥有方</td>
+    <td width="181">多重性/映射</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Registration-&gt;CaseOfficer</td>
+    <td width="162">CaseOfficer</td>
+    <td width="181">OneToOne</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Registration-&gt;Party</td>
+    <td width="162">Party</td>
+    <td width="181">ManyToOne</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Party-&gt;Address</td>
+    <td width="162">Address</td>
+    <td width="181">ManyToOne</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Party-&gt;Penalty</td>
+    <td width="162">Penalty</td>
+    <td width="181">ManyToOne</td>
+  </tr>
+  <tr>
+    <td colspan="3" bgcolor="#cccccc" valign="top" width="527" height="24">反向关系</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Registration-&gt;CaseOfficer</td>
+    <td width="162"><br>
+　</td>
+    <td width="181">OneToOne</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Registration-&gt;Party</td>
+    <td width="162"><br>
+　</td>
+    <td width="181">OneToMany</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="24">Party-&gt;Address</td>
+    <td width="162"><br>
+　</td>
+    <td width="181">OneToMany</td>
+  </tr>
+  <tr valign="top">
+    <td width="184" height="23">Party-&gt;Penalty</td>
+    <td width="162"><br>
+　</td>
+    <td width="181">OneToMany</td>
+  </tr>
+</table>
+<p><strong><br>
+表 2.</strong>关系 </p>
+<p>　</p>
+<p>　</p>
+<pre>public class Registration  implements Serializable{
+....
+
+    @OneToMany(mappedBy = &quot;registration&quot;)
+    private Collection&lt;Party&gt; parties;
+
+....
+}
+
+public abstract class Party  implements Serializable{
+....
+    @ManyToOne
+    @JoinColumn(name=&quot;REG_ID&quot;)
+    private Registration registration;
+....
+</pre>
+<p>注意：mappedBy 元素指明连接列是在关系的另一端指定的。</p>
+<p>接下来，我们需要考虑由 JPA 规范定义、持久性提供程序实施的关系的行为。我们希望如何获取相关数据，EAGER 还是 LAZY？我们查看了由 JPA 
+定义的关系的默认 FETCH 类型，然后向表 2 中添加了额外的一列以包括我们的发现：</p>
+<table class="bodycopy" border="1" cellpadding="0" cellspacing="0" width="580">
+  <colgroup>
+    <col width="178"><col width="114"><col width="124"><col width="142">
+  </colgroup>
+  <tr bgcolor="#999999" valign="top">
+    <td width="170">关系</td>
+    <td width="114">拥有方</td>
+    <td width="128">多重性/映射</td>
+    <td width="158">默认的 FETCH 类型</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24">Registration-&gt;CaseOfficer</td>
+    <td width="114">CaseOfficer</td>
+    <td width="128">OneToOne</td>
+    <td width="158">EAGER</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24">Party-&gt;Registration</td>
+    <td width="114">Party</td>
+    <td width="128">ManyToOne</td>
+    <td width="158">EAGER</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24">Address-&gt;Party</td>
+    <td width="114">Address</td>
+    <td width="128">ManyToOne</td>
+    <td width="158">EAGER</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24">Penalty-&gt;Party</td>
+    <td width="114">Penalty</td>
+    <td width="128">ManyToOne</td>
+    <td width="158">EAGER</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24"><br>
+　</td>
+    <td width="114"><br>
+　</td>
+    <td width="128"><br>
+　</td>
+    <td width="158"><br>
+　</td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#ccccc0" valign="top" height="24">反向关系</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24">Registration-&gt;Party</td>
+    <td width="114"><br>
+　</td>
+    <td width="128">OneToMany</td>
+    <td width="158">LAZY</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="24">Party-&gt;Address</td>
+    <td width="114"><br>
+　</td>
+    <td width="128">OneToMany</td>
+    <td width="158">LAZY</td>
+  </tr>
+  <tr valign="top">
+    <td width="170" height="23">Party-&gt;Penalty</td>
+    <td width="114"><br>
+　</td>
+    <td width="128">OneToMany</td>
+    <td width="158">LAZY</td>
+  </tr>
+</table>
+<p><br>
+<strong>表 3.</strong> 设置默认的 FETCH 类型</p>
+<p>　</p>
+<p>通过查看业务要求，似乎当我们获得 Registration 详细信息后，我们总是需要显示与该登记相关联的 Party 的详细信息。如果将 FETCH 
+类型设置为 LAZY，我们需要反复调用数据库以获取数据。这意味着，如果将 Registration-&gt;Party 关系的 FETCH 类型改为 
+EAGER，我们会获得更好的性能。在该设置下，持久性提供程序将相关数据作为单个 SQL 的一部分返回。 </p>
+<p>同样，当我们在屏幕上显示 Party 详细信息时，我们需要显示其相关联的 Address。因此，将 Party-Address 关系改为使用 EAGER 
+获取类型是很有帮助的。 </p>
+<p>另一方面，我们可以将 Party-&gt;Penalty 关系的 FETCH 类型设为 
+LAZY，因为我们不需要显示处罚的详细信息，除非用户这样要求。如果我们使用了 EAGER 获取类型，当 m 个当事人每人有 n 个处罚时，我们最终就要加载 
+m*n 个 Penalty 实体，这会产生不必要的大对象图形，从而降低性能。</p>
+<pre>public class Registration  implements Serializable{
+
+    @OneToMany(mappedBy = &quot;registration&quot;, fetch = FetchType.EAGER)
+    private Collection&lt;Party&gt; parties;
+
+ .....
+}
+
+public abstract class Party implements Serializable{
+
+       @OneToMany (mappedBy = &quot;party&quot;, fetch = FetchType.EAGER)
+    private Collection&lt;Address&gt; addresses;
+
+    @OneToMany (mappedBy = &quot;party&quot;, fetch=FetchType.LAZY)
+    private Collection&lt;Penalty&gt; penalties;
+
+ .....
+}
+</pre>
+<p><strong>访问惰性关系。</strong>考虑使用惰性加载方法，请考虑持久性上下文的范围。您可以在 EXTENDED 持久性上下文或 
+TRANSACTION 范围内的持久性上下文之间进行选择。EXTENDED 持久性上下文在事务之间保持活动状态，作用非常类似会话状态的会话 bean。 </p>
+<p>由于我们的应用程序不是会话式的，持久性上下文不需要在事务之间可持续；因此，我们决定使用 TRANSACTION 
+范围内的持久性上下文。但是，这带来了惰性加载的问题。获取了实体并结束了事务之后，就可以分离实体了。在我们的应用程序中，尝试加载任何以惰性方式加载的关系数据将产生未定义的行为。 
+</p>
+<p>
+大多数情况下，当办事员检索登记数据时，我们不需要显示处罚记录。但是对于管理员，我们需要额外显示处罚记录。考虑到大多数情况下，我们不需要显示处罚记录，将关系的 
+FETCH 类型更改为 EAGER 
+就没什么意义了。相反，我们可以通过检测经营者使用系统的时间来触发关系数据的惰性加载。这会使关系数据在实体已分离时也可用，并可以在以后进行访问。下面的示例解释了这个概念： 
+</p>
+<pre>Registration registration = em.find(Registration.class, regID);
+
+     Collection&lt;Party&gt; parties = registration.getParties();
+     for (Iterator&lt;Party&gt; iterator = parties.iterator(); iterator.hasNext();) {
+         Party party = iterator.next();
+         party.getPenalties().size();
+
+     }
+     return registration;
+		</pre>
+<p>在上面的示例中，我们只调用 Party 实体的处罚集合的 size() 方法。这样做确实有效并且触发了惰性加载，即使在 Registration 
+实体分离时，所有集合也会填充并可用。（或者，您可以使用 JP-QL 的一个名为 FETCH JOIN 的特殊特性，我们会在本文的后面对此进行讨论。）</p>
+<h2>关系和持久性</h2>
+<p>
+接下来，我们需要考虑关系在持久保存数据的上下文中的行为方式。本质上讲，如果对关系数据进行了任何更改，我们希望在对象级别进行同样的更改并通过持久性提供程序持久保存这些更改。在 
+JPA 中，我们可以使用 CASCADE 类型控制持久性行为。 </p>
+<p>JPA 中定义了四种 CASCADE 类型： </p>
+<ul>
+  <li>PERSIST：持久保存拥有方实体时，也会持久保存该实体的所有相关数据。</li>
+  <li>MERGE：将分离的实体重新合并到活动的持久性上下文时，也会合并该实体的所有相关数据。</li>
+  <li>REMOVE：删除一个实体时，也会删除该实体的所有相关数据。</li>
+  <li>ALL：以上都适用。</li>
+</ul>
+<p><strong>创建实体。</strong> 
+我们决定在所有情况下，当我们新建一个父实体时，我们希望其所有相关的子实体也自动持久保存。这简化了编码：我们只需正确设置关系数据，而无需在每个实体上单独调用 
+persist() 操作。这意味着简化了编码，因为我们只需正确设置关系数据，而无需在每个实体上单独调用 persist() 操作。 </p>
+<p>因此，级联类型 PERSIST 是对我们最具吸引力的选项。我们将所有关系定义重新调整为使用该选项。</p>
+<p><strong>更新实体</strong> 
+在事务内获取数据，然后在事务外对实体进行更改并持久保存更改，这是很常见的。例如，在我们的应用程序中，用户可以检索现有的登记，更改主申请人的地址。当我们获取一个现有的 
+Registration 实体并因此获取了该实体在特定事务内的所有相关数据时，事务在此处结束，数据被发送到表示层。此时，该 Registration 
+以及所有其他相关的实体实例与持久性上下文相分离。 </p>
+<p>在 JPA 中，为了持久保存分离实体上的更改，我们使用 EntityManager 的 merge() 
+操作。此外，为将更改传播到关系数据，所有关系定义必须包括 CASCADE 类型 MERGE 以及关系映射的配置中定义的任何其他 CASCADE 类型。 </p>
+<p>在该背景下，我们确保了为所有关系定义指定了正确的 CASCADE 类型。</p>
+<p><strong>删除实体。</strong> 接下来，我们需要确定删除某些实体时会发生什么。例如，如果我们删除一个 
+Registration，我们可以安全地删除与该 Registration 相关联的所有 Party。但是反过来却不是这样。此处的技巧是通过在关系上级联 
+remove() 操作以避免意外删除实体。正如您将在下一部分中看到的那样，由于引用完整性约束，这样的操作可能不会成功。 </p>
+<p>我们得出以下结论：在遵循 OnetoMany 的清晰的父子关系中（如 Party 和 Address 或 Party 和 Penalty），仅在关系的父 
+(ONE) 方指定 CASCADE 类型 REMOVE 是安全的。然后，我们对关系定义进行了相应的重新调整。 </p>
+<pre>public abstract class Party implements Serializable{
+
+   @OneToMany (mappedBy = &quot;party&quot;, fetch = FetchType.EAGER, cascade = 
+     {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+      private Collection&lt;Address&gt; addresses;
+
+    @OneToMany (mappedBy = &quot;party&quot;, fetch=FetchType.LAZY, cascade = 
+     {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+      private Collection&lt;Penalty&gt; penalties;
+.....
+}
+
+</pre>
+<h2>管理关系</h2>
+<p>根据 JPA，管理关系是程序员的唯一职责。持久性提供程序不承担有关关系数据状态的任何事情，因此它们不尝试管理关系。 </p>
+<p>假定了该事实，我们重新检查了我们用来管理关系和查明潜在问题区域的策略。我们发现：</p>
+<ul>
+  <li>如果我们尝试设置父级和级子之间的关系，但父级不再存在于数据库中（可能被其他用户删除），这将导致数据完整性问题。</li>
+  <li>如果我们尝试删除一条父记录而没有首先删除其子记录，将违反引用完整性。</li>
+</ul>
+<p>因此，我们规定了以下编码原则：</p>
+<ul>
+  <li>如果我们获得一个实体以及该实体在某个事务内的相关实体，在该事务外部更改关系，然后尝试在新的事务内持久保存更改，那么最好重新获取父实体。</li>
+  <li>如果我们尝试删除一条父记录而不删除子记录，那么我们必须将所有子记录的外键字段设置为 NULL，然后再删除该父记录。</li>
+</ul>
+<p>考虑 CaseWorker 和 Registration 之间的 OneToOne 关系。删除特定的登记时，我们并不删除办事员；因此，我们需要先将 
+reg_id 外键设置为空，然后才能删除任何登记。</p>
+<pre>@Stateless
+public class RegManager {
+.....
+
+public void deleteReg(int regId){
+        Registration reg = em.find(Registration.class, regId);
+        CaseOfficer officer =reg.getCaseOfficer();
+        officer.setRegistration(null);
+        em.remove(reg);
+    }
+}
+</pre>
+<p>　</p>
+<h2>数据完整性</h2>
+<p>
+一个用户查看某条登记记录时，另一个用户可能正在对同一应用程序进行更改。如果第一个用户随后对该申请进行了其他更改，他可能面临在不知情的情况下用旧数据覆盖该应用程序的风险。 
+</p>
+<p>为了解决此问题，我们决定使用“乐观锁定”。在 JPA 中，实体可以定义一个版本列，我们可以用该列实施乐观锁定。 </p>
+<pre>public class Registration  implements Serializable{
+
+
+    @Version
+
+    private int version;
+.....
+}
+
+</pre>
+<p>持久性提供程序会将版本列的内存中值与数据库中的该值进行匹配。如果两个值不同，持久性提供程序将报告异常。</p>
+<h2>验证</h2>
+<p>当我们说主申请人至少必须有一个地址且地址至少必须包含首行和邮政编码时，我们是对 Party 和 Address 
+实体应用业务规则。然而，如果我们说每个地址行必须始终少于 100 个字符时，该验证是 Address 实体固有的。</p>
+<p>在我们的应用程序中，由于大多数工作流和面向流程的逻辑都在会话 Bean 
+层进行编码，因此我们决定实施到该层的跨对象/业务规则类型验证。然而，我们在实体内放置了固有验证。使用 JPA，我们可以将任何方法与实体的生命周期事件相关联。 
+</p>
+<p>以下实例验证了 Address 行包含的字符不能超过 100 个，并在持久保存 Address 实体之前调用该方法（通过 @PrePersist 
+批注）。出现故障时，该方法将向调用者抛出业务异常（扩展自 RuntimeException 类），然后可以使用该异常向用户传递一条消息。</p>
+<pre>public class Address  implements Serializable{
+.....
+    @PrePersist
+   public void validate() 
+       if(addressLine1!=null &amp;&amp; addressLine1.length()&gt;1000){
+           throw new ValidationException(&quot;Address Line 1 is longer than 1000 chars.&quot;);
+       }
+   }
+</pre>
+<h2>搜索</h2>
+<p>
+我们的税务登记应用程序提供了一个搜索工具，用来查找有关特定登记的详细信息、其当事人以及其他详细信息。提供一个有效的搜索工具涉及很多挑战，如编写有效的查询以及为了浏览大型结果列表而实施分页。JPA 
+指定了一个 Java 持久性查询语言 (JP-QL)，与实体一同使用以实施数据访问。这是对 EJB 2.x EJB QL 的主要改进。我们成功地使用 JP-QL 
+提供了有效的数据访问机制。 </p>
+<h2>查询</h2>
+<p>在 JPA 
+中，我们可以选择动态创建查询或定义静态查询。这些静态或命名查询支持参数；参数值在运行时指定。由于我们的查询范围定义得相当好，因此我们决定将命名查询与参数结合使用。命名查询也更为有效，因为持久性提供程序可以缓存转换的 
+SQL 查询，以供将来使用。 </p>
+<p>我们的应用程序为此提供了一个简单的使用案例：用户输入一个申请引用号以检索登记详细信息。我们在 Registration 
+实体上提供了一个命名查询，如下所示：</p>
+<pre>@Entity
+@Table(name=&quot;REGISTRATION&quot;)
+@NamedQuery(name=&quot;findByRegNumber&quot;, query = &quot;SELECT r FROM REGISTRATION r WHERE r.appRefNumber=?1&quot;)
+public class Registration implements Serializable{
+.....
+}
+</pre>
+<p>例如，我们应用程序内的一个搜索要求需要特别注意：用于检索所有当事人及其罚款总额的报告查询。由于该应用程序允许存在无处罚的当事人，因此简单的 JOIN 
+操作不会列出无处罚的当事人。 为解决此问题，我们使用了 JP-QL 的 OUTER JOIN 工具。我们还可以使用 GROUP BY 子句累积处罚。我们在 
+Party 实体中添加了另一个命名查询，如下所示： </p>
+<pre>@Entity
+@Table(name=&quot;PARTY_DATA&quot;)
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name=&quot;PARTY_TYPE&quot;)
+
+@NamedQueries({@NamedQuery(name=&quot;<strong>generateReport</strong>&quot;, 
+                           query=&quot; SELECT NEW com.ssg.article.ReportDTO(p.name, SUM(pen.amount)) 
+                                   FROM Party p LEFT JOIN p.penalties pen GROUP BY p.name&quot;&quot;),
+               @NamedQuery(name=&quot;bulkInactive&quot;, 
+                           query=&quot;UPDATE PARTY P SET p.status=0 where p.registrationID=?1&quot;)})
+
+public abstract class Party {
+.....
+}
+</pre>
+<p>注意，在上面的命名查询“generateReport”示例中，我们实例化了该查询本身内的一个新 ReportDTO 对象。这仍然是 JPA 
+的一个十分强大的功能。 </p>
+<h2>我们可以批量操作吗？ </h2>
+<p>在我们的应用程序中，官员可以检索登记并使其处于非活动状态。在这种情况下，我们还应该将所有与该 Registration 相关联的 Party 
+都设置为非活动状态。这通常意味着将 PARTY 表中的 Status 列设置为 0。为了提高性能，我们将使用批量更新，而不是针对每个 Party 执行单独的 
+SQL。 </p>
+<p>幸运的是，JPA 提供了进行此操作的方法：</p>
+<pre>@NamedQuery(name=&quot;bulkInactive&quot;, query=&quot;UPDATE PARTY p SET p.status=0 where p.registrationID=?1&quot;)
+public abstract class Party implements Serializable{
+.....
+}
+</pre>
+<p>注意：批量操作直接向数据库发出 SQL，这意味着并不更新持就性上下文以反映更改。使用超出单个事务范围的扩展的持久性上下文时，缓存的实体可能包含陈的数据。</p>
+<h2>及早获取。 </h2>
+<p>
+另一个挑战性的要求是选择性数据显示。例如，如果管理员搜索登记，我们需要显示登记方记录的所有处罚。然而，该信息并不提供给普通办事员。对于某些登记，我们需要显示登记方记录的所有处罚。然而，该信息并不提供给普通办事员。</p>
+<p>Party 和 Penalty 之间的关系是 OneToMany。前面提到过，此关系的默认 FETCH 类型为 
+LAZY。但为了满足这个搜索选择性显示要求，将 Penalty 详细信息作为单个 SQL 获取以避免多个 SQL 调用是很有意义的。 </p>
+<p>JP-QL 中的 FETCH Join 特性帮我们解决了这个问题。如果我们希望暂时覆盖 LAZY 获取类型，可以使用 Fetch 
+Join。然而，如果频繁使用该特性，考虑将 FETCH 类型重新调整为 EAGER 是很明智的。</p>
+<pre>@NamedQueries({@NamedQuery(name=&quot;generateReport&quot;,
+                           query=&quot; SELECT NEW com.ssg.article.ReportDTO(p.name, SUM(pen.amount)) 
+                                   FROM Party p LEFT JOIN p.penalties pen GROUP BY p.name&quot;&quot;),
+               @NamedQuery(name=&quot;bulkInactive&quot;,
+                           query=&quot;UPDATE PARTY P SET p.status=0 where p.registrationID=?1&quot;),
+               @NamedQuery(name=&quot;getItEarly&quot;, query=&quot;SELECT p FROM Party p JOIN FETCH p.penalties&quot;)})
+
+
+public abstract class Party {
+.....
+}
+</pre>
+<h2>结论</h2>
+<p>总的说来，JPA 
+简化了持久性编码。我们发现它功能齐备且十分有效。它丰富的查询界面和极大改进的查询语言简化了复杂关系情况的处理。它的继承支持帮助我们在持久性级别保持逻辑域模型，我们可以跨层重新用相同的实体。JPA 
+的所有优点使其成为大家今后明确的选择。</p>
+
+</body>
+
+</html>
