@@ -5,6 +5,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gwtent"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gwt"/>
-	<classpathentry kind="lib" path="/ThirdParty/lib/gwtext.jar"/>
+	<classpathentry kind="lib" path="lib/gwtent-acegi.jar"/>
+	<classpathentry kind="lib" path="lib/gwtent.jar"/>
+	<classpathentry kind="var" path="GWT_HOME/gwt-user.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
