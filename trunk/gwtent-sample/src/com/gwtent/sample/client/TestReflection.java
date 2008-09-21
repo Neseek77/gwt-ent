@@ -19,34 +19,21 @@
  */
 package com.gwtent.sample.client;
 
+import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
+
 import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.test.annotations.*;
 
 import java.util.Date;
 
-@Entity(name="TestReflection")
-@Table(name="Table_Test")
+@TestAnnotation(name="TestName")
 public class TestReflection implements Reflection {
 	private Date date;
 	private String string;
 	private boolean bool;
 	
-	@Id
-  private String id;
-	
 	public TestReflection(){
 		
 	}
-	
-	@Id
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String Id) {
-    this.id = Id;
-  }
-
 	
 	public boolean getBool() {
 		return bool;
