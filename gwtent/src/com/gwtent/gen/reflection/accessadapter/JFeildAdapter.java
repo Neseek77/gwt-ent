@@ -17,7 +17,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.reflection.accessadapter;
+package com.gwtent.gen.reflection.accessadapter;
 
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.gwtent.client.reflection.AccessDef;

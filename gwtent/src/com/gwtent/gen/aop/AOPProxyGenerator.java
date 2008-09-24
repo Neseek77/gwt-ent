@@ -17,18 +17,18 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.reflection;
+package com.gwtent.gen.aop;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
-public class ReflectionProxyGenerator extends Generator {
+public class AOPProxyGenerator extends Generator {
 
 
 	public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
-	  ReflectionCreator binder = new ReflectionCreator(logger, context, typeName);
+	  AOPCreator binder = new AOPCreator(logger, context, typeName);
 		String className = binder.createWrapper();
 		return className;
 	}
