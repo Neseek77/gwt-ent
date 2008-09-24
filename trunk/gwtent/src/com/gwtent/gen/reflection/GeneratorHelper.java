@@ -17,7 +17,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.reflection;
+package com.gwtent.gen.reflection;
 
 import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
 import com.google.gwt.core.ext.typeinfo.JAnnotationType;
@@ -30,8 +30,8 @@ import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.reflection.accessadapter.JFeildAdapter;
-import com.gwtent.reflection.accessadapter.JMethodAdapter;
+import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
+import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -194,6 +194,10 @@ public class GeneratorHelper {
 	 */
 	public static void addAnnotations(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
 	    String dest, SourceWriter source, Annotation[] annotations){
+		
+	  if (annotations.length <= 0)
+		  return;
+		
 	  source.indent();
 	  source.println("{");
 	  source.println("List<AnnotationStore> list = new ArrayList<AnnotationStore>();");

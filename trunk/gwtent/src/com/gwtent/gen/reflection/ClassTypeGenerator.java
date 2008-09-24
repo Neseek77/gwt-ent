@@ -17,37 +17,21 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.reflection.accessadapter;
+package com.gwtent.gen.reflection;
 
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.gwtent.client.reflection.AccessDef;
+import com.google.gwt.core.ext.Generator;
+import com.google.gwt.core.ext.GeneratorContext;
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.UnableToCompleteException;
 
-public class JMethodAdapter implements AccessDef{
+public class ClassTypeGenerator extends Generator {
 
-	private JMethod method;
-	
-	public JMethodAdapter(JMethod method){
-		this.method = method;
-	}
-	
-	public boolean isFinal() {
-		return method.isFinal();
-	}
 
-	public boolean isPrivate() {
-		return method.isPrivate();
+	public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
+		ReflectionCreator binder = new ReflectionCreator(logger, context, typeName);
+		String className = binder.createWrapper();
+		return className;
 	}
 
-	public boolean isProtected() {
-		return method.isProtected();
-	}
-
-	public boolean isPublic() {
-		return method.isPublic();
-	}
-
-	public boolean isStatic() {
-		return method.isStatic();
-	}
 
 }
