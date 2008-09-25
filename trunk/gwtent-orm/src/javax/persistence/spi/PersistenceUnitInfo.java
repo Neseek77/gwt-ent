@@ -32,17 +32,17 @@ import java.util.Properties;
 
 public interface PersistenceUnitInfo {
     
-    public String getPersistenceUnitName();
+    //public String getPersistenceUnitName();
 
-    public String getPersistenceProviderClassName();
+    //public String getPersistenceProviderClassName();
 
-    public PersistenceUnitTransactionType getTransactionType();
+    //public PersistenceUnitTransactionType getTransactionType();
 
     //public DataSource getJtaDataSource();
     //public DataSource getNonJtaDataSource();
     public String getDatabaseName();
 
-    public List<String> getMappingFileNames();
+    //public List<String> getMappingFileNames();
 
     //public List<URL> getJarFileUrls();
 
@@ -53,7 +53,7 @@ public interface PersistenceUnitInfo {
 
     //public boolean excludeUnlistedClasses();
 
-    public Properties getProperties();
+    //public Properties getProperties();
 
     //public ClassLoader getClassLoader();
     //public void addTransformer(ClassTransformer transformer);
