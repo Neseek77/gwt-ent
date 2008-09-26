@@ -41,6 +41,8 @@ import java.lang.reflect.InvocationTargetException;
 public class AOPCreator extends LogableSourceCreator {
 
 	private final boolean isUseLog = true;
+	
+	static final String SUFFIX = "_AOP";
 
 	public AOPCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -54,14 +56,13 @@ public class AOPCreator extends LogableSourceCreator {
 
 			if (source == null) {
 				return classType.getParameterizedQualifiedSourceName()
-						+ "Wrapper";
+						+ SUFFIX;
 			} else {
 				String className = classType.getSimpleSourceName();
 				source.indent();
 
 				// source.print("public ");
-				source.println("public "
-						+ GeneratorHelper.getSimpleUnitName(classType) + "(){");
+				source.println("public " + getSimpleUnitName(classType) + "(){");
 				source.indent();
 				source.println("addClassMeta();");
 				source.println("addAnnotations();");
@@ -273,7 +274,7 @@ public class AOPCreator extends LogableSourceCreator {
 	 */
 	public SourceWriter doGetSourceWriter(JClassType classType) {
 		String packageName = classType.getPackage().getName();
-		String simpleName = classType.getSimpleSourceName() + "Wrapper";
+		String simpleName = classType.getSimpleSourceName() + SUFFIX;
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass("com.gwtent.client.reflection.ClassType");
@@ -445,6 +446,15 @@ public class AOPCreator extends LogableSourceCreator {
 		} else {
 			return "(" + requestType + ")" + argeName;
 		}
+	}
+	
+	public static String getUnitName(JClassType classType){
+		return classType.getParameterizedQualifiedSourceName()
+			+ SUFFIX;
+	}
+	
+	public static String getSimpleUnitName(JClassType classType){
+		return classType.getSimpleSourceName() + SUFFIX;
 	}
 
 }

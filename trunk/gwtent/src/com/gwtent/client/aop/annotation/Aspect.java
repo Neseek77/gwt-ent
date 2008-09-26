@@ -18,6 +18,8 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Aspect declaration
+ * 
+ * http://www.eclipse.org/aspectj/doc/released/adk15notebook/index.html
  *
  * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
  */

@@ -41,6 +41,8 @@ import java.lang.reflect.InvocationTargetException;
 public class ReflectionCreator extends LogableSourceCreator {
 
 	private final boolean isUseLog = true;
+	
+	static final String SUFFIX = "_ClassType";
 
 	public ReflectionCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -54,14 +56,14 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			if (source == null) {
 				return classType.getParameterizedQualifiedSourceName()
-						+ "Wrapper";
+						+ SUFFIX;
 			} else {
 				String className = classType.getSimpleSourceName();
 				source.indent();
 
 				// source.print("public ");
 				source.println("public "
-						+ GeneratorHelper.getSimpleUnitName(classType) + "(){");
+						+ getSimpleUnitName(classType) + "(){");
 				source.indent();
 				source.println("addClassMeta();");
 				source.println("addAnnotations();");
@@ -133,7 +135,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				source.indent();
 				source
 						.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
-				source.outdent();
+				source.outdent(); 
 				source.println("}");
 				source.outdent();
 				source.println("}");
@@ -150,7 +152,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 				source.outdent();
 				source.commit(logger);
-				return GeneratorHelper.getUnitName(classType);
+				return getUnitName(classType);
 			}
 		} catch (NotFoundException e) {
 			e.printStackTrace();
@@ -273,7 +275,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 	 */
 	public SourceWriter doGetSourceWriter(JClassType classType) {
 		String packageName = classType.getPackage().getName();
-		String simpleName = classType.getSimpleSourceName() + "Wrapper";
+		String simpleName = classType.getSimpleSourceName() + SUFFIX;
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass("com.gwtent.client.reflection.ClassType");
@@ -447,4 +449,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 	}
 
+	public static String getUnitName(JClassType classType){
+		return classType.getParameterizedQualifiedSourceName()
+			+ SUFFIX;
+	}
+	
+	public static String getSimpleUnitName(JClassType classType){
+		return classType.getSimpleSourceName() + SUFFIX;
+	}
+	
 }
