@@ -18,9 +18,14 @@ import java.lang.annotation.Annotation;
  */
 public class Application implements EntryPoint {
 
+//  public ClassType getClassType(Class<?> classLiteral){
+//	  return (ClassType)GWT.create(classLiteral);
+//  }
+	
   public void testReflection(){
     TestReflection test = new TestReflection();
     ClassType classType = (ClassType)GWT.create(TestReflection.class);
+    //ClassType classType = getClassType(TestReflection.class);
     
     test.setString("set by code");
     System.out.println("after SetByCode:" + test.getString());
