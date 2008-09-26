@@ -1,0 +1,10 @@
+<module>
+
+	<!-- Inherit the core Web Toolkit stuff.                  -->
+	<inherits name='com.google.gwt.user.User'/>
+	<inherits name="com.gwtent.GwtEnt"/>
+
+	<!-- Specify the app entry point class.                   -->
+	<entry-point class='com.gwtent.acegi.sample.client.Application'/>
+  
+</module>
