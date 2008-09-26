@@ -79,15 +79,6 @@ public class GeneratorHelper {
 		return result.toString();
 	}
 	
-	public static String getUnitName(JClassType classType){
-		return classType.getParameterizedQualifiedSourceName()
-			+ "Wrapper";
-	}
-	
-	public static String getSimpleUnitName(JClassType classType){
-		return classType.getSimpleSourceName() + "Wrapper";
-	}
-	
 	/**
 	 * generator metaData
 	 * @param dest field or method or class
