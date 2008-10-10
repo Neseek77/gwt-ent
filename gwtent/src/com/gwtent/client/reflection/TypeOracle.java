@@ -20,7 +20,9 @@
 package com.gwtent.client.reflection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TypeOracle {
 
@@ -118,4 +120,27 @@ public class TypeOracle {
 		return (String[]) strings.toArray(NO_STRINGS);
 	}
 
+	
+	  public static Type getType(String name) throws NotFoundException {
+		    Type type = typeMap.get(name);
+		    if (type == null) {
+		      throw new NotFoundException(name);
+		    }
+		    return type;
+		  }
+	  
+	  public static ClassType getClassType(String name) throws NotFoundException {
+		  Type type = getType(name);
+		  return type.isClass();
+	  }
+	  
+	  public static void putType(Type type){
+		  putType(type, type.getQualifiedSourceName());  
+	  }
+	  
+	  public static void putType(Type type, String qualifiedSourceName){
+			typeMap.put(qualifiedSourceName, type);  
+		  }
+	  
+	  private static Map<String, Type> typeMap = new HashMap<String, Type>(); 
 }

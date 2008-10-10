@@ -42,7 +42,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 	private final boolean isUseLog = true;
 	
-	static final String SUFFIX = "_ClassType";
+	static final String SUFFIX = "__ClassType";
 
 	public ReflectionCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -65,6 +65,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				source.println("public "
 						+ getSimpleUnitName(classType) + "(){");
 				source.indent();
+				source.println("super(\"" + classType.getQualifiedSourceName() + "\");");
 				source.println("addClassMeta();");
 				source.println("addAnnotations();");
 				source.println("addFields();");
@@ -275,7 +276,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 	 */
 	public SourceWriter doGetSourceWriter(JClassType classType) {
 		String packageName = classType.getPackage().getName();
-		String simpleName = classType.getSimpleSourceName() + SUFFIX;
+		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass("com.gwtent.client.reflection.ClassType");
@@ -285,14 +286,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 
-		// JPackage[] packages = classType.getOracle().getPackages();
-		// packages[0].getName()
-		//		
-		// JClassType[] types = classType.getNestedTypes();
-		// System.out.println(types.length);
-
-		PrintWriter printWriter = context.tryCreate(logger, packageName,
-				simpleName);
+		PrintWriter printWriter = context.tryCreate(logger, packageName, simpleName);
 		if (printWriter == null) {
 			return null;
 		} else {
@@ -449,13 +443,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 	}
 
-	public static String getUnitName(JClassType classType){
-		return classType.getParameterizedQualifiedSourceName()
-			+ SUFFIX;
-	}
-	
-	public static String getSimpleUnitName(JClassType classType){
-		return classType.getSimpleSourceName() + SUFFIX;
+	@Override
+	protected String getSUFFIX() {
+		return SUFFIX;
 	}
 	
 }

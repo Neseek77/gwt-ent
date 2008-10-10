@@ -36,6 +36,7 @@ public class Proxy extends ClassType {
 	
 
 	public Proxy(){
+		super("classname");
 		addFields();
 		addMethods();
 	}

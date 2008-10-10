@@ -8,6 +8,12 @@
     <generate-with class="com.gwtent.gen.reflection.ReflectionProxyGenerator">
 		<when-type-assignable class="com.gwtent.client.reflection.Reflection"/>
 	</generate-with>
+	
+	<define-property name="aop.matcher" values=""/>
+	
+	<generate-with class="com.gwtent.gen.aop.AOPProxyGenerator">
+		<when-type-assignable class="com.gwtent.client.aop.Aspectable"/>
+	</generate-with>
 
     <source path="client" />
 </module>
