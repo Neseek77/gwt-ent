@@ -1,6 +1,5 @@
 package com.gwtent.client.aop.intercept;
 
-import java.lang.reflect.AccessibleObject;
 
 /**
  * This interface represents a generic runtime joinpoint (in the AOP
@@ -48,7 +47,7 @@ public interface Joinpoint {
     *
     * <p>The static part is an accessible object on which a chain of
     * interceptors are installed. */
-   AccessibleObject getStaticPart();
+   //AccessibleObject getStaticPart();
 
 }
 

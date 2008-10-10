@@ -1,9 +1,5 @@
 package com.gwtent.client.aop;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 /**
  * Superclass for all AOP infrastructure exceptions.
  * Unchecked, as such exceptions are fatal and end user
@@ -38,9 +34,9 @@ public class AspectException extends RuntimeException {
 	public AspectException(String s, Throwable t) {
 		super(s + "; nested exception is " + t.getMessage());
 		this.t = t;
-		StringWriter out = new StringWriter();
-		t.printStackTrace(new PrintWriter(out));
-		this.stackTrace = out.toString();
+		//StringWriter out = new StringWriter();
+		//t.printStackTrace(new PrintWriter(out));
+		//this.stackTrace = out.toString();
 	}
 
 	/**
@@ -64,12 +60,12 @@ public class AspectException extends RuntimeException {
 		System.err.print(this.stackTrace);
 	}
 
-	public void printStackTrace(PrintStream out) {
-		printStackTrace(new PrintWriter(out));
-	}
+//	public void printStackTrace(PrintStream out) {
+//		printStackTrace(new PrintWriter(out));
+//	}
 
-	public void printStackTrace(PrintWriter out) {
-		out.print(this.stackTrace);
-	}
+//	public void printStackTrace(PrintWriter out) {
+//		out.print(this.stackTrace);
+//	}
 
 }

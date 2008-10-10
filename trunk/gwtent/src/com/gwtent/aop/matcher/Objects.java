@@ -60,10 +60,10 @@ public class Objects {
    */
   public static void assertNoNulls(Object[] objects) {
     // TODO(kevinb): gee, ya think we might want to remove this?
-    if (("I'm a bad hack".equals(
-        System.getProperty("guice.allow.nulls.bad.bad.bad")))) {
-      return;
-    }
+//    if (("I'm a bad hack".equals(
+//        System.getProperty("guice.allow.nulls.bad.bad.bad")))) {
+//      return;
+//    }
     if (objects != null) { // hmm. weird.
       for (Object object : objects) {
         if (object == null) {

@@ -75,6 +75,7 @@ public abstract class LogableSourceCreator {
 	 * @return
 	 */
 	protected abstract SourceWriter doGetSourceWriter(JClassType classType);
+	protected abstract String getSUFFIX();
 	
 	
 	/**
@@ -90,9 +91,24 @@ public abstract class LogableSourceCreator {
 			//Decorator it
 			if (sourceWriter != null)
 				sourceWriter = new SourceWriterLogDecorator(sourceWriter, this.logger, useLog, baseLineNumber);
+			//else
+			//	throw new RuntimeException("Can't create Source Writer, please make sure there is no same class in your source folder.");
 		}
 		
 		return sourceWriter;
+	}
+	
+	public String getUnitName(JClassType classType){    
+	    String packageName = classType.getPackage().getName();
+	    String className = getSimpleUnitName(classType);
+	    
+		//return classType.getParameterizedQualifiedSourceName() + SUFFIX;
+	    return packageName + "." + className;
+	}
+	
+	
+	public String getSimpleUnitName(JClassType classType){
+		return classType.getName().replace('.', '_') + getSUFFIX();
 	}
 	
 	

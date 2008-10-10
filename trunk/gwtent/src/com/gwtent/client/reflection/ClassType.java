@@ -78,10 +78,20 @@ public class ClassType extends Type implements HasMetaData, AccessDef, HasAnnota
 		throw new NotFoundException(methodName + "not found or unimplement?");
 	}
 
-	public ClassType() {
-
+	public ClassType(String qualifiedName) {
+		TypeOracle.putType(this, qualifiedName);
 	}
 
+	/**
+	 * NOT USE at this moment, we need refactor here
+	 * 
+	 * @param declaringPackage
+	 * @param enclosingType
+	 * @param isLocalType
+	 * @param name
+	 * @param isInterface
+	 * @param isDefaultInstantiable
+	 */
 	public ClassType(Package declaringPackage, ClassType enclosingType,
 			boolean isLocalType, String name, boolean isInterface,
 			boolean isDefaultInstantiable) {

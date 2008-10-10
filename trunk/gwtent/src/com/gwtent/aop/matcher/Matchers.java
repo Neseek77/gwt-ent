@@ -16,10 +16,11 @@
 
 package com.gwtent.aop.matcher;
 
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+
 
 /**
  * Matcher implementations. Supports matching classes and methods.
@@ -110,7 +111,7 @@ public class Matchers {
     Objects.nonNull(superclass, "superclass");
     return new AbstractMatcher<Class>() {
       public boolean matches(Class subclass) {
-        return superclass.isAssignableFrom(subclass);
+    	return superclass.isAssignableFrom(subclass);
       }
 
       public String toString() {
@@ -171,7 +172,7 @@ public class Matchers {
    * Returns a matcher which matches methods with matching return types.
    */
   public static Matcher<Method> returns(
-      final Matcher<? super Class<?>> returnType) {
+      final Matcher<? super Type> returnType) {
     Objects.nonNull(returnType, "return type matcher");
     return new AbstractMatcher<Method>() {
       public boolean matches(Method m) {
