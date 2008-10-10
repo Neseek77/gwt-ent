@@ -21,7 +21,7 @@ public class ReflectionTestCase extends GWTTestCase {
 
   @Override
   public String getModuleName() {
-    return "com.gwtent.GwtEnt";
+    return "com.gwtent.GwtEntTest";
   }
 
   public void testFields() {
