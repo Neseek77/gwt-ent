@@ -33,6 +33,12 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
+import com.gwtent.aop.BindRegistry;
+import com.gwtent.aop.matcher.MethodMatcher;
+import com.gwtent.client.aop.AOPRegistor;
+import com.gwtent.client.aop.AOPRegistor.MethodAspect;
+import com.gwtent.client.aop.intercept.Interceptor;
+import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Reflection;
@@ -40,10 +46,13 @@ import com.gwtent.client.reflection.Type;
 import com.gwtent.client.test.TestReflection;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.gen.LogableSourceCreator;
+import com.gwtent.aop.*;
 
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 public class AOPCreator extends LogableSourceCreator {
 
@@ -54,6 +63,8 @@ public class AOPCreator extends LogableSourceCreator {
 	public AOPCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
 		super(logger, context, typeName);
+		
+		AsyncRegistor();
 		
 //		PropertyOracle propertyOracle = context.getPropertyOracle();
 //		try {
@@ -70,10 +81,12 @@ public class AOPCreator extends LogableSourceCreator {
 			SourceWriter source = getSourceWriter(classType, isUseLog, 6);
 
 			if (source == null) {
-				return classType.getParameterizedQualifiedSourceName()
-						+ SUFFIX;
+				//return classType.getParameterizedQualifiedSourceName()
+				//		+ SUFFIX;
+				return getUnitName(classType);
 			} else {
-				String className = classType.getSimpleSourceName();
+				
+				
 				source.indent();
 
 				// source.print("public ");
@@ -93,9 +106,11 @@ public class AOPCreator extends LogableSourceCreator {
 				source.println("public void makeSureCreateClassType() {");
 				source.indent();
 				//source.println("ClassType type = (ClassType)GWT.create(TestReflection.class);");
-				//source.println("ClassType type = (ClassType)GWT.create(" + reflectionClassName + ".class);");
+				source.println("ClassType type = (ClassType)GWT.create(" + reflectionClassName + ".class);");
 				source.outdent();
 				source.println("}");
+				
+				//processMethods(source, classType);
 				
 				source.outdent();
 				source.commit(logger);
@@ -104,6 +119,27 @@ public class AOPCreator extends LogableSourceCreator {
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	private void processMethods(SourceWriter source, JClassType classType){
+		MatcherQuery query = BindRegistry.getInstance();
+		Class<?> classz = null;
+		try {
+			classz = Class.forName(classType.getQualifiedSourceName());
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		if ((classz != null) & (query.matches(classz))){
+			Method[] methods = classz.getMethods();
+			for (int i = 0; i < methods.length; i++) {
+				Method method = methods[i];
+				
+				List<MethodInterceptor> interceptors = query.matches(method);
+				if (interceptors.size() > 0){
+					
+				}
+			}
 		}
 	}
 
@@ -134,21 +170,37 @@ public class AOPCreator extends LogableSourceCreator {
 			SourceWriter sw = composer.createSourceWriter(context, printWriter);
 			return sw;
 		}
-	}
-
-	protected Type createTypeByJType(JType jtype) {
-		if (jtype instanceof JPrimitiveType) {
-			return PrimitiveType.valueOf(((JPrimitiveType) jtype)
-					.getSimpleSourceName());
-		} else if (jtype instanceof JClassType) {
-
-		}
-		return null;
+		
 	}
 
 	@Override
 	protected String getSUFFIX() {
 		return SUFFIX;
+	}
+	
+	/**
+	 * We just Async if nothing in BindRegistry.
+	 * We supposed everything should be there when Code Generator started
+	 */
+	protected void AsyncRegistor(){
+		if (AOPRegistor.getInstance().size() > 0){
+			if (BindRegistry.getInstance().size() == 0){
+				for (int i = 0; i < AOPRegistor.getInstance().size(); i++){
+					MethodAspect aspect = AOPRegistor.getInstance().getMethodAspects().get(i);
+					try {
+						Class<MethodMatcher> classz = (Class<MethodMatcher>) Class.forName(aspect.getMethodMatcherClassName());
+						try {
+							MethodMatcher matcher = classz.getConstructor(null).newInstance(null);
+							BindRegistry.getInstance().bindInterceptor(matcher.getClassMatcher(), matcher.getMethodMatcher(), aspect.getInterceptors());
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					} catch (ClassNotFoundException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
 	}
 	
 

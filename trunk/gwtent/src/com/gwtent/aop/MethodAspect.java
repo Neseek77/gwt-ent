@@ -16,13 +16,13 @@
 
 package com.gwtent.aop;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
 import com.gwtent.aop.matcher.Matcher;
 import com.gwtent.aop.matcher.Objects;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
-import com.gwtent.client.reflection.Method;
 
 
 /**
@@ -38,11 +38,15 @@ class MethodAspect {
 
   MethodAspect(Matcher<? super Class<?>> classMatcher,
       Matcher<? super Method> methodMatcher, MethodInterceptor... interceptors) {
-    this.classMatcher = Objects.nonNull(classMatcher, "class matcher");
-    this.methodMatcher = Objects.nonNull(methodMatcher, "method matcher");
-    this.interceptors
-        = Arrays.asList(Objects.nonNull(interceptors, "interceptors"));
+	  this(classMatcher, methodMatcher, Arrays.asList(interceptors));
   }
+  
+  MethodAspect(Matcher<? super Class<?>> classMatcher,
+	      Matcher<? super Method> methodMatcher, List<MethodInterceptor> interceptors) {
+	    this.classMatcher = Objects.nonNull(classMatcher, "class matcher");
+	    this.methodMatcher = Objects.nonNull(methodMatcher, "method matcher");
+	    this.interceptors = interceptors;
+	  }
 
   boolean matches(Class<?> clazz) {
     return classMatcher.matches(clazz);
