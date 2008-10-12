@@ -20,6 +20,10 @@ public class AOPRegistor {
 		methodAspects.add(new MethodAspect(methodMatcherClassName, interceptors));
 	}
 	
+	public int size(){
+		return methodAspects.size();
+	}
+	
 	public static AOPRegistor getInstance(){
 		return register;
 	}
@@ -31,8 +35,16 @@ public class AOPRegistor {
 	}
 	
 	
-	private class MethodAspect {
+	public class MethodAspect {
 		final String methodMatcherClassName;
+		public String getMethodMatcherClassName() {
+			return methodMatcherClassName;
+		}
+
+		public List<MethodInterceptor> getInterceptors() {
+			return interceptors;
+		}
+
 		final List<MethodInterceptor> interceptors;
 		
 		public MethodAspect(String methodMatcherClassName, MethodInterceptor... interceptors){
@@ -40,6 +52,10 @@ public class AOPRegistor {
 			this.interceptors = Arrays.asList(interceptors);
 		}
 	} 
+	
+	public List<MethodAspect> getMethodAspects(){
+		return methodAspects;
+	}
 	
 	private List<MethodAspect> methodAspects = new ArrayList<MethodAspect>();
 }

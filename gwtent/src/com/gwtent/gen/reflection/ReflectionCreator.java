@@ -88,8 +88,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 				JMethod[] methods = classType.getMethods();
 
-				source
-						.println("public Object invoke(Object instance, String methodName, Object[] args) {");
+				source.println("public Object invoke(Object instance, String methodName, Object[] args) {");
 				source.indent();
 
 				source.println(className + " content = (" + className

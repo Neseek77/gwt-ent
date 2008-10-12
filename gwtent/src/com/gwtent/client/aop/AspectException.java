@@ -18,12 +18,10 @@ public class AspectException extends RuntimeException {
 
 	/**
 	 * Constructor for AspectException.
-	 * @param s
+	 * @param e
 	 */
-	public AspectException(String s) {
-		super(s);
-		this.message = s;
-		this.stackTrace = s;
+	public AspectException(Throwable e) {
+		super(e);
 	}
 
 	/**
@@ -32,7 +30,7 @@ public class AspectException extends RuntimeException {
 	 * @param t
 	 */
 	public AspectException(String s, Throwable t) {
-		super(s + "; nested exception is " + t.getMessage());
+		super(s + "; nested exception is " + t.getMessage(), t);
 		this.t = t;
 		//StringWriter out = new StringWriter();
 		//t.printStackTrace(new PrintWriter(out));
