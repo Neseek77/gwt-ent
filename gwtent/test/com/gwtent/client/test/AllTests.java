@@ -22,7 +22,7 @@ public class AllTests {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
     suite.addTestSuite(StudyTestCase.class);
-    suite.addTestSuite(ReflectionTestCase.class);
+    //suite.addTestSuite(ReflectionTestCase.class);
     suite.addTestSuite(AOPTestCase.class);
     //$JUnit-END$
     return suite;
