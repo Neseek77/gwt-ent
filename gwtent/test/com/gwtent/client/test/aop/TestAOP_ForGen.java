@@ -3,23 +3,23 @@ package com.gwtent.client.test.aop;
 import com.gwtent.client.aop.AspectException;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.aop.intercept.MethodInvocation;
-import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.impl.MethodImpl;
 
 public class TestAOP_ForGen extends TestAOP {
 	private final class Invocation implements MethodInvocation {
-		private final Method method;
-		public Invocation(Method method){
+		private final MethodImpl method;
+		public Invocation(MethodImpl method){
 			this.method = method;
 		}
 		
 		@Override
-		public Method getMethod() {
+		public MethodImpl getMethod() {
 			return method;
 		}
 
 		@Override
 		public Object[] getArguments() {
-			Method method = getMethod();
+			MethodImpl method = getMethod();
 			return method.getParameters();
 		}
 
@@ -37,7 +37,7 @@ public class TestAOP_ForGen extends TestAOP {
 	public String sayHello(String guestName){
 		MethodInterceptor interceptor = new AOPTestCase.PhoneLoggerInterceptor();
 		try {
-			return (String)interceptor.invoke(new Invocation(new Method(null, "")));
+			return (String)interceptor.invoke(new Invocation(new MethodImpl(null, "")));
 		} catch (Throwable e) {
 			throw new AspectException(e);
 		}

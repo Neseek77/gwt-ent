@@ -13,6 +13,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
+import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.client.test.annotations.Id;
 import com.gwtent.client.test.annotations.Table;
@@ -40,7 +41,7 @@ public class ReflectionTestCase extends GWTTestCase {
     test.setString("username");
     assertTrue(test.getString().equals("username"));
     
-    ClassType classType = (ClassType)GWT.create(TestReflection.class);
+    ClassTypeImpl classType = (ClassTypeImpl)GWT.create(TestReflection.class);
     //Class Annotations
     assertNotNull(classType.getAnnotation(Entity.class));
     assertTrue(classType.getAnnotation(Entity.class).getValue("name").equals("TestReflection"));
@@ -62,7 +63,7 @@ public class ReflectionTestCase extends GWTTestCase {
     account.setString("username");
     assertTrue(account.getString().equals("username"));
     
-    ClassType classType = (ClassType)GWT.create(TestReflection.class);
+    ClassTypeImpl classType = (ClassTypeImpl)GWT.create(TestReflection.class);
     assertTrue(classType.invoke(account, "getString", null).equals("username"));
     classType.invoke(account, "setString", new String[]{"username set by reflection"});
     assertTrue(account.getString().equals("username set by reflection"));
