@@ -31,7 +31,7 @@ public class ClassTypeFactoryImpl implements ClassTypeFactory {
 		
 	}
 	
-	public ClassType getClassTypeFactory(String className) {
+	public ClassType getClassType(String className) {
 		ClassType type = (ClassType)map.get(className);
 		if (type == null){
 			

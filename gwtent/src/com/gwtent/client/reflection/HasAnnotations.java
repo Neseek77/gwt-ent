@@ -19,12 +19,14 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
+import com.gwtent.client.reflection.impl.TypeOracleImpl;
+
 /**
  * Interface implemented by elements that can have annotations. This interface
  * is a departure for GWT in that it used types declared in the
  * java.lang.annotation package instead of types declared as part of this
  * typeinfo package. This reflects a compromise between a pure
- * {@link TypeOracle} model and one that is more useful to developers.
+ * {@link TypeOracleImpl} model and one that is more useful to developers.
  */
 public interface HasAnnotations {
   /**

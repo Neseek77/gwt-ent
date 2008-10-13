@@ -19,9 +19,11 @@
  */
 package com.gwtent.client.reflection;
 
+import com.gwtent.client.reflection.impl.TypeOracleImpl;
+
 /**
  * The superclass of exceptions thrown by
- * {@link TypeOracle}.
+ * {@link TypeOracleImpl}.
  */
 public class TypeOracleException extends Exception {
 

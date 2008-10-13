@@ -28,8 +28,8 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.AnnotationStore;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
 
@@ -44,11 +44,11 @@ public class GeneratorHelper {
 	public static int AccessDefToInt(AccessDef accessDef){
 		int result = 0;
 		
-		if (accessDef.isFinal()) result += TypeOracle.MOD_FINAL;
-		if (accessDef.isPrivate()) result += TypeOracle.MOD_PRIVATE;
-		if (accessDef.isProtected()) result += TypeOracle.MOD_PROTECTED;
-		if (accessDef.isPublic()) result += TypeOracle.MOD_PUBLIC;
-		if (accessDef.isStatic()) result += TypeOracle.MOD_STATIC;
+		if (accessDef.isFinal()) result += TypeOracleImpl.MOD_FINAL;
+		if (accessDef.isPrivate()) result += TypeOracleImpl.MOD_PRIVATE;
+		if (accessDef.isProtected()) result += TypeOracleImpl.MOD_PROTECTED;
+		if (accessDef.isPublic()) result += TypeOracleImpl.MOD_PUBLIC;
+		if (accessDef.isStatic()) result += TypeOracleImpl.MOD_STATIC;
 		
 		return result;
 	}

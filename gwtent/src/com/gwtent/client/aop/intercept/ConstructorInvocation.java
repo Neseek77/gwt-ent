@@ -1,6 +1,6 @@
 package com.gwtent.client.aop.intercept;
 
-import com.gwtent.client.reflection.Constructor;
+import com.gwtent.client.reflection.impl.ConstructorImpl;
 
 /**
  * Description of an invocation to a constuctor, given to an
@@ -19,6 +19,6 @@ public interface ConstructorInvocation extends Invocation {
      * Joinpoint#getStaticPart()} method (same result).
      *
      * @return the constructor being called. */
-    Constructor getConstructor();
+    ConstructorImpl getConstructor();
 
 }

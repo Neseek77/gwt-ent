@@ -15,22 +15,24 @@
  */
 package com.gwtent.client.reflection;
 
+import com.gwtent.client.reflection.impl.TypeImpl;
+
 /**
  * Type representing a Java array.
  */
-public class ArrayType extends Type {
+public class ArrayType extends TypeImpl {
 
-  private Type componentType;
+  private TypeImpl componentType;
 
   private String lazyQualifiedName;
 
   private String lazySimpleName;
 
-  ArrayType(Type componentType) {
+  ArrayType(TypeImpl componentType) {
     this.componentType = componentType;
   }
 
-  public Type getComponentType() {
+  public TypeImpl getComponentType() {
     return componentType;
   }
 
@@ -93,7 +95,7 @@ public class ArrayType extends Type {
     return null;
   }
 
-  public void setLeafType(Type type) {
+  public void setLeafType(TypeImpl type) {
     ArrayType componentTypeIsArray = componentType.isArray();
     if (componentTypeIsArray != null) {
       componentTypeIsArray.setLeafType(type);
