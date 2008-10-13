@@ -21,7 +21,7 @@ package com.gwtent.client.ui;
 
 import com.google.gwt.user.client.ui.Widget;
 
-import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.ui.generator.ExtAutoUIGenerator;
 import com.gwtent.client.ui.generator.GwtAutoUIGenerator;
 import com.gwtent.client.ui.generator.UIGenerator;
@@ -64,13 +64,13 @@ public class UIFactory {
 		
 	}
 	
-	public Widget gwtFactory(Object pojo, ClassType classType){
+	public Widget gwtFactory(Object pojo, ClassTypeImpl classType){
 		if (uiGwtGenerator == null) uiGwtGenerator = new GwtAutoUIGenerator();
 		
 		return uiGwtGenerator.generator(transition.createModel(pojo, classType));
 	}
 	
-	public Widget extFactory(Object pojo, ClassType classType){
+	public Widget extFactory(Object pojo, ClassTypeImpl classType){
 		if (uiExtGenerator == null) uiExtGenerator = new ExtAutoUIGenerator();
 		
 		return uiExtGenerator.generator(transition.createModel(pojo, classType));

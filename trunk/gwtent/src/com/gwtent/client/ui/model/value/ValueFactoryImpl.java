@@ -20,8 +20,9 @@
 package com.gwtent.client.ui.model.value;
 
 import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.FieldImpl;
 import com.gwtent.client.ui.ClassTypeHelper;
 import com.gwtent.client.ui.ValueEditorRegister;
 import com.gwtent.client.ui.model.Value;
@@ -75,7 +76,7 @@ public class ValueFactoryImpl implements ValueFactory {
 	/* (non-Javadoc)
 	 * @see com.coceler.gwt.client.ui.transition.ValueFactory#factory(java.lang.String)
 	 */
-	public Value factory(Object pojo, ClassType classType, String fieldName, String typeName) {
+	public Value factory(Object pojo, ClassTypeImpl classType, String fieldName, String typeName) {
 		AdvValue value = null;
 		
 		this.pojo = pojo;
@@ -111,7 +112,7 @@ public class ValueFactoryImpl implements ValueFactory {
 	}
 	
 	
-	protected void setGetterAndSetter(AdvValue value, final ClassType classType, String fieldName, String typeName){
+	protected void setGetterAndSetter(AdvValue value, final ClassTypeImpl classType, String fieldName, String typeName){
 		if (fieldName.startsWith("set")){
 			fieldName = fieldName.replaceFirst("set", "");
 		}
@@ -151,7 +152,7 @@ public class ValueFactoryImpl implements ValueFactory {
 			final ClassType classType, String fieldName){
 		ValidateChain chain = new ValidateChainImpl();
 		
-		Field field = classType.findField(fieldName);
+		FieldImpl field = classType.findField(fieldName);
 		String[] validateNames = ClassTypeHelper.getValidateNames(field);
 
 		ExpressionProcessorList processorList = new ExpressionProcessorList();

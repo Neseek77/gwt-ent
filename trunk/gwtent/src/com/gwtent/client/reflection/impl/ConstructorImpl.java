@@ -17,14 +17,17 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.client.reflection;
+package com.gwtent.client.reflection.impl;
+
+import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Method;
 
 
 
-public class Constructor  extends AbstractMethod {
+public class ConstructorImpl extends AbstractMethodImpl {
 	  private final ClassType enclosingType;
 
-	  public Constructor(ClassType enclosingType, String name) {
+	  public ConstructorImpl(ClassTypeImpl enclosingType, String name) {
 	    super(name);
 	    this.enclosingType = enclosingType;
 	    enclosingType.addConstructor(this);
@@ -35,7 +38,7 @@ public class Constructor  extends AbstractMethod {
 	  }
 
 	  public String getReadableDeclaration() {
-	    String[] names = TypeOracle.modifierBitsToNames(getModifierBits());
+	    String[] names = TypeOracleImpl.modifierBitsToNames(getModifierBits());
 	    StringBuffer sb = new StringBuffer();
 	    for (int i = 0; i < names.length; i++) {
 	      sb.append(names[i]);
@@ -50,7 +53,7 @@ public class Constructor  extends AbstractMethod {
 	    return sb.toString();
 	  }
 
-	  public Constructor isConstructor() {
+	  public ConstructorImpl isConstructor() {
 	    return this;
 	  }
 

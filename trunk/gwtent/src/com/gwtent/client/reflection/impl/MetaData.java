@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.gwtent.client.reflection;
+package com.gwtent.client.reflection.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.gwtent.client.reflection.HasMetaData;
+
 
 class MetaData implements HasMetaData {
 
@@ -41,21 +44,21 @@ class MetaData implements HasMetaData {
   public String[][] getMetaData(String tagName) {
     List list = (List) tagNameToStringArrayList.get(tagName);
     if (list != null) {
-      return (String[][]) list.toArray(TypeOracle.NO_STRING_ARR_ARR);
+      return (String[][]) list.toArray(TypeOracleImpl.NO_STRING_ARR_ARR);
     } else {
-      return TypeOracle.NO_STRING_ARR_ARR;
+      return TypeOracleImpl.NO_STRING_ARR_ARR;
     }
   }
 
   public String[] getMetaDataTags() {
     return (String[]) tagNameToStringArrayList.keySet().toArray(
-      TypeOracle.NO_STRINGS);
+      TypeOracleImpl.NO_STRINGS);
   }
 
   public String toString() {
     StringBuffer sb = new StringBuffer();
     final Set keys = tagNameToStringArrayList.keySet();
-    String[] tags = (String[]) keys.toArray(TypeOracle.NO_STRINGS);
+    String[] tags = (String[]) keys.toArray(TypeOracleImpl.NO_STRINGS);
     Arrays.sort(tags);
     for (int i = 0; i < tags.length; i++) {
       sb.append(tags[i]);

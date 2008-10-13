@@ -3,6 +3,7 @@ package com.gwtent.client.ui.model.impl;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.impl.MethodImpl;
 import com.gwtent.client.ui.ClassTypeHelper;
 import com.gwtent.client.ui.model.Action;
 import com.gwtent.client.ui.model.ActionCallBack;
@@ -12,8 +13,8 @@ public class ActionImpl implements Action {
 	private ClassType classType;
 	private Object instance;
 	private String actionName;
-	private Method actionMethod;
-	private Method asyncActionMethod;
+	private MethodImpl actionMethod;
+	private MethodImpl asyncActionMethod;
 	private String caption;
 	
 	

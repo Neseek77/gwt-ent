@@ -22,17 +22,17 @@ package com.gwtent.gen.reflection;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 
 import com.gwtent.client.reflection.AnnotationStoreImpl;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Field;
-import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.Parameter;
+import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.FieldImpl;
+import com.gwtent.client.reflection.impl.MethodImpl;
+import com.gwtent.client.reflection.impl.ParameterImpl;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Proxy extends ClassType {
+public class Proxy extends ClassTypeImpl {
 	
 
 	public Proxy(){
@@ -78,7 +78,7 @@ public class Proxy extends ClassType {
 	
 	protected void addFields(){
 		//for...
-		Field field = new Field(this, "name");
+		FieldImpl field = new FieldImpl(this, "name");
 		//field.addModifierBits(0);   
 		//field.addMetaData(tagName, values);  //for... every meta
 		field.addMetaData("tag", new String[]{"meta1", "meta2"});
@@ -88,7 +88,7 @@ public class Proxy extends ClassType {
 	
 	protected void addMethods(){
 		//for...
-		Method method = new Method(this, "name");
+		MethodImpl method = new MethodImpl(this, "name");
 		//method.addModifierBits(bits);
 		//method.addMetaData(tagName, values)
 		method.setReturnTypeName("returnTypeName");

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.gwtent.client.reflection;
+package com.gwtent.client.reflection.impl;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.gwtent.client.reflection.AnnotationStore;
+import com.gwtent.client.reflection.HasAnnotations;
 
 /**
  * Default implementation of the {@link HasAnnotations} interface.

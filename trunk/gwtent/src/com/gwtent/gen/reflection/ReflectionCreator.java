@@ -29,7 +29,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
-import com.gwtent.client.reflection.PrimitiveType;
+import com.gwtent.client.reflection.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.gen.LogableSourceCreator;
@@ -296,7 +296,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 	protected Type createTypeByJType(JType jtype) {
 		if (jtype instanceof JPrimitiveType) {
-			return PrimitiveType.valueOf(((JPrimitiveType) jtype)
+			return PrimitiveTypeImpl.valueOf(((JPrimitiveType) jtype)
 					.getSimpleSourceName());
 		} else if (jtype instanceof JClassType) {
 
