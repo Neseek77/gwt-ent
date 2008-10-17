@@ -49,115 +49,96 @@ public class ReflectionCreator extends LogableSourceCreator {
 		super(logger, context, typeName);
 	}
 
-	public String createWrapper() {
-		try {
-			JClassType classType = typeOracle.getType(typeName);
-			SourceWriter source = getSourceWriter(classType, isUseLog, 6);
+	protected void createSource(SourceWriter source, JClassType classType) {
+		String className = classType.getSimpleSourceName();
 
-			if (source == null) {
-				return classType.getParameterizedQualifiedSourceName()
-						+ SUFFIX;
+		source.println("public "
+				+ getSimpleUnitName(classType) + "(){");
+		source.indent();
+		source.println("super(\"" + classType.getQualifiedSourceName() + "\");");
+		source.println("addClassMeta();");
+		source.println("addAnnotations();");
+		source.println("addFields();");
+		source.println("addMethods();");
+		source.outdent();
+		source.println("}");
+
+		source
+				.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
+		source.indent();
+		source.println("if (args.length != paramCount){");
+		source.indent();
+		source
+				.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
+		source.outdent();
+		source.println("}");
+		source.outdent();
+		source.println("}");
+		source.println();
+
+		JMethod[] methods = classType.getMethods();
+
+		source.println("public Object invoke(Object instance, String methodName, Object[] args) {");
+		source.indent();
+
+		source.println(className + " content = (" + className
+				+ ")instance;");
+
+		source.println("if (args == null){");
+		source.indent();
+		source.println("args = new Object[]{};");
+		source.outdent();
+		source.println("}");
+
+		for (int i = 0; i < methods.length; i++) {
+			String methodName = methods[i].getName();
+			JParameter[] methodParameters = methods[i].getParameters();
+			JType returnType = methods[i].getReturnType();
+
+			source.println("if (methodName.equals(\"" + methodName
+					+ "\")) {");
+			source.indent();
+			source.println("checkInvokeParams(methodName, "
+					+ methodParameters.length + ", args);");
+
+			if (!returnType.getSimpleSourceName().equals("void")) {
+				source.println("return "
+						+ boxIfNeed(returnType.getSimpleSourceName(),
+								"content."
+										+ methodName
+										+ "("
+										+ getInvokeParams(
+												methodParameters,
+												"args") + ")") + ";");
 			} else {
-				String className = classType.getSimpleSourceName();
-				source.indent();
-
-				// source.print("public ");
-				source.println("public "
-						+ getSimpleUnitName(classType) + "(){");
-				source.indent();
-				source.println("super(\"" + classType.getQualifiedSourceName() + "\");");
-				source.println("addClassMeta();");
-				source.println("addAnnotations();");
-				source.println("addFields();");
-				source.println("addMethods();");
-				source.outdent();
-				source.println("}");
-
-				source
-						.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
-				source.indent();
-				source.println("if (args.length != paramCount){");
-				source.indent();
-				source
-						.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
-				source.outdent();
-				source.println("}");
-				source.outdent();
-				source.println("}");
-				source.println();
-
-				JMethod[] methods = classType.getMethods();
-
-				source.println("public Object invoke(Object instance, String methodName, Object[] args) {");
-				source.indent();
-
-				source.println(className + " content = (" + className
-						+ ")instance;");
-
-				source.println("if (args == null){");
-				source.indent();
-				source.println("args = new Object[]{};");
-				source.outdent();
-				source.println("}");
-
-				for (int i = 0; i < methods.length; i++) {
-					String methodName = methods[i].getName();
-					JParameter[] methodParameters = methods[i].getParameters();
-					JType returnType = methods[i].getReturnType();
-
-					source.println("if (methodName.equals(\"" + methodName
-							+ "\")) {");
-					source.indent();
-					source.println("checkInvokeParams(methodName, "
-							+ methodParameters.length + ", args);");
-
-					if (!returnType.getSimpleSourceName().equals("void")) {
-						source.println("return "
-								+ boxIfNeed(returnType.getSimpleSourceName(),
-										"content."
-												+ methodName
-												+ "("
-												+ getInvokeParams(
-														methodParameters,
-														"args") + ")") + ";");
-					} else {
-						source.println("content." + methodName + "("
-								+ getInvokeParams(methodParameters, "args")
-								+ ")" + ";");
-						source.println("return null;");
-					}
-
-					source.outdent();
-					source.print("} else ");
-
-				}
-				source.println("{");
-				source.indent();
-				source
-						.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
-				source.outdent(); 
-				source.println("}");
-				source.outdent();
-				source.println("}");
-				source.println();
-
-				// -----Add Class MetaData--------------------------------
-				addClassMeta(classType, source);
-				// -----Add Class Annotation------------------------------------
-				addClassAnnotation(classType, source);
-				// -----Add fields----------------------------------------
-				addFields(classType, source);
-				// -----Add methods---------------------------------------
-				addMethods(classType, source);
-
-				source.outdent();
-				source.commit(logger);
-				return getUnitName(classType);
+				source.println("content." + methodName + "("
+						+ getInvokeParams(methodParameters, "args")
+						+ ")" + ";");
+				source.println("return null;");
 			}
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			return null;
+
+			source.outdent();
+			source.print("} else ");
+
 		}
+		source.println("{");
+		source.indent();
+		source
+				.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
+		source.outdent(); 
+		source.println("}");
+		source.outdent();
+		source.println("}");
+		source.println();
+
+		// -----Add Class MetaData--------------------------------
+		addClassMeta(classType, source);
+		// -----Add Class Annotation------------------------------------
+		addClassAnnotation(classType, source);
+		// -----Add fields----------------------------------------
+		addFields(classType, source);
+		// -----Add methods---------------------------------------
+		addMethods(classType, source);
 	}
 
 	protected void addClassMeta(JClassType classType, SourceWriter source) {
@@ -199,13 +180,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("protected void addFields(){");
 		source.indent();
 
-		source.println("Field field = null;");
+		source.println("FieldImpl field = null;");
 
 		JField[] fields = classType.getFields();
 
 		for (int i = 0; i < fields.length; i++) {
 			JField field = fields[i];
-			source.println("field = new Field(this, \"" + field.getName()
+			source.println("field = new FieldImpl(this, \"" + field.getName()
 					+ "\");");
 			source.println("field.addModifierBits("
 					+ GeneratorHelper.AccessDefToInt(field) + "); ");
@@ -233,13 +214,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("protected void addMethods(){");
 		source.indent();
 
-		source.println("Method method = null;");
+		source.println("MethodImpl method = null;");
 
 		JMethod[] methods = classType.getMethods();
 
 		for (int i = 0; i < methods.length; i++) {
 			JMethod method = methods[i];
-			source.println("method = new Method(this, \"" + method.getName()
+			source.println("method = new MethodImpl(this, \"" + method.getName()
 					+ "\");");
 			source.println("method.addModifierBits("
 					+ GeneratorHelper.AccessDefToInt(method) + "); ");
@@ -250,7 +231,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			JParameter[] params = method.getParameters();
 			for (int j = 0; j < params.length; j++) {
 				JParameter param = params[j];
-				source.println("new Parameter(method, \""
+				source.println("new ParameterImpl(method, \""
 						+ param.getType().getQualifiedSourceName() + "\", \""
 						+ param.getName() + "\");");
 				// TODO Support annotation of Parameter
@@ -278,10 +259,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
-		composer.setSuperclass("com.gwtent.client.reflection.ClassType");
+		composer.setSuperclass("com.gwtent.client.reflection.impl.ClassTypeImpl");
 		// composer.addImplementedInterface(
 		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("com.gwtent.client.reflection.impl.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 

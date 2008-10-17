@@ -75,51 +75,28 @@ public class AOPCreator extends LogableSourceCreator {
 //		}
 	}
 
-	public String createWrapper() {
-		try {
-			JClassType classType = typeOracle.getType(typeName);
-			SourceWriter source = getSourceWriter(classType, isUseLog, 6);
+	protected void createSource(SourceWriter source, JClassType classType){
+		source.println("public " + getSimpleUnitName(classType) + "(){");
+		source.indent();
+		source.println("makeSureCreateClassType();");
+		//source.println("addAnnotations();");
+		//source.println("addFields();");
+		//source.println("addMethods();");
+		source.outdent();
+		source.println("}");
 
-			if (source == null) {
-				//return classType.getParameterizedQualifiedSourceName()
-				//		+ SUFFIX;
-				return getUnitName(classType);
-			} else {
-				
-				
-				source.indent();
-
-				// source.print("public ");
-				source.println("public " + getSimpleUnitName(classType) + "(){");
-				source.indent();
-				source.println("makeSureCreateClassType();");
-				//source.println("addAnnotations();");
-				//source.println("addFields();");
-				//source.println("addMethods();");
-				source.outdent();
-				source.println("}");
-
-				String reflectionClassName = getSimpleUnitName(classType) + "_";
-				source.println("public static class " + reflectionClassName + " extends " + classType.getSimpleSourceName() + " implements Reflection {");
-				source.println("}");
-				
-				source.println("public void makeSureCreateClassType() {");
-				source.indent();
-				//source.println("ClassType type = (ClassType)GWT.create(TestReflection.class);");
-				source.println("ClassType type = (ClassType)GWT.create(" + reflectionClassName + ".class);");
-				source.outdent();
-				source.println("}");
-				
-				//processMethods(source, classType);
-				
-				source.outdent();
-				source.commit(logger);
-				return getUnitName(classType);
-			}
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
+		String reflectionClassName = getSimpleUnitName(classType) + "_";
+		source.println("public static class " + reflectionClassName + " extends " + classType.getSimpleSourceName() + " implements Reflection {");
+		source.println("}");
+		
+		source.println("public void makeSureCreateClassType() {");
+		source.indent();
+		//source.println("ClassType type = (ClassType)GWT.create(TestReflection.class);");
+		source.println("ClassType type = (ClassType)GWT.create(" + reflectionClassName + ".class);");
+		source.outdent();
+		source.println("}");
+		
+		//processMethods(source, classType);
 	}
 	
 	private void processMethods(SourceWriter source, JClassType classType){
