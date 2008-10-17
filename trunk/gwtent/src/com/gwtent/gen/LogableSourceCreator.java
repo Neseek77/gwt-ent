@@ -26,6 +26,7 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
@@ -42,7 +43,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  */
 public abstract class LogableSourceCreator {
 
-	private boolean useLog = false;
+	private boolean useLog = true;
 	private SourceWriter sourceWriter = null; 
 	
 	protected TreeLogger logger;
@@ -65,7 +66,7 @@ public abstract class LogableSourceCreator {
 	public void setUseLog(boolean useLog) {
 		this.useLog = useLog;
 		
-		if (logger == null) useLog = false;
+		if (logger == null) this.useLog = false;
 	}
 	
 	/**
@@ -76,7 +77,29 @@ public abstract class LogableSourceCreator {
 	 */
 	protected abstract SourceWriter doGetSourceWriter(JClassType classType);
 	protected abstract String getSUFFIX();
+	protected abstract void createSource(SourceWriter source, JClassType classType);
 	
+	
+	public String generate(){
+		JClassType classType;
+		try {
+			classType = typeOracle.getType(typeName);
+		
+			SourceWriter source = getSourceWriter(classType, isUseLog(), 6);
+	
+			if (source != null) {
+				source.indent();
+				createSource(source, classType);
+				source.outdent();
+				source.commit(logger);
+			}
+			return getUnitName(classType);
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	/**
 	 * return the Decorator of SourceWriter

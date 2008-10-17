@@ -23,13 +23,14 @@ import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.gwtent.gen.LogableSourceCreator;
 
 public class AOPProxyGenerator extends Generator {
 
 
 	public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
-	  AOPCreator binder = new AOPCreator(logger, context, typeName);
-		String className = binder.createWrapper();
+		LogableSourceCreator binder = new AOPCreator(logger, context, typeName);
+		String className = binder.generate();
 		return className;
 	}
 

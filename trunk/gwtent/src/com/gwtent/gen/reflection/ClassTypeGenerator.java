@@ -23,13 +23,14 @@ import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.gwtent.gen.LogableSourceCreator;
 
 public class ClassTypeGenerator extends Generator {
 
 
 	public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
-		ReflectionCreator binder = new ReflectionCreator(logger, context, typeName);
-		String className = binder.createWrapper();
+		LogableSourceCreator binder = new ReflectionCreator(logger, context, typeName);
+		String className = binder.generate();
 		return className;
 	}
 
