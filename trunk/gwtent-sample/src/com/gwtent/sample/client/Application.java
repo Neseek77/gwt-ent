@@ -10,6 +10,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.test.TestReflection;
 
 import java.lang.annotation.Annotation;
 
@@ -18,14 +21,9 @@ import java.lang.annotation.Annotation;
  */
 public class Application implements EntryPoint {
 
-//  public ClassType getClassType(Class<?> classLiteral){
-//	  return (ClassType)GWT.create(classLiteral);
-//  }
-	
   public void testReflection(){
     TestReflection test = new TestReflection();
-    ClassType classType = (ClassType)GWT.create(TestReflection.class);
-    //ClassType classType = getClassType(TestReflection.class);
+    ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     
     test.setString("set by code");
     System.out.println("after SetByCode:" + test.getString());
