@@ -2,33 +2,35 @@ package com.gwtent.client.reflection;
 
 import com.gwtent.client.reflection.impl.MethodImpl;
 
-public interface ClassType {
+public interface ClassType extends HasAnnotations, HasMetaData {
 
-	public abstract Field findField(String name);
+	public Field findField(String name);
 
-	public abstract MethodImpl findMethod(String name, Type[] paramTypes);
+	public MethodImpl findMethod(String name, Type[] paramTypes);
 
-	public abstract MethodImpl findMethod(String name, String[] paramTypes);
+	public MethodImpl findMethod(String name, String[] paramTypes);
 
-	public abstract Field getField(String name);
+	public Field getField(String name);
 
-	public abstract Field[] getFields();
+	public Field[] getFields();
 
-	public abstract ClassType[] getImplementedInterfaces();
+	public ClassType[] getImplementedInterfaces();
 
-	public abstract Method getMethod(String name, Type[] paramTypes)
+	public Method getMethod(String name, Type[] paramTypes)
 			throws NotFoundException;
 
 	/*
 	 * Returns the declared methods of this class (not any superclasses or
 	 * superinterfaces).
 	 */
-	public abstract MethodImpl[] getMethods();
+	public MethodImpl[] getMethods();
 
-	public abstract String getName();
+	public String getName();
 
-	public abstract Package getPackage();
+	public Package getPackage();
 
-	public abstract ClassType getSuperclass();
+	public ClassType getSuperclass();
+	
+	public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException;
 
 }

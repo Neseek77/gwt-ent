@@ -43,6 +43,7 @@ import com.gwtent.client.reflection.Package;
 import com.gwtent.client.reflection.Parameter;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
+import com.gwtent.client.reflection.TypeOracle;
 
 /**
  * Type representing a Java class or interface type.
@@ -88,12 +89,15 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 
 	private boolean savedIsDefaultInstantiable;
 
-	public Object invoke(Object instance, String methodName, Object[] args) {
+	public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {
 		throw new NotFoundException(methodName + "not found or unimplement?");
 	}
 
 	public ClassTypeImpl(String qualifiedName) {
 		TypeOracleImpl.putType(this, qualifiedName);
+		
+//		if (! qualifiedName.equals("java.lang.Object"))
+//			setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("java.lang.Object").isClassOrInterface());
 	}
 
 	/**

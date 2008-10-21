@@ -44,7 +44,7 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.Method#invoke(java.lang.Object, java.lang.Object[])
 	 */
-	public Object invoke(Object instance, Object[] args) {
+	public Object invoke(Object instance, Object[] args) throws RuntimeException {
 		return enclosingType.invoke(instance, this.getName(), args);
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
@@ -15,6 +16,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.Reflection;
+import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class SourceVisitor extends LogableSourceCreator {
@@ -30,6 +32,7 @@ public class SourceVisitor extends LogableSourceCreator {
 		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
+		composer.setSuperclass(TypeOracleImpl.class.getCanonicalName());
 		composer.addImport("com.gwtent.client.reflection.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
@@ -50,8 +53,23 @@ public class SourceVisitor extends LogableSourceCreator {
 
 	@Override
 	protected void createSource(SourceWriter source, JClassType classType) {
+		source.println("public " + getSimpleUnitName(classType) + "(){");
+		source.indent();
 		
+		List<JClassType> types = allReflectionClasses();
 		
+		for(JClassType type : types){
+			ReflectionProxyGenerator gen = new ReflectionProxyGenerator();
+			try {
+				String classname = gen.generate(this.logger, context, type.getQualifiedSourceName());
+				source.println("new " + classname + "();");
+			} catch (UnableToCompleteException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		source.outdent();
+		source.println("}");
 	}
 	
 	
@@ -85,7 +103,10 @@ public class SourceVisitor extends LogableSourceCreator {
 		}
 		
 		for (JMethod method : classType.getMethods()){
-			addClassIfNotExists(types, meth)
+			if (method.getReturnType() != null)
+				addClassIfNotExists(types, method.getReturnType().isClassOrInterface());
+			
+			//TODO How about parameters?
 		}
 	}
 	

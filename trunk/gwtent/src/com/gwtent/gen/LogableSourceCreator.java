@@ -121,8 +121,12 @@ public abstract class LogableSourceCreator {
 		return sourceWriter;
 	}
 	
-	public String getUnitName(JClassType classType){    
-	    String packageName = classType.getPackage().getName();
+	protected String getPackageName(JClassType classType){
+		return classType.getPackage().getName();
+	}
+	
+	protected String getUnitName(JClassType classType){    
+	    String packageName = getPackageName(classType);
 	    String className = getSimpleUnitName(classType);
 	    
 		//return classType.getParameterizedQualifiedSourceName() + SUFFIX;
@@ -130,7 +134,7 @@ public abstract class LogableSourceCreator {
 	}
 	
 	
-	public String getSimpleUnitName(JClassType classType){
+	protected String getSimpleUnitName(JClassType classType){
 		return classType.getName().replace('.', '_') + getSUFFIX();
 	}
 	
