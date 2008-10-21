@@ -19,11 +19,9 @@
  */
 package com.gwtent.sample.client;
 
-import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
+import java.util.Date;
 
 import com.gwtent.client.reflection.Reflection;
-
-import java.util.Date;
 
 @TestAnnotation(name="TestName")
 public class TestReflection implements Reflection {
