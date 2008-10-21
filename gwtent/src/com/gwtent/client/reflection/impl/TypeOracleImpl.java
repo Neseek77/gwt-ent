@@ -127,26 +127,36 @@ public class TypeOracleImpl implements TypeOracle {
 	}
 
 	
-	  public static Type getType(String name) throws NotFoundException {
-		    Type type = typeMap.get(name);
-		    if (type == null) {
-		      throw new NotFoundException(name);
-		    }
-		    return type;
-		  }
-	  
-	  public static ClassType getClassType(String name) throws NotFoundException {
-		  Type type = getType(name);
-		  return type.isClass();
-	  }
-	  
-	  public static void putType(Type type){
-		  putType(type, type.getQualifiedSourceName());  
-	  }
-	  
-	  public static void putType(Type type, String qualifiedSourceName){
-			typeMap.put(qualifiedSourceName, type);  
-		  }
-	  
-	  private static Map<String, Type> typeMap = new HashMap<String, Type>(); 
+	
+	public static Type getType(String name) throws NotFoundException {
+		Type type = findType(name);
+		if (type == null) {
+			throw new NotFoundException(name);
+		}
+		return type;
+	}
+	
+	public static Type findType(String name) {
+		Type type = typeMap.get(name);
+		return type;
+	}
+
+	public ClassType getClassType(String name) {
+		Type type = findType(name);
+		return type.isClass();
+	}
+
+	public static void putType(Type type) {
+		putType(type, type.getQualifiedSourceName());
+	}
+
+	public static void putType(Type type, String qualifiedSourceName) {
+		typeMap.put(qualifiedSourceName, type);
+	}
+
+	private static Map<String, Type> typeMap = new HashMap<String, Type>();
+
+	public ClassType getClassType(Class<?> classz) {
+		return getClassType(classz.getName());
+	}
 }

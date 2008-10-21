@@ -104,7 +104,11 @@ public class ClassTypeHelper {
 		}else{
 			Method getter = classType.findMethod(metaStr, new String[]{});
 			if (getter != null){
-				return classType.invoke(instance, metaStr, new Object[]{});
+				try {
+					return classType.invoke(instance, metaStr, new Object[]{});
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}else{
 				throw new TransitionException("method: " + metaStr + "() not found in class: " + classType.getName() + ".");
 			}
