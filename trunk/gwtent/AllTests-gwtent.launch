@@ -19,5 +19,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.gwtent.client.test.AllTests"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="gwtent"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -Dgwt.args=&quot; -port 8888 -logLevel DEBUG&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -Dgwt.args=&quot; -port 8888 -gen c:\gen&quot;"/>
 </launchConfiguration>
