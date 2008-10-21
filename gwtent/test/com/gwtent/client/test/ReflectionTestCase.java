@@ -13,6 +13,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
+import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.client.test.annotations.Id;
@@ -24,13 +25,24 @@ public class ReflectionTestCase extends GWTTestCase {
   public String getModuleName() {
     return "com.gwtent.GwtEntTest";
   }
+  
+  public void testCreateTypeOracle(){
+	  ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
+	  assertNotNull(classType);
+  }
 
+  public void testObject(){
+  	ClassType classType = TypeOracle.Instance.getClassType(Object.class);
+  	assertNotNull(classType);
+  	System.out.println(classType.invoke(new Object(), "getClass", null));
+  }
+  
   public void testFields() {
     TestReflection test = new TestReflection();
     test.setString("username");
     assertTrue(test.getString().equals("username"));
     
-    ClassType classType = (ClassType)GWT.create(TestReflection.class);
+    ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     Field[] fields = classType.getFields();
     assertTrue(fields.length == 4);
     //assertTrue(classType.findField("bool").getType().getSimpleSourceName().equals("boolean"));
@@ -41,7 +53,7 @@ public class ReflectionTestCase extends GWTTestCase {
     test.setString("username");
     assertTrue(test.getString().equals("username"));
     
-    ClassTypeImpl classType = (ClassTypeImpl)GWT.create(TestReflection.class);
+    ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     //Class Annotations
     assertNotNull(classType.getAnnotation(Entity.class));
     assertTrue(classType.getAnnotation(Entity.class).getValue("name").equals("TestReflection"));
@@ -63,10 +75,14 @@ public class ReflectionTestCase extends GWTTestCase {
     account.setString("username");
     assertTrue(account.getString().equals("username"));
     
-    ClassTypeImpl classType = (ClassTypeImpl)GWT.create(TestReflection.class);
+    ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     assertTrue(classType.invoke(account, "getString", null).equals("username"));
     classType.invoke(account, "setString", new String[]{"username set by reflection"});
     assertTrue(account.getString().equals("username set by reflection"));
   }
 
+  public void testInheritance(){
+  	
+  }
+  
 }
