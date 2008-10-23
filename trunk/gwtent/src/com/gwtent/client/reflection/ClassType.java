@@ -1,14 +1,13 @@
 package com.gwtent.client.reflection;
 
-import com.gwtent.client.reflection.impl.MethodImpl;
 
 public interface ClassType extends HasAnnotations, HasMetaData {
 
 	public Field findField(String name);
 
-	public MethodImpl findMethod(String name, Type[] paramTypes);
+	public Method findMethod(String name, Type[] paramTypes);
 
-	public MethodImpl findMethod(String name, String[] paramTypes);
+	public Method findMethod(String name, String[] paramTypes);
 
 	public Field getField(String name);
 
@@ -23,7 +22,7 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 	 * Returns the declared methods of this class (not any superclasses or
 	 * superinterfaces).
 	 */
-	public MethodImpl[] getMethods();
+	public Method[] getMethods();
 
 	public String getName();
 

@@ -26,6 +26,7 @@ import java.util.List;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasMetaData;
+import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
@@ -178,9 +179,9 @@ public class ReflectionToModel implements POJOToModel {
 			} 
 		}
 		
-		MethodImpl[] methods = classType.getMethods();
+		Method[] methods = classType.getMethods();
 		for (int i = 0; i < methods.length; i++){
-			MethodImpl method = methods[i];
+			Method method = methods[i];
 			if (ClassTypeHelper.queryHaveMetaData(method, ClassTypeHelper.FIELD_FLAG_METADATA)){
 				result.add(method.getName());
 			} 
@@ -192,9 +193,9 @@ public class ReflectionToModel implements POJOToModel {
 	private List getActionNamesByMethodMetaData(ClassType classType) {
 		List result = new ArrayList();
 		
-		MethodImpl[] methods = classType.getMethods();
+		Method[] methods = classType.getMethods();
 		for (int i = 0; i < methods.length; i++){
-			MethodImpl method = methods[i];
+			Method method = methods[i];
 			if (ClassTypeHelper.queryHaveMetaData(method, ClassTypeHelper.ACTION_FLAG_METADATA)){
 				result.add(method.getName());
 			} 

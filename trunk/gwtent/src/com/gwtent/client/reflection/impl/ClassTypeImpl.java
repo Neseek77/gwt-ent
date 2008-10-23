@@ -216,7 +216,7 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.ClassType#getImplementedInterfaces()
 	 */
-	public ClassTypeImpl[] getImplementedInterfaces() {
+	public ClassType[] getImplementedInterfaces() {
 		return (ClassTypeImpl[]) interfaces.toArray(TypeOracleImpl.NO_JCLASSES);
 	}
 
@@ -618,9 +618,9 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 			Map methodsBySignature) {
 		// Recurse first so that more derived methods will clobber less derived
 		// methods.
-		ClassTypeImpl[] superIntfs = getImplementedInterfaces();
+		ClassType[] superIntfs = getImplementedInterfaces();
 		for (int i = 0; i < superIntfs.length; i++) {
-			ClassTypeImpl superIntf = superIntfs[i];
+			ClassTypeImpl superIntf = (ClassTypeImpl) superIntfs[i];
 			superIntf
 					.getOverridableMethodsOnSuperinterfacesAndMaybeThisInterface(methodsBySignature);
 		}

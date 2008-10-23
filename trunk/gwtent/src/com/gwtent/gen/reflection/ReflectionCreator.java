@@ -29,10 +29,10 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
-import com.gwtent.client.reflection.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.gen.LogableSourceCreator;
@@ -63,8 +63,16 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("addFields();");
 		source.println("addMethods();");
 		source.println("");
-		if (classType.getSuperclass() != null)
+		if (classType.getSuperclass() != null){
+			source.println("if (" + "TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\")" + " != null)");
 			source.println("setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\").isClassOrInterface());");
+		}
+		
+		source.println();
+		for (JClassType type : classType.getImplementedInterfaces()){
+			source.println("if (" + "TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\")" + " != null)");
+			source.println("addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\").isClassOrInterface());");
+		}
 		source.outdent();
 		source.println("}");
 
@@ -86,7 +94,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 		source.println("public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {");
 		source.indent();
 
-		source.println(className + " content = (" + className + ")instance;");
+		source.println(classType.getQualifiedSourceName() + " content = (" + classType.getQualifiedSourceName() + ")instance;");
 
 		source.println("if (args == null){");
 		source.indent();
@@ -310,11 +318,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 	protected String getInvokeParams(JParameter[] methodParams, String argeName) {
 		StringBuilder result = new StringBuilder("");
 		for (int i = 0; i < methodParams.length; i++) {
-			//if (i == 0) {
-				result.append("("
-						+ unboxIfNeed(methodParams[i].getType().getSimpleSourceName(),
-								argeName + "[" + i + "]") + ")");
-			//}
+			String requestType = methodParams[i].getType().getSimpleSourceName();
+			if (methodParams[i].getType().isTypeParameter() != null)
+				 requestType = methodParams[i].getType().isTypeParameter().getBaseType().getSimpleSourceName();
+			result.append("("	+ unboxIfNeed(requestType, argeName + "[" + i + "]") + ")");
 
 			if (i != methodParams.length - 1) {
 				result.append(", ");
@@ -376,6 +383,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 	 * @return
 	 */
 	public String unboxIfNeed(String requestType, String argeName) {
+		//System.out.println("requestType: " + requestType + " argeName: " + argeName);
+		
 		if (!isPrimitiveType(requestType)) {
 			return "(" + requestType + ")" + argeName;
 		} else if (requestType.equals("int")) {

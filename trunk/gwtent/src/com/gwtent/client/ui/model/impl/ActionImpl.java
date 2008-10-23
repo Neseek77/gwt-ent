@@ -13,8 +13,8 @@ public class ActionImpl implements Action {
 	private ClassType classType;
 	private Object instance;
 	private String actionName;
-	private MethodImpl actionMethod;
-	private MethodImpl asyncActionMethod;
+	private Method actionMethod;
+	private Method asyncActionMethod;
 	private String caption;
 	
 	

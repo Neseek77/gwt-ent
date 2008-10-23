@@ -39,9 +39,9 @@ import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.client.aop.AOPRegistor.MethodAspect;
 import com.gwtent.client.aop.intercept.Interceptor;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
-import com.gwtent.client.reflection.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.impl.TypeImpl;
 import com.gwtent.client.test.TestReflection;
 import com.gwtent.client.test.annotations.Entity;
@@ -78,24 +78,11 @@ public class AOPCreator extends LogableSourceCreator {
 	protected void createSource(SourceWriter source, JClassType classType){
 		source.println("public " + getSimpleUnitName(classType) + "(){");
 		source.indent();
-		source.println("makeSureCreateClassType();");
 		//source.println("addAnnotations();");
 		//source.println("addFields();");
 		//source.println("addMethods();");
 		source.outdent();
 		source.println("}");
-
-		String reflectionClassName = getSimpleUnitName(classType) + "_";
-		source.println("public static class " + reflectionClassName + " extends " + classType.getSimpleSourceName() + " implements Reflection {");
-		source.println("}");
-		
-		source.println("public void makeSureCreateClassType() {");
-		source.indent();
-		//source.println("ClassType type = (ClassType)GWT.create(TestReflection.class);");
-		source.println("ClassType type = (ClassType)GWT.create(" + reflectionClassName + ".class);");
-		source.outdent();
-		source.println("}");
-		
 		//processMethods(source, classType);
 	}
 	
