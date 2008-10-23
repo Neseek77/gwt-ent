@@ -23,7 +23,7 @@ public class AllTests {
     //$JUnit-BEGIN$
     suite.addTestSuite(StudyTestCase.class);
     suite.addTestSuite(ReflectionTestCase.class);
-    //suite.addTestSuite(AOPTestCase.class);
+    suite.addTestSuite(AOPTestCase.class);
     //$JUnit-END$
     return suite;
   }

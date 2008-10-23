@@ -13,6 +13,8 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
+import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.test.annotations.Entity;
@@ -34,7 +36,28 @@ public class ReflectionTestCase extends GWTTestCase {
   public void testObject(){
   	ClassType classType = TypeOracle.Instance.getClassType(Object.class);
   	assertNotNull(classType);
-  	System.out.println(classType.invoke(new Object(), "getClass", null));
+  	assertNotNull(classType.invoke(new Object(), "getClass", null));
+  }
+  
+  public void testSuperClass(){
+  	ClassType ctTestReflection = TypeOracle.Instance.getClassType(TestReflection.class);
+  	ClassType ctObject = TypeOracle.Instance.getClassType(Object.class);
+  	assertTrue(ctTestReflection.getSuperclass() == ctObject);
+  }
+  
+  public void testImplementsInterfaces(){
+  	ClassType ctTestReflection = TypeOracle.Instance.getClassType(TestReflection.class);
+  	ClassType ctReflection = TypeOracle.Instance.getClassType(Reflection.class);
+  	ClassType[] types = ctTestReflection.getImplementedInterfaces();
+  	boolean found = false;
+  	for (ClassType type : types){
+  		if (type == ctReflection){
+  			found = true;
+  			break;
+  		}
+  	}
+  	assertTrue(found);
+  	assertTrue(types.length == 1);
   }
   
   public void testFields() {
@@ -67,7 +90,12 @@ public class ReflectionTestCase extends GWTTestCase {
   }
 
   public void testMethods() {
-    
+  	ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
+  	Method[] methods = classType.getMethods();
+  	for (Method method : methods)
+  		System.out.println(method.toString());
+  	System.out.println(methods.length);
+  	assertTrue(methods.length == 8);
   }
 
   public void testInvokeMethod() {
