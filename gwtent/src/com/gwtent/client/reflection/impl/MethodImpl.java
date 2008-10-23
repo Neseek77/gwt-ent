@@ -25,6 +25,7 @@ import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Type;
+import com.gwtent.client.reflection.TypeOracle;
 
 
 public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnnotations, AbstractMethod, Method {
@@ -57,6 +58,9 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 	 * @see com.gwtent.client.reflection.Method#getReturnType()
 	 */
 	public Type getReturnType() {
+		if (returnType == null)
+			returnType = (TypeImpl)TypeOracle.Instance.getClassType(returnTypeName);
+		
 		return returnType;
 	}
 
@@ -121,7 +125,8 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 			sb.append(names[i]);
 			sb.append(" ");
 		}
-		sb.append(returnType.getParameterizedQualifiedSourceName());
+		sb.append(this.returnTypeName);
+		
 		sb.append(" ");
 		sb.append(getName());
 

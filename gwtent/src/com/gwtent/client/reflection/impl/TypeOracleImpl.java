@@ -27,6 +27,7 @@ import java.util.Map;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.NotFoundException;
 import com.gwtent.client.reflection.Parameter;
+import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 
@@ -128,10 +129,27 @@ public class TypeOracleImpl implements TypeOracle {
 
 	
 	
-	public static Type getType(String name) throws NotFoundException {
+	public Type getType(String name) {
 		Type type = findType(name);
 		if (type == null) {
-			throw new NotFoundException(name);
+			if (PrimitiveType.BOOLEAN.getSimpleSourceName().equals(name))
+				return PrimitiveType.BOOLEAN;
+			else if (PrimitiveType.BYTE.getSimpleSourceName().equals(name))
+				return PrimitiveType.BYTE;
+			else if (PrimitiveType.CHAR.getSimpleSourceName().equals(name))
+				return PrimitiveType.CHAR;
+			else if (PrimitiveType.DOUBLE.getSimpleSourceName().equals(name))
+				return PrimitiveType.DOUBLE;
+			else if (PrimitiveType.FLOAT.getSimpleSourceName().equals(name))
+				return PrimitiveType.FLOAT;
+			else if (PrimitiveType.INT.getSimpleSourceName().equals(name))
+				return PrimitiveType.INT;
+			else if (PrimitiveType.LONG.getSimpleSourceName().equals(name))
+				return PrimitiveType.LONG;
+			else if (PrimitiveType.SHORT.getSimpleSourceName().equals(name))
+				return PrimitiveType.SHORT;
+			else if (PrimitiveType.VOID.getSimpleSourceName().equals(name))
+				return PrimitiveType.VOID;
 		}
 		return type;
 	}
@@ -143,7 +161,10 @@ public class TypeOracleImpl implements TypeOracle {
 
 	public ClassType getClassType(String name) {
 		Type type = findType(name);
-		return type.isClass();
+		if (type != null)
+			return type.isClass();
+		else
+			return null;
 	}
 
 	public static void putType(Type type) {
@@ -157,6 +178,6 @@ public class TypeOracleImpl implements TypeOracle {
 	private static Map<String, Type> typeMap = new HashMap<String, Type>();
 
 	public ClassType getClassType(Class<?> classz) {
-		return getClassType(classz.getName());
+		return getClassType(classz.getName().replace('$', '.'));
 	}
 }

@@ -43,7 +43,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  */
 public abstract class LogableSourceCreator {
 
-	private boolean useLog = true;
+	private boolean useLog = false;
 	private SourceWriter sourceWriter = null; 
 	
 	protected TreeLogger logger;

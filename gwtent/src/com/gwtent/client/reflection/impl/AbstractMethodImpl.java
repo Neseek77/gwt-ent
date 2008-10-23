@@ -180,16 +180,13 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
 			} else {
 				needComma = true;
 			}
-			if (isVarArgs() && i == c - 1) {
+			if ((isVarArgs() && i == c - 1) && (param.getType() != null)) {
 				ArrayType arrayType = param.getType().isArray();
 				assert (arrayType != null);
-				sb.append(arrayType.getComponentType()
-						.getParameterizedQualifiedSourceName());
+				sb.append(arrayType.getComponentType().getParameterizedQualifiedSourceName());
 				sb.append("...");
 			} else {
-				sb
-						.append(param.getType()
-								.getParameterizedQualifiedSourceName());
+				sb.append(param.getTypeName());
 			}
 			sb.append(" ");
 			sb.append(param.getName());
@@ -292,5 +289,9 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
   public void addAnnotations(
       List<AnnotationStore> annotations) {
     this.annotations.addAnnotations(annotations);
+  }
+  
+  public String toString(){
+  	return getReadableDeclaration();
   }
 }

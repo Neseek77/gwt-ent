@@ -17,12 +17,15 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package com.gwtent.client.reflection;
+package com.gwtent.client.reflection.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gwtent.client.reflection.impl.TypeImpl;
+import com.gwtent.client.reflection.ArrayType;
+import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.PrimitiveType;
+import com.gwtent.client.reflection.Type;
 
 
 public class PrimitiveTypeImpl extends TypeImpl implements Type, PrimitiveType {
@@ -33,7 +36,7 @@ public class PrimitiveTypeImpl extends TypeImpl implements Type, PrimitiveType {
 	    return (PrimitiveTypeImpl)getMap().get(typeName);
 	  }
 
-	  static PrimitiveType create(String name, String jni) {
+	  public static PrimitiveType create(String name, String jni) {
 	    PrimitiveType type = new PrimitiveTypeImpl(name, jni);
 	    Object existing = getMap().put(name, type);
 	    assert (existing == null);
@@ -129,4 +132,8 @@ public class PrimitiveTypeImpl extends TypeImpl implements Type, PrimitiveType {
 //	  PrimitiveType getSubstitutedType(JParameterizedType parameterizedType) {
 //	    return this;
 //	  }
+	  
+	  public String toString() {
+	    return name;
+	  }
 }

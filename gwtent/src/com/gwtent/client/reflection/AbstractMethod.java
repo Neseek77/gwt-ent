@@ -2,7 +2,7 @@ package com.gwtent.client.reflection;
 
 import com.gwtent.client.reflection.impl.ConstructorImpl;
 
-public interface AbstractMethod {
+public interface AbstractMethod extends HasAnnotations, HasMetaData  {
 
 	public Parameter findParameter(String name);
 

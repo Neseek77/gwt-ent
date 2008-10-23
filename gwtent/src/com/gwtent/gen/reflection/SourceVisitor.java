@@ -98,6 +98,10 @@ public class SourceVisitor extends LogableSourceCreator {
 		if (classType.getSuperclass() != null)
 			processRelationClasses(types, classType.getSuperclass());
 		
+		for (JClassType type : classType.getImplementedInterfaces()){
+			addClassIfNotExists(types, type);
+		}
+		
 		for (JField field : classType.getFields()) {
 			addClassIfNotExists(types, field.getType().isClassOrInterface());
 		}

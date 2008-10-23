@@ -1,5 +1,7 @@
 package com.gwtent.client.reflection;
 
+import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
+
 public interface PrimitiveType extends Type {
 
 	public static final PrimitiveType BOOLEAN = PrimitiveTypeImpl.create("boolean", "Z");

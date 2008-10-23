@@ -28,13 +28,14 @@ import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Parameter;
 import com.gwtent.client.reflection.Type;
+import com.gwtent.client.reflection.TypeOracle;
 
 public class ParameterImpl implements HasAnnotations, Parameter {
 	private final String name;
 	
 	private final Annotations annotations = new Annotations();
 
-	private TypeImpl type;
+	private Type type;
 
 	private String typeName;
 
@@ -80,7 +81,10 @@ public class ParameterImpl implements HasAnnotations, Parameter {
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.Parameter#getType()
 	 */
-	public TypeImpl getType() {
+	public Type getType() {
+		if (type == null)
+			type = TypeOracle.Instance.getType(typeName);
+		
 		return type;
 	}
 
