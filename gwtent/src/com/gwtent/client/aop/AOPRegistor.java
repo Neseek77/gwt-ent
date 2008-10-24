@@ -2,7 +2,11 @@ package com.gwtent.client.aop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 
@@ -17,11 +21,15 @@ public class AOPRegistor {
 	 */
 	public void bindInterceptor(String methodMatcherClassName,
 			MethodInterceptor... interceptors) {
-		methodAspects.add(new MethodAspect(methodMatcherClassName, interceptors));
+		methodAspects.put(methodMatcherClassName, new MethodAspect(methodMatcherClassName, interceptors));
 	}
 	
-	public int size(){
-		return methodAspects.size();
+	public List<MethodInterceptor> getInterceptors(String matcherClassName){
+		return methodAspects.get(matcherClassName).getInterceptors();
+	}
+	
+	public Collection<String> getMatcherClassNames(){
+		return methodAspects.keySet();
 	}
 	
 	public static AOPRegistor getInstance(){
@@ -34,9 +42,15 @@ public class AOPRegistor {
 		
 	}
 	
+//	protected List<MethodAspect> getMethodAspects(){
+//		return methodAspects;
+//	}
+
+	private Map<String, MethodAspect> methodAspects = new HashMap<String, MethodAspect>();
 	
-	public class MethodAspect {
+	private static class MethodAspect {
 		final String methodMatcherClassName;
+		
 		public String getMethodMatcherClassName() {
 			return methodMatcherClassName;
 		}
@@ -52,10 +66,4 @@ public class AOPRegistor {
 			this.interceptors = Arrays.asList(interceptors);
 		}
 	} 
-	
-	public List<MethodAspect> getMethodAspects(){
-		return methodAspects;
-	}
-	
-	private List<MethodAspect> methodAspects = new ArrayList<MethodAspect>();
 }
