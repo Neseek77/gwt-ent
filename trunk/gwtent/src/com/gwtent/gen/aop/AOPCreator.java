@@ -15,50 +15,31 @@
  */
 package com.gwtent.gen.aop;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.ext.BadPropertyValueException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gwt.core.ext.GeneratorContext;
-import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JParameter;
-import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JRealClassType;
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-
 import com.gwtent.aop.BindRegistry;
+import com.gwtent.aop.MatcherQuery;
 import com.gwtent.aop.matcher.MethodMatcher;
 import com.gwtent.client.aop.AOPRegistor;
-import com.gwtent.client.aop.AOPRegistor.MethodAspect;
-import com.gwtent.client.aop.intercept.Interceptor;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
-import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.reflection.impl.ClassTypeImpl;
-import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
-import com.gwtent.client.reflection.impl.TypeImpl;
-import com.gwtent.client.test.TestReflection;
-import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.gen.LogableSourceCreator;
-import com.gwtent.aop.*;
-
-import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 
 public class AOPCreator extends LogableSourceCreator {
 
 	private final boolean isUseLog = true;
 	
 	static final String SUFFIX = "__AOP";
+	
+	private Map<Method, List<MethodInterceptor>> interceptMethods = new HashMap<Method, List<MethodInterceptor>>();
 
 	public AOPCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -76,17 +57,41 @@ public class AOPCreator extends LogableSourceCreator {
 	}
 
 	protected void createSource(SourceWriter source, JClassType classType){
+		processMethods(classType);
+		
+		source.println("private static final ClassType classType = TypeOracle.Instance.getClassType(" + classType.getSimpleSourceName() + ".class);");
+		source.println();
+		
+		declareMethodInvocation(source);
+		
+		source.println();
 		source.println("public " + getSimpleUnitName(classType) + "(){");
 		source.indent();
-		//source.println("addAnnotations();");
-		//source.println("addFields();");
-		//source.println("addMethods();");
+		
+		createMethodInvocation(source);
+		
 		source.outdent();
 		source.println("}");
-		//processMethods(source, classType);
+		
 	}
 	
-	private void processMethods(SourceWriter source, JClassType classType){
+	private void declareMethodInvocation(SourceWriter source){
+		for (Method method : interceptMethods.keySet()) {
+			source.println("private final MethodInvocationLinkedAdapter Ivn_" + MethodNameProvider.getName(method));
+		}
+	}
+	
+	private void createMethodInvocation(SourceWriter source){
+		for (Method method : interceptMethods.keySet()) {
+			source.println("{");
+			
+			source.println("method = classType.findMethod(\"call\", new String[]{\"java.lang.Number\"});");
+			
+			source.println("}");
+		}
+	}
+	
+	private void processMethods(JClassType classType){
 		MatcherQuery query = BindRegistry.getInstance();
 		Class<?> classz = null;
 		try {
@@ -101,7 +106,7 @@ public class AOPCreator extends LogableSourceCreator {
 				
 				List<MethodInterceptor> interceptors = query.matches(method);
 				if (interceptors.size() > 0){
-					
+					interceptMethods.put(method, interceptors);
 				}
 			}
 		}
@@ -147,15 +152,14 @@ public class AOPCreator extends LogableSourceCreator {
 	 * We supposed everything should be there when Code Generator started
 	 */
 	protected void AsyncRegistor(){
-		if (AOPRegistor.getInstance().size() > 0){
+		if (AOPRegistor.getInstance().getMatcherClassNames().size() > 0){
 			if (BindRegistry.getInstance().size() == 0){
-				for (int i = 0; i < AOPRegistor.getInstance().size(); i++){
-					MethodAspect aspect = AOPRegistor.getInstance().getMethodAspects().get(i);
+				for (String matcherClassName : AOPRegistor.getInstance().getMatcherClassNames()) {
 					try {
-						Class<MethodMatcher> classz = (Class<MethodMatcher>) Class.forName(aspect.getMethodMatcherClassName());
+						Class<MethodMatcher> classz = (Class<MethodMatcher>) Class.forName(matcherClassName);
 						try {
 							MethodMatcher matcher = classz.getConstructor(null).newInstance(null);
-							BindRegistry.getInstance().bindInterceptor(matcher.getClassMatcher(), matcher.getMethodMatcher(), aspect.getInterceptors());
+							BindRegistry.getInstance().bindInterceptor(matcher.getClassMatcher(), matcher.getMethodMatcher(), AOPRegistor.getInstance().getInterceptors(matcherClassName));
 						} catch (Exception e) {
 							throw new RuntimeException(e);
 						}
@@ -166,6 +170,30 @@ public class AOPCreator extends LogableSourceCreator {
 			}
 		}
 	}
+
 	
+	private static class MethodNameProvider {
+		private static Map<Method, String> names = new HashMap<Method, String>();
+		
+		private static String findNextName(Method method){
+			String result = method.getName();
+			Integer i = 0;
+			
+			while (names.containsValue(result)) {
+				result = method.getName() + i.toString();
+			}
+			return result;
+		}
+		
+		static String getName(Method method){
+			String result = names.get(method);
+			if (result == null){
+				result = findNextName(method);
+				names.put(method, result);
+			}
+			
+			return result;
+		}
+	}
 
 }
