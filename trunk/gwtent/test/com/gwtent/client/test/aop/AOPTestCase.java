@@ -49,6 +49,7 @@ public class AOPTestCase extends GWTTestCase {
 		}
 
 		public Receiver call(Number number) {
+			System.out.println("The call here...");
 			return RECEIVERS.get(number);
 		}
 	}
@@ -68,9 +69,12 @@ public class AOPTestCase extends GWTTestCase {
 
 	public static class PhoneLoggerInterceptor implements MethodInterceptor {
 		public Object invoke(MethodInvocation invocation) throws Throwable {
-			for (Object arg : invocation.getArguments())
+			for (Object arg : invocation.getArguments()){
+				System.out.println("Do something in PhoneLoggerInterceptor...");
+				
 				if (arg instanceof Number)
 					System.out.println("CALL: " + arg);
+			}
 
 			return invocation.proceed();
 		}
@@ -78,6 +82,8 @@ public class AOPTestCase extends GWTTestCase {
 
 	public static class PhoneRedirectInterceptor implements MethodInterceptor {
 		public Object invoke(MethodInvocation invocation) throws Throwable {
+			invocation.proceed();
+			System.out.println("Do something in PhoneRedirectInterceptor...");
 			return new Receiver("Alberto's Pizza Place");
 		}
 	}
