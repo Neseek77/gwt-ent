@@ -17,6 +17,7 @@ package com.gwtent.gen.aop;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +27,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.aop.BindRegistry;
-import com.gwtent.aop.MatcherQuery;
-import com.gwtent.aop.matcher.MethodMatcher;
 import com.gwtent.client.aop.AOPRegistor;
-import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class AOPCreator extends LogableSourceCreator {
@@ -39,7 +36,7 @@ public class AOPCreator extends LogableSourceCreator {
 	
 	static final String SUFFIX = "__AOP";
 	
-	private Map<Method, List<MethodInterceptor>> interceptMethods = new HashMap<Method, List<MethodInterceptor>>();
+	private Map<Method, List<String>> interceptMethods = new HashMap<Method, List<String>>();
 
 	public AOPCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -59,6 +56,8 @@ public class AOPCreator extends LogableSourceCreator {
 	protected void createSource(SourceWriter source, JClassType classType){
 		processMethods(classType);
 		
+		createInterceptorMap(source);
+		
 		source.println("private static final ClassType classType = TypeOracle.Instance.getClassType(" + classType.getSimpleSourceName() + ".class);");
 		source.println();
 		
@@ -75,6 +74,35 @@ public class AOPCreator extends LogableSourceCreator {
 		
 	}
 	
+	private void createInterceptorMap(SourceWriter source){
+		source.indent();
+		source.println("");
+		source.println("private static class InterceptorMap{");
+		source.indent();
+		source.println("static Map<Method, String> interceptors = new HashMap<Method, String>();");
+		source.println("static List<String> matcherClassNames = null;");
+		
+		source.println("static {");
+		
+		source.indent();
+		
+		
+		for(Method method : interceptMethods.keySet()){
+			source.println("matcherClassNames = new ArrayList<String>();");
+			List<String> matcherClassNames = interceptMethods.get(method);
+			for (String className : matcherClassNames){
+				source.println("matcherClassNames.add(\"" + className + "\");");
+			}			
+			source.println("interceptors.put(classType.findMethod(\"" + method.getName() + "\", " + getParamAsSourceCode(method) + "), matcherClassNames);");
+		}
+		source.println("}");
+		
+		source.outdent();
+		source.println("}");
+		source.outdent();
+		source.outdent();
+	}
+	
 	private void declareMethodInvocation(SourceWriter source){
 		for (Method method : interceptMethods.keySet()) {
 			source.println("private final MethodInvocationLinkedAdapter Ivn_" + MethodNameProvider.getName(method));
@@ -85,8 +113,13 @@ public class AOPCreator extends LogableSourceCreator {
 		for (Method method : interceptMethods.keySet()) {
 			source.println("{");
 			
-			source.println("method = classType.findMethod(\"call\", new String[]{\"java.lang.Number\"});");
-			
+			source.println("Method method = classType.findMethod(\"" + method.getName() + "\", " + getParamAsSourceCode(method) + ");");
+			source.println("List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();");
+			source.println("for (String matcherClassName : InterceptorMap.interceptors.get(method)){");
+			source.println("interceptors.addAll(AOPRegistor.getInstance().getInterceptors(matcherClassName));");
+			source.println("}");
+			source.println("interceptors.add(new MethodInterceptorFinalAdapter());");
+			source.println("Ivn_" + MethodNameProvider.getName(method) + " = new MethodInvocationLinkedAdapter(method, this, interceptors);");
 			source.println("}");
 		}
 	}
@@ -95,7 +128,10 @@ public class AOPCreator extends LogableSourceCreator {
 		MatcherQuery query = BindRegistry.getInstance();
 		Class<?> classz = null;
 		try {
-			classz = Class.forName(classType.getQualifiedSourceName());
+			String jniSig = classType.getJNISignature();
+      jniSig = jniSig.substring(1, jniSig.length() - 1);
+      String className = jniSig.replace('/', '.');
+			classz = Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
@@ -104,9 +140,9 @@ public class AOPCreator extends LogableSourceCreator {
 			for (int i = 0; i < methods.length; i++) {
 				Method method = methods[i];
 				
-				List<MethodInterceptor> interceptors = query.matches(method);
-				if (interceptors.size() > 0){
-					interceptMethods.put(method, interceptors);
+				List<String> matcherClassNames = query.matches(method);
+				if (matcherClassNames.size() > 0){
+					interceptMethods.put(method, matcherClassNames);
 				}
 			}
 		}
@@ -155,20 +191,34 @@ public class AOPCreator extends LogableSourceCreator {
 		if (AOPRegistor.getInstance().getMatcherClassNames().size() > 0){
 			if (BindRegistry.getInstance().size() == 0){
 				for (String matcherClassName : AOPRegistor.getInstance().getMatcherClassNames()) {
-					try {
-						Class<MethodMatcher> classz = (Class<MethodMatcher>) Class.forName(matcherClassName);
-						try {
-							MethodMatcher matcher = classz.getConstructor(null).newInstance(null);
-							BindRegistry.getInstance().bindInterceptor(matcher.getClassMatcher(), matcher.getMethodMatcher(), AOPRegistor.getInstance().getInterceptors(matcherClassName));
-						} catch (Exception e) {
-							throw new RuntimeException(e);
-						}
-					} catch (ClassNotFoundException e) {
-						throw new RuntimeException(e);
-					}
+					BindRegistry.getInstance().bindInterceptor(matcherClassName);
 				}
 			}
 		}
+	}
+	
+	private String getParamAsSourceCode(Method method){
+		String result = "new String[]{";
+		
+		boolean needComma = false;
+		for (String type : getParamAsString(method)){
+			type = "\"" + type + "\"";
+			if (needComma)
+				result = result + ", " + type;
+			else
+				result = result + type;
+		}
+		
+		result = result + "}";
+		return result;
+	}
+	
+	private String[] getParamAsString(Method method){
+		List<String> result = new ArrayList<String>();
+		for (Class<?> clasz : method.getParameterTypes()){
+			result.add(clasz.getCanonicalName());
+		}
+		return result.toArray(new String[]{});
 	}
 
 	
