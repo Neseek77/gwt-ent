@@ -22,22 +22,9 @@ public class AOPTestCase extends GWTTestCase {
 	}
 
 	protected void gwtSetUp() throws Exception {
-
-	}
-
-	public static class TA {
-		public TA(String a) {
-
-		}
-	}
-
-	public static class TB extends TA {
-
-		public TB() {
-			super("abcd");
-
-		}
-
+		AOPRegistor.getInstance().bindInterceptor(
+				"com.gwtent.client.test.aop.TestMatcher", new PhoneLoggerInterceptor(),
+				new PhoneRedirectInterceptor());
 	}
 
 	public static class Phone implements Aspectable {
@@ -88,36 +75,28 @@ public class AOPTestCase extends GWTTestCase {
 		}
 	}
 
-//	public void testAOPInner() {
-//		
-//		// BindRegistry.getInstance().bindInterceptor(
-//		// Matchers.subclassesOf(Phone.class),
-//		// Matchers.returns(Matchers.only(Receiver.class)),
-//		// new PhoneLoggerInterceptor(),
-//		// new PhoneRedirectInterceptor()
-//		// );
-//
-//		// moduleDef.mapServlet(path, servletClass);
-//		// moduleDef = getModuleDef(logger, parts.moduleName); GWTShellServlet.java
-//
-//		// delayTestFinish(50000);
-//
-//		AOPRegistor.getInstance().bindInterceptor(
-//				"com.gwtent.client.test.aop.TestMatcher", new PhoneLoggerInterceptor(),
-//				new PhoneRedirectInterceptor());
-//
-//		System.out.println(Phone.class.getName());
-//
-//		Phone phone = (Phone) GWT.create(Phone.class);
-//		Receiver auntJane = phone.call(123456789);
-//		System.out.println(auntJane);
-//		// assertTrue(test.sayHello("James").equals("Hello: James"));
-//
-//		// Injector i = Guice.createInjector(new PhoneModule());
-//		// Phone phone = i.getInstance(Phone.class);
-//		// Receiver auntJane = phone.call(123456789);
-//		// System.out.println(auntJane);
-//	}
+	public void testAOPInner() {
+		
+		// BindRegistry.getInstance().bindInterceptor(
+		// Matchers.subclassesOf(Phone.class),
+		// Matchers.returns(Matchers.only(Receiver.class)),
+		// new PhoneLoggerInterceptor(),
+		// new PhoneRedirectInterceptor()
+		// );
+
+		// moduleDef.mapServlet(path, servletClass);
+		// moduleDef = getModuleDef(logger, parts.moduleName); GWTShellServlet.java
+
+		// delayTestFinish(50000);
+
+
+
+		System.out.println(Phone.class.getName());
+
+		Phone phone = (Phone) GWT.create(Phone.class);
+		Receiver auntJane = phone.call(123456789);
+		System.out.println(auntJane);
+	}
 	
 	public void testAOPDirect(){
 		Phone phone = new TestAOP_ForGen();
@@ -125,9 +104,9 @@ public class AOPTestCase extends GWTTestCase {
 		System.out.println(auntJane);
 	}
 
-	// public void testAOP(){
-	// System.out.println(TestAOP.class.getName());
-	// TestAOP test = (TestAOP)GWT.create(TestAOP.class);
-	// assertTrue(test.sayHello("James").equals("Hello: James"));
-	// }
+//	 public void testAOP(){
+//	 System.out.println(TestAOP.class.getName());
+//	 TestAOP test = (TestAOP)GWT.create(TestAOP.class);
+//	 assertTrue(test.sayHello("James").equals("Hello: James"));
+//	 }
 }
