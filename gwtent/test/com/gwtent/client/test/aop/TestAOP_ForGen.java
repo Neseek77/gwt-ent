@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.client.aop.AspectException;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.aop.intercept.MethodInvocation;
@@ -19,10 +20,14 @@ import com.gwtent.client.test.aop.AOPTestCase.Receiver;
 
 public class TestAOP_ForGen extends AOPTestCase.Phone {
 	private static class InterceptorMap{
-		static Map<Method, String> interceptors = new HashMap<Method, String>();
-		
+		static Map<Method, List<String>> interceptors = new HashMap<Method, List<String>>();
+		static List<String> matcherClassNames = null;
+
 		static {
-			interceptors.put(classType.findMethod("call", new String[]{"java.lang.Number"}), "com.gwtent.client.test.aop.TestMatcher");
+		  //loop...
+			matcherClassNames = new ArrayList<String>();
+			matcherClassNames.add("com.gwtent.client.test.aop.TestMatcher");
+			interceptors.put(classType.findMethod("call", new String[]{"java.lang.Number"}), matcherClassNames);
 		}
 	}
 	
@@ -35,9 +40,13 @@ public class TestAOP_ForGen extends AOPTestCase.Phone {
 		Method method = null;
 		//Do loop...
 		method = classType.findMethod("call", new String[]{"java.lang.Number"});
+		
 		List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
-		interceptors.add(new AOPTestCase.PhoneLoggerInterceptor());
-		interceptors.add(new AOPTestCase.PhoneRedirectInterceptor());
+		for (String matcherClassName : InterceptorMap.interceptors.get(method)){
+			interceptors.addAll(AOPRegistor.getInstance().getInterceptors(matcherClassName));
+		}
+//		interceptors.add(new AOPTestCase.PhoneLoggerInterceptor());
+//		interceptors.add(new AOPTestCase.PhoneRedirectInterceptor());
 		interceptors.add(new MethodInterceptorFinalAdapter());
 		Ivn_call = new MethodInvocationLinkedAdapter(method, this, interceptors);
 	}
