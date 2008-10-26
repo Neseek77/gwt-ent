@@ -1,18 +1,17 @@
-package com.gwtent.aop;
+package com.gwtent.gen.aop;
 
 import java.lang.reflect.Method;
 import java.util.List;
 
-import com.gwtent.client.aop.intercept.MethodInterceptor;
-
 public interface MatcherQuery {
 	/**
 	 * First time query for a class, if matches, then do matches(Method)
-	 * if matches, get all the MethodInterceptor
+	 * if matches, get all the MatcherClassName
+	 * AOPRegistry can get all interceptors from MatcherClassName
 	 * @param clazz
 	 * @return
 	 */
 	boolean matches(Class<?> clazz);
 
-	List<MethodInterceptor> matches(Method method);
+	List<String> matches(Method method);
 }
