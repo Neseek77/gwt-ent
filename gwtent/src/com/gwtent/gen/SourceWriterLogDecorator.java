@@ -37,7 +37,8 @@ public class SourceWriterLogDecorator implements SourceWriter {
 	
 	private String lineCache = "";
 	
-	private final TreeLogger.Type logType = TreeLogger.ERROR;
+	//private final TreeLogger.Type logType = TreeLogger.ERROR;
+	private final TreeLogger.Type logType = TreeLogger.DEBUG;
 	
 	public SourceWriterLogDecorator(SourceWriter sourceWriter, TreeLogger logger, boolean useLog, int baseLineNumber){
 		this.sourceWriter = sourceWriter;
