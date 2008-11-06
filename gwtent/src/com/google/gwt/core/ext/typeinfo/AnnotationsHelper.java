@@ -13,7 +13,7 @@ package com.google.gwt.core.ext.typeinfo;
 import java.lang.annotation.Annotation;
 
 public class AnnotationsHelper {
-  public static Annotation[] getAnnotations(JRealClassType classType){
+  public static Annotation[] getAnnotations(JClassType classType){
     return classType.getAnnotations();
   }
   

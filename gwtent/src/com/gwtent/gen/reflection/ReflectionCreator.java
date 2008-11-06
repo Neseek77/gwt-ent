@@ -52,224 +52,502 @@ public class ReflectionCreator extends LogableSourceCreator {
 		super(logger, context, typeName);
 	}
 
-	protected void createSource(SourceWriter source, JClassType classType) {
-		String className = classType.getSimpleSourceName();
-
-		source.println("public " + getSimpleUnitName(classType) + "(){");
-		source.indent();
-		source.println("super(\"" + classType.getQualifiedSourceName() + "\");");
-		source.println("addClassMeta();");
-		source.println("addAnnotations();");
-		source.println("addFields();");
-		source.println("addMethods();");
-		source.println("");
-		if (classType.getSuperclass() != null){
-			source.println("if (" + "TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\")" + " != null)");
-			source.println("setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\").isClassOrInterface());");
+	public static class ReflectionSourceCreator{
+		private final String className;
+		private final SourceWriter sourceWriter;
+		private final JClassType classType;
+		private final com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle;
+		
+		public ReflectionSourceCreator(String className, JClassType classType, SourceWriter sourceWriter, com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle){
+			this.className = className;
+			this.sourceWriter = sourceWriter;
+			this.classType = classType;
+			this.typeOracle = typeOracle;
 		}
 		
-		source.println();
-		for (JClassType type : classType.getImplementedInterfaces()){
-			source.println("if (" + "TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\")" + " != null)");
-			source.println("addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\").isClassOrInterface());");
+		public void createSource() {
+			//System.out.println("ReflectionSourceCreator start :" + className);
+			
+			sourceWriter.println("public " + className + "(){");
+			sourceWriter.indent();
+			sourceWriter.println("super(\"" + classType.getQualifiedSourceName() + "\");");
+			sourceWriter.println("addClassMeta();");
+			sourceWriter.println("addAnnotations();");
+			sourceWriter.println("addFields();");
+			sourceWriter.println("addMethods();");
+			sourceWriter.println("");
+			if (classType.getSuperclass() != null){
+				sourceWriter.println("if (" + "TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\")" + " != null)");
+				sourceWriter.println("setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\").isClassOrInterface());");
+			}
+			
+			sourceWriter.println();
+			for (JClassType type : classType.getImplementedInterfaces()){
+				sourceWriter.println("if (" + "TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\")" + " != null)");
+				sourceWriter.println("addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\").isClassOrInterface());");
+			}
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+
+			sourceWriter
+					.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
+			sourceWriter.indent();
+			sourceWriter.println("if (args.length != paramCount){");
+			sourceWriter.indent();
+			sourceWriter
+					.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+			sourceWriter.println();
+
+			JMethod[] methods = classType.getMethods();
+
+			sourceWriter.println("public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {");
+			sourceWriter.indent();
+
+			sourceWriter.println(classType.getQualifiedSourceName() + " content = (" + classType.getQualifiedSourceName() + ")instance;");
+
+			sourceWriter.println("if (args == null){");
+			sourceWriter.indent();
+			sourceWriter.println("args = new Object[]{};");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+
+			for (JMethod method : methods) {
+				if (! method.isPublic())
+					continue;
+				
+				String methodName = method.getName();
+				JParameter[] methodParameters = method.getParameters();
+				JType returnType = method.getReturnType();
+
+				sourceWriter.println("if (methodName.equals(\"" + methodName + "\")) {");
+				sourceWriter.indent();
+				sourceWriter.println("checkInvokeParams(methodName, " + methodParameters.length	+ ", args);");
+
+				if (needCatchException(method)){
+					sourceWriter.println("try{");
+					sourceWriter.indent();
+				}
+				
+				if (!returnType.getSimpleSourceName().equals("void")) {
+					sourceWriter.println("return "
+							+ boxIfNeed(returnType.getSimpleSourceName(), "content."
+									+ methodName + "(" + getInvokeParams(methodParameters, "args")
+									+ ")") + ";");
+				} else {
+					sourceWriter.println("content." + methodName + "("
+							+ getInvokeParams(methodParameters, "args") + ")" + ";");
+					sourceWriter.println("return null;");
+				}
+				
+				if (needCatchException(method)){
+					sourceWriter.println("}catch (Throwable e){");
+					sourceWriter.println("throw new RuntimeException(e);");
+					sourceWriter.println("}");
+					sourceWriter.outdent();
+				}
+
+				sourceWriter.outdent();
+				sourceWriter.print("} else ");
+
+			}
+			sourceWriter.println("{");
+			sourceWriter.indent();
+			sourceWriter
+					.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+			sourceWriter.println();
+
+			// -----Add Class MetaData--------------------------------
+			addClassMeta(classType, sourceWriter);
+			// -----Add Class Annotation------------------------------------
+			addClassAnnotation(classType, sourceWriter);
+			// -----Add fields----------------------------------------
+			addFields(classType, sourceWriter);
+			// -----Add methods---------------------------------------
+			addMethods(classType, sourceWriter);
 		}
-		source.outdent();
-		source.println("}");
+		
 
-		source
-				.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
-		source.indent();
-		source.println("if (args.length != paramCount){");
-		source.indent();
-		source
-				.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
-		source.outdent();
-		source.println("}");
-		source.outdent();
-		source.println("}");
-		source.println();
+		protected void addClassMeta(JClassType classType, SourceWriter source) {
+			source.println();
+			source.println("	//add fields");
+			source.println();
 
-		JMethod[] methods = classType.getMethods();
-
-		source.println("public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {");
-		source.indent();
-
-		source.println(classType.getQualifiedSourceName() + " content = (" + classType.getQualifiedSourceName() + ")instance;");
-
-		source.println("if (args == null){");
-		source.indent();
-		source.println("args = new Object[]{};");
-		source.outdent();
-		source.println("}");
-
-		for (JMethod method : methods) {
-			if (! method.isPublic())
-				continue;
-			
-			String methodName = method.getName();
-			JParameter[] methodParameters = method.getParameters();
-			JType returnType = method.getReturnType();
-
-			source.println("if (methodName.equals(\"" + methodName + "\")) {");
+			source.println("protected void addClassMeta(){");
 			source.indent();
-			source.println("checkInvokeParams(methodName, " + methodParameters.length	+ ", args);");
 
-			if (needCatchException(method)){
-				source.println("try{");
-				source.indent();
+			GeneratorHelper.addMetaDatas("this", source, classType);
+
+			source.outdent();
+			source.println("}");
+		}
+
+		protected void addClassAnnotation(JClassType classType, SourceWriter source) {
+			source.println();
+			source.println("  //add annotations of class");
+			source.println();
+
+			source.println("protected void addAnnotations(){");
+			source.indent();
+
+			Annotation[] annotations = AnnotationsHelper
+					.getAnnotations(classType);
+			GeneratorHelper
+					.addAnnotations(this.typeOracle, "this", source, annotations);
+
+			source.outdent();
+			source.println("}");
+		}
+
+		protected void addFields(JClassType classType, SourceWriter source) {
+			source.println();
+			source.println("	//add fields");
+			source.println();
+
+			source.println("protected void addFields(){");
+			source.indent();
+
+			source.println("FieldImpl field = null;");
+
+			JField[] fields = classType.getFields();
+
+			for (int i = 0; i < fields.length; i++) {
+				JField field = fields[i];
+				source.println("field = new FieldImpl(this, \"" + field.getName()
+						+ "\");");
+				source.println("field.addModifierBits("
+						+ GeneratorHelper.AccessDefToInt(field) + "); ");
+				source.println("field.setTypeName(\""
+						+ field.getType().getQualifiedSourceName() + "\");");
+
+				GeneratorHelper.addMetaDatas("field", source, field);
+
+				Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
+				GeneratorHelper.addAnnotations(this.typeOracle, "field", source,
+						annotations);
+
+				source.println();
+
 			}
-			
-			if (!returnType.getSimpleSourceName().equals("void")) {
-				source.println("return "
-						+ boxIfNeed(returnType.getSimpleSourceName(), "content."
-								+ methodName + "(" + getInvokeParams(methodParameters, "args")
-								+ ")") + ";");
-			} else {
-				source.println("content." + methodName + "("
-						+ getInvokeParams(methodParameters, "args") + ")" + ";");
-				source.println("return null;");
-			}
-			
-			if (needCatchException(method)){
-				source.println("}catch (Throwable e){");
-				source.println("throw new RuntimeException(e);");
-				source.println("}");
-				source.outdent();
+			source.outdent();
+			source.println("}");
+		}
+
+		protected void addMethods(JClassType classType, SourceWriter source) {
+			source.println();
+			source.println("	//add methods");
+			source.println();
+
+			source.println("protected void addMethods(){");
+			source.indent();
+
+			source.println("MethodImpl method = null;");
+
+			JMethod[] methods = classType.getMethods();
+
+			for (int i = 0; i < methods.length; i++) {
+				JMethod method = methods[i];
+				if (! method.isPublic())
+					continue;
+				
+				source.println("method = new MethodImpl(this, \"" + method.getName()
+						+ "\");");
+				source.println("method.addModifierBits("
+						+ GeneratorHelper.AccessDefToInt(method) + "); ");
+				source.println("method.setReturnTypeName(\""
+						+ method.getReturnType().getQualifiedSourceName() + "\");");
+
+				GeneratorHelper.addMetaDatas("method", source, method);
+				JParameter[] params = method.getParameters();
+				for (int j = 0; j < params.length; j++) {
+					JParameter param = params[j];
+					source.println("new ParameterImpl(method, \""
+							+ param.getType().getQualifiedSourceName() + "\", \""
+							+ param.getName() + "\");");
+					// TODO Support annotation of Parameter
+				}
+
+				Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
+				GeneratorHelper.addAnnotations(this.typeOracle, "method", source,
+						annotations);
+
+				source.println();
+
 			}
 
 			source.outdent();
-			source.print("} else ");
-
+			source.println("}");
 		}
-		source.println("{");
-		source.indent();
-		source
-				.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
-		source.outdent();
-		source.println("}");
-		source.outdent();
-		source.println("}");
-		source.println();
 
-		// -----Add Class MetaData--------------------------------
-		addClassMeta(classType, source);
-		// -----Add Class Annotation------------------------------------
-		addClassAnnotation(classType, source);
-		// -----Add fields----------------------------------------
-		addFields(classType, source);
-		// -----Add methods---------------------------------------
-		addMethods(classType, source);
-	}
-
-	protected void addClassMeta(JClassType classType, SourceWriter source) {
-		source.println();
-		source.println("	//add fields");
-		source.println();
-
-		source.println("protected void addClassMeta(){");
-		source.indent();
-
-		GeneratorHelper.addMetaDatas("this", source, classType);
-
-		source.outdent();
-		source.println("}");
-	}
-
-	protected void addClassAnnotation(JClassType classType, SourceWriter source) {
-		source.println();
-		source.println("  //add annotations of class");
-		source.println();
-
-		source.println("protected void addAnnotations(){");
-		source.indent();
-
-		Annotation[] annotations = AnnotationsHelper
-				.getAnnotations((JRealClassType) classType);
-		GeneratorHelper
-				.addAnnotations(this.typeOracle, "this", source, annotations);
-
-		source.outdent();
-		source.println("}");
-	}
-
-	protected void addFields(JClassType classType, SourceWriter source) {
-		source.println();
-		source.println("	//add fields");
-		source.println();
-
-		source.println("protected void addFields(){");
-		source.indent();
-
-		source.println("FieldImpl field = null;");
-
-		JField[] fields = classType.getFields();
-
-		for (int i = 0; i < fields.length; i++) {
-			JField field = fields[i];
-			source.println("field = new FieldImpl(this, \"" + field.getName()
-					+ "\");");
-			source.println("field.addModifierBits("
-					+ GeneratorHelper.AccessDefToInt(field) + "); ");
-			source.println("field.setTypeName(\""
-					+ field.getType().getQualifiedSourceName() + "\");");
-
-			GeneratorHelper.addMetaDatas("field", source, field);
-
-			Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
-			GeneratorHelper.addAnnotations(this.typeOracle, "field", source,
-					annotations);
-
-			source.println();
-
-		}
-		source.outdent();
-		source.println("}");
-	}
-
-	protected void addMethods(JClassType classType, SourceWriter source) {
-		source.println();
-		source.println("	//add methods");
-		source.println();
-
-		source.println("protected void addMethods(){");
-		source.indent();
-
-		source.println("MethodImpl method = null;");
-
-		JMethod[] methods = classType.getMethods();
-
-		for (int i = 0; i < methods.length; i++) {
-			JMethod method = methods[i];
-			if (! method.isPublic())
-				continue;
-			
-			source.println("method = new MethodImpl(this, \"" + method.getName()
-					+ "\");");
-			source.println("method.addModifierBits("
-					+ GeneratorHelper.AccessDefToInt(method) + "); ");
-			source.println("method.setReturnTypeName(\""
-					+ method.getReturnType().getQualifiedSourceName() + "\");");
-
-			GeneratorHelper.addMetaDatas("method", source, method);
-			JParameter[] params = method.getParameters();
-			for (int j = 0; j < params.length; j++) {
-				JParameter param = params[j];
-				source.println("new ParameterImpl(method, \""
-						+ param.getType().getQualifiedSourceName() + "\", \""
-						+ param.getName() + "\");");
-				// TODO Support annotation of Parameter
+		
+		private boolean needCatchException(JMethod method){
+			boolean result = false;
+			JClassType runtimeException = typeOracle.findType(RuntimeException.class.getCanonicalName()).isClassOrInterface();
+			for (JType type : method.getThrows()) {
+				result = ! type.isClassOrInterface().isAssignableTo(runtimeException);
+				if (result)
+					return result;
 			}
+			return result;
+		}
+		
 
-			Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
-			GeneratorHelper.addAnnotations(this.typeOracle, "method", source,
-					annotations);
+		protected String getInvokeParams(JParameter[] methodParams, String argeName) {
+			StringBuilder result = new StringBuilder("");
+			for (int i = 0; i < methodParams.length; i++) {
+				String requestType = methodParams[i].getType().getSimpleSourceName();
+				if (methodParams[i].getType().isTypeParameter() != null)
+					 requestType = methodParams[i].getType().isTypeParameter().getBaseType().getSimpleSourceName();
+				result.append("("	+ unboxIfNeed(requestType, argeName + "[" + i + "]") + ")");
 
-			source.println();
-
+				if (i != methodParams.length - 1) {
+					result.append(", ");
+				}
+			}
+			return result.toString();
 		}
 
-		source.outdent();
-		source.println("}");
+		/**
+		 * jdk1.4 did support box and unbox, so
+		 * 
+		 * @param type
+		 * @return
+		 */
+		public String ensureObjectType(String type) {
+			if (type.equals("String")) {
+				return "String";
+			} else if (type.equals("int")) {
+				return "Integer";
+			} else if (type.equals("byte")) {
+				return "Byte";
+			}
+			if (type.equals("short")) {
+				return "Short";
+			}
+			if (type.equals("long")) {
+				return "Long";
+			}
+			if (type.equals("float")) {
+				return "Float";
+			}
+			if (type.equals("double")) {
+				return "Double";
+			}
+			if (type.equals("boolean")) {
+				return "Boolean";
+			}
+			if (type.equals("char")) {
+				return "Character";
+			} else {
+				return type;
+			}
+		}
+
+		/**
+		 * object type not equals type, that means PrimitiveType
+		 * 
+		 * @param type
+		 * @return
+		 */
+		public boolean isPrimitiveType(String type) {
+			return !(ensureObjectType(type).equals(type));
+		}
+
+		/**
+		 * 
+		 * @param requestType
+		 * @param argeName
+		 * @return
+		 */
+		public String unboxIfNeed(String requestType, String argeName) {
+			//System.out.println("requestType: " + requestType + " argeName: " + argeName);
+			
+			if (!isPrimitiveType(requestType)) {
+				return "(" + requestType + ")" + argeName;
+			} else if (requestType.equals("int")) {
+				return "((Integer)" + argeName + ").intValue()";
+			} else if (requestType.equals("byte")) {
+				return "((Byte)" + argeName + ").byteValue()";
+			}
+			if (requestType.equals("short")) {
+				return "((Short)" + argeName + ").shortValue()";
+			}
+			if (requestType.equals("long")) {
+				return "((Byte)" + argeName + ").byteValue()";
+			}
+			if (requestType.equals("float")) {
+				return "((Long)" + argeName + ").longValue()";
+			}
+			if (requestType.equals("double")) {
+				return "((Double)" + argeName + ").doubleValue()";
+			}
+			if (requestType.equals("boolean")) {
+				return "((Boolean)" + argeName + ").booleanValue()";
+			}
+			if (requestType.equals("char")) {
+				return "((Character)" + argeName + ").charValue()";
+			} else {
+				return "(" + requestType + ")" + argeName;
+			}
+		}
+
+		/**
+		 * Method invoke return an Object, so this auto box
+		 * 
+		 * @param requestType
+		 * @param argeName
+		 * @return
+		 */
+		public String boxIfNeed(String requestType, String argeName) {
+			if (!isPrimitiveType(requestType)) {
+				// return "(" + requestType + ")" + argeName;
+				// Change to Object to avoid import problem
+				return "(Object)" + argeName;
+			} else if (requestType.equals("integer")) {
+				return "Integer.valueOf(" + argeName + ")";
+			} else if (requestType.equals("Byte")) {
+				return "Byte.valueOf(" + argeName + ")";
+			}
+			if (requestType.equals("Short")) {
+				return "Short.valueOf(" + argeName + ")";
+			}
+			if (requestType.equals("long")) {
+				return "Long.valueOf(" + argeName + ")";
+			}
+			if (requestType.equals("float")) {
+				return "Long.valueOf(" + argeName + ")";
+			}
+			if (requestType.equals("double")) {
+				return "Double.valueOf(" + argeName + ")";
+			}
+			if (requestType.equals("boolean")) {
+				return "Boolean.valueOf(" + argeName + ")";
+			}
+			if (requestType.equals("char")) {
+				return "Character.valueOf(" + argeName + ")";
+			} else {
+				return "(" + requestType + ")" + argeName;
+			}
+		}
+		
+
+	} 
+	
+	protected void createSource(SourceWriter source, JClassType classType) {
+		String className = getSimpleUnitName(classType);
+		new ReflectionSourceCreator(className, classType, source, this.typeOracle).createSource();
+
+//		source.println("public " + getSimpleUnitName(classType) + "(){");
+//		source.indent();
+//		source.println("super(\"" + classType.getQualifiedSourceName() + "\");");
+//		source.println("addClassMeta();");
+//		source.println("addAnnotations();");
+//		source.println("addFields();");
+//		source.println("addMethods();");
+//		source.println("");
+//		if (classType.getSuperclass() != null){
+//			source.println("if (" + "TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\")" + " != null)");
+//			source.println("setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\").isClassOrInterface());");
+//		}
+//		
+//		source.println();
+//		for (JClassType type : classType.getImplementedInterfaces()){
+//			source.println("if (" + "TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\")" + " != null)");
+//			source.println("addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType(\"" + type.getQualifiedSourceName() + "\").isClassOrInterface());");
+//		}
+//		source.outdent();
+//		source.println("}");
+//
+//		source
+//				.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
+//		source.indent();
+//		source.println("if (args.length != paramCount){");
+//		source.indent();
+//		source
+//				.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
+//		source.outdent();
+//		source.println("}");
+//		source.outdent();
+//		source.println("}");
+//		source.println();
+//
+//		JMethod[] methods = classType.getMethods();
+//
+//		source.println("public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {");
+//		source.indent();
+//
+//		source.println(classType.getQualifiedSourceName() + " content = (" + classType.getQualifiedSourceName() + ")instance;");
+//
+//		source.println("if (args == null){");
+//		source.indent();
+//		source.println("args = new Object[]{};");
+//		source.outdent();
+//		source.println("}");
+//
+//		for (JMethod method : methods) {
+//			if (! method.isPublic())
+//				continue;
+//			
+//			String methodName = method.getName();
+//			JParameter[] methodParameters = method.getParameters();
+//			JType returnType = method.getReturnType();
+//
+//			source.println("if (methodName.equals(\"" + methodName + "\")) {");
+//			source.indent();
+//			source.println("checkInvokeParams(methodName, " + methodParameters.length	+ ", args);");
+//
+//			if (needCatchException(method)){
+//				source.println("try{");
+//				source.indent();
+//			}
+//			
+//			if (!returnType.getSimpleSourceName().equals("void")) {
+//				source.println("return "
+//						+ boxIfNeed(returnType.getSimpleSourceName(), "content."
+//								+ methodName + "(" + getInvokeParams(methodParameters, "args")
+//								+ ")") + ";");
+//			} else {
+//				source.println("content." + methodName + "("
+//						+ getInvokeParams(methodParameters, "args") + ")" + ";");
+//				source.println("return null;");
+//			}
+//			
+//			if (needCatchException(method)){
+//				source.println("}catch (Throwable e){");
+//				source.println("throw new RuntimeException(e);");
+//				source.println("}");
+//				source.outdent();
+//			}
+//
+//			source.outdent();
+//			source.print("} else ");
+//
+//		}
+//		source.println("{");
+//		source.indent();
+//		source
+//				.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
+//		source.outdent();
+//		source.println("}");
+//		source.outdent();
+//		source.println("}");
+//		source.println();
+//
+//		// -----Add Class MetaData--------------------------------
+//		addClassMeta(classType, source);
+//		// -----Add Class Annotation------------------------------------
+//		addClassAnnotation(classType, source);
+//		// -----Add fields----------------------------------------
+//		addFields(classType, source);
+//		// -----Add methods---------------------------------------
+//		addMethods(classType, source);
 	}
 
 	/**
@@ -315,154 +593,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 		return null;
 	}
 
-	protected String getInvokeParams(JParameter[] methodParams, String argeName) {
-		StringBuilder result = new StringBuilder("");
-		for (int i = 0; i < methodParams.length; i++) {
-			String requestType = methodParams[i].getType().getSimpleSourceName();
-			if (methodParams[i].getType().isTypeParameter() != null)
-				 requestType = methodParams[i].getType().isTypeParameter().getBaseType().getSimpleSourceName();
-			result.append("("	+ unboxIfNeed(requestType, argeName + "[" + i + "]") + ")");
-
-			if (i != methodParams.length - 1) {
-				result.append(", ");
-			}
-		}
-		return result.toString();
-	}
-
-	/**
-	 * jdk1.4 did support box and unbox, so
-	 * 
-	 * @param type
-	 * @return
-	 */
-	public String ensureObjectType(String type) {
-		if (type.equals("String")) {
-			return "String";
-		} else if (type.equals("int")) {
-			return "Integer";
-		} else if (type.equals("byte")) {
-			return "Byte";
-		}
-		if (type.equals("short")) {
-			return "Short";
-		}
-		if (type.equals("long")) {
-			return "Long";
-		}
-		if (type.equals("float")) {
-			return "Float";
-		}
-		if (type.equals("double")) {
-			return "Double";
-		}
-		if (type.equals("boolean")) {
-			return "Boolean";
-		}
-		if (type.equals("char")) {
-			return "Character";
-		} else {
-			return type;
-		}
-	}
-
-	/**
-	 * object type not equals type, that means PrimitiveType
-	 * 
-	 * @param type
-	 * @return
-	 */
-	public boolean isPrimitiveType(String type) {
-		return !(ensureObjectType(type).equals(type));
-	}
-
-	/**
-	 * 
-	 * @param requestType
-	 * @param argeName
-	 * @return
-	 */
-	public String unboxIfNeed(String requestType, String argeName) {
-		//System.out.println("requestType: " + requestType + " argeName: " + argeName);
-		
-		if (!isPrimitiveType(requestType)) {
-			return "(" + requestType + ")" + argeName;
-		} else if (requestType.equals("int")) {
-			return "((Integer)" + argeName + ").intValue()";
-		} else if (requestType.equals("byte")) {
-			return "((Byte)" + argeName + ").byteValue()";
-		}
-		if (requestType.equals("short")) {
-			return "((Short)" + argeName + ").shortValue()";
-		}
-		if (requestType.equals("long")) {
-			return "((Byte)" + argeName + ").byteValue()";
-		}
-		if (requestType.equals("float")) {
-			return "((Long)" + argeName + ").longValue()";
-		}
-		if (requestType.equals("double")) {
-			return "((Double)" + argeName + ").doubleValue()";
-		}
-		if (requestType.equals("boolean")) {
-			return "((Boolean)" + argeName + ").booleanValue()";
-		}
-		if (requestType.equals("char")) {
-			return "((Character)" + argeName + ").charValue()";
-		} else {
-			return "(" + requestType + ")" + argeName;
-		}
-	}
-
-	/**
-	 * Method invoke return an Object, so this auto box
-	 * 
-	 * @param requestType
-	 * @param argeName
-	 * @return
-	 */
-	public String boxIfNeed(String requestType, String argeName) {
-		if (!isPrimitiveType(requestType)) {
-			// return "(" + requestType + ")" + argeName;
-			// Change to Object to avoid import problem
-			return "(Object)" + argeName;
-		} else if (requestType.equals("integer")) {
-			return "Integer.valueOf(" + argeName + ")";
-		} else if (requestType.equals("Byte")) {
-			return "Byte.valueOf(" + argeName + ")";
-		}
-		if (requestType.equals("Short")) {
-			return "Short.valueOf(" + argeName + ")";
-		}
-		if (requestType.equals("long")) {
-			return "Long.valueOf(" + argeName + ")";
-		}
-		if (requestType.equals("float")) {
-			return "Long.valueOf(" + argeName + ")";
-		}
-		if (requestType.equals("double")) {
-			return "Double.valueOf(" + argeName + ")";
-		}
-		if (requestType.equals("boolean")) {
-			return "Boolean.valueOf(" + argeName + ")";
-		}
-		if (requestType.equals("char")) {
-			return "Character.valueOf(" + argeName + ")";
-		} else {
-			return "(" + requestType + ")" + argeName;
-		}
-	}
-	
-	private boolean needCatchException(JMethod method){
-		boolean result = false;
-		JClassType runtimeException = typeOracle.findType(RuntimeException.class.getCanonicalName()).isClassOrInterface();
-		for (JType type : method.getThrows()) {
-			result = ! type.isClassOrInterface().isAssignableTo(runtimeException);
-			if (result)
-				return result;
-		}
-		return result;
-	}
 
 	@Override
 	protected String getSUFFIX() {
