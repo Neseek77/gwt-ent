@@ -95,7 +95,6 @@ public abstract class LogableSourceCreator {
 			}
 			return getUnitName(classType);
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
