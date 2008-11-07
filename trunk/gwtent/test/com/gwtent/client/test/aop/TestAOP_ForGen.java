@@ -8,14 +8,11 @@ import java.util.Map;
 import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.client.aop.AspectException;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
-import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.client.aop.intercept.impl.MethodInterceptorFinalAdapter;
-import com.gwtent.client.aop.intercept.impl.MethodInvocationAdapter;
 import com.gwtent.client.aop.intercept.impl.MethodInvocationLinkedAdapter;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.reflection.impl.MethodImpl;
 import com.gwtent.client.test.aop.AOPTestCase.Receiver;
 
 public class TestAOP_ForGen extends AOPTestCase.Phone {

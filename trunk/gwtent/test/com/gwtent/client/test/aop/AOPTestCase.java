@@ -1,14 +1,14 @@
 package com.gwtent.client.test.aop;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.gwtent.aop.matcher.Matcher;
-import com.gwtent.aop.matcher.Matchers;
-import com.gwtent.aop.matcher.MethodMatcher;
 import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.client.aop.Aspectable;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
@@ -54,7 +54,11 @@ public class AOPTestCase extends GWTTestCase {
 		}
 	}
 
+	@Aspect
 	public static class PhoneLoggerInterceptor implements MethodInterceptor {
+		
+		//execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)
+		@Around("com.gwtent.client.test.aop.AOPTestCase.Phone.*")
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			for (Object arg : invocation.getArguments()){
 				System.out.println("Do something in PhoneLoggerInterceptor...");
