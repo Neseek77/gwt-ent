@@ -10,12 +10,13 @@ public class TestMatcher implements MethodMatcher {
 
 	@Override
 	public Matcher<? super Class<?>> getClassMatcher() {
-		return Matchers.subclassesOf(TestAOP.class);
+		return Matchers.subclassesOf(Phone.class);
 	}
 
 	@Override
 	public Matcher<? super Method> getMethodMatcher() {
-		return Matchers.any();
+		return Matchers.returns(Matchers.only(Phone.Receiver.class));
+		//return Matchers.any();
 	}
 
 }

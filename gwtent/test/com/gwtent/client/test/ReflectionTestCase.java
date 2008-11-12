@@ -12,6 +12,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Reflection;
@@ -111,6 +112,16 @@ public class ReflectionTestCase extends GWTTestCase {
 
   public void testInheritance(){
   	
+  }
+  
+  public void testConstructor(){
+  	ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
+  	Constructor constructor = classType.findConstructor(new String[]{});
+  	assertNotNull(constructor);
+  	Object obj = constructor.newInstance();
+  	System.out.println(obj.getClass().getName());
+  	System.out.println(TestReflection.class.getName());
+  	assertTrue(obj.getClass().getName().equals(TestReflection.class.getName()));
   }
   
 }

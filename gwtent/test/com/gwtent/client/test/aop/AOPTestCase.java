@@ -1,7 +1,5 @@
 package com.gwtent.client.test.aop;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,9 +8,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.gwtent.client.aop.AOPRegistor;
-import com.gwtent.client.aop.Aspectable;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.aop.intercept.MethodInvocation;
+
+import com.gwtent.client.test.aop.Phone;
+import com.gwtent.client.test.aop.Phone.Receiver;
 
 public class AOPTestCase extends GWTTestCase {
 
@@ -25,33 +25,6 @@ public class AOPTestCase extends GWTTestCase {
 		AOPRegistor.getInstance().bindInterceptor(
 				"com.gwtent.client.test.aop.TestMatcher", new PhoneLoggerInterceptor(),
 				new PhoneRedirectInterceptor());
-	}
-
-	public static class Phone implements Aspectable {
-		private static final Map<Number, Receiver> RECEIVERS = new HashMap<Number, Receiver>();
-
-		static {
-			RECEIVERS.put(123456789, new Receiver("Aunt Jane"));
-			RECEIVERS.put(111111111, new Receiver("Santa"));
-		}
-
-		public Receiver call(Number number) {
-			System.out.println("The call here...");
-			return RECEIVERS.get(number);
-		}
-	}
-
-	public static class Receiver {
-		private final String name;
-
-		public Receiver(String name) {
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			return getClass().getName() + "[name=" + name + "]";
-		}
 	}
 
 	@Aspect
@@ -71,7 +44,10 @@ public class AOPTestCase extends GWTTestCase {
 		}
 	}
 
+	@Aspect
 	public static class PhoneRedirectInterceptor implements MethodInterceptor {
+		
+		@Around("com.gwtent.client.test.aop.AOPTestCase.Phone.*")
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			invocation.proceed();
 			System.out.println("Do something in PhoneRedirectInterceptor...");
@@ -95,11 +71,11 @@ public class AOPTestCase extends GWTTestCase {
 
 
 
-		System.out.println(Phone.class.getName());
-
-		Phone phone = (Phone) GWT.create(Phone.class);
-		Receiver auntJane = phone.call(123456789);
-		System.out.println(auntJane);
+//		System.out.println(Phone.class.getName());
+//
+//		Phone phone = (Phone) GWT.create(Phone.class);
+//		Receiver auntJane = phone.call(123456789);
+//		System.out.println(auntJane);
 	}
 	
 	public void testAOPDirect(){
