@@ -1,6 +1,5 @@
 package com.gwtent.client.reflection;
 
-import com.gwtent.client.reflection.impl.ConstructorImpl;
 
 public interface AbstractMethod extends HasAnnotations, HasMetaData  {
 
@@ -16,7 +15,7 @@ public interface AbstractMethod extends HasAnnotations, HasMetaData  {
 
 	public Type[] getThrows();
 
-	public ConstructorImpl isConstructor();
+	public Constructor isConstructor();
 
 	public boolean isVarArgs();
 

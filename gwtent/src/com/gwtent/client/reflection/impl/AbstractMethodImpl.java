@@ -29,6 +29,7 @@ import com.gwtent.client.reflection.AbstractMethod;
 import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ArrayType;
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
@@ -131,7 +132,7 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.AbstractMethod#isConstructor()
 	 */
-	public abstract ConstructorImpl isConstructor();
+	public abstract Constructor isConstructor();
 
 	public boolean isDefaultAccess() {
 		return 0 == (modifierBits & (TypeOracleImpl.MOD_PUBLIC

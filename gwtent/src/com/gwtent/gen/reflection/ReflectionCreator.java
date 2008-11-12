@@ -32,6 +32,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.ConstructorImpl;
 import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.client.test.annotations.Entity;
@@ -75,6 +76,12 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("addAnnotations();");
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
+			sourceWriter.println("new ConstructorImpl(this, \"" + className + "\"){");
+			sourceWriter.println("	public Object newInstance() {");
+			sourceWriter.println("		return GWT.create(" + classType.getQualifiedSourceName() + ".class);");
+			sourceWriter.println("	}");
+			sourceWriter.println("};");
+			
 			sourceWriter.println("");
 			if (classType.getSuperclass() != null){
 				sourceWriter.println("if (" + "TypeOracleImpl.findType(\"" + classType.getSuperclass().getQualifiedSourceName() + "\")" + " != null)");

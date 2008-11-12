@@ -19,10 +19,12 @@
  */
 package com.gwtent.gen.reflection;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 
 import com.gwtent.client.reflection.AnnotationStoreImpl;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
+import com.gwtent.client.reflection.impl.ConstructorImpl;
 import com.gwtent.client.reflection.impl.FieldImpl;
 import com.gwtent.client.reflection.impl.MethodImpl;
 import com.gwtent.client.reflection.impl.ParameterImpl;
@@ -39,6 +41,14 @@ public class Proxy extends ClassTypeImpl {
 		super("classname");
 		addFields();
 		addMethods();
+		
+		new ConstructorImpl(this, "classname"){
+			public Object newInstance() {
+				//return GWT.create(XXX.class);
+				return null;
+			}
+			
+		};
 	}
 
 	protected Map<Class<? extends Annotation>, Annotation> AnnotationsArrayToMaps(Annotation[] annotations){
