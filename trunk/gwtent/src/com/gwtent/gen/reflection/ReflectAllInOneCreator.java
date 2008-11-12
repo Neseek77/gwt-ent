@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.aspectj.lang.annotation.Aspect;
+
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -71,11 +73,9 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		try {
 			JClassType reflectionClass = typeOracle.getType(Reflection.class.getCanonicalName());
 			for (JClassType classType : typeOracle.getTypes()) {
-				if (classType.isAssignableTo(reflectionClass)){
-
+				if ((classType.isAssignableTo(reflectionClass)) || (classType.getAnnotation(Aspect.class) != null)){
 					processRelationClasses(types, classType);
 					addClassIfNotExists(types, classType);
-					
 				}
 			}
 		} catch (Exception e) {

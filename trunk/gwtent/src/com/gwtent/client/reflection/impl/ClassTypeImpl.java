@@ -34,6 +34,7 @@ import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ArrayType;
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
@@ -705,5 +706,15 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
   AnnotationStore[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
+
+	public Constructor findConstructor(String[] paramTypes) {
+		for(ConstructorImpl candidate : constructors){
+			if (candidate.hasParamTypesByTypeName(paramTypes)) {
+				return candidate;
+			}
+		}
+		
+		return null;
+	}
 
 }

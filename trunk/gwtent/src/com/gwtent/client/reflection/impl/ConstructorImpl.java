@@ -20,11 +20,12 @@
 package com.gwtent.client.reflection.impl;
 
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.Method;
 
 
 
-public class ConstructorImpl extends AbstractMethodImpl {
+public abstract class ConstructorImpl extends AbstractMethodImpl implements Constructor {
 	  private final ClassType enclosingType;
 
 	  public ConstructorImpl(ClassTypeImpl enclosingType, String name) {
@@ -53,7 +54,7 @@ public class ConstructorImpl extends AbstractMethodImpl {
 	    return sb.toString();
 	  }
 
-	  public ConstructorImpl isConstructor() {
+	  public Constructor isConstructor() {
 	    return this;
 	  }
 

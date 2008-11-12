@@ -22,6 +22,7 @@ package com.gwtent.client.reflection.impl;
 import com.gwtent.client.reflection.AbstractMethod;
 import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Type;
@@ -135,7 +136,7 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 		return sb.toString();
 	}
 
-	public ConstructorImpl isConstructor() {
+	public Constructor isConstructor() {
 		return null;
 	}
 

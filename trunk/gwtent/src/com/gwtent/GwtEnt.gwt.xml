@@ -3,6 +3,8 @@
 	<inherits name="com.google.gwt.http.HTTP"/>
     <inherits name="com.google.gwt.xml.XML"/>
     
+    <inherits name="org.aspectj.lang.annotation.AspectJAnnotation"/>
+    
     <!-- <inherits name="com.gwtext.GwtExt"/> -->
     
     <!-- 
