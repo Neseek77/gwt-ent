@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 
-public class BindRegistry implements MatcherQuery{
+public class BindRegistry{
 	final List<MethodAspect> methodAspects = new ArrayList<MethodAspect>();
 
 //	protected void bindInterceptor(Matcher<? super Class<?>> classMatcher,
@@ -44,7 +44,6 @@ public class BindRegistry implements MatcherQuery{
 
 	}
 
-	@Override
 	public boolean matches(Class<?> clazz) {
 		for (int i = 0; i < this.methodAspects.size(); i++){
 			if (methodAspects.get(i).matches(clazz)) {
@@ -55,7 +54,6 @@ public class BindRegistry implements MatcherQuery{
 		return false;
 	}
 
-	@Override
 	public List<String> matches(Method method) {
 		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < this.methodAspects.size(); i++){

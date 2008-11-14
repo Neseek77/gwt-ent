@@ -17,7 +17,7 @@ public class AOPRegistor {
 	 * @param methodMatcherClassName The class name which implement MethodMatcher
 	 * @param interceptors
 	 * 
-	 * @see MethodMatcher
+	 * @see ClassMethodMatcher
 	 */
 	public void bindInterceptor(String methodMatcherClassName,
 			MethodInterceptor... interceptors) {

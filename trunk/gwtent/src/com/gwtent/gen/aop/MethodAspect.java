@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gwtent.aop.matcher.Matcher;
-import com.gwtent.aop.matcher.MethodMatcher;
+import com.gwtent.aop.matcher.ClassMethodMatcher;
 import com.gwtent.aop.matcher.Objects;
 import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
@@ -45,9 +45,9 @@ class MethodAspect {
  
   MethodAspect(String matcherClassName, MethodInterceptor... interceptors) {
   	try {
-			Class<MethodMatcher> classz = (Class<MethodMatcher>) Class.forName(matcherClassName);
+			Class<ClassMethodMatcher> classz = (Class<ClassMethodMatcher>) Class.forName(matcherClassName);
 			try {
-				MethodMatcher matcher = classz.getConstructor(null).newInstance(null);
+				ClassMethodMatcher matcher = classz.getConstructor(null).newInstance(null);
 				this.classMatcher = matcher.getClassMatcher();
 				this.methodMatcher = matcher.getMethodMatcher();
 			} catch (Exception e) {

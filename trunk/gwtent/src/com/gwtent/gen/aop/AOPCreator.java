@@ -27,7 +27,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class AOPCreator extends LogableSourceCreator {
@@ -79,8 +78,7 @@ public class AOPCreator extends LogableSourceCreator {
 		source.println("");
 		source.println("private static class InterceptorMap{");
 		source.indent();
-		source.println("static Map<Method, String> interceptors = new HashMap<Method, String>();");
-		source.println("static List<String> matcherClassNames = null;");
+		source.println("static Map<Method, List<Method>> interceptors = new HashMap<Method, List<Method>>();");
 		
 		source.println("static {");
 		
@@ -125,27 +123,27 @@ public class AOPCreator extends LogableSourceCreator {
 	}
 	
 	private void processMethods(JClassType classType){
-		MatcherQuery query = BindRegistry.getInstance();
-		Class<?> classz = null;
-		try {
-			String jniSig = classType.getJNISignature();
-      jniSig = jniSig.substring(1, jniSig.length() - 1);
-      String className = jniSig.replace('/', '.');
-			classz = Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		if ((classz != null) & (query.matches(classz))){
-			Method[] methods = classz.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				Method method = methods[i];
-				
-				List<String> matcherClassNames = query.matches(method);
-				if (matcherClassNames.size() > 0){
-					interceptMethods.put(method, matcherClassNames);
-				}
-			}
-		}
+//		MatcherQuery query = BindRegistry.getInstance();
+//		Class<?> classz = null;
+//		try {
+//			String jniSig = classType.getJNISignature();
+//      jniSig = jniSig.substring(1, jniSig.length() - 1);
+//      String className = jniSig.replace('/', '.');
+//			classz = Class.forName(className);
+//		} catch (ClassNotFoundException e) {
+//			throw new RuntimeException(e);
+//		}
+//		if ((classz != null) & (query.matches(classz))){
+//			Method[] methods = classz.getMethods();
+//			for (int i = 0; i < methods.length; i++) {
+//				Method method = methods[i];
+//				
+//				List<String> matcherClassNames = query.matches(method);
+//				if (matcherClassNames.size() > 0){
+//					interceptMethods.put(method, matcherClassNames);
+//				}
+//			}
+//		}
 	}
 
 	/**
@@ -188,13 +186,13 @@ public class AOPCreator extends LogableSourceCreator {
 	 * We supposed everything should be there when Code Generator started
 	 */
 	protected void AsyncRegistor(){
-		if (AOPRegistor.getInstance().getMatcherClassNames().size() > 0){
-			if (BindRegistry.getInstance().size() == 0){
-				for (String matcherClassName : AOPRegistor.getInstance().getMatcherClassNames()) {
-					BindRegistry.getInstance().bindInterceptor(matcherClassName);
-				}
-			}
-		}
+//		if (AOPRegistor.getInstance().getMatcherClassNames().size() > 0){
+//			if (BindRegistry.getInstance().size() == 0){
+//				for (String matcherClassName : AOPRegistor.getInstance().getMatcherClassNames()) {
+//					BindRegistry.getInstance().bindInterceptor(matcherClassName);
+//				}
+//			}
+//		}
 	}
 	
 	private String getParamAsSourceCode(Method method){

@@ -90,8 +90,17 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 
 	private boolean savedIsDefaultInstantiable;
 
+	protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{
+    if (args.length != paramCount){
+      throw new IllegalArgumentException("Method: " + methodName + "request " + paramCount + " params, but invoke provide " + args.length + " params.");
+    }
+  }
+	
 	public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {
-		throw new NotFoundException(methodName + "not found or unimplement?");
+		if (superclass != null)
+			return superclass.invoke(instance, methodName, args);
+		else
+			throw new NotFoundException(methodName + "not found or unimplement?");
 	}
 
 	public ClassTypeImpl(String qualifiedName) {

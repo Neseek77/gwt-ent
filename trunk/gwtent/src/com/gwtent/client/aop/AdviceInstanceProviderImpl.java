@@ -12,6 +12,14 @@ import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Method;
 
+/**
+ * 1, Provid advice instance depend on @Aspect (singleton...)
+ * 2, Adapte @After, @AfterReturning, @AfterThrowing, @Around,
+ * 		@Before to MethodInterceptor
+ * 
+ * @author JLuo
+ *
+ */
 public class AdviceInstanceProviderImpl implements AdviceInstanceProvider {
 
 	
