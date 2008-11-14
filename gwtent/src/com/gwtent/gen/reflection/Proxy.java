@@ -80,7 +80,8 @@ public class Proxy extends ClassTypeImpl {
 				checkInvokeParams(methodName, 3, args);
 				return ((Object)content).toString();
 			}else{
-				throw new IllegalArgumentException("Method: " + methodName + " can't found.");
+				return super.invoke(instance, methodName, args);
+				//throw new IllegalArgumentException("Method: " + methodName + " can't found.");
 			}
 		}
 	}

@@ -96,17 +96,17 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.outdent();
 			sourceWriter.println("}");
 
-			sourceWriter
-					.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
-			sourceWriter.indent();
-			sourceWriter.println("if (args.length != paramCount){");
-			sourceWriter.indent();
-			sourceWriter
-					.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
-			sourceWriter.outdent();
-			sourceWriter.println("}");
-			sourceWriter.outdent();
-			sourceWriter.println("}");
+//			sourceWriter
+//					.println("protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException{");
+//			sourceWriter.indent();
+//			sourceWriter.println("if (args.length != paramCount){");
+//			sourceWriter.indent();
+//			sourceWriter
+//					.println("throw new IllegalArgumentException(\"Method: \" + methodName + \"request \" + paramCount + \" params, but invoke provide \" + args.length + \" params.\");");
+//			sourceWriter.outdent();
+//			sourceWriter.println("}");
+//			sourceWriter.outdent();
+//			sourceWriter.println("}");
 			sourceWriter.println();
 
 			JMethod[] methods = classType.getMethods();
@@ -141,7 +141,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				
 				if (!returnType.getSimpleSourceName().equals("void")) {
 					sourceWriter.println("return "
-							+ boxIfNeed(returnType.getSimpleSourceName(), "content."
+							+ boxIfNeed(returnType.getQualifiedSourceName(), "content."
 									+ methodName + "(" + getInvokeParams(methodParameters, "args")
 									+ ")") + ";");
 				} else {
@@ -161,12 +161,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 				sourceWriter.print("} else ");
 
 			}
-			sourceWriter.println("{");
-			sourceWriter.indent();
-			sourceWriter
-					.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
-			sourceWriter.outdent();
-			sourceWriter.println("}");
+			sourceWriter.println("return super.invoke(instance, methodName, args);");
+//			sourceWriter.println("{");
+//			sourceWriter.indent();
+//			sourceWriter
+//					.println("throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");");
+//			sourceWriter.outdent();
+//			sourceWriter.println("}");
 			sourceWriter.outdent();
 			sourceWriter.println("}");
 			sourceWriter.println();
@@ -184,8 +185,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 		protected void addClassMeta(JClassType classType, SourceWriter source) {
 			source.println();
-			source.println("	//add fields");
-			source.println();
 
 			source.println("protected void addClassMeta(){");
 			source.indent();
@@ -197,8 +196,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 
 		protected void addClassAnnotation(JClassType classType, SourceWriter source) {
-			source.println();
-			source.println("  //add annotations of class");
 			source.println();
 
 			source.println("protected void addAnnotations(){");
@@ -214,8 +211,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 
 		protected void addFields(JClassType classType, SourceWriter source) {
-			source.println();
-			source.println("	//add fields");
 			source.println();
 
 			source.println("protected void addFields(){");
@@ -248,8 +243,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 
 		protected void addMethods(JClassType classType, SourceWriter source) {
-			source.println();
-			source.println("	//add methods");
 			source.println();
 
 			source.println("protected void addMethods(){");
@@ -309,9 +302,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 		protected String getInvokeParams(JParameter[] methodParams, String argeName) {
 			StringBuilder result = new StringBuilder("");
 			for (int i = 0; i < methodParams.length; i++) {
-				String requestType = methodParams[i].getType().getSimpleSourceName();
+				String requestType = methodParams[i].getType().getQualifiedSourceName();
 				if (methodParams[i].getType().isTypeParameter() != null)
-					 requestType = methodParams[i].getType().isTypeParameter().getBaseType().getSimpleSourceName();
+					 requestType = methodParams[i].getType().isTypeParameter().getBaseType().getQualifiedSourceName();
 				result.append("("	+ unboxIfNeed(requestType, argeName + "[" + i + "]") + ")");
 
 				if (i != methodParams.length - 1) {

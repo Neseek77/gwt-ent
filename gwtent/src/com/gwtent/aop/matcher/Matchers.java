@@ -107,10 +107,10 @@ public class Matchers {
    * Returns a matcher which matches subclasses of the given type (as well as
    * the given type).
    */
-  public static Matcher<Class> subclassesOf(final Class<?> superclass) {
+  public static Matcher<Class<?>> subclassesOf(final Class<?> superclass) {
     Objects.nonNull(superclass, "superclass");
-    return new AbstractMatcher<Class>() {
-      public boolean matches(Class subclass) {
+    return new AbstractMatcher<Class<?>>() {
+      public boolean matches(Class<?> subclass) {
     	return superclass.isAssignableFrom(subclass);
       }
 
@@ -155,10 +155,10 @@ public class Matchers {
   /**
    * Returns a matcher which matches classes in the given package.
    */
-  public static Matcher<Class> inPackage(final Package p) {
+  public static Matcher<Class<?>> inPackage(final Package p) {
     Objects.nonNull(p, "package");
-    return new AbstractMatcher<Class>() {
-      public boolean matches(Class c) {
+    return new AbstractMatcher<Class<?>>() {
+      public boolean matches(Class<?> c) {
         return c.getPackage().equals(p);
       }
 
@@ -183,5 +183,35 @@ public class Matchers {
         return "returns(" + returnType + ")";
       }
     };
+  }
+  
+  public static Matcher<Class<?>> aspectjClass(final String expression){
+  	return new AbstractMatcher<Class<?>>(){
+
+			@Override
+			public boolean matches(Class<?> c) {
+				return new AspectJExpress(expression).matches(c);
+			}
+			
+			public String toString(){
+				return "aspectj_class(" + expression + ")";
+			}
+  		
+  	};
+  }
+  
+  public static Matcher<Method> aspectjMethod(final String expression){
+  	return new AbstractMatcher<Method>(){
+
+			@Override
+			public boolean matches(Method m) {
+				return new AspectJExpress(expression).matches(m, m.getDeclaringClass());
+			}
+			
+			public String toString(){
+				return "aspectj_method(" + expression + ")";
+			}
+  		
+  	};
   }
 }

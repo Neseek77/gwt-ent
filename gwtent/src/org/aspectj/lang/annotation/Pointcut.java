@@ -28,6 +28,9 @@ public @interface Pointcut {
     /**
      * The pointcut expression
      * We allow "" as default for abstract pointcut
+     * 
+     * support "matchclass(com.gwtent.client.test.aop.TestMatcher)"
+     * the class need implement com.gwtent.aop.matcher.ClassMethodMatcher
      */
     String value() default "";
     
