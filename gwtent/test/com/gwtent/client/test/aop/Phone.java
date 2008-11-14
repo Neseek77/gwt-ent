@@ -19,6 +19,11 @@ public class Phone implements Aspectable {
 		return RECEIVERS.get(number);
 	}
 	
+	public Receiver call(String number){
+		System.out.println("The call here...");
+		return RECEIVERS.get(111111111);
+	}
+	
 	public String toString(){
 		return super.toString();
 	}

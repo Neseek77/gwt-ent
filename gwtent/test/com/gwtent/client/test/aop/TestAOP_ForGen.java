@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gwtent.client.aop.AOPRegistor;
 import com.gwtent.client.aop.AdviceInstanceProvider;
 import com.gwtent.client.aop.AspectException;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
@@ -14,8 +13,6 @@ import com.gwtent.client.aop.intercept.impl.MethodInvocationLinkedAdapter;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.test.aop.Phone;
-import com.gwtent.client.test.aop.Phone.Receiver;
 
 public class TestAOP_ForGen extends Phone {
 	private static class InterceptorMap{

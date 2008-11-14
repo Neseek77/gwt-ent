@@ -3,15 +3,9 @@ package com.gwtent.client.test.aop;
 
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.gwtent.client.aop.AOPRegistor;
-import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.aop.intercept.MethodInvocation;
-
-import com.gwtent.client.test.aop.Phone;
 import com.gwtent.client.test.aop.Phone.Receiver;
 
 public class AOPTestCase extends GWTTestCase {
@@ -22,13 +16,10 @@ public class AOPTestCase extends GWTTestCase {
 	}
 
 	protected void gwtSetUp() throws Exception {
-		AOPRegistor.getInstance().bindInterceptor(
-				"com.gwtent.client.test.aop.TestMatcher", new PhoneLoggerInterceptor(),
-				new PhoneRedirectInterceptor());
 	}
 
 	@Aspect
-	public static class PhoneLoggerInterceptor implements MethodInterceptor {
+	public static class PhoneLoggerInterceptor {
 		
 		//execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)
 		@Around("com.gwtent.client.test.aop.AOPTestCase.Phone.*")
@@ -45,7 +36,7 @@ public class AOPTestCase extends GWTTestCase {
 	}
 
 	@Aspect
-	public static class PhoneRedirectInterceptor implements MethodInterceptor {
+	public static class PhoneRedirectInterceptor {
 		
 		@Around("com.gwtent.client.test.aop.AOPTestCase.Phone.*")
 		public Object invoke(MethodInvocation invocation) throws Throwable {
