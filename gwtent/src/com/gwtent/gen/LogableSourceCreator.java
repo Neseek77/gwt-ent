@@ -25,6 +25,7 @@ import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
@@ -80,7 +81,7 @@ public abstract class LogableSourceCreator {
 	protected abstract void createSource(SourceWriter source, JClassType classType);
 	
 	
-	public String generate(){
+	public String generate() throws UnableToCompleteException{
 		JClassType classType;
 		try {
 			classType = typeOracle.getType(typeName);
@@ -94,9 +95,9 @@ public abstract class LogableSourceCreator {
 				source.commit(logger);
 			}
 			return getUnitName(classType);
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			return null;
+		} catch (Throwable e) {
+			this.logger.log(Type.ERROR, e.getMessage());
+			throw new UnableToCompleteException();
 		}
 	}
 	

@@ -6,6 +6,12 @@ import java.util.List;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.reflection.Method;
 
+/**
+ * Create a command chain that put all interceptors in.
+ * 
+ * @author JamesLuo.au@gmail.com
+ *
+ */
 public class MethodInvocationLinkedAdapter extends MethodInvocationAdapter {
 
 	private int invokeCount = 0;
