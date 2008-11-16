@@ -25,8 +25,13 @@ import java.util.Map;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.aop.AspectException;
+import com.gwtent.client.aop.intercept.impl.MethodInterceptorFinalAdapter;
+import com.gwtent.client.test.aop.Phone.Receiver;
+import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class AOPCreator extends LogableSourceCreator {
@@ -35,13 +40,19 @@ public class AOPCreator extends LogableSourceCreator {
 	
 	static final String SUFFIX = "__AOP";
 	
-	private Map<Method, List<String>> interceptMethods = new HashMap<Method, List<String>>();
+//	private Map<Method, List<String>> interceptMethods = new HashMap<Method, List<String>>();
+	
+	private static AspectCollector aspectCollector = null;
+	
+	private List<MethodCache> methodCaches = new ArrayList<MethodCache>();
 
 	public AOPCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
 		super(logger, context, typeName);
 		
-		AsyncRegistor();
+		if (aspectCollector == null)
+			aspectCollector = new AspectCollectorImpl(typeOracle);
+		
 		
 //		PropertyOracle propertyOracle = context.getPropertyOracle();
 //		try {
@@ -53,9 +64,8 @@ public class AOPCreator extends LogableSourceCreator {
 	}
 
 	protected void createSource(SourceWriter source, JClassType classType){
-		processMethods(classType);
 		
-		createInterceptorMap(source);
+		createInterceptorMap(source, classType);
 		
 		source.println("private static final ClassType classType = TypeOracle.Instance.getClassType(" + classType.getSimpleSourceName() + ".class);");
 		source.println();
@@ -65,16 +75,17 @@ public class AOPCreator extends LogableSourceCreator {
 		source.println();
 		source.println("public " + getSimpleUnitName(classType) + "(){");
 		source.indent();
-		
 		createMethodInvocation(source);
-		
 		source.outdent();
 		source.println("}");
 		
+		overrideMethods(source, classType);
+		
+		source.println();
+		createMethodInvocationChain(source);
 	}
 	
-	private void createInterceptorMap(SourceWriter source){
-		source.indent();
+	private void createInterceptorMap(SourceWriter source, JClassType classType){
 		source.println("");
 		source.println("private static class InterceptorMap{");
 		source.indent();
@@ -84,66 +95,71 @@ public class AOPCreator extends LogableSourceCreator {
 		
 		source.indent();
 		
+		source.println("ClassType aspectClass = null;");
+		source.println("Method method = null;");
 		
-		for(Method method : interceptMethods.keySet()){
-			source.println("matcherClassNames = new ArrayList<String>();");
-			List<String> matcherClassNames = interceptMethods.get(method);
-			for (String className : matcherClassNames){
-				source.println("matcherClassNames.add(\"" + className + "\");");
-			}			
-			source.println("interceptors.put(classType.findMethod(\"" + method.getName() + "\", " + getParamAsSourceCode(method) + "), matcherClassNames);");
+		for (JMethod sourceMethod : classType.getMethods()){
+			List<JMethod> allMatchedMethods = aspectCollector.allMatches(sourceMethod);
+			if (allMatchedMethods.size() > 0){
+				methodCaches.add(new MethodCache(sourceMethod, allMatchedMethods));
+				
+				source.println("{");
+				source.println("List<Method> matchAdvices = new ArrayList<Method>();");
+				for (JMethod matchedMethod : allMatchedMethods){
+					source.println("aspectClass = TypeOracle.Instance.getClassType(" + matchedMethod.getEnclosingType().getQualifiedSourceName() + ".class);");
+					source.println("method = aspectClass.findMethod(\"" + matchedMethod.getName() + "\", new String[]{" + GenUtils.getParamTypeNames(matchedMethod, '"') + "});");
+				  source.println("matchAdvices.add(method);");
+				}
+				source.println("interceptors.put(classType.findMethod(\"" + sourceMethod.getName() + "\", new String[]{"+ GenUtils.getParamTypeNames(sourceMethod, '"') +"}), matchAdvices);");
+				source.println("}");
+			}
 		}
+		source.outdent();
+		source.println("}");
+			
+		source.outdent();
 		source.println("}");
 		
-		source.outdent();
-		source.println("}");
-		source.outdent();
 		source.outdent();
 	}
 	
 	private void declareMethodInvocation(SourceWriter source){
-		for (Method method : interceptMethods.keySet()) {
-			source.println("private final MethodInvocationLinkedAdapter Ivn_" + MethodNameProvider.getName(method));
+		for (MethodCache cache : methodCaches){
+			source.println("private final MethodInvocationLinkedAdapter " + getIvnValueName(cache.getSourceMethod()) + ";");
 		}
 	}
 	
 	private void createMethodInvocation(SourceWriter source){
-		for (Method method : interceptMethods.keySet()) {
-			source.println("{");
-			
-			source.println("Method method = classType.findMethod(\"" + method.getName() + "\", " + getParamAsSourceCode(method) + ");");
-			source.println("List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();");
-			source.println("for (String matcherClassName : InterceptorMap.interceptors.get(method)){");
-			source.println("interceptors.addAll(AOPRegistor.getInstance().getInterceptors(matcherClassName));");
-			source.println("}");
-			source.println("interceptors.add(new MethodInterceptorFinalAdapter());");
-			source.println("Ivn_" + MethodNameProvider.getName(method) + " = new MethodInvocationLinkedAdapter(method, this, interceptors);");
-			source.println("}");
+		source.println("Method method = null;");
+		for (MethodCache cache : methodCaches){
+			source.println("method = classType.findMethod(\"" + cache.getSourceMethod().getName() + "\", new String[]{"+ GenUtils.getParamTypeNames(cache.getSourceMethod(), '"') +"});");
+			source.println(getIvnValueName(cache.getSourceMethod()) + " = createMethodInvocationChain(method);");
 		}
 	}
 	
-	private void processMethods(JClassType classType){
-//		MatcherQuery query = BindRegistry.getInstance();
-//		Class<?> classz = null;
-//		try {
-//			String jniSig = classType.getJNISignature();
-//      jniSig = jniSig.substring(1, jniSig.length() - 1);
-//      String className = jniSig.replace('/', '.');
-//			classz = Class.forName(className);
-//		} catch (ClassNotFoundException e) {
-//			throw new RuntimeException(e);
-//		}
-//		if ((classz != null) & (query.matches(classz))){
-//			Method[] methods = classz.getMethods();
-//			for (int i = 0; i < methods.length; i++) {
-//				Method method = methods[i];
-//				
-//				List<String> matcherClassNames = query.matches(method);
-//				if (matcherClassNames.size() > 0){
-//					interceptMethods.put(method, matcherClassNames);
-//				}
-//			}
-//		}
+	
+	private void overrideMethods(SourceWriter source, JClassType classType){
+		for (MethodCache cache : methodCaches){
+			String ivnValueName = getIvnValueName(cache.getSourceMethod());
+			source.println(cache.getSourceMethod().toString());
+		  source.println("{");
+		  source.indent();
+		  
+		  source.println("if (" + ivnValueName + ".getCurrentInterceptor() instanceof MethodInterceptorFinalAdapter){");
+			source.println("	return super." + cache.getSourceMethod().getName() + "(" + GenUtils.getParamNames(cache.getSourceMethod()) + ");");
+			source.println("}");
+			source.println();
+			source.println("Object[] args = new Object[]{" + GenUtils.getParamNames(cache.getSourceMethod()) + "};");
+			source.println(ivnValueName + ".reset(args);");
+			source.println("try {");
+			source.println("	return (" + cache.getSourceMethod().getReturnType().getQualifiedSourceName() + ") " + ivnValueName + ".proceed();");
+			source.println("} catch (Throwable e) {");
+			source.println("	throw new AspectException(e);");
+			source.println("}");
+		  
+		  source.outdent();
+		  source.println("}");
+		}
 	}
 
 	/**
@@ -163,6 +179,9 @@ public class AOPCreator extends LogableSourceCreator {
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("com.gwtent.client.reflection.*");
 		composer.addImport("java.util.*");
+		composer.addImport("com.gwtent.client.aop.*");
+		composer.addImport("com.gwtent.client.aop.intercept.*");
+		composer.addImport("com.gwtent.client.aop.intercept.impl.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 
 		PrintWriter printWriter = context.tryCreate(logger, packageName,
@@ -181,18 +200,9 @@ public class AOPCreator extends LogableSourceCreator {
 		return SUFFIX;
 	}
 	
-	/**
-	 * We just Async if nothing in BindRegistry.
-	 * We supposed everything should be there when Code Generator started
-	 */
-	protected void AsyncRegistor(){
-//		if (AOPRegistor.getInstance().getMatcherClassNames().size() > 0){
-//			if (BindRegistry.getInstance().size() == 0){
-//				for (String matcherClassName : AOPRegistor.getInstance().getMatcherClassNames()) {
-//					BindRegistry.getInstance().bindInterceptor(matcherClassName);
-//				}
-//			}
-//		}
+
+	private String getIvnValueName(JMethod method){
+		return "Ivn_" + MethodNameProvider.getName(method);
 	}
 	
 	private String getParamAsSourceCode(Method method){
@@ -218,12 +228,25 @@ public class AOPCreator extends LogableSourceCreator {
 		}
 		return result.toArray(new String[]{});
 	}
+	
+	private void createMethodInvocationChain(SourceWriter source){
+		source.println("private MethodInvocationLinkedAdapter createMethodInvocationChain(Method method) {");
+		source.indent();
+		source.println("List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();");
+		source.println("for (Method adviceMethod : InterceptorMap.interceptors.get(method)){");
+		source.println("	interceptors.add(AdviceInstanceProvider.INSTANCE.getInstance(adviceMethod));");
+		source.println("}");
+		source.println("interceptors.add(new MethodInterceptorFinalAdapter());");
+		source.println("return new MethodInvocationLinkedAdapter(method, this, interceptors);");
+		source.outdent();
+		source.println("}");
+	}
 
 	
 	private static class MethodNameProvider {
-		private static Map<Method, String> names = new HashMap<Method, String>();
+		private static Map<JMethod, String> names = new HashMap<JMethod, String>();
 		
-		private static String findNextName(Method method){
+		private static String findNextName(JMethod method){
 			String result = method.getName();
 			Integer i = 0;
 			
@@ -233,7 +256,7 @@ public class AOPCreator extends LogableSourceCreator {
 			return result;
 		}
 		
-		static String getName(Method method){
+		static String getName(JMethod method){
 			String result = names.get(method);
 			if (result == null){
 				result = findNextName(method);
@@ -243,5 +266,24 @@ public class AOPCreator extends LogableSourceCreator {
 			return result;
 		}
 	}
+	
+	
+	private class MethodCache {
+		private final JMethod sourceMethod;
+		private final List<JMethod> adviceMethods;
+		
+		public MethodCache(JMethod sourceMethod, List<JMethod> adviceMethods){
+			this.sourceMethod = sourceMethod;
+			this.adviceMethods = adviceMethods;
+		}
+		
+		public JMethod getSourceMethod() {
+			return sourceMethod;
+		}
+
+		public List<JMethod> getAdviceMethods() {
+			return adviceMethods;
+		}
+	} 
 
 }
