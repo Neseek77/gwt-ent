@@ -1,4 +1,4 @@
-package com.gwtent.client.test;
+package com.gwtent.test;
 
 import junit.framework.TestCase;
 

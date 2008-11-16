@@ -23,7 +23,7 @@ public class TestAOP_ForGen extends Phone {
 			ClassType aspectClass = null;
 			Method method = null;
 			
-		  //loop...
+		  //loop... for every aspected method
 			List<Method> matchAdvices = new ArrayList<Method>();
 			
 			aspectClass = TypeOracle.Instance.getClassType(AOPTestCase.PhoneLoggerInterceptor.class);
@@ -33,10 +33,9 @@ public class TestAOP_ForGen extends Phone {
 			aspectClass = TypeOracle.Instance.getClassType(AOPTestCase.PhoneRedirectInterceptor.class);
 			method = aspectClass.findMethod("invoke", new String[]{"com.gwtent.client.aop.intercept.MethodInvocation"});
 			matchAdvices.add(method);
-			
-//			matcherClassNames = new ArrayList<String>();
-//			matcherClassNames.add("com.gwtent.client.test.aop.TestMatcher");
+
 			interceptors.put(classType.findMethod("call", new String[]{"java.lang.Number"}), matchAdvices);
+			//end loop...
 		}
 	}
 	
@@ -49,20 +48,9 @@ public class TestAOP_ForGen extends Phone {
 		Method method = null;
 		//Do loop...
 		method = classType.findMethod("call", new String[]{"java.lang.Number"});
-		
-		List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
-		for (Method adviceMethod : InterceptorMap.interceptors.get(method)){
-			interceptors.add(AdviceInstanceProvider.INSTANCE.getInstance(adviceMethod));
-		}
-//		for (String matcherClassName : InterceptorMap.interceptors.get(method)){
-//			interceptors.addAll(AOPRegistor.getInstance().getInterceptors(matcherClassName));
-//		}
-//		interceptors.add(new AOPTestCase.PhoneLoggerInterceptor());
-//		interceptors.add(new AOPTestCase.PhoneRedirectInterceptor());
-		interceptors.add(new MethodInterceptorFinalAdapter());
-		Ivn_call = new MethodInvocationLinkedAdapter(method, this, interceptors);
+		Ivn_call = createMethodInvocationChain(method);
 	}
-	
+
 
 	//TODO How To handle error?
 	public Receiver call(Number number) {
@@ -78,4 +66,14 @@ public class TestAOP_ForGen extends Phone {
 			throw new AspectException(e);
 		}
 	}
+	
+	private MethodInvocationLinkedAdapter createMethodInvocationChain(Method method) {
+		List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
+		for (Method adviceMethod : InterceptorMap.interceptors.get(method)){
+			interceptors.add(AdviceInstanceProvider.INSTANCE.getInstance(adviceMethod));
+		}
+		interceptors.add(new MethodInterceptorFinalAdapter());
+		return new MethodInvocationLinkedAdapter(method, this, interceptors);
+	}
+	
 }

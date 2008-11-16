@@ -1,10 +1,12 @@
-package com.gwtent.client.test.aop;
+package com.gwtent.test.aspectj;
 
 import java.lang.reflect.Method;
 
 import com.gwtent.aop.matcher.Matcher;
 import com.gwtent.aop.matcher.Matchers;
 import com.gwtent.aop.matcher.ClassMethodMatcher;
+import com.gwtent.client.test.aop.Phone;
+import com.gwtent.client.test.aop.Phone.Receiver;
 
 public class TestMatcher implements ClassMethodMatcher {
 

@@ -28,7 +28,7 @@ public class AspectJExpressionTest extends TestCase {
 	}
 	
 	public void testMatchClass(){
-		String expression = "matchclass(com.gwtent.client.test.aop.TestMatcher)";
+		String expression = "matchclass(com.gwtent.test.aspectj.TestMatcher)";
 		
 		AspectJExpress pointcut = getPointcut(expression);
 		assertTrue(pointcut.matches(Phone.class));

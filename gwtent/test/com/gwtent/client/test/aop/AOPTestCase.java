@@ -4,6 +4,7 @@ package com.gwtent.client.test.aop;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.client.test.aop.Phone.Receiver;
@@ -22,7 +23,7 @@ public class AOPTestCase extends GWTTestCase {
 	public static class PhoneLoggerInterceptor {
 		
 		//execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)
-		@Around("com.gwtent.client.test.aop.AOPTestCase.Phone.*")
+		@Around("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			for (Object arg : invocation.getArguments()){
 				System.out.println("Do something in PhoneLoggerInterceptor...");
@@ -38,7 +39,7 @@ public class AOPTestCase extends GWTTestCase {
 	@Aspect
 	public static class PhoneRedirectInterceptor {
 		
-		@Around("com.gwtent.client.test.aop.AOPTestCase.Phone.*")
+		@Around("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
 		public Object invoke(MethodInvocation invocation) throws Throwable {
 			invocation.proceed();
 			System.out.println("Do something in PhoneRedirectInterceptor...");
@@ -64,9 +65,10 @@ public class AOPTestCase extends GWTTestCase {
 
 //		System.out.println(Phone.class.getName());
 //
-//		Phone phone = (Phone) GWT.create(Phone.class);
-//		Receiver auntJane = phone.call(123456789);
-//		System.out.println(auntJane);
+		Phone phone = (Phone) GWT.create(Phone.class);
+		Receiver auntJane = phone.call(123456789);
+		System.out.println(auntJane);
+		System.out.println("End testAOPInner");
 	}
 	
 	public void testAOPDirect(){

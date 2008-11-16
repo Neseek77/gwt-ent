@@ -9,8 +9,9 @@
  */
 
 
-package com.gwtent.client.test;
+package com.gwtent.test;
 
+import com.gwtent.client.test.ReflectionTestCase;
 import com.gwtent.client.test.aop.AOPTestCase;
 
 import junit.framework.Test;
