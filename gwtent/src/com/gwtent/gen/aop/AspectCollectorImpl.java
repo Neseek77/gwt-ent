@@ -15,6 +15,7 @@ import com.gwtent.aop.ClassFilter;
 import com.gwtent.aop.MethodMatcher;
 import com.gwtent.aop.Pointcut;
 import com.gwtent.aop.matcher.AspectJExpress;
+import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.gen.GenUtils;
 
 /**
@@ -65,8 +66,13 @@ public class AspectCollectorImpl implements Pointcut, ClassFilter, MethodMatcher
 	@Override
 	public boolean matches(Class<?> clazz) {
 		for (JMethod method : this.pointcuts.keySet()){
-			if (pointcuts.get(method).getClassFilter().matches(clazz))
-				return true;
+			try{
+				if (pointcuts.get(method).getClassFilter().matches(clazz))
+					return true;
+			}catch (Throwable e){
+				throw new CheckedExceptionWrapper("class: " + clazz.toString() + "  " + e.getMessage(), e);
+			}
+			
 		}
 		
 		return false;
@@ -75,8 +81,12 @@ public class AspectCollectorImpl implements Pointcut, ClassFilter, MethodMatcher
 	@Override
 	public boolean matches(Method method, Class<?> targetClass, Object... args) {
 		for (JMethod amethod : this.pointcuts.keySet()){
-			if (pointcuts.get(amethod).getMethodMatcher().matches(method, targetClass, args))
-				return true;
+			try{
+				if (pointcuts.get(amethod).getMethodMatcher().matches(method, targetClass, args))
+					return true;
+			}catch (Throwable e){
+				throw new CheckedExceptionWrapper("class: " + targetClass.toString() + "  Method: " + method.toString() + e.getMessage(), e);
+			}
 		}
 		
 		return false;
@@ -92,8 +102,12 @@ public class AspectCollectorImpl implements Pointcut, ClassFilter, MethodMatcher
 		Class<?> javaClass = GenUtils.GWTTypeToClass(method.getEnclosingType());
 		
 		for (JMethod amethod : this.pointcuts.keySet()){
-			if (pointcuts.get(amethod).getMethodMatcher().matches(javaMethod, javaClass))
-				methods.add(amethod);
+			try{
+				if (pointcuts.get(amethod).getMethodMatcher().matches(javaMethod, javaClass))
+					methods.add(amethod);
+			}catch (Throwable e){
+				throw new CheckedExceptionWrapper("class: " + method.getEnclosingType().toString() + "  Method: " + method.toString() + e.getMessage(), e);
+			}
 		}
 		
 		return methods;

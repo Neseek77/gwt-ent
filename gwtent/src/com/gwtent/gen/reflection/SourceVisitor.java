@@ -15,6 +15,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.LogableSourceCreator;
@@ -64,7 +65,7 @@ public class SourceVisitor extends LogableSourceCreator {
 				String classname = gen.generate(this.logger, context, type.getQualifiedSourceName());
 				source.println("new " + classname + "();");
 			} catch (UnableToCompleteException e) {
-				throw new RuntimeException(e);
+				throw new CheckedExceptionWrapper(e);
 			}
 		}
 		

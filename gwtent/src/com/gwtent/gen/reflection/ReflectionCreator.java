@@ -36,6 +36,7 @@ import com.gwtent.client.reflection.impl.ConstructorImpl;
 import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.client.test.annotations.Entity;
+import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 
 import java.io.PrintWriter;
@@ -76,11 +77,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("addAnnotations();");
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
-			sourceWriter.println("new ConstructorImpl(this, \"" + className + "\"){");
-			sourceWriter.println("	public Object newInstance() {");
-			sourceWriter.println("		return GWT.create(" + classType.getQualifiedSourceName() + ".class);");
-			sourceWriter.println("	}");
-			sourceWriter.println("};");
+			if ((classType.isClass() != null) && GenUtils.hasDefaultConstructor(classType)){
+				sourceWriter.println("new ConstructorImpl(this, \"" + className + "\"){");
+				sourceWriter.println("	public Object newInstance() {");
+				sourceWriter.println("		return GWT.create(" + classType.getQualifiedSourceName() + ".class);");
+				sourceWriter.println("	}");
+				sourceWriter.println("};");
+			}
 			
 			sourceWriter.println("");
 			if (classType.getSuperclass() != null){
@@ -152,7 +155,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				
 				if (needCatchException(method)){
 					sourceWriter.println("}catch (Throwable e){");
-					sourceWriter.println("throw new RuntimeException(e);");
+					sourceWriter.println("throw new CheckedExceptionWrapper(e);");
 					sourceWriter.println("}");
 					sourceWriter.outdent();
 				}
@@ -521,7 +524,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 //			
 //			if (needCatchException(method)){
 //				source.println("}catch (Throwable e){");
-//				source.println("throw new RuntimeException(e);");
+//				source.println("throw new CheckedExceptionWrapper(e);");
 //				source.println("}");
 //				source.outdent();
 //			}
@@ -563,6 +566,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 		composer.setSuperclass("com.gwtent.client.reflection.impl.ClassTypeImpl");
 		// composer.addImplementedInterface(
 		// "com.coceler.gwt.client.reflection.Class");
+		composer.addImport("com.gwtent.client.*");
 		composer.addImport("com.gwtent.client.reflection.*");
 		composer.addImport("com.gwtent.client.reflection.impl.*");
 		composer.addImport("com.google.gwt.core.client.*");

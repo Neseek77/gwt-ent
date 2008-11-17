@@ -25,6 +25,7 @@ import org.aspectj.weaver.tools.ShadowMatch;
 
 import com.gwtent.aop.ClassFilter;
 import com.gwtent.aop.Pointcut;
+import com.gwtent.client.CheckedExceptionWrapper;
 
 //import org.springframework.aop.ProxyMethodInvocation;
 //import org.springframework.aop.interceptor.ExposeInvocationInterceptor;
@@ -319,10 +320,10 @@ public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.Met
 					ClassMethodMatcher matcher = classz.getConstructor(null).newInstance(null);
 					return matcher;
 				} catch (Exception e) {
-					throw new RuntimeException(e);
+					throw new CheckedExceptionWrapper(e);
 				}
 			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
+				throw new CheckedExceptionWrapper(e);
 			}
 		}
 	}
