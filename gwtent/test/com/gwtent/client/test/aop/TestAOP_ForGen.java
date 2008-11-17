@@ -28,11 +28,13 @@ public class TestAOP_ForGen extends Phone {
 			
 			aspectClass = TypeOracle.Instance.getClassType(AOPTestCase.PhoneLoggerInterceptor.class);
 			method = aspectClass.findMethod("invoke", new String[]{"com.gwtent.client.aop.intercept.MethodInvocation"});
-			matchAdvices.add(method);
+			if (method != null)  //Maybe we can found it. Private method with a Pointcut, used for share pointcut
+			  matchAdvices.add(method);
 			
 			aspectClass = TypeOracle.Instance.getClassType(AOPTestCase.PhoneRedirectInterceptor.class);
 			method = aspectClass.findMethod("invoke", new String[]{"com.gwtent.client.aop.intercept.MethodInvocation"});
-			matchAdvices.add(method);
+			if (method != null)  //Maybe we can found it. Private method with a Pointcut, used for share pointcut
+				matchAdvices.add(method);
 
 			interceptors.put(classType.findMethod("call", new String[]{"java.lang.Number"}), matchAdvices);
 			//end loop...

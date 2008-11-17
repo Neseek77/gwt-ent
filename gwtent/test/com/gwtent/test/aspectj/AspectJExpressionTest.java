@@ -48,6 +48,20 @@ public class AspectJExpressionTest extends TestCase {
 		assertFalse(Matchers.aspectjMethod(expression).matches(this.methodCallFromString));
 	}
 	
+	public void testArgsExpression(){
+		String expression = "args(java.lang.Number,..)";
+		
+		assertTrue(Matchers.aspectjClass(expression).matches(Phone.class));
+		assertTrue(Matchers.aspectjClass(expression).matches(Object.class));
+		
+		assertTrue(Matchers.aspectjMethod(expression).matches(this.methodCall));
+		assertFalse(Matchers.aspectjMethod(expression).matches(this.methodCallFromString));
+	}
+	
+	public void testSharedExpression(){
+		
+	}
+	
 
 	private AspectJExpress getPointcut(String expression) {
 		AspectJExpress pointcut = new AspectJExpress();

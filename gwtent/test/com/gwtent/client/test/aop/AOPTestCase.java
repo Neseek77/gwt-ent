@@ -3,9 +3,12 @@ package com.gwtent.client.test.aop;
 
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
+import com.gwtent.client.aop.Aspectable;
 import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.client.test.aop.Phone.Receiver;
 
@@ -46,6 +49,28 @@ public class AOPTestCase extends GWTTestCase {
 			return new Receiver("Alberto's Pizza Place");
 		}
 	}
+	
+	@Aspect
+	public static class PhoneTestInterceptor{
+		@Pointcut("args(java.lang.Number,..)")
+		private void numberArgOperation(Number number){};
+		
+		@Before("args(java.lang.Number,..)")
+		public void validateNumber(Number number) throws Throwable {
+			if ((number != null) && (number.intValue() == 0)){
+				throw new RuntimeException("You cann't dail to 0.");
+			}
+		}
+	}
+	
+	public void testAspectInterface(){
+		try{
+			Aspectable obj = (Aspectable)GWT.create(Aspectable.class);
+			assertTrue("Should get error.", false);
+		}catch (Throwable e){
+			assertTrue(true);
+		}
+	}
 
 	public void testAOPInner() {
 		
@@ -69,6 +94,8 @@ public class AOPTestCase extends GWTTestCase {
 		Receiver auntJane = phone.call(123456789);
 		System.out.println(auntJane);
 		System.out.println("End testAOPInner");
+		
+		phone = (Phone) GWT.create(Phone.class);
 	}
 	
 	public void testAOPDirect(){
