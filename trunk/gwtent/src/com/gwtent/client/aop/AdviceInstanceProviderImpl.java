@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
+import com.gwtent.client.aop.advice.ArgsGeneratorImpl;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.client.reflection.AnnotationStore;
@@ -46,73 +48,12 @@ public class AdviceInstanceProviderImpl implements AdviceInstanceProvider {
 			}else if (method.isAnnotationPresent(Before.class)){
 				method.invoke(aspectInstance, args);
 				return invocation.proceed();
+			}else if (method.isAnnotationPresent(After.class)){
+				
 			}
 			
 			throw new RuntimeException("Advice type not supported.");
-		}
-		
-		
-		public interface ArgsGenerator{
-			/**
-			 * Create Argument array for invoke adviced method
-			 * Using a smart way. If "args" in AspectJ expression, using this
-			 * If the parameter's type is unique, match the parameter 
-			 *   by this type, no matter what's the parameter name
-			 * if the parameter's type have more then one, check the 
-			 *   parameter's name, only match if parameter name and type is the same
-			 *   
-			 * @param invocation MethodInvocation 
-			 * @param method is the method will be invoked.
-			 * @return Object[] args
-			 */
-			Object[] createArgs(MethodInvocation invocation, Method method);
-		}
-		
-		public static class ArgsGeneratorImpl implements ArgsGenerator{
-
-			private static ArgsGenerator instance = new ArgsGeneratorImpl();
-			
-			public static ArgsGenerator getInstance(){
-				return instance;
-			}
-			
-			public Object[] createArgs(MethodInvocation invocation, Method method) {
-				Parameter[] params = method.getParameters();
-				Object[] result = new Object[params.length];
-				for (int i = 0; i < params.length; i++) {
-					Parameter param = params[i];
-					
-					if (onlyOneByType(params, param)){
-						result[i] = getArgByType_OnlyOne(invocation, param.getTypeName());
-					}
-				}
-				
-				return result;
-			}
-			
-			private Object getArgByType_OnlyOne(MethodInvocation invocation, String typeName){
-				for (Object obj : invocation.getArguments()){
-					if (obj.getClass().getName().equals(typeName))
-						return obj;
-				}
-				
-				if(typeName.equals(MethodInvocation.class.getName()))
-					return invocation;
-				
-				return null;
-			}
-			
-			private boolean onlyOneByType(Parameter[] params, Parameter param){
-				for (Parameter p : params){
-					if ((p != param) && (p.getTypeName().equals(param.getTypeName()))){
-						return false;
-					}
-				}
-				return true;
-			}
-			
-		}
-		
+		}		
 	}
 	
 	
