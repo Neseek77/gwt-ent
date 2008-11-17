@@ -88,7 +88,7 @@ public abstract class LogableSourceCreator {
 		
 			SourceWriter source = getSourceWriter(classType, isUseLog(), 6);
 	
-			if (source != null) {
+			if ((source != null)) {
 				source.indent();
 				createSource(source, classType);
 				source.outdent();
@@ -109,13 +109,13 @@ public abstract class LogableSourceCreator {
 	 * @return
 	 */
 	public SourceWriter getSourceWriter(JClassType classType, boolean useLog, int baseLineNumber){
-		if (sourceWriter == null){
+		if ((sourceWriter == null) && (getUnitName(classType) != null)){
 			sourceWriter = doGetSourceWriter(classType);
 			//Decorator it
 			if (sourceWriter != null)
 				sourceWriter = new SourceWriterLogDecorator(sourceWriter, this.logger, useLog, baseLineNumber);
 			//else
-			//	throw new RuntimeException("Can't create Source Writer, please make sure there is no same class in your source folder.");
+			//	throw new CheckedExceptionWrapper("Can't create Source Writer, please make sure there is no same class in your source folder.");
 		}
 		
 		return sourceWriter;
@@ -125,6 +125,12 @@ public abstract class LogableSourceCreator {
 		return classType.getPackage().getName();
 	}
 	
+	/**
+	 * this name will return to GWT compiler
+	 * if the class you don't care in this creator, just return the original QualifiedSourceName
+	 * @param classType
+	 * @return
+	 */
 	protected String getUnitName(JClassType classType){    
 	    String packageName = getPackageName(classType);
 	    String className = getSimpleUnitName(classType);

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
@@ -107,7 +108,7 @@ public class ClassTypeHelper {
 				try {
 					return classType.invoke(instance, metaStr, new Object[]{});
 				} catch (Exception e) {
-					throw new RuntimeException(e);
+					throw new CheckedExceptionWrapper(e);
 				}
 			}else{
 				throw new TransitionException("method: " + metaStr + "() not found in class: " + classType.getName() + ".");

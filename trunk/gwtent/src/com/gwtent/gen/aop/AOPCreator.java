@@ -28,9 +28,6 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.aop.AspectException;
-import com.gwtent.client.aop.intercept.impl.MethodInterceptorFinalAdapter;
-import com.gwtent.client.test.aop.Phone.Receiver;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 
@@ -108,7 +105,8 @@ public class AOPCreator extends LogableSourceCreator {
 				for (JMethod matchedMethod : allMatchedMethods){
 					source.println("aspectClass = TypeOracle.Instance.getClassType(" + matchedMethod.getEnclosingType().getQualifiedSourceName() + ".class);");
 					source.println("method = aspectClass.findMethod(\"" + matchedMethod.getName() + "\", new String[]{" + GenUtils.getParamTypeNames(matchedMethod, '"') + "});");
-				  source.println("matchAdvices.add(method);");
+					source.println("if (method != null)");
+				  source.println("  matchAdvices.add(method);");
 				}
 				source.println("interceptors.put(classType.findMethod(\"" + sourceMethod.getName() + "\", new String[]{"+ GenUtils.getParamTypeNames(sourceMethod, '"') +"}), matchAdvices);");
 				source.println("}");
@@ -177,6 +175,7 @@ public class AOPCreator extends LogableSourceCreator {
 		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport(classType.getQualifiedSourceName());
 		composer.addImport("com.google.gwt.core.client.*");
+		composer.addImport("com.gwtent.client.*");
 		composer.addImport("com.gwtent.client.reflection.*");
 		composer.addImport("java.util.*");
 		composer.addImport("com.gwtent.client.aop.*");
@@ -198,6 +197,13 @@ public class AOPCreator extends LogableSourceCreator {
 	@Override
 	protected String getSUFFIX() {
 		return SUFFIX;
+	}
+	
+	protected String getUnitName(JClassType classType){  
+		if (classType.isInterface() != null){
+			return null;
+		}else
+			return super.getUnitName(classType);
 	}
 	
 
