@@ -40,7 +40,7 @@ public class AdviceInstanceProviderImpl implements AdviceInstanceProvider {
 		}
 		
 		public Object invoke(MethodInvocation invocation) throws Throwable {
-			Object[] args = ArgsGeneratorImpl.getInstance().createArgs(invocation, method);
+			Object[] args = ArgsGeneratorImpl.getInstance().createArgs(invocation, method, null);
 			if (method.isAnnotationPresent(Around.class)){
 				//if Around, put every thing to method, and let method choose how/when invoke next invocation
 				//return method.invoke(aspectInstance, new Object[]{invocation});

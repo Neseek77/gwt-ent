@@ -20,6 +20,8 @@
 package com.gwtent.gen;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -80,11 +82,25 @@ public abstract class LogableSourceCreator {
 	protected abstract String getSUFFIX();
 	protected abstract void createSource(SourceWriter source, JClassType classType);
 	
+	protected GenExclusion getGenExclusion(){
+		return null;
+	}
+	
+	protected boolean genExclusion(JClassType classType){
+		if (getGenExclusion() != null){
+			return getGenExclusion().exclude(classType);
+		}else
+			return false;
+	}
+	
 	
 	public String generate() throws UnableToCompleteException{
 		JClassType classType;
 		try {
 			classType = typeOracle.getType(typeName);
+			if (genExclusion(classType)){
+				return null;
+			}
 		
 			SourceWriter source = getSourceWriter(classType, isUseLog(), 6);
 	

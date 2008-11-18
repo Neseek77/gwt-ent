@@ -1,0 +1,17 @@
+package com.gwtent.client.aop.advice;
+
+import com.gwtent.client.aop.intercept.MethodInvocation;
+import com.gwtent.client.reflection.Method;
+
+public class BeforeAdvice extends AbstractAdvice {
+
+	public BeforeAdvice(Method method, Object aspectInstance) {
+		super(method, aspectInstance);
+	}
+
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		getAdviceMethod().invoke(getAspectInstance(), getArgs(invocation));
+		return invocation.proceed();
+	}
+
+}
