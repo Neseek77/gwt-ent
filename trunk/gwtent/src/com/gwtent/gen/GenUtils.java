@@ -10,6 +10,14 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.gwtent.client.CheckedExceptionWrapper;
 
 public class GenUtils {
+	
+	public static String getReflection_SUFFIX(){
+		return "_Visitor";
+	}
+	
+	public static String getAOP_SUFFIX(){
+		return "__AOP";
+	}
 
 	public static Class<?> GWTTypeToClass(JType type){
 		try {

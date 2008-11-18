@@ -18,6 +18,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
+import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class SourceVisitor extends LogableSourceCreator {
@@ -49,7 +50,7 @@ public class SourceVisitor extends LogableSourceCreator {
 
 	@Override
 	protected String getSUFFIX() {
-		return "_Visitor";
+		return GenUtils.getReflection_SUFFIX();
 	}
 
 	@Override

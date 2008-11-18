@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.aspectj.lang.annotation.Aspect;
 
+import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -17,6 +18,8 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
+import com.gwtent.gen.GenExclusion;
+import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 import com.gwtent.gen.reflection.ReflectionCreator.ReflectionSourceCreator;
 
@@ -28,12 +31,21 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	public ReflectAllInOneCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
 		super(logger, context, typeName);
+		
+//		try {
+//			System.out.println(context.getPropertyOracle().getPropertyValue(logger, "locale______"));
+//		} catch (BadPropertyValueException e) {
+//			//nothing, there is no exclusion setting
+//		}
 	}
 
+	protected GenExclusion getGenExclusion(){
+		return GenExclusionCompositeReflection.INSTANCE;
+	}
 
 	@Override
 	protected String getSUFFIX() {
-		return "_Visitor";
+		return GenUtils.getReflection_SUFFIX();
 	}
 
 	@Override
@@ -74,8 +86,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			JClassType reflectionClass = typeOracle.getType(Reflection.class.getCanonicalName());
 			for (JClassType classType : typeOracle.getTypes()) {
 				if ((classType.isAssignableTo(reflectionClass)) || (classType.getAnnotation(Aspect.class) != null)){
-					processRelationClasses(types, classType);
-					addClassIfNotExists(types, classType);
+					if (! genExclusion(classType)){
+						processRelationClasses(types, classType);
+						addClassIfNotExists(types, classType);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -120,7 +134,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	}
 
 	protected SourceWriter doGetSourceWriter(JClassType classType) {
-		allReflectionClasses = getAllReflectionClasses();
+		if (allReflectionClasses == null)
+			allReflectionClasses = getAllReflectionClasses();
 		
 		String packageName = classType.getPackage().getName();
 		String simpleName = getSimpleUnitName(classType);

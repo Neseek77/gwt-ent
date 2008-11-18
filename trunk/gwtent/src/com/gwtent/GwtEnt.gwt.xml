@@ -12,6 +12,13 @@
 		<when-type-assignable class="com.gwtent.client.reflection.TypeOracle"/>
 	</generate-with>	
 	-->
+	
+	<!-- com.gwtent.gen.GenExclusion 
+	<define-property name="gen_exclusion" values="A"/>
+	<set-property name="gen_exclusion" value="Test?"/>
+	
+	<extend-property name="locale______" values="cn"/>
+	-->
 
  	<generate-with class="com.gwtent.gen.reflection.Reflection__ProxyGenerator">
 		<when-type-assignable class="com.gwtent.client.reflection.TypeOracle"/>

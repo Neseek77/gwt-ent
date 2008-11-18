@@ -28,14 +28,11 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class AOPCreator extends LogableSourceCreator {
-
-	private final boolean isUseLog = true;
-	
-	static final String SUFFIX = "__AOP";
 	
 //	private Map<Method, List<String>> interceptMethods = new HashMap<Method, List<String>>();
 	
@@ -196,16 +193,12 @@ public class AOPCreator extends LogableSourceCreator {
 
 	@Override
 	protected String getSUFFIX() {
-		return SUFFIX;
+		return GenUtils.getAOP_SUFFIX();
 	}
 	
-	protected String getUnitName(JClassType classType){  
-		if (classType.isInterface() != null){
-			return null;
-		}else
-			return super.getUnitName(classType);
+	protected GenExclusion getGenExclusion(){
+		return GenExclusionCompositeAOP.INSTANCE;
 	}
-	
 
 	private String getIvnValueName(JMethod method){
 		return "Ivn_" + MethodNameProvider.getName(method);

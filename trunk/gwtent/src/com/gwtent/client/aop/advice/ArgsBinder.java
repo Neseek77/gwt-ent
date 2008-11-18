@@ -13,8 +13,8 @@ public interface ArgsBinder {
 	 *   parameter's name, only match if parameter name and type is the same
 	 *   
 	 * @param invocation MethodInvocation 
-	 * @param method is the method will be invoked.
+	 * @param method is the advice method (which will be invoked).
 	 * @return Object[] args
 	 */
-	Object[] createArgs(MethodInvocation invocation, Method method);
+	Object[] createArgs(MethodInvocation invocation, Method method, Object returnValue);
 }
