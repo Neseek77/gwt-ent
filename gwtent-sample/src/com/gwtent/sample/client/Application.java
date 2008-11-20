@@ -3,14 +3,16 @@ package com.gwtent.sample.client;
 import java.lang.annotation.Annotation;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.sample.client.Phone.Receiver;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -33,11 +35,19 @@ public class Application implements EntryPoint {
     
   }
   
+  public void testAOP(){
+  	Phone phone = (Phone) GWT.create(Phone.class);
+		Receiver auntJane = phone.call(123456789);
+		System.out.println(auntJane);
+		System.out.println("End testAOPInner");
+  }
+  
   /**
    * This is the entry point method.
    */
   public void onModuleLoad() {
     testReflection();
+    testAOP();
 
     final Button button = new Button("Click me");
     final TextArea label = new TextArea();
