@@ -19,6 +19,7 @@
  */
 package com.gwtent.client.ui.model.value;
 
+import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
@@ -127,7 +128,11 @@ public class ValueFactoryImpl implements ValueFactory {
 			value.setValueGetter(new Getter(){
 
 				public Object getValue() {
-					return classType.invoke(pojo, getterName, new Object[]{});
+					try {
+						return classType.invoke(pojo, getterName, new Object[]{});
+					} catch (Throwable e) {
+						throw new CheckedExceptionWrapper(e);
+					}
 				}
 				
 			});

@@ -39,6 +39,7 @@ import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.MethodInvokeException;
 import com.gwtent.client.reflection.NotFoundException;
 import com.gwtent.client.reflection.Package;
 import com.gwtent.client.reflection.Parameter;
@@ -96,7 +97,7 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
     }
   }
 	
-	public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {
+	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {
 		if (superclass != null)
 			return superclass.invoke(instance, methodName, args);
 		else

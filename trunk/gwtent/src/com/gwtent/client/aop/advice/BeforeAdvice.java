@@ -10,7 +10,7 @@ public class BeforeAdvice extends AbstractAdvice {
 	}
 
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		getAdviceMethod().invoke(getAspectInstance(), getArgs(invocation));
+		invokeAdviceMethod(invocation);  //if exception occur, do not invoke invocation.proceed
 		return invocation.proceed();
 	}
 
