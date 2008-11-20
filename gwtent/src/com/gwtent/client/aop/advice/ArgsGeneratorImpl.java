@@ -11,12 +11,15 @@ public class ArgsGeneratorImpl implements ArgsBinder{
 
 	private static ArgsBinder instance = new ArgsGeneratorImpl();
 	
-	private Map<String, ArgsBinder> buildHanders = new HashMap<String, ArgsBinder>();
+	private Map<String, ArgsBinder> argsBinderHanders = new HashMap<String, ArgsBinder>();
 	
 	public static ArgsBinder getInstance(){
 		return instance;
 	}
 	
+	/**
+	 * Object[] invocation.getArguments()
+	 */
 	public Object[] createArgs(MethodInvocation invocation, Method method, Object returnValue) {
 		Parameter[] params = method.getParameters();
 		Object[] result = new Object[params.length];
@@ -29,6 +32,10 @@ public class ArgsGeneratorImpl implements ArgsBinder{
 		}
 		
 		return result;
+	}
+	
+	public void addArgsBinderHander(String ident, ArgsBinder argsBinder){
+		argsBinderHanders.put(ident, argsBinder);
 	}
 	
 	private Object getArgByType_OnlyOne(MethodInvocation invocation, String typeName){

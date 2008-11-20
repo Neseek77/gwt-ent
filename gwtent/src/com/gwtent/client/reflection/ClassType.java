@@ -32,6 +32,6 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 
 	public ClassType getSuperclass();
 	
-	public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException;
+	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException;
 
 }

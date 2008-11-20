@@ -23,6 +23,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 
 import com.gwtent.client.reflection.AnnotationStoreImpl;
+import com.gwtent.client.reflection.MethodInvokeException;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.reflection.impl.ConstructorImpl;
 import com.gwtent.client.reflection.impl.FieldImpl;
@@ -70,7 +71,7 @@ public class Proxy extends ClassTypeImpl {
 	}
 	
 	
-	public Object invoke(Object instance, String methodName, Object[] args) {
+	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {
 		Object content = instance;
 		if (methodName.equals("method1")) {
 			checkInvokeParams(methodName, 3, args);

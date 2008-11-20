@@ -114,7 +114,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			JMethod[] methods = classType.getMethods();
 
-			sourceWriter.println("public Object invoke(Object instance, String methodName, Object[] args) throws RuntimeException {");
+			sourceWriter.println("public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {");
 			sourceWriter.indent();
 
 			sourceWriter.println(classType.getQualifiedSourceName() + " content = (" + classType.getQualifiedSourceName() + ")instance;");
@@ -155,7 +155,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				
 				if (needCatchException(method)){
 					sourceWriter.println("}catch (Throwable e){");
-					sourceWriter.println("throw new CheckedExceptionWrapper(e);");
+					sourceWriter.println("throw new MethodInvokeException(e);");
 					sourceWriter.println("}");
 					sourceWriter.outdent();
 				}

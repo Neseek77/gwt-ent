@@ -12,6 +12,9 @@ public interface ArgsBinder {
 	 * if the parameter's type have more then one, check the 
 	 *   parameter's name, only match if parameter name and type is the same
 	 *   
+	 * Argument values: Object[] invocation.getArguments()
+	 * Argument names and types: Parameter[] method.getParameters()
+	 *   
 	 * @param invocation MethodInvocation 
 	 * @param method is the advice method (which will be invoked).
 	 * @return Object[] args

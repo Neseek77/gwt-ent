@@ -14,7 +14,7 @@ public class AfterAdvice extends AbstractAdvice {
 		try{
 			return invocation.proceed();
 		}finally{
-			this.getAdviceMethod().invoke(this.getAspectInstance(), this.getArgs(invocation, null));
+			invokeAdviceMethod(invocation);
 		}
 	}
 
