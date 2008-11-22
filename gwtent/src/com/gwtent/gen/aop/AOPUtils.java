@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.gwtent.client.reflection.AnnotationStore;
 
 public class AOPUtils {
 
@@ -25,10 +26,18 @@ public class AOPUtils {
 			return method.getAnnotation(Before.class).value();
 		else if (method.getAnnotation(After.class) != null)
 			return method.getAnnotation(After.class).value();
-		else if (method.getAnnotation(AfterReturning.class) != null)
-			return method.getAnnotation(AfterReturning.class).value();
-		else if (method.getAnnotation(AfterThrowing.class) != null)
-			return method.getAnnotation(AfterThrowing.class).value();
+		else if (method.getAnnotation(AfterReturning.class) != null){
+			if (method.getAnnotation(AfterReturning.class).pointcut().length() > 0)
+				return method.getAnnotation(AfterReturning.class).pointcut();
+			else
+				return method.getAnnotation(AfterReturning.class).value();
+		}
+		else if (method.getAnnotation(AfterThrowing.class) != null){
+			if (method.getAnnotation(AfterThrowing.class).pointcut().length() > 0)
+				return method.getAnnotation(AfterThrowing.class).pointcut();
+			else
+				return method.getAnnotation(AfterThrowing.class).value();
+		}
 		else if (method.getAnnotation(Pointcut.class) != null)
 			return method.getAnnotation(Pointcut.class).value();
 		else return null;

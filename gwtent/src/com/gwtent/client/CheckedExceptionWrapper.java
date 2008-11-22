@@ -18,11 +18,10 @@ public class CheckedExceptionWrapper extends RuntimeException {
 	
 	public String getMessage(){
 		StringBuilder sb = new StringBuilder(super.getMessage());
-		String result = sb.toString();//super.getMessage();
 		
 		if (this.getCause() != null)
-			result = result + "(Cause: " + getCause().getMessage() + ")";
+			sb.append("(Cause: " + getCause() + ")");
 		
-		return result;
+		return sb.toString();
 	}
 }

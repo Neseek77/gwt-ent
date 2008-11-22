@@ -3,6 +3,11 @@ package com.gwtent.client.aop.advice;
 import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.client.reflection.Method;
 
+/**
+ * 
+ * @author JamesLuo.au@gmail.com
+ *
+ */
 public class AfterReturningAdvice extends AbstractAdvice {
 
 	public AfterReturningAdvice(Method method, Object aspectInstance) {
@@ -20,6 +25,11 @@ public class AfterReturningAdvice extends AbstractAdvice {
 	}
 	
 	private boolean shouldInvokeByReturnValue(Object returnValue){
+//		ClassType classType = TypeOracle.Instance.getClassType(returnValue.getClass());
+//		
+//		if (classType != null){
+//			
+//		}
 		return true;
 	}
 

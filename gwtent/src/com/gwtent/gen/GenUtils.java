@@ -82,4 +82,8 @@ public class GenUtils {
 		return false;
 	}
 	
+	public static boolean checkIfReturnVoid(JMethod method){
+		return method.getReturnType().getSimpleSourceName().equals("void");
+	}
+	
 }

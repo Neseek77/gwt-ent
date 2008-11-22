@@ -1,9 +1,5 @@
 package com.gwtent.client.aop.advice;
 
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Before;
-
 import com.gwtent.client.Virtual;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
 import com.gwtent.client.aop.intercept.MethodInvocation;
@@ -30,11 +26,16 @@ public abstract class AbstractAdvice implements MethodInterceptor{
 	 */
 	@Virtual
 	protected ArgsBinder getArgsBinder(){
-		return ArgsGeneratorImpl.getInstance();
+		return ArgsBinderImpl.getInstance();
+	}
+	
+	@Virtual
+	protected Object getReturningValue(){
+		return null;
 	}
 	
 	protected Object invokeAdviceMethod(MethodInvocation invocation) throws Throwable{
-		return getAdviceMethod().invoke(getAspectInstance(), getArgs(invocation, null));
+		return getAdviceMethod().invoke(getAspectInstance(), getArgs(invocation, getReturningValue()));
 	}
 	
 	public Method getAdviceMethod() {
@@ -47,11 +48,15 @@ public abstract class AbstractAdvice implements MethodInterceptor{
 	}
 	
 	public Object[] getArgs(MethodInvocation invocation){
-		return getArgs(invocation, null);
+		return getArgs(invocation, null, null);
 	}
 	
 	public Object[] getArgs(MethodInvocation invocation, Object returnValue){
-		return getArgsBinder().createArgs(invocation, getAdviceMethod(), returnValue);
+		return getArgsBinder().createArgs(invocation, getAdviceMethod(), returnValue, null);
+	}
+	
+	public Object[] getArgs(MethodInvocation invocation, Object returnValue, Throwable throwingValue){
+		return getArgsBinder().createArgs(invocation, getAdviceMethod(), returnValue, throwingValue);
 	}
 
 	

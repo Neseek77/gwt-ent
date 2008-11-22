@@ -425,7 +425,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				return "Long.valueOf(" + argeName + ")";
 			}
 			if (requestType.equals("float")) {
-				return "Long.valueOf(" + argeName + ")";
+				return "Float.valueOf(" + argeName + ")";
 			}
 			if (requestType.equals("double")) {
 				return "Double.valueOf(" + argeName + ")";
