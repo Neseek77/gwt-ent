@@ -2,6 +2,8 @@ package com.gwtent.test.aspectj;
 
 import java.lang.reflect.Method;
 
+import org.aspectj.lang.annotation.AfterThrowing;
+
 import junit.framework.TestCase;
 
 import com.gwtent.aop.matcher.AspectJExpress;

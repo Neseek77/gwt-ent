@@ -141,13 +141,19 @@ public class AOPCreator extends LogableSourceCreator {
 		  source.indent();
 		  
 		  source.println("if (" + ivnValueName + ".getCurrentInterceptor() instanceof MethodInterceptorFinalAdapter){");
-			source.println("	return super." + cache.getSourceMethod().getName() + "(" + GenUtils.getParamNames(cache.getSourceMethod()) + ");");
+		  if (GenUtils.checkIfReturnVoid(cache.getSourceMethod()))
+		  	source.println("	super." + cache.getSourceMethod().getName() + "(" + GenUtils.getParamNames(cache.getSourceMethod()) + ");");
+		  else
+		  	source.println("	return super." + cache.getSourceMethod().getName() + "(" + GenUtils.getParamNames(cache.getSourceMethod()) + ");");
 			source.println("}");
 			source.println();
 			source.println("Object[] args = new Object[]{" + GenUtils.getParamNames(cache.getSourceMethod()) + "};");
 			source.println(ivnValueName + ".reset(args);");
 			source.println("try {");
-			source.println("	return (" + cache.getSourceMethod().getReturnType().getQualifiedSourceName() + ") " + ivnValueName + ".proceed();");
+			if (GenUtils.checkIfReturnVoid(cache.getSourceMethod()))
+				source.println("	" + ivnValueName + ".proceed();");
+			else
+				source.println("	return (" + cache.getSourceMethod().getReturnType().getQualifiedSourceName() + ") " + ivnValueName + ".proceed();");
 			source.println("} catch (Throwable e) {");
 			source.println("	throw new AspectException(e);");
 			source.println("}");

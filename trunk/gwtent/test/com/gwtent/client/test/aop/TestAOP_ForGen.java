@@ -13,6 +13,8 @@ import com.gwtent.client.aop.intercept.impl.MethodInvocationLinkedAdapter;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.test.aop.Interceptors.PhoneLoggerInterceptor;
+import com.gwtent.client.test.aop.Interceptors.PhoneRedirectInterceptor;
 
 public class TestAOP_ForGen extends Phone {
 	private static class InterceptorMap{
@@ -26,12 +28,12 @@ public class TestAOP_ForGen extends Phone {
 		  //loop... for every aspected method
 			List<Method> matchAdvices = new ArrayList<Method>();
 			
-			aspectClass = TypeOracle.Instance.getClassType(AOPTestCase.PhoneLoggerInterceptor.class);
+			aspectClass = TypeOracle.Instance.getClassType(PhoneLoggerInterceptor.class);
 			method = aspectClass.findMethod("invoke", new String[]{"com.gwtent.client.aop.intercept.MethodInvocation"});
 			if (method != null)  //Maybe we can found it. Private method with a Pointcut, used for share pointcut
 			  matchAdvices.add(method);
 			
-			aspectClass = TypeOracle.Instance.getClassType(AOPTestCase.PhoneRedirectInterceptor.class);
+			aspectClass = TypeOracle.Instance.getClassType(PhoneRedirectInterceptor.class);
 			method = aspectClass.findMethod("invoke", new String[]{"com.gwtent.client.aop.intercept.MethodInvocation"});
 			if (method != null)  //Maybe we can found it. Private method with a Pointcut, used for share pointcut
 				matchAdvices.add(method);

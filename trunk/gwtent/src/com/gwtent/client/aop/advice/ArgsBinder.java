@@ -19,5 +19,6 @@ public interface ArgsBinder {
 	 * @param method is the advice method (which will be invoked).
 	 * @return Object[] args
 	 */
-	Object[] createArgs(MethodInvocation invocation, Method method, Object returnValue);
+	Object[] createArgs(MethodInvocation invocation, Method method, 
+			Object returnValue, Throwable throwingValue);
 }

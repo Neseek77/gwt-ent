@@ -13,10 +13,19 @@ public class Phone implements Aspectable {
 		RECEIVERS.put(123456789, new Receiver("Aunt Jane"));
 		RECEIVERS.put(111111111, new Receiver("Santa"));
 	}
+	
+	/**
+	 * the phone number, like your home number
+	 */
+	private Number number;
 
 	public Receiver call(Number number) {
 		System.out.println("The call here...");
-		return RECEIVERS.get(number);
+		Receiver result = RECEIVERS.get(number);
+		if (result != null)
+			return result;
+		else
+			throw new RuntimeException("Can't  found receiver, number: " + number);
 	}
 	
 	public Receiver call(String number){
@@ -28,6 +37,16 @@ public class Phone implements Aspectable {
 		return super.toString();
 	}
 	
+
+	public void setNumber(Number number) {
+		this.number = number;
+	}
+
+	public Number getNumber() {
+		return number;
+	}
+
+
 	public static class Receiver {
 		private final String name;
 
