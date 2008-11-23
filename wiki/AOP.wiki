@@ -7,11 +7,10 @@ After we appended reflection to GWT, now we appended AOP ability to GWT.
 For Pointcut, we support both Google Guice matcher and AspectJ expression(subset)
 
 
-
 = Overview =
 
 == Class ==
-The normal gwt class, for now you must implement "Aspectable"
+The normal gwt class, for now you need implement "Aspectable" mark interface
 {{{
 
 public class Phone implements Aspectable {
@@ -83,7 +82,7 @@ public class Phone implements Aspectable {
 }}}
 
 
-== Aspect Class ==
+== Aspect Classes ==
 {{{
 
 	@Aspect
@@ -148,6 +147,20 @@ public class Phone implements Aspectable {
 	Receiver auntJane = phone.call(123456789);
 	System.out.println(auntJane);
   }
+}}}
+
+=== The system output ===
+{{{
+Do something in PhoneLoggerInterceptor, Before...
+Call to: 123456789
+Validate, you cann't dail to 0, current Number(most time it's null): null
+The call here...
+Do something in PhoneRedirectInterceptor...
+Do something in PhoneLoggerInterceptor, After...
+After Call: 123456789
+Do something in PhoneLoggerInterceptor, AfterReturning...
+Returning Object: com.gwtent.sample.client.Phone$Receiver[name=Alberto's Pizza Place]
+com.gwtent.sample.client.Phone$Receiver[name=Alberto's Pizza Place]
 }}}
 
 = Pointcut =
