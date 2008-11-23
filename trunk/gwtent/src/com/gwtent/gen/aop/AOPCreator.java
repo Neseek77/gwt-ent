@@ -141,8 +141,10 @@ public class AOPCreator extends LogableSourceCreator {
 		  source.indent();
 		  
 		  source.println("if (" + ivnValueName + ".getCurrentInterceptor() instanceof MethodInterceptorFinalAdapter){");
-		  if (GenUtils.checkIfReturnVoid(cache.getSourceMethod()))
+		  if (GenUtils.checkIfReturnVoid(cache.getSourceMethod())){
 		  	source.println("	super." + cache.getSourceMethod().getName() + "(" + GenUtils.getParamNames(cache.getSourceMethod()) + ");");
+		  	source.println("  return;");
+		  }
 		  else
 		  	source.println("	return super." + cache.getSourceMethod().getName() + "(" + GenUtils.getParamNames(cache.getSourceMethod()) + ");");
 			source.println("}");
@@ -150,8 +152,10 @@ public class AOPCreator extends LogableSourceCreator {
 			source.println("Object[] args = new Object[]{" + GenUtils.getParamNames(cache.getSourceMethod()) + "};");
 			source.println(ivnValueName + ".reset(args);");
 			source.println("try {");
-			if (GenUtils.checkIfReturnVoid(cache.getSourceMethod()))
+			if (GenUtils.checkIfReturnVoid(cache.getSourceMethod())){
 				source.println("	" + ivnValueName + ".proceed();");
+				source.println("  return;");
+			}
 			else
 				source.println("	return (" + cache.getSourceMethod().getReturnType().getQualifiedSourceName() + ") " + ivnValueName + ".proceed();");
 			source.println("} catch (Throwable e) {");
@@ -203,7 +207,7 @@ public class AOPCreator extends LogableSourceCreator {
 	}
 	
 	protected GenExclusion getGenExclusion(){
-		return GenExclusionCompositeAOP.INSTANCE;
+		return GenExclusionCompositeAOP.getInstance(aspectCollector);
 	}
 
 	private String getIvnValueName(JMethod method){

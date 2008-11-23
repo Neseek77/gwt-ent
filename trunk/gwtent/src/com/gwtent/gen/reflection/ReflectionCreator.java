@@ -78,11 +78,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
 			if ((classType.isClass() != null) && GenUtils.hasDefaultConstructor(classType)){
-				sourceWriter.println("new ConstructorImpl(this, \"" + className + "\"){");
-				sourceWriter.println("	public Object newInstance() {");
-				sourceWriter.println("		return GWT.create(" + classType.getQualifiedSourceName() + ".class);");
-				sourceWriter.println("	}");
-				sourceWriter.println("};");
+				if (! classType.isAbstract()){
+					sourceWriter.println("new ConstructorImpl(this, \"" + className + "\"){");
+					sourceWriter.println("	public Object newInstance() {");
+					sourceWriter.println("		return GWT.create(" + classType.getQualifiedSourceName() + ".class);");
+					sourceWriter.println("	}");
+					sourceWriter.println("};");
+				}
 			}
 			
 			sourceWriter.println("");
