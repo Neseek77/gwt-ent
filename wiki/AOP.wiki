@@ -14,7 +14,7 @@
 
   And for pointcut, we support both Google Guice matcher classes and AspectJ expression(a subset of AspectJ expression)
 
-  Please see here[http://gwt-ent.googlecode.com/svn/trunk/gwtent-sample/src/com/gwtent/sample/client/Interceptors.java] for all interceptors in sample project.
+  Please see [http://gwt-ent.googlecode.com/svn/trunk/gwtent-sample/src/com/gwtent/sample/client/Interceptors.java here] for all interceptors in sample project.
 
 
 = Overview - The example =
