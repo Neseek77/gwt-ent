@@ -3,18 +3,13 @@ package com.gwtent.aop.matcher;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.weaver.BCException;
 import org.aspectj.weaver.reflect.ReflectionWorld;
 import org.aspectj.weaver.tools.ContextBasedMatcher;
 import org.aspectj.weaver.tools.FuzzyBoolean;
-import org.aspectj.weaver.tools.JoinPointMatch;
 import org.aspectj.weaver.tools.MatchingContext;
 import org.aspectj.weaver.tools.PointcutDesignatorHandler;
 import org.aspectj.weaver.tools.PointcutExpression;
@@ -26,11 +21,6 @@ import org.aspectj.weaver.tools.ShadowMatch;
 import com.gwtent.aop.ClassFilter;
 import com.gwtent.aop.Pointcut;
 import com.gwtent.client.CheckedExceptionWrapper;
-
-//import org.springframework.aop.ProxyMethodInvocation;
-//import org.springframework.aop.interceptor.ExposeInvocationInterceptor;
-//import org.springframework.aop.support.AopUtils;
-
 
 
 public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.MethodMatcher {
