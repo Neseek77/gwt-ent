@@ -1,23 +1,94 @@
-#summary The AOP support for GWT
+#summary Aspect-Oriented Programming for GWT
 #labels Featured,Phase-Implementation,AOP
 
 = Introduction =
 
-  After we appended reflection to GWT, now we appended AOP ability to GWT. Yes, the *Client-side* AOP support.
+  Now Aspect-Oriented Programming is available in GWT.
 
-  The following AspectJ annotation supported by GWTENT.
-  #  @Around
-  #  @Before
-  #  @After
-  #  @AfterReturning
-  #  @AfterThrowing
+  The following advice type supported by GWTENT(Compatible with AspectJ annotation).
+    #  @Around
+    #  @Before
+    #  @After
+    #  @AfterReturning
+    #  @AfterThrowing
 
+    *  Around advice: Advice that surrounds a join point such as a method invocation. This is the most powerful kind of advice. Around advice can perform custom behavior before and after the method invocation. It is also responsible for choosing whether to proceed to the join point or to shortcut the advised method execution by returning its own return value or throwing an exception.
+    *  Before advice: Advice that executes before a join point, but which does not have the ability to prevent execution flow proceeding to the join point (unless it throws an exception).
+    *  After (finally) advice: Advice to be executed regardless of the means by which a join point exits (normal or exceptional return).
+    *  After returning advice: Advice to be executed after a join point completes normally: for example, if a method returns without throwing an exception.
+    *  After throwing advice: Advice to be executed if a method exits by throwing an exception.
+    
   And for pointcut, we support both Google Guice matcher classes and AspectJ expression(a subset of AspectJ expression)
 
   Please see [http://gwt-ent.googlecode.com/svn/trunk/gwtent-sample/src/com/gwtent/sample/client/Interceptors.java here] for all interceptors in sample project.
 
 
-= Overview - The example =
+= Pointcut =
+
+== Overview ==
+Pointcut: A predicate that matches join points. Advice is associated with a pointcut expression and runs at any join point matched by the pointcut (for example, the execution of a method with a certain name). The concept of join points as matched by pointcut expressions is central to AOP: we support AspectJ pointcut language and Google Guice matcher classes.
+
+=== Client-side code?  ===
+  Please note, All pointcut match code is runing at compile time, it's mean you can write truely java code in your matcher class and without any limit in GWT client-side code.
+  In compile time and host-mode, GWTENT require AspectJ jars to dealwith AspectJ expression, but after your compile it, all are javascript.
+
+== AspectJ pointcut expression style ==
+  to be continue
+
+== Google Guice matcher style ==
+  We support "matchclass(the class name which implement com.gwtent.aop.matcher.ClassMethodMatcher)", for example:
+{{{
+	@Aspect
+	public static class PhoneRedirectInterceptor {
+		
+		@Around("matchclass(com.gwtent.test.aspectj.TestMatcher)")
+		public Object invoke(MethodInvocation invocation) throws Throwable {
+			invocation.proceed();
+			System.out.println("Do something in PhoneRedirectInterceptor...");
+			return new Receiver("Alberto's Pizza Place");
+		}
+	}
+}}}
+
+the matcher class will looks like this:
+{{{
+public class TestMatcher implements ClassMethodMatcher {
+
+	public Matcher<? super Class<?>> getClassMatcher() {
+		return Matchers.subclassesOf(Phone.class);
+	}
+
+	public Matcher<? super Method> getMethodMatcher() {
+		return Matchers.returns(Matchers.only(Phone.Receiver.class));
+		//return Matchers.any();
+	}
+
+}
+}}}
+
+= Advice =
+
+== Arguments Binding ==
+  # if there is "com.gwtent.client.aop.intercept.MethodInvocation" in args list, then invocation will assign to args.
+  # if source method and advice method have the same class type and this type just have one, then we assign this one to args
+  # Read settings in @AfterReturning {{{	 @AfterReturning(
+	   pointcut="**",
+	   returning="retVal"
+	   )
+	   public void afterReturning(Object retVal)}}}
+  # Read settings in @AfterThrowing {{{@AfterThrowing(
+	 	 throwing="e"
+	 } 
+	 public void afterThrowing(Throwable e)}}}
+
+
+== @Around ==
+== @Before ==
+== @After ==
+== @AfterReturning ==
+== @AfterThrowing ==
+
+= The example =
 
 == Class ==
 The normal gwt class, for now you need implement "Aspectable" mark interface
@@ -171,46 +242,4 @@ After Call: 123456789
 Do something in PhoneLoggerInterceptor, AfterReturning...
 Returning Object: com.gwtent.sample.client.Phone$Receiver[name=Alberto's Pizza Place]
 com.gwtent.sample.client.Phone$Receiver[name=Alberto's Pizza Place]
-}}}
-
-= Pointcut =
-
-== Overview ==
-Pointcut: A predicate that matches join points. Advice is associated with a pointcut expression and runs at any join point matched by the pointcut (for example, the execution of a method with a certain name). The concept of join points as matched by pointcut expressions is central to AOP: we support AspectJ pointcut language and Google Guice matcher classes.
-
-=== Client-side code?  ===
-  Please note, All pointcut match code is runing at compile time, it's mean you can write truely java code in your matcher class and without any limit in GWT client-side code.
-  In compile time and host-mode, GWTENT require AspectJ jars to dealwith AspectJ expression, but after your compile it, all are javascript.
-
-== AspectJ pointcut expression style ==
-  please see AspectJ programming guid
-
-== Google Guice matcher style ==
-  We support "matchclass(the class name which implement com.gwtent.aop.matcher.ClassMethodMatcher", for example:
-{{{
-	@Aspect
-	public static class PhoneRedirectInterceptor {
-		
-		@Around("matchclass(com.gwtent.test.aspectj.TestMatcher)")
-		public Object invoke(MethodInvocation invocation) throws Throwable {
-			invocation.proceed();
-			System.out.println("Do something in PhoneRedirectInterceptor...");
-			return new Receiver("Alberto's Pizza Place");
-		}
-	}
-}}}
-the matcher class will looks like this:
-{{{
-public class TestMatcher implements ClassMethodMatcher {
-
-	public Matcher<? super Class<?>> getClassMatcher() {
-		return Matchers.subclassesOf(Phone.class);
-	}
-
-	public Matcher<? super Method> getMethodMatcher() {
-		return Matchers.returns(Matchers.only(Phone.Receiver.class));
-		//return Matchers.any();
-	}
-
-}
 }}}
