@@ -3,15 +3,18 @@
 
 = Introduction =
 
-After we appended reflection to GWT, now we appended AOP ability to GWT. Yes, the Client-side AOP support.
+  After we appended reflection to GWT, now we appended AOP ability to GWT. Yes, the *Client-side* AOP support.
 
+  The following AspectJ annotation supported by GWTENT.
   #  @Around
   #  @Before
   #  @After
   #  @AfterReturning
   #  @AfterThrowing
 
-For Pointcut, we support both Google Guice matcher and AspectJ expression(subset)
+  And for pointcut, we support both Google Guice matcher classes and AspectJ expression(a subset of AspectJ expression)
+
+  Please see here[http://gwt-ent.googlecode.com/svn/trunk/gwtent-sample/src/com/gwtent/sample/client/Interceptors.java] for all interceptors in sample project.
 
 
 = Overview - The example =
@@ -211,8 +214,3 @@ public class TestMatcher implements ClassMethodMatcher {
 
 }
 }}}
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
