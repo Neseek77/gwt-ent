@@ -190,7 +190,6 @@ Pointcut: A predicate that matches join points. Advice is associated with a poin
 		}
 	}
 }}}
-
 the matcher class will looks like this:
 {{{
 public class TestMatcher implements ClassMethodMatcher {
