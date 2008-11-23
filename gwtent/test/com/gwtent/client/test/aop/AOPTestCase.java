@@ -4,7 +4,9 @@ package com.gwtent.client.test.aop;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
+import com.gwtent.client.aop.AspectException;
 import com.gwtent.client.aop.Aspectable;
+import com.gwtent.client.test.aop.Phone.NumberNotFoundException;
 import com.gwtent.client.test.aop.Phone.Receiver;
 
 public class AOPTestCase extends GWTTestCase {
@@ -27,35 +29,21 @@ public class AOPTestCase extends GWTTestCase {
 	}
 
 	public void testAOPInner() {
-		
-		// BindRegistry.getInstance().bindInterceptor(
-		// Matchers.subclassesOf(Phone.class),
-		// Matchers.returns(Matchers.only(Receiver.class)),
-		// new PhoneLoggerInterceptor(),
-		// new PhoneRedirectInterceptor()
-		// );
-
-		// moduleDef.mapServlet(path, servletClass);
-		// moduleDef = getModuleDef(logger, parts.moduleName); GWTShellServlet.java
-
-		// delayTestFinish(50000);
-
-
-
-//		System.out.println(Phone.class.getName());
-//
 		Phone phone = createPhone();
 		Receiver auntJane = phone.call(123456789);
 		System.out.println(auntJane);
 		System.out.println("End testAOPInner");
-
 	}
 	
 	
 	public void testAfterThrowing(){
 		Phone phone = createPhone();
-		Receiver auntJane = phone.call(1); //this should log to after throwing
-		System.out.println(auntJane);
+		try{
+			Receiver auntJane = phone.call(1); //this should log to after throwing
+			assertFalse("Should be not here. error occured", true);
+		}catch (AspectException e){
+			assertTrue("Should just throw NumberNotFoundException, not this: " + e , e.getRootCause() instanceof NumberNotFoundException);
+		} 
 	}
 	
 	public void testAOPDirect(){

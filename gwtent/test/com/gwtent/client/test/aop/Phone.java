@@ -3,6 +3,8 @@ package com.gwtent.client.test.aop;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import com.gwtent.client.aop.Aspectable;
 
 
@@ -25,7 +27,7 @@ public class Phone implements Aspectable {
 		if (result != null)
 			return result;
 		else
-			throw new RuntimeException("Can't  found receiver, number: " + number);
+			throw new NumberNotFoundException("Can't  found receiver, number: " + number);
 	}
 	
 	public Receiver call(String number){
@@ -44,6 +46,19 @@ public class Phone implements Aspectable {
 
 	public Number getNumber() {
 		return number;
+	}
+	
+	public static class NumberNotFoundException extends RuntimeException{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		public NumberNotFoundException(String msg){
+			super(msg);
+		}
+		
 	}
 
 

@@ -56,6 +56,16 @@ public class Interceptors {
 				System.out.println("Returning Object is NULL?");
 			}
 		}
+		
+		@After("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
+		public void afterCall(MethodInvocation invocation) {				
+			for (Object arg : invocation.getArguments()){
+				System.out.println("Do something in PhoneLoggerInterceptor, After...");
+				
+				if (arg instanceof Number)
+					System.out.println("After Call: " + arg);
+			}
+		}
 	}
 	
 	
@@ -82,7 +92,7 @@ public class Interceptors {
 				callTime.put(number, allTime);
 			}
 				
-			System.out.println(callTime);
+			System.out.println("call time: " + callTime);
 		}
 		
 		private Number getPhoneNumber(MethodInvocation invocation){
@@ -96,8 +106,8 @@ public class Interceptors {
 		private void numberArgOperation(Number number){};
 		
 		//args not full support yet
-		//@Before("args(java.lang.Number,..)")
-		@Before("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
+		@Before("args(java.lang.Number,..)")
+		//@Before("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
 		public void validateNumberNotSupportYet(Number number) throws Throwable {
 			System.out.println("Validate, you cann't dail to 0, current Number(most time it's null): " + number);
 			if ((number != null) && (number.intValue() == 0)){
@@ -105,8 +115,8 @@ public class Interceptors {
 			}
 		}
 		
-		//@Before("args(java.lang.Number,..)")
-		@Before("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
+		@Before("args(java.lang.Number,..)")
+		//@Before("execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))")
 		public void validateNumber(MethodInvocation invocation) throws Throwable {
 			Number number = null;
 			for (Object obj : invocation.getArguments()){

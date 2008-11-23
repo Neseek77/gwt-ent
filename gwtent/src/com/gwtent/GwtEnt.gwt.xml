@@ -23,11 +23,16 @@
  	<generate-with class="com.gwtent.gen.reflection.Reflection__ProxyGenerator">
 		<when-type-assignable class="com.gwtent.client.reflection.TypeOracle"/>
 	</generate-with>
- 	 	
- 	
+ 	<!--  	 	
+ 	<generate-with class="com.gwtent.gen.aop.AOPProxyGenerator">
+		<when-type-assignable class="java.lang.Object"/>
+	</generate-with> 	
+ 	 -->	 	
+
 	<generate-with class="com.gwtent.gen.aop.AOPProxyGenerator">
 		<when-type-assignable class="com.gwtent.client.aop.Aspectable"/>
 	</generate-with>
+
 
     <!-- 
     <generate-with class="com.gwtent.gen.reflection.ReflectionProxyGenerator">
