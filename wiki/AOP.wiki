@@ -71,21 +71,27 @@ public class TestMatcher implements ClassMethodMatcher {
 == Arguments Binding ==
   # if there is "com.gwtent.client.aop.intercept.MethodInvocation" in args list, then invocation will assign to args.
   # if source method and advice method have the same class type and this type just have one, then we assign this one to args
-  # Read settings in @AfterReturning {{{	 @AfterReturning(
+  # Read settings in @AfterReturning 
+{{{	 @AfterReturning(
 	   pointcut="**",
 	   returning="retVal"
 	   )
 	   public void afterReturning(Object retVal)}}}
-  # Read settings in @AfterThrowing {{{@AfterThrowing(
+  # Read settings in @AfterThrowing 
+{{{@AfterThrowing(
 	 	 throwing="e"
 	 } 
 	 public void afterThrowing(Throwable e)}}}
 
 
 == @Around ==
+
 == @Before ==
+
 == @After ==
+
 == @AfterReturning ==
+
 == @AfterThrowing ==
 
 = The example =
