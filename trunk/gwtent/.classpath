@@ -9,7 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="lib/aspectjlib.jar"/>
 	<classpathentry kind="lib" path="lib/aspectjrt.jar"/>
-	<classpathentry kind="lib" path="lib/aspectjtools.jar" sourcepath="C:/develop/cas_web2/ThridParty_Store/aspectj"/>
 	<classpathentry kind="lib" path="lib/aspectjweaver.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
