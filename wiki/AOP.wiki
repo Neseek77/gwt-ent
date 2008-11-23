@@ -90,20 +90,83 @@ public class TestMatcher implements ClassMethodMatcher {
 == @Around ==
   Advice that surrounds a join point such as a method invocation. This is the most powerful kind of advice. Around advice can perform custom behavior before and after the method invocation. It is also responsible for choosing whether to proceed to the join point or to shortcut the advised method execution by returning its own return value or throwing an exception.
 
+=== Example ===
+{{{
+		@Around("execution(* com.gwtent.sample.client.Phone.call(java.lang.Number))")
+		public Object invoke(MethodInvocation invocation) throws Throwable {
+			invocation.proceed();
+			System.out.println("Do something in PhoneRedirectInterceptor...");
+			return new Receiver("Alberto's Pizza Place");
+		}
+}}}
+
+
 == @Before ==
   Advice that executes before a join point, but which does not have the ability to prevent execution flow proceeding to the join point (unless it throws an exception).
+=== Example ===
+{{{
+		@Before("execution(* com.gwtent.sample.client.Phone.call(java.lang.Number))")
+		public void beforeCall(MethodInvocation invocation) {
+			for (Object arg : invocation.getArguments()){
+				System.out.println("Do something in PhoneLoggerInterceptor, Before...");
+				
+				if (arg instanceof Number)
+					System.out.println("Call to: " + arg);
+			}
+		}
+}}}
 
 == @After ==
   After (finally) Advice to be executed regardless of the means by which a join point exits (normal or exceptional return).
 
+=== Example ===
+{{{
+		@After("execution(* com.gwtent.sample.client.Phone.call(java.lang.Number))")
+		public void afterCall(MethodInvocation invocation) {				
+			for (Object arg : invocation.getArguments()){
+				System.out.println("Do something in PhoneLoggerInterceptor, After...");
+				
+				if (arg instanceof Number)
+					System.out.println("After Call: " + arg);
+			}
+		}
+}}}
+
 == @AfterReturning ==
   Advice to be executed after a join point completes normally: for example, if a method returns without throwing an exception.
+
+=== Example ===
+{{{
+		@AfterReturning(pointcut = "execution(* com.gwtent.sample.client.Phone.call(java.lang.Number))",
+			returning = "returnValue")
+		public void afterReturningCall(MethodInvocation invocation, Object returnValue) {
+			System.out.println("Do something in PhoneLoggerInterceptor, AfterReturning...");
+			
+			if ((returnValue != null)){
+				if (returnValue instanceof Number)
+					System.out.println("Returning Number: " + returnValue.toString());
+				else
+					System.out.println("Returning Object: " + returnValue.toString());
+			}else{
+				System.out.println("Returning Object is NULL?");
+			}
+		}
+}}}
 
 == @AfterThrowing ==
   Advice to be executed if a method exits by throwing an exception.
 
+=== Example ===
+{{{
+		@AfterThrowing(pointcut="execution(* com.gwtent.sample.client.Phone.call(java.lang.Number))",
+				throwing="e")
+		public void phoneCallErrorLog(MethodInvocation invocation, Throwable e){
+			System.out.println("PhoneCallErrorLog: " + e.getMessage());
+		}
+}}}
 
-= The example =
+
+= The whole example =
 
 == Class ==
 The normal gwt class, for now you need implement "Aspectable" mark interface
@@ -245,7 +308,7 @@ public class Phone implements Aspectable {
   }
 }}}
 
-=== The system output ===
+=== The Result - System Output ===
 {{{
 Do something in PhoneLoggerInterceptor, Before...
 Call to: 123456789
