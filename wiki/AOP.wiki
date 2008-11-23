@@ -72,27 +72,36 @@ public class TestMatcher implements ClassMethodMatcher {
   # if there is "com.gwtent.client.aop.intercept.MethodInvocation" in args list, then invocation will assign to args.
   # if source method and advice method have the same class type and this type just have one, then we assign this one to args
   # Read settings in @AfterReturning 
-{{{	 @AfterReturning(
+{{{
+	 @AfterReturning(
 	   pointcut="**",
 	   returning="retVal"
 	   )
-	   public void afterReturning(Object retVal)}}}
+	   public void afterReturning(Object retVal)
+}}}
   # Read settings in @AfterThrowing 
-{{{@AfterThrowing(
+{{{
+	 @AfterThrowing(
 	 	 throwing="e"
 	 } 
-	 public void afterThrowing(Throwable e)}}}
-
+	 public void afterThrowing(Throwable e)
+}}}
 
 == @Around ==
+  Advice that surrounds a join point such as a method invocation. This is the most powerful kind of advice. Around advice can perform custom behavior before and after the method invocation. It is also responsible for choosing whether to proceed to the join point or to shortcut the advised method execution by returning its own return value or throwing an exception.
 
 == @Before ==
+  Advice that executes before a join point, but which does not have the ability to prevent execution flow proceeding to the join point (unless it throws an exception).
 
 == @After ==
+  After (finally) Advice to be executed regardless of the means by which a join point exits (normal or exceptional return).
 
 == @AfterReturning ==
+  Advice to be executed after a join point completes normally: for example, if a method returns without throwing an exception.
 
 == @AfterThrowing ==
+  Advice to be executed if a method exits by throwing an exception.
+
 
 = The example =
 
