@@ -36,10 +36,14 @@ public class Application implements EntryPoint {
   }
   
   public void testAOP(){
+  	if (this instanceof EntryPoint)
+  		System.out.println("True");
+  	else
+  		System.out.println("False");
+  	
   	Phone phone = (Phone) GWT.create(Phone.class);
 		Receiver auntJane = phone.call(123456789);
 		System.out.println(auntJane);
-		System.out.println("End testAOPInner");
   }
   
   /**
