@@ -5,6 +5,12 @@
 
 After we appended reflection to GWT, now we appended AOP ability to GWT. Yes, the Client-side AOP support.
 
+  #  @Around
+  #  @Before
+  #  @After
+  #  @AfterReturning
+  #  @AfterThrowing
+
 For Pointcut, we support both Google Guice matcher and AspectJ expression(subset)
 
 
