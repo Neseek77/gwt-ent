@@ -3,11 +3,12 @@
 
 = Introduction =
 
-After we appended reflection to GWT, now we appended AOP ability to GWT.
+After we appended reflection to GWT, now we appended AOP ability to GWT. Yes, the Client-side AOP support.
+
 For Pointcut, we support both Google Guice matcher and AspectJ expression(subset)
 
 
-= Overview =
+= Overview - The example =
 
 == Class ==
 The normal gwt class, for now you need implement "Aspectable" mark interface
@@ -165,7 +166,46 @@ com.gwtent.sample.client.Phone$Receiver[name=Alberto's Pizza Place]
 
 = Pointcut =
 
+== Overview ==
+Pointcut: A predicate that matches join points. Advice is associated with a pointcut expression and runs at any join point matched by the pointcut (for example, the execution of a method with a certain name). The concept of join points as matched by pointcut expressions is central to AOP: we support AspectJ pointcut language and Google Guice matcher classes.
 
+=== Client-side code?  ===
+  Please note, All pointcut match code is runing at compile time, it's mean you can write truely java code in your matcher class and without any limit in GWT client-side code.
+  In compile time and host-mode, GWTENT require AspectJ jars to dealwith AspectJ expression, but after your compile it, all are javascript.
+
+== AspectJ pointcut expression style ==
+  please see AspectJ programming guid
+
+== Google Guice matcher style ==
+  We support "matchclass(the class name which implement com.gwtent.aop.matcher.ClassMethodMatcher", for example:
+{{{
+	@Aspect
+	public static class PhoneRedirectInterceptor {
+		
+		@Around("matchclass(com.gwtent.test.aspectj.TestMatcher)")
+		public Object invoke(MethodInvocation invocation) throws Throwable {
+			invocation.proceed();
+			System.out.println("Do something in PhoneRedirectInterceptor...");
+			return new Receiver("Alberto's Pizza Place");
+		}
+	}
+}}}
+
+the matcher class will looks like this:
+{{{
+public class TestMatcher implements ClassMethodMatcher {
+
+	public Matcher<? super Class<?>> getClassMatcher() {
+		return Matchers.subclassesOf(Phone.class);
+	}
+
+	public Matcher<? super Method> getMethodMatcher() {
+		return Matchers.returns(Matchers.only(Phone.Receiver.class));
+		//return Matchers.any();
+	}
+
+}
+}}}
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
