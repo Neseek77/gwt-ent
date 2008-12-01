@@ -7,13 +7,12 @@ For maximum efficiency, GWT compiles your Java source into a monolithic script. 
 
 = How to use =
 
-# add Reflection Marker interface into your pojo class
-{{{
+# add Reflection Marker interface into your pojo class{{{
 public class TestReflection implements Reflection{
 }
 }}}
 
-# {{{ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);}}}
+# get ClassType. {{{ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);}}}
 
 For example:
 {{{
@@ -32,8 +31,11 @@ public void testReflection(){
 }}}
 The output is :
 after SetByCode:set by code
+
 after SetByCode:set by code
+
 after SetByInvoke:set by invoke
+
 
 
 == The integrity of the source code ==
