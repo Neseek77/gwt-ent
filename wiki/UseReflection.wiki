@@ -5,6 +5,14 @@
 
 For maximum efficiency, GWT compiles your Java source into a monolithic script. Now gwt-ent provide a reflection implement by gwt code generator mechanism.
 
+This Framework support
+  #  Class [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/ClassType.java]
+  #  Field [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/Field.java]
+  # Method [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/Method.java]
+  # Constructor [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/Constructor.java]
+  # Metedata [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/HasMetaData.java]
+  # Annotation [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/HasAnnotations.java]
+
 = How to use =
 
 # add Reflection Marker interface into your pojo class
