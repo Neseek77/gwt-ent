@@ -55,6 +55,8 @@ after SetByInvoke:set by invoke
 
 [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/test/com/gwtent/client/test/TestReflection.java TestReflection]
 
+[http://code.google.com/p/gwt-ent/source/browse/#svn/trunk/gwtent-sample Sample Project]
+
 = Understand Reflection Classes =
 
 [http://gwt-ent.googlecode.com/svn/trunk/gwtent/src/com/gwtent/client/reflection/]
