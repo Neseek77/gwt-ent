@@ -1,22 +1,22 @@
-/*
- * GwtEnt - Gwt ent library.
+/*******************************************************************************
+ *  Copyright 2001, 2007 JamesLuo(JamesLuo.au@gmail.com)
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ *  use this file except in compliance with the License. You may obtain a copy of
+ *  the License at
+ *  
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations under
+ *  the License.
  * 
- * Copyright (c) 2007, James Luo(JamesLuo.au@gmail.com)
- * 
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+ *  Contributors:
+ *******************************************************************************/
+
+
 package com.gwtent.gen;
 
 import java.io.PrintWriter;
@@ -78,7 +78,7 @@ public abstract class LogableSourceCreator {
 	 * @param classType
 	 * @return
 	 */
-	protected abstract SourceWriter doGetSourceWriter(JClassType classType);
+	protected abstract SourceWriter doGetSourceWriter(JClassType classType) throws Exception;
 	protected abstract String getSUFFIX();
 	protected abstract void createSource(SourceWriter source, JClassType classType);
 	
@@ -112,7 +112,7 @@ public abstract class LogableSourceCreator {
 			}
 			return getUnitName(classType);
 		} catch (Throwable e) {
-			this.logger.log(Type.ERROR, e.getMessage());
+			this.logger.log(Type.ERROR, e.getMessage(), e);
 			throw new UnableToCompleteException();
 		}
 	}
@@ -123,8 +123,9 @@ public abstract class LogableSourceCreator {
 	 * @param useLog
 	 * @param baseLineNumber
 	 * @return
+	 * @throws Exception 
 	 */
-	public SourceWriter getSourceWriter(JClassType classType, boolean useLog, int baseLineNumber){
+	public SourceWriter getSourceWriter(JClassType classType, boolean useLog, int baseLineNumber) throws Exception{
 		if ((sourceWriter == null) && (getUnitName(classType) != null)){
 			sourceWriter = doGetSourceWriter(classType);
 			//Decorator it

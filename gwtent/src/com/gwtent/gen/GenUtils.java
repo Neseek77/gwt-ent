@@ -1,3 +1,22 @@
+/*******************************************************************************
+ *  Copyright 2001, 2007 JamesLuo(JamesLuo.au@gmail.com)
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ *  use this file except in compliance with the License. You may obtain a copy of
+ *  the License at
+ *  
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations under
+ *  the License.
+ * 
+ *  Contributors:
+ *******************************************************************************/
+
+
 package com.gwtent.gen;
 
 import java.lang.reflect.Method;
@@ -19,7 +38,7 @@ public class GenUtils {
 		return "__AOP";
 	}
 
-	public static Class<?> GWTTypeToClass(JType type){
+	public static Class<?> gwtTypeToJavaClass(JType type){
 		try {
 			return Class.forName(type.getJNISignature().substring(1, type.getJNISignature().length() - 1).replace('/', '.'));
 		} catch (ClassNotFoundException e) {
@@ -27,19 +46,19 @@ public class GenUtils {
 		}
 	}
 	
-	public static Method JMethodToMethod(JMethod method){
-		Class<?> clazz = GWTTypeToClass(method.getEnclosingType());
+	public static Method gwtMethodToJavaMethod(JMethod method){
+		Class<?> clazz = gwtTypeToJavaClass(method.getEnclosingType());
 		Class<?>[] paramClasses = new Class<?>[method.getParameters().length];
 		JParameter[] params = method.getParameters();
 		for (int i = 0; i < params.length; i++) {
-			paramClasses[i] = GWTTypeToClass(params[i].getType());
+			paramClasses[i] = gwtTypeToJavaClass(params[i].getType());
 		}
 		try {
 			return clazz.getMethod(method.getName(), paramClasses);
 		} catch (SecurityException e) {
 			throw new CheckedExceptionWrapper(e);
 		} catch (NoSuchMethodException e) {
-			throw new CheckedExceptionWrapper(e);
+			throw new CheckedExceptionWrapper("NoSuchMethod? GWT Method: " + method.toString() + " EnclosingType: " + method.getEnclosingType().toString(), e);
 		}
 	}
 	
@@ -73,9 +92,9 @@ public class GenUtils {
 		return result.toString();
 	}
 	
-	public static boolean hasDefaultConstructor(JClassType classType){
+	public static boolean hasPublicDefaultConstructor(JClassType classType){
 		for (JConstructor constructor : classType.getConstructors()){
-			if (constructor.getParameters().length == 0)
+			if ((constructor.getParameters().length == 0) && constructor.isPublic())
 				return true;
 		}
 		
