@@ -195,7 +195,6 @@
 	</bean>
 
 
-	<!-- 当AccessDeniedException且存在anonymous user时触发 -->
 	<bean id="authenticationProcessingFilterEntryPoint"
 		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
 		<property name="loginFormUrl">
@@ -204,13 +203,6 @@
 		<property name="forceHttps" value="false" />
 	</bean>
 
-	<!--
-		filterSecurityInterceptor在执行转向url前检查objectDefinitionSource中设定的用户权限信息
-		过程：
-		首先，objectDefinitionSource中定义了访问URL需要的属性信息(这里的属性信息仅仅是标志，告诉accessDecisionManager要用哪些voter来投票)
-		然后，authenticationManager调用自己的provider来对用户的认证信息进行校验。
-		最后，有投票者根据用户持有认证和访问url需要的属性，调用自己的voter来投票，决定是否允许访问。
-	-->
 	<bean id="filterSecurityInterceptor"
 		class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
 		<property name="authenticationManager"
@@ -270,7 +262,7 @@
 	
 	-->
 
-	<!-- 方法拦截器 
+	<!-- 
 		<bean id="methodSecurityInterceptor"
 		class="org.springframework.security.intercept.method.aopalliance.MethodSecurityInterceptor">
 		<property name="authenticationManager" ref="authenticationManager" />
@@ -284,7 +276,7 @@
 		</bean>-->
 
 
-	<!-- 通过注解来增加方法拦截器,在方法前类似于: @Secured({"PRIV_2"}) -->
+
 	<!-- 
 		<bean id="objectDefinitionSource"
 		class="org.springframework.security.intercept.method.MethodDefinitionAttributes">
@@ -321,7 +313,7 @@
 	
 	-->
 
-	<!-- HTTPS安全通道 -->
+
 	<bean id="channelProcessingFilter"
 		class="org.springframework.security.securechannel.ChannelProcessingFilter">
 		<property name="channelDecisionManager"
