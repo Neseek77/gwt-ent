@@ -2,5 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="GWT_HOME/gwt-dev-windows.jar"/>
+	<classpathentry kind="var" path="GWT_HOME/gwt-user.jar"/>
+	<classpathentry kind="lib" path="lib/gwtent-acegi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
