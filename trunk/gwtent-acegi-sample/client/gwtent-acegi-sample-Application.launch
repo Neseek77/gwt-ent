@@ -14,7 +14,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.GWTShell"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-noserver -port 8080&#13;&#10;-out www gwtent-acegi-sample-server/com.gwtent.acegi.sample.Application/Application.html"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-noserver -port 8080 -out www &#13;&#10;gwtent-acegi-sample-server/com.gwtent.acegi.sample.Application/Application.html"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="gwtent-acegi-sample-client"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M"/>
 </launchConfiguration>
