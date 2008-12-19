@@ -17,7 +17,7 @@
 	
 	
 	<bean id="userLoginController"
-		class="com.gwtent.acegi.service.UserLoginRpcImpl">
+		class="com.gwtent.acegi.server.UserLoginRpcImpl">
 		<property name="security" ref="security"/>
 	</bean>
 	
