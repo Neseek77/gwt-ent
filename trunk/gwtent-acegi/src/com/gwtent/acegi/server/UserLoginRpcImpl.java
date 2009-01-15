@@ -19,24 +19,38 @@
  */
 package com.gwtent.acegi.server;
 
+import org.springframework.security.context.SecurityContextHolder;
 
 import com.gwtent.acegi.client.UserLoginRpc;
+import com.gwtent.service.Security;
 
 public class UserLoginRpcImpl implements UserLoginRpc {
+	
+	private Security security;
 
 	public Boolean login(String username, String password, boolean rememberMe) {
-		//return userService.login(username, password, rememberMe);
-		return Boolean.TRUE;
+		return security.login(username, password, rememberMe);
 	}
 
 	public void logout(String username) {
-		//userService.logout(username);
+		security.logout(username);
+	}
 
+	public Security getSecurity() {
+		return security;
+	}
+
+	public void setSecurity(Security security) {
+		this.security = security;
 	}
 
 	public String getCurrentUserName() {
-		//return userService.getCurrentUserName();
-		return "";
+		if (SecurityContextHolder.getContext().getAuthentication() != null){
+			return SecurityContextHolder.getContext().getAuthentication().getName();
+		  //SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+		}else{
+			return null;
+		}
 	}
 
 }
