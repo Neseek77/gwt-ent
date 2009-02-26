@@ -1,0 +1,54 @@
+package com.gwtent.gen.template;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.ui.Button;
+import com.gwtent.client.template.HTMLTemplatePanel;
+
+public class TemplateSource extends HTMLTemplatePanel {
+
+  protected Button btn = new Button();
+
+  private static String getHTML() {
+    // if compile HTML to source
+    final String _HTML = "This is the HTML";
+    // return _HTML
+
+    // else read HTML from a URL
+    String url = "";
+    return "This is the HTML";
+  }
+
+  private void addElements() {
+    // add elements through annotations
+    // add(widget, id);
+    btn.setStylePrimaryName("style");
+  }
+
+  private void addEvents() {
+    com.google.gwt.user.client.Element element = null;
+
+    element = DOM.getElementById("");
+    final int eventType = 1;
+    if (element != null) {
+      DOM.sinkEvents(element, Event.ONCLICK);
+
+      DOM.setEventListener(element, new EventListener() {
+        public void onBrowserEvent(Event event) {
+          if (DOM.eventGetType(event) == eventType) {
+            // invoke
+          }
+        }
+      });
+    }
+  }
+
+  public TemplateSource() {
+    super(getHTML());
+
+    addElements();
+    addEvents();
+  }
+
+}
