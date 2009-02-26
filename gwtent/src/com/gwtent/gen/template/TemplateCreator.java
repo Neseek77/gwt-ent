@@ -1,0 +1,342 @@
+/*******************************************************************************
+ *  Copyright 2001, 2007 JamesLuo(JamesLuo.au@gmail.com)
+ *  
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ *  use this file except in compliance with the License. You may obtain a copy of
+ *  the License at
+ *  
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations under
+ *  the License.
+ * 
+ *  Contributors:
+ *******************************************************************************/
+
+
+package com.gwtent.gen.template;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gwt.core.ext.GeneratorContext;
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
+import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.client.template.HTMLEvent;
+import com.gwtent.client.template.HTMLTemplate;
+import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.gen.GenExclusion;
+import com.gwtent.gen.GenUtils;
+import com.gwtent.gen.LogableSourceCreator;
+
+public class TemplateCreator extends LogableSourceCreator {
+	
+	public TemplateCreator(TreeLogger logger, GeneratorContext context,
+			String typeName) {
+		super(logger, context, typeName);
+	}
+	
+	private static class VariableProvider {
+    private static Map<JMethod, String> names = new HashMap<JMethod, String>();
+    
+    private static String findNextName(JMethod method){
+      String result = method.getName();
+      Integer i = 0;
+      
+      while (names.containsValue(result)) {
+        result = method.getName() + i.toString();
+      }
+      return result;
+    }
+    
+    static String getName(JMethod method){
+      String result = names.get(method);
+      if (result == null){
+        result = findNextName(method);
+        names.put(method, result);
+      }
+      
+      return result;
+    }
+  }
+	
+	private String getEventTypeVariableName(JMethod method){
+    return "EventType_" + VariableProvider.getName(method);
+  }
+	
+	private <T extends Annotation> T getClassTypeAnnotation(JClassType classType, Class<T> annotationClass){
+	  JClassType parent = classType;
+	  while (parent != null){
+	    if (parent.getAnnotation(annotationClass) != null)
+	      return parent.getAnnotation(annotationClass);
+	    
+	    parent = parent.getSuperclass();
+	  }
+	  
+	  return null;
+	}
+	
+	private <T extends Annotation> T getMethodAnnotation(JMethod method, Class<T> annotationClass){
+	  if (method.getAnnotation(annotationClass) != null)
+	    return method.getAnnotation(annotationClass);
+	  
+//	  JClassType parent = method.getEnclosingType();
+//	  //method.getEnclosingType().getSuperclass().getMethod(method.getName(), method.getParameters().);
+//    while (parent != null){
+//      if (parent.getAnnotation(annotationClass) != null)
+//        return parent.getAnnotation(annotationClass);
+//      
+//      parent = parent.getSuperclass();
+//    }
+    
+    return null;
+  }
+
+
+	protected void createSource(SourceWriter source, JClassType classType){
+	  HTMLTemplate template = getClassTypeAnnotation(classType, HTMLTemplate.class);
+	  if (template == null){
+	    throw new RuntimeException("You have to add @HTMLTemplate to your HTMLTemplate class.");
+	  }
+	  
+		source.println("");
+		source.println("private static String getHTML(){");
+		source.indent();
+		if (template.value() != ""){
+		  String url = template.value();
+		  if (url.toUpperCase().indexOf("HTTP://") > 0){
+		    
+		  }else{
+		    if (url.indexOf("/") == -1) {
+		      url = classType.getPackage().getName().replace('.', '/') + "/" + url;
+		    }
+		    URL resource = getClass().getClassLoader().getResource(url);
+		    if (resource == null)
+		      throw new RuntimeException("Can not got resource of " + url);
+		    
+		    File file = new File(resource.getFile());
+		    StringBuffer contents = new StringBuffer();
+        BufferedReader reader = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader(file));
+            String text = null;
+ 
+            // repeat until all lines is read
+            while ((text = reader.readLine()) != null)
+            {
+              text = text.replace("\"", "\\\"");
+              
+              if (contents.length() > 0){
+                contents.append("+");
+              }
+              
+                contents.append("\"").append(text).append("\"")
+                    .append(System.getProperty(
+                        "line.separator"));
+            }
+        } catch (FileNotFoundException e)
+        {
+            throw new CheckedExceptionWrapper(e);
+        } catch (IOException e)
+        {
+          throw new CheckedExceptionWrapper(e);
+        } finally
+        {
+            try
+            {
+                if (reader != null)
+                {
+                    reader.close();
+                }
+            } catch (IOException e)
+            {
+              throw new CheckedExceptionWrapper(e);
+            }
+        }
+        
+        source.println("final String _HTML = " + contents + ";");
+        source.println("return _HTML;");
+		  }
+		}else if (template.html() != ""){
+		  source.println("final String _HTML = \"" + template.html() + "\";");
+		  source.println("return _HTML;");
+		}else {
+		  throw new RuntimeException("You have to setup @HTMLTemplate.value or @HTMLTemplate.html");
+		}
+		source.outdent();
+		source.println("}");
+		
+		source.println("private void addElements(){");
+		source.indent();
+		JClassType curType = classType;
+		while (curType != null) {
+		  for (JField aField: curType.getFields()){
+	      processField(source, aField);
+	    }
+	    for (JMethod aField: curType.getMethods()){
+	      processMethod(source, aField);
+	    }
+	    
+	    curType = curType.getSuperclass();
+    }
+		
+		source.outdent();
+		source.println("}");
+		
+		source.println("private void addEvents() {");
+		source.indent();
+		processEvents(source, classType);
+		source.outdent();
+    source.println("}");
+		
+		
+		source.println("public " + getSimpleUnitName(classType) + "(){");
+    source.indent();
+    source.println("super(getHTML());");
+    source.println("addElements();");
+    source.println("addEvents();");
+    source.outdent();
+    source.println("}");
+	}
+	
+	private String makeEventCall(JMethod method){
+	  if (method.getParameters().length == 0){
+	    return method.getName() + "();";
+	  }else if ((method.getParameters().length == 1) && (method.getParameters()[0].getType().getQualifiedSourceName().equals(Event.class.getName()))){
+	    return method.getName() + "(event);";
+	  }else{
+	    throw new RuntimeException("The event hanlder either no parameter or one parameter like (Event event).");
+	  }
+	}
+	
+	private void processEvents(SourceWriter source, JClassType classType){
+	  source.println("com.google.gwt.user.client.Element element = null;");
+	  
+	  JClassType curType = classType;
+    while (curType != null) {
+      for (JMethod method: curType.getMethods()){
+        HTMLEvent event = getMethodAnnotation(method, HTMLEvent.class);
+        if (event != null){
+          String elementId = event.value(); //TODO guest elementid by method.getName()
+          int eventType = event.eventType().getEvent();
+          String eventTypeVarName = getEventTypeVariableName(method);
+          source.println("element = DOM.getElementById(\"" + elementId + "\");");
+          source.println("final int " + eventTypeVarName + " = " + eventType + ";");
+          source.println("if (element != null) {");
+          source.println("  DOM.sinkEvents(element, Event.ONCLICK);");
+
+          source.println("  DOM.setEventListener(element, new com.google.gwt.user.client.EventListener() {");
+          source.println("    public void onBrowserEvent(Event event) {");
+          source.println("      if (DOM.eventGetType(event) == " + eventTypeVarName + ") {");
+          source.println("        " + makeEventCall(method));
+          source.println("      }");
+          source.println("    }");
+          source.println("  });");
+          source.println("}");
+        }
+                
+      }
+      
+      curType = curType.getSuperclass();
+    }
+	}
+
+  private void processMethod(SourceWriter source, JMethod aField) {
+    HTMLWidget widget = aField.getAnnotation(HTMLWidget.class);
+    if (widget != null){
+      if (aField.isPrivate())
+        throw new RuntimeException("@Widget can't apply to private method, please make sure subclass can access this method if you  are using @Widget.");
+      
+      processWidget(source, widget, aField.getName() + "()", aField.getName());
+    }
+  }
+
+  private void processField(SourceWriter source, JField aField) {
+    HTMLWidget widget = aField.getAnnotation(HTMLWidget.class);
+    if (widget != null){
+      if (aField.isPrivate())
+        throw new RuntimeException("@Widget can't apply to private field, please make sure subclass can access this field if you  are using @Widget.");
+      
+      processWidget(source, widget, aField.getName(), aField.getName());
+    }
+  }
+  
+  private void processWidget(SourceWriter source, HTMLWidget widget, String sourcePart, String elementName){
+    if (widget != null){
+      String elementID = widget.value();
+      if (elementID.length() <= 0)
+        elementID = elementName;
+      
+      source.println("add(" + sourcePart + ", \"" + elementID + "\");");
+      //source.println("addAndReplaceElement(" + sourcePart + ", \"" + elementID + "\");");
+      
+      if (widget.css().length() > 0){
+        source.println(sourcePart + ".setStylePrimaryName(\"" + widget.css() + "\");");
+      }
+    }
+  }
+  
+  
+
+	/**
+	 * SourceWriter instantiation. Return null if the resource already exist.
+	 * 
+	 * @return sourceWriter
+	 */
+	public SourceWriter doGetSourceWriter(JClassType classType) throws Exception {
+		String packageName = classType.getPackage().getName();
+		String simpleName = getSimpleUnitName(classType);
+		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
+				packageName, simpleName);
+		composer.setSuperclass(classType.getQualifiedSourceName());
+		// composer.addImplementedInterface(
+		// "com.coceler.gwt.client.reflection.Class");
+		composer.addImport(classType.getQualifiedSourceName());
+		composer.addImport("com.google.gwt.core.client.*");
+		composer.addImport("com.google.gwt.user.client.*");
+		composer.addImport("com.gwtent.client.*");
+		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("java.util.*");
+		composer.addImport(classType.getPackage().getName() + ".*");
+
+		PrintWriter printWriter = context.tryCreate(logger, packageName,
+				simpleName);
+		if (printWriter == null) {
+			return null;
+		} else {
+			SourceWriter sw = composer.createSourceWriter(context, printWriter);
+			return sw;
+		}
+		
+	}
+
+	@Override
+	protected String getSUFFIX() {
+		return GenUtils.getTemplate_SUFFIX();
+	}
+	
+	protected GenExclusion getGenExclusion(){
+		return null;
+	}
+
+}
