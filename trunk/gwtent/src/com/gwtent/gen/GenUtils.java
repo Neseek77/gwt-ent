@@ -37,6 +37,10 @@ public class GenUtils {
 	public static String getAOP_SUFFIX(){
 		return "__AOP";
 	}
+	
+	public static String getTemplate_SUFFIX(){
+	  return "__Template";
+	}
 
 	public static Class<?> gwtTypeToJavaClass(JType type){
 		try {

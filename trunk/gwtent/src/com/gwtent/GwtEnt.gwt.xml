@@ -34,11 +34,9 @@
 	</generate-with>
 
 
-    <!-- 
-    <generate-with class="com.gwtent.gen.reflection.ReflectionProxyGenerator">
-		<when-type-assignable class="com.gwtent.client.reflection.Reflection"/>
+    <generate-with class="com.gwtent.gen.template.TemplateGenerator">
+		<when-type-assignable class="com.gwtent.client.template.HTMLTemplatePanel"/>
 	</generate-with>
- 	-->
 
 
     <source path="client" />
