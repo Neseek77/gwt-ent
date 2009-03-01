@@ -69,6 +69,7 @@ public class TemplateTestCase extends GwtEntTestCase {
   
   public void testTemplate(){
     TestHTMLTemplate template = (TestHTMLTemplate) GWT.create(TestHTMLTemplate.class);
+    assertTrue(template.btn.getText().equals("SetFromHTML"));
     System.out.print(template);
   }
   
@@ -123,6 +124,57 @@ public class TemplateTestCase extends GwtEntTestCase {
   
   public void testTemplateInherited(){
     TestHTMLTemplateInherited template = (TestHTMLTemplateInherited) GWT.create(TestHTMLTemplateInherited.class);
+    System.out.print(template);
+  }
+  
+  @HTMLTemplateTest("testhtml.html")
+  public static class TestHTMLTemplateAnnotationInherited extends HTMLTemplatePanel{
+
+    @HTMLWidget
+    protected Button btn = new Button();
+    
+    @HTMLWidget
+    protected Hyperlink link = new Hyperlink();
+    
+    @HTMLWidget("btn1")
+    protected Button getButton(){
+      return new Button();
+    }
+    
+    @HTMLEvent("linkHanldByGWT")
+    protected void onLinkClickEvent(){
+      
+    }
+    
+    public TestHTMLTemplateAnnotationInherited(String html) {
+      super(html);
+      
+      Element element = btn.getElement();
+      DOM.sinkEvents(element, Event.ONCLICK);
+      DOM.setEventListener(element,new EventListener(){
+        public void onBrowserEvent(Event event) {
+            if(DOM.eventGetType(event) == Event.ONCLICK){
+                Window.alert("hello world!");
+            }
+            }
+        });
+      
+      
+      btn.setText("Hello Template World");
+      
+      link.addClickListener(new ClickListener(){
+
+        public void onClick(Widget sender) {
+          Window.alert("Hello");
+        }
+        
+      });
+    }
+    
+  }
+  
+  public void testTemplateAnnotationInherited(){
+  	TestHTMLTemplateAnnotationInherited template = (TestHTMLTemplateAnnotationInherited) GWT.create(TestHTMLTemplateAnnotationInherited.class);
     System.out.print(template);
   }
 
