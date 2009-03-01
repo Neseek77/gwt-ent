@@ -11,13 +11,32 @@ public @interface HTMLTemplate {
   
   /**
    * The URL of HTML File
+   * The final URL of HTML file equal basePath + value
    */
   String value() default "";
+
+  /**
+   * The basePath of HTML file
+   * The final URL of HTML file equal basePath + value
+   * If this is "", use the root of ClassPath
+   * Sometimes sub annotation can override this
+   */
+  String basePath() default "";
   
   /**
    * The content of HTML File
    */
   String html() default "";
+  
+  /**
+   * The custom variable of this template
+   * Using "=" to indent key and value
+   * "ABC=DEF"
+   * ABC is the key
+   * DEF is the value
+   * @return
+   */
+  String[] variables() default {};
   
   
   /**

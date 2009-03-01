@@ -26,6 +26,7 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
@@ -142,21 +143,8 @@ public class GeneratorHelper {
           //Currently just support mothod without parameters
           value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
           source.println(mapVarName + ".put(\"" + method.getName() + "\", \"" + value.toString() + "\");");
-        } catch (IllegalArgumentException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (SecurityException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (IllegalAccessException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (InvocationTargetException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        } catch (Exception e){
+        	throw new CheckedExceptionWrapper(e);
         }
       }
     } catch (NotFoundException e) {

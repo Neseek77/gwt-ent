@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import java.util.Map;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
@@ -49,6 +51,8 @@ import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 
 public class TemplateCreator extends LogableSourceCreator {
+	
+	private HTMLPreProcessor htmlProcessor = new HTMLPreProcessorFreeMarkerImpl();
 	
 	public TemplateCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -83,37 +87,20 @@ public class TemplateCreator extends LogableSourceCreator {
     return "EventType_" + VariableProvider.getName(method);
   }
 	
-	private <T extends Annotation> T getClassTypeAnnotation(JClassType classType, Class<T> annotationClass){
-	  JClassType parent = classType;
-	  while (parent != null){
-	    if (parent.getAnnotation(annotationClass) != null)
-	      return parent.getAnnotation(annotationClass);
-	    
-	    parent = parent.getSuperclass();
-	  }
-	  
-	  return null;
-	}
 	
-	private <T extends Annotation> T getMethodAnnotation(JMethod method, Class<T> annotationClass){
-	  if (method.getAnnotation(annotationClass) != null)
-	    return method.getAnnotation(annotationClass);
-	  
-//	  JClassType parent = method.getEnclosingType();
-//	  //method.getEnclosingType().getSuperclass().getMethod(method.getName(), method.getParameters().);
-//    while (parent != null){
-//      if (parent.getAnnotation(annotationClass) != null)
-//        return parent.getAnnotation(annotationClass);
-//      
-//      parent = parent.getSuperclass();
-//    }
-    
-    return null;
-  }
+	
+	private String processHTML(){
+		return null;
+	}
 
 
 	protected void createSource(SourceWriter source, JClassType classType){
-	  HTMLTemplate template = getClassTypeAnnotation(classType, HTMLTemplate.class);
+		Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
+		for (Annotation ann : annotations){
+			
+		}
+		
+	  HTMLTemplate template = GenUtils.getClassTypeAnnotation(classType, HTMLTemplate.class);
 	  if (template == null){
 	    throw new RuntimeException("You have to add @HTMLTemplate to your HTMLTemplate class.");
 	  }
@@ -126,19 +113,27 @@ public class TemplateCreator extends LogableSourceCreator {
 		  if (url.toUpperCase().indexOf("HTTP://") > 0){
 		    
 		  }else{
-		    if (url.indexOf("/") == -1) {
-		      url = classType.getPackage().getName().replace('.', '/') + "/" + url;
-		    }
-		    URL resource = getClass().getClassLoader().getResource(url);
-		    if (resource == null)
-		      throw new RuntimeException("Can not got resource of " + url);
-		    
-		    File file = new File(resource.getFile());
+//		    if (url.indexOf("/") == -1) {
+//		      url = classType.getPackage().getName().replace('.', '/') + "/" + url;
+//		    }
+//		    URL resource = getClass().getClassLoader().getResource(url);
+//		    if (resource == null)
+//		      throw new RuntimeException("Can not got resource of " + url);
+//		    
+//		    File file = new File(resource.getFile());
+		  	
+		  	try {
+					this.htmlProcessor.process(source, classType);
+				} catch (IOException e1) {
+					throw new RuntimeException(e1.toString(), e1);
+				}
+		  	
 		    StringBuffer contents = new StringBuffer();
         BufferedReader reader = null;
         try
         {
-            reader = new BufferedReader(new FileReader(file));
+//            reader = new BufferedReader(new FileReader(file));
+        	  reader = new BufferedReader(new StringReader(htmlProcessor.getHTML()));
             String text = null;
  
             // repeat until all lines is read
@@ -209,13 +204,25 @@ public class TemplateCreator extends LogableSourceCreator {
 		source.outdent();
     source.println("}");
 		
-		
+    codeFromHTML(source);
+    
 		source.println("public " + getSimpleUnitName(classType) + "(){");
     source.indent();
     source.println("super(getHTML());");
     source.println("addElements();");
     source.println("addEvents();");
+    source.println("_CodeFromHTML();");
     source.outdent();
+    source.println("}");
+	}
+	
+	private void codeFromHTML(SourceWriter source){
+		source.println("private void _CodeFromHTML() {");
+		source.indent();
+		for (String str : this.htmlProcessor.getSourceLines()){
+			source.println(str);
+		}
+		source.outdent();
     source.println("}");
 	}
 	
@@ -235,7 +242,7 @@ public class TemplateCreator extends LogableSourceCreator {
 	  JClassType curType = classType;
     while (curType != null) {
       for (JMethod method: curType.getMethods()){
-        HTMLEvent event = getMethodAnnotation(method, HTMLEvent.class);
+        HTMLEvent event = GenUtils.getMethodAnnotation(method, HTMLEvent.class);
         if (event != null){
           String elementId = event.value(); //TODO guest elementid by method.getName()
           int eventType = event.eventType().getEvent();
