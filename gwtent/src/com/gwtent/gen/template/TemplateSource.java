@@ -43,12 +43,17 @@ public class TemplateSource extends HTMLTemplatePanel {
       });
     }
   }
+  
+  private void _CodeFromHTML(){
+  	//btn.setText("SetFromHTML");
+  }
 
   public TemplateSource() {
     super(getHTML());
 
     addElements();
     addEvents();
+    _CodeFromHTML();
   }
 
 }

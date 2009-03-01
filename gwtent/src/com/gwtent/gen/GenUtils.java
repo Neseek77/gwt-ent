@@ -19,10 +19,14 @@
 
 package com.gwtent.gen;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
+import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -107,6 +111,75 @@ public class GenUtils {
 	
 	public static boolean checkIfReturnVoid(JMethod method){
 		return method.getReturnType().getSimpleSourceName().equals("void");
+	}
+	
+	
+	public static <T extends Annotation> T getClassTypeAnnotation(JClassType classType, Class<T> annotationClass){
+	  JClassType parent = classType;
+	  while (parent != null){
+	    if (parent.getAnnotation(annotationClass) != null)
+	      return parent.getAnnotation(annotationClass);
+	    
+	    parent = parent.getSuperclass();
+	  }
+	  
+	  return null;
+	}
+	
+	
+	public static <T extends Annotation> T getMethodAnnotation(JMethod method, Class<T> annotationClass){
+	  if (method.getAnnotation(annotationClass) != null)
+	    return method.getAnnotation(annotationClass);
+	  
+//	  JClassType parent = method.getEnclosingType();
+//	  //method.getEnclosingType().getSuperclass().getMethod(method.getName(), method.getParameters().);
+//    while (parent != null){
+//      if (parent.getAnnotation(annotationClass) != null)
+//        return parent.getAnnotation(annotationClass);
+//      
+//      parent = parent.getSuperclass();
+//    }
+   
+	  
+    return null;
+  }
+	
+	
+	/**
+	 * Get All annotations from classType
+	 * NOTE: This is orderd by ParentClass to DevidedClass
+	 * The parentclass's annotation comes frist
+	 * @param <T>
+	 * @param classType
+	 * @param annotationClass
+	 * @return
+	 */
+	public static <T extends Annotation> Map<Object, T> getAllAnnotations(JClassType classType, Class<T> annotationClass){
+		Map<Object, T> results = new HashMap<Object, T>();
+		
+		JClassType parent = classType.getSuperclass();
+		if (parent != null){
+			results.putAll(getAllAnnotations(parent, annotationClass));
+		}
+		
+		T a = classType.getAnnotation(annotationClass);
+		if (a != null){
+			results.put(classType, a);
+		}
+		
+		for (JField field : classType.getFields()){
+			a = field.getAnnotation(annotationClass);
+			if (a != null)
+				results.put(field, a);
+		}
+		
+		for (JMethod method : classType.getMethods()){
+			a = method.getAnnotation(annotationClass);
+			if (a != null)
+				results.put(method, a);
+		}
+
+		return results;
 	}
 	
 }
