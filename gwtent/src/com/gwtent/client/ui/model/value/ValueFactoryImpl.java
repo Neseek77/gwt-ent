@@ -77,7 +77,7 @@ public class ValueFactoryImpl implements ValueFactory {
 	/* (non-Javadoc)
 	 * @see com.coceler.gwt.client.ui.transition.ValueFactory#factory(java.lang.String)
 	 */
-	public Value factory(Object pojo, ClassTypeImpl classType, String fieldName, String typeName) {
+	public Value factory(Object pojo, ClassType classType, String fieldName, String typeName) {
 		AdvValue value = null;
 		
 		this.pojo = pojo;
@@ -113,7 +113,7 @@ public class ValueFactoryImpl implements ValueFactory {
 	}
 	
 	
-	protected void setGetterAndSetter(AdvValue value, final ClassTypeImpl classType, String fieldName, String typeName){
+	protected void setGetterAndSetter(AdvValue value, final ClassType classType, String fieldName, String typeName){
 		if (fieldName.startsWith("set")){
 			fieldName = fieldName.replaceFirst("set", "");
 		}

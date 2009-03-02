@@ -69,7 +69,7 @@ public class ClassTypeHelper {
 		return sb.toString();
 	} 
 	
-	public static String getCaption(ClassTypeImpl classType, Object instance,
+	public static String getCaption(ClassType classType, Object instance,
 			HasMetaData metaData){
 		Object obj = getValue(classType,instance, metaData, FIELD_CPATION_METADATA);
 		if (obj != null)
@@ -78,7 +78,7 @@ public class ClassTypeHelper {
 			return "";
 	}
 	
-	public static String getDesc(ClassTypeImpl classType, Object instance,
+	public static String getDesc(ClassType classType, Object instance,
 			HasMetaData metaData){
 		Object obj = getValue(classType,instance, metaData, FIELD_DESC_METADATA);
 		if (obj != null)
@@ -96,7 +96,7 @@ public class ClassTypeHelper {
 	 * @param metaDataName
 	 * @return
 	 */
-	public static Object getValue(ClassTypeImpl classType, Object instance,
+	public static Object getValue(ClassType classType, Object instance,
 			HasMetaData metaData, String tagName){
 		String metaStr = getAllMetaData(metaData, tagName);
 		if (metaStr.trim().length() <= 0) return null;

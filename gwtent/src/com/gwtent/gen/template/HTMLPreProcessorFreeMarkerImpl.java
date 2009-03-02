@@ -30,30 +30,41 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 	public static class SourceAppender{
 		private final String id;
 		private final SourceLines lines;
+		private final String widgetName;
 		private final boolean isMethod;
 		
-		public SourceAppender(String id, SourceLines lines, boolean isMethod){
+		public SourceAppender(String id, SourceLines lines, String widgetName, boolean isMethod){
 			this.id = id;
 			this.lines = lines;
+			this.widgetName = widgetName;
 			this.isMethod = isMethod;
 		}
 		
 		public String setProperty(String name, String value){
 			if (isMethod)
-				lines.add(id + "().set" + name + "(\"" + value + "\");");
+				lines.add(widgetName + "().set" + name + "(\"" + value + "\");");
 			else
-				lines.add(id + ".set" + name + "(\"" + value + "\");");
+				lines.add(widgetName + ".set" + name + "(\"" + value + "\");");
 			
 			return "";
 		}
+		
+		public String setProperty(String name, int value){
+      if (isMethod)
+        lines.add(widgetName + "().set" + name + "(" + value + ");");
+      else
+        lines.add(widgetName + ".set" + name + "(" + value + ");");
+      
+      return "";
+    }
 
 		public String getId() {
 			return id;
 		}
 	}
 	
-	private String[] getVariable(HTMLTemplate template){
-		return template.variables();
+	private String[] getVariable(HTMLTemplateJava template){
+		return template.getVariables();
 	}
 	
 	public SimpleHash hashMapFromStringList(String[] strs){
@@ -75,9 +86,9 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 			if (obj instanceof JClassType){
 				//HTMLWidget on a Class? 
 			}else if (obj instanceof JField){
-				appender = new SourceAppender(TemplateUtils.getId((JField)obj, widget), lines, false);
+				appender = new SourceAppender(TemplateUtils.getId((JField)obj, widget), lines, ((JField)obj).getName(), false);
 			}else if (obj instanceof JMethod){
-				appender = new SourceAppender(TemplateUtils.getId((JMethod)obj, widget), lines, true);
+				appender = new SourceAppender(TemplateUtils.getId((JMethod)obj, widget), lines, ((JMethod)obj).getName(), true);
 			}
 			
 			if (appender != null)
@@ -89,22 +100,21 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 	
 	
 	public void process(SourceWriter source,
-			JClassType classType) throws IOException {
+			JClassType classType, HTMLTemplateJava template) throws IOException {
 		this.classType = classType;
 		
 		String basePath = "/";
 		String url = "";
 
-		HTMLTemplate template = GenUtils.getClassTypeAnnotation(classType, HTMLTemplate.class);
 		if (template != null){
 			
 			
 			basePath = "/";
-			if (template.basePath().length() > 0)
-				basePath = template.basePath();
-			url = template.value();
+			if (template.getBasePath().length() > 0)
+				basePath = template.getBasePath();
+			url = template.getValue();
 
-			if ((url.indexOf("/") == -1) && (template.basePath().length() <= 0)) {
+			if ((url.indexOf("/") == -1) && (template.getBasePath().length() <= 0)) {
 	      url = classType.getPackage().getName().replace('.', '/') + "/" + url;
 	    }
 

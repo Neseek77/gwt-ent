@@ -148,8 +148,7 @@ public class GeneratorHelper {
         }
       }
     } catch (NotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new CheckedExceptionWrapper(e);
     }
     source.println(AnnotationStoreVarName + " = new AnnotationStoreImpl(" + annotation.annotationType().getName() + ".class, " + mapVarName + ");");
     source.println("}");

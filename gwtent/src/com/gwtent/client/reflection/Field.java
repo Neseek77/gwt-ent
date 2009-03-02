@@ -26,5 +26,7 @@ public abstract class Field implements HasMetaData, AccessDef, HasAnnotations {
 	public abstract String getName();
 
 	public abstract Type getType();
+	
+	public abstract String getTypeName();
 
 }

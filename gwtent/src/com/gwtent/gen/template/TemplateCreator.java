@@ -27,16 +27,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
+import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
+import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -92,24 +100,125 @@ public class TemplateCreator extends LogableSourceCreator {
 	private String processHTML(){
 		return null;
 	}
+	
+	private void setHTMLTemplateJava(HTMLTemplate template, HTMLTemplateJava templateJava){
+	  templateJava.setValue(template.value());
+	  templateJava.setAutoAddWidget(template.autoAddWidget());
+	  templateJava.setBasePath(template.basePath());
+	  templateJava.setCompileToSource(template.compileToSource());
+	  templateJava.setHtml(template.html());
+	  templateJava.setVariables(template.variables());
+	}
+	
+	private void setHTMLTemplateJavaByReflection(Annotation annotation, HTMLTemplateJava templateJava){
+	  JClassType annClassType = null;
+    try {
+      annClassType = typeOracle.getType(annotation.annotationType().getName());
+    } catch (NotFoundException e1) {
+      throw new CheckedExceptionWrapper(e1);
+    }
+    JAnnotationType annoType = annClassType.isAnnotation();
+    JAnnotationMethod[] methods = annoType.getMethods();
+    for (JAnnotationMethod method : methods) {
+      Object value = null;
+      try {
+        //Currently just support mothod without parameters
+        value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
+      } catch (Exception e){
+        throw new CheckedExceptionWrapper(e);
+      }
+      
+      String methodName = method.getName();
+      if (methodName.equals("value")){
+        templateJava.setValue((String)value);
+      }else if (methodName.equals("autoAddWidget")){
+        templateJava.setAutoAddWidget((Boolean)value);
+      }else if (methodName.equals("basePath")){
+        templateJava.setBasePath((String)value);
+      }else if (methodName.equals("compileToSource")){
+        templateJava.setCompileToSource((Boolean)value);
+      }else if (methodName.equals("html")){
+        templateJava.setHtml((String)value);
+      }else if (methodName.equals("variables")){
+        templateJava.setVariables((String[])value);
+      }
+    }    
+  }
+	
+
+  /**
+   * Set all values from annotationList to templateJava
+   * The devided annotation will override parent's
+   * @param annotationList the annotation inherited list
+   * @param templateJava
+   */
+  private void setHTMLTemplateJava(List<Annotation> annotationList, HTMLTemplateJava templateJava){
+    for (Annotation annotation : annotationList){
+      if (annotation instanceof HTMLTemplate){
+        setHTMLTemplateJava((HTMLTemplate)annotation, templateJava);
+      }else{
+        setHTMLTemplateJavaByReflection(annotation, templateJava);
+      }
+    }
+  }
+	
+	private boolean processTemplateAnnotation(Annotation annotation, List<Annotation> annotations){
+	  if (annotation instanceof HTMLTemplate){
+      annotations.add(annotation);
+      return true;
+    }else if (annotation.annotationType().getName().startsWith("java.lang.annotation")){
+      return false;  //Document's parent is itself?
+    }
+	  
+	  Class annotationClass = annotation.annotationType(); 
+	  Annotation[] metaAnnotations = annotationClass.getAnnotations();
+    for (Annotation metaAnnotation : metaAnnotations) {
+      if (processTemplateAnnotation(metaAnnotation, annotations)) {
+        annotations.add(metaAnnotation);
+        return true;
+      }
+    }
+    return false;
+	}
+	
+	
+	private void getHTMLTemplateSettings(JClassType classType, List<Annotation> annotationList){
+	  JClassType parent = classType.getSuperclass();
+    if (parent != null){
+      getHTMLTemplateSettings(parent, annotationList);
+    }
+    
+	  Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
+    for (Annotation annotation : annotations){
+      processTemplateAnnotation(annotation, annotationList);
+    }
+	}
+	
+	private HTMLTemplateJava getHTMLTemplateSettings(JClassType classType){
+	  List<Annotation> annotationList = new ArrayList<Annotation>();
+	  getHTMLTemplateSettings(classType, annotationList);
+	  
+	  HTMLTemplateJava result = new HTMLTemplateJava();
+    setHTMLTemplateJava(annotationList, result);
+    
+    return result;
+	}
 
 
 	protected void createSource(SourceWriter source, JClassType classType){
-		Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
-		for (Annotation ann : annotations){
-			
-		}
+	  HTMLTemplateJava template = getHTMLTemplateSettings(classType);
 		
-	  HTMLTemplate template = GenUtils.getClassTypeAnnotation(classType, HTMLTemplate.class);
-	  if (template == null){
-	    throw new RuntimeException("You have to add @HTMLTemplate to your HTMLTemplate class.");
-	  }
+//	  HTMLTemplate template = GenUtils.getClassTypeAnnotation(classType, HTMLTemplate.class);
+	  
+//	  if (template.getValue().length() <= 0){
+//	    throw new RuntimeException("You have to add @HTMLTemplate or annotations that the annotation type is annotated with @HTMLTemplate to your HTMLTemplate class.");
+//	  }
 	  
 		source.println("");
 		source.println("private static String getHTML(){");
 		source.indent();
-		if (template.value() != ""){
-		  String url = template.value();
+		if (template.getValue() != ""){
+		  String url = template.getValue();
 		  if (url.toUpperCase().indexOf("HTTP://") > 0){
 		    
 		  }else{
@@ -123,7 +232,7 @@ public class TemplateCreator extends LogableSourceCreator {
 //		    File file = new File(resource.getFile());
 		  	
 		  	try {
-					this.htmlProcessor.process(source, classType);
+					this.htmlProcessor.process(source, classType, template);
 				} catch (IOException e1) {
 					throw new RuntimeException(e1.toString(), e1);
 				}
@@ -172,8 +281,8 @@ public class TemplateCreator extends LogableSourceCreator {
         source.println("final String _HTML = " + contents + ";");
         source.println("return _HTML;");
 		  }
-		}else if (template.html() != ""){
-		  source.println("final String _HTML = \"" + template.html() + "\";");
+		}else if (template.getHtml() != ""){
+		  source.println("final String _HTML = \"" + template.getHtml() + "\";");
 		  source.println("return _HTML;");
 		}else {
 		  throw new RuntimeException("You have to setup @HTMLTemplate.value or @HTMLTemplate.html");
