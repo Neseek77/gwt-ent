@@ -19,6 +19,8 @@
 
 package com.gwtent.client.reflection;
 
+import java.util.List;
+
 
 public interface ClassType extends HasAnnotations, HasMetaData {
 
@@ -38,6 +40,8 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 
 	public Method getMethod(String name, Type[] paramTypes)
 			throws NotFoundException;
+	
+	public List getMetaDataMerge(String tagName);
 
 	/*
 	 * Returns the declared methods of this class (not any superclasses or

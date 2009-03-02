@@ -17,7 +17,7 @@ public class HTMLTemplatePanel extends HTMLPanel {
   
   public void add(Widget widget, String id) {
     if (widget != null){
-      widget.setWidth("100%");
+//      widget.setWidth("100%");
       super.add(widget, id);
     }else{
       throw new NoSuchElementException("add widget to html, id: " + id);
