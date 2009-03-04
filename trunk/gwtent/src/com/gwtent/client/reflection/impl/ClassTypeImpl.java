@@ -106,6 +106,8 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 
 	public ClassTypeImpl(String qualifiedName) {
 		TypeOracleImpl.putType(this, qualifiedName);
+		this.name = qualifiedName; 
+		this.lazyQualifiedName = qualifiedName;
 		
 //		if (! qualifiedName.equals("java.lang.Object"))
 //			setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("java.lang.Object").isClassOrInterface());
@@ -317,7 +319,8 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	 * @see com.gwtent.client.reflection.ClassType#getName()
 	 */
 	public String getName() {
-		return nestedName;
+		//return nestedName;
+	  return name;
 	}
 
 	public ClassType getNestedType(String typeName) throws NotFoundException {

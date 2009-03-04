@@ -116,8 +116,10 @@ public class SourceVisitor extends LogableSourceCreator {
 	}
 	
 	private void processRelationClasses(List<JClassType> types, JClassType classType){
-		if (classType.getSuperclass() != null)
+		if (classType.getSuperclass() != null){
 			processRelationClasses(types, classType.getSuperclass());
+			addClassIfNotExists(types, classType.getSuperclass());
+		}
 		
 		for (JClassType type : classType.getImplementedInterfaces()){
 			addClassIfNotExists(types, type);

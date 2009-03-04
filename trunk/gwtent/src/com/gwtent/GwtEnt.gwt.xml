@@ -40,4 +40,6 @@
 
 
     <source path="client" />
+    
+    <script src="pagebus.js"/>
 </module>

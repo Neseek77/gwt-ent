@@ -12,7 +12,7 @@ public @interface HTMLWidget {
   /**
    * The DOM ID of this widget put to
    */
-  String value() default "";
+  String value() default ""; 
   
   /**
    * The css will apply to this widget

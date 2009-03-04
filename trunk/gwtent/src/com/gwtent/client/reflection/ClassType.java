@@ -51,7 +51,8 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 
 	public String getName();
 
-	public Package getPackage();
+	//For now not support packagej
+//	public Package getPackage();
 
 	public ClassType getSuperclass();
 	
