@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 
-package com.gwtent.client.test;
+package com.gwtent.client.test.reflection;
 
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.test.annotations.*;
