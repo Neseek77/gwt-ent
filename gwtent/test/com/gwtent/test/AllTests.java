@@ -30,8 +30,8 @@
 
 package com.gwtent.test;
 
-import com.gwtent.client.test.ReflectionTestCase;
 import com.gwtent.client.test.aop.AOPTestCase;
+import com.gwtent.client.test.reflection.ReflectionTestCase;
 import com.gwtent.client.test.template.TemplateTestCase;
 
 import junit.framework.Test;

@@ -16,7 +16,7 @@
  *  Contributors:
  *******************************************************************************/
 
-package com.gwtent.client.test;
+package com.gwtent.client.test.reflection;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
@@ -132,6 +132,15 @@ public class ReflectionTestCase extends GWTTestCase {
   	System.out.println(obj.getClass().getName());
   	System.out.println(TestReflection.class.getName());
   	assertTrue(obj.getClass().getName().equals(TestReflection.class.getName()));
+  }
+  
+  public void testCustomTextBox(){
+    ClassType classType = TypeOracle.Instance.getClassType(TextBox.class);
+    TextBox t = new TextBox();
+    t.setText("SetByCode");
+    System.out.println(classType.getName());
+    assertTrue(classType.getName().equals(TextBox.class.getName()));
+    assertTrue(classType.invoke(t, "getText", null).equals("SetByCode"));
   }
   
 }
