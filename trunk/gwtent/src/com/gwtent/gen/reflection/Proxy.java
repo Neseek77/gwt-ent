@@ -32,6 +32,7 @@ import com.gwtent.client.reflection.impl.ParameterImpl;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -80,6 +81,9 @@ public class Proxy extends ClassTypeImpl {
 			if (methodName.equals("method1")) {
 				checkInvokeParams(methodName, 3, args);
 				return ((Object)content).toString();
+			}else if (methodName.equals("method2")) {
+				checkInvokeParams(methodName, 1, args);
+				return ((List<?>)content).toArray((Object[])args[0]);
 			}else{
 				return super.invoke(instance, methodName, args);
 				//throw new IllegalArgumentException("Method: " + methodName + " can't found.");
