@@ -72,17 +72,14 @@ public class AspectCollectorImpl implements Pointcut, ClassFilter, MethodMatcher
 		}
 	}
 	
-	@Override
 	public ClassFilter getClassFilter() {
 		return this;
 	}
 
-	@Override
 	public MethodMatcher getMethodMatcher() {
 		return this;
 	}
 
-	@Override
 	public boolean matches(Class<?> clazz) {
 		for (JMethod method : this.pointcuts.keySet()){
 			try{
@@ -97,7 +94,6 @@ public class AspectCollectorImpl implements Pointcut, ClassFilter, MethodMatcher
 		return false;
 	}
 
-	@Override
 	public boolean matches(Method method, Class<?> targetClass, Object... args) {
 		for (JMethod amethod : this.pointcuts.keySet()){
 			try{

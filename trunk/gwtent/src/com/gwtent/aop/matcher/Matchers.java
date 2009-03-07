@@ -191,8 +191,6 @@ public class Matchers {
   
   public static Matcher<Class<?>> aspectjClass(final String expression){
   	return new AbstractMatcher<Class<?>>(){
-
-			@Override
 			public boolean matches(Class<?> c) {
 				return new AspectJExpress(expression).matches(c);
 			}
@@ -207,7 +205,6 @@ public class Matchers {
   public static Matcher<Method> aspectjMethod(final String expression){
   	return new AbstractMatcher<Method>(){
 
-			@Override
 			public boolean matches(Method m) {
 				return new AspectJExpress(expression).matches(m, m.getDeclaringClass());
 			}

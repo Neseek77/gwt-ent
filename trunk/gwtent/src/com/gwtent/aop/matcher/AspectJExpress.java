@@ -338,13 +338,11 @@ public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.Met
 	}
 
 
-	@Override
 	public ClassFilter getClassFilter() {
 		return this;
 	}
 
 
-	@Override
 	public com.gwtent.aop.MethodMatcher getMethodMatcher() {
 		return this;
 	}
