@@ -20,7 +20,9 @@ package com.gwtent.client.test.reflection;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
@@ -91,10 +93,10 @@ public class ReflectionTestCase extends GWTTestCase {
     
     ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     Field[] fields = classType.getFields();
-    assertTrue(fields.length == 6);
     assertTrue(fieldExists("t", fields));
     assertTrue(fieldExists("names", fields));
     assertTrue(fieldExists("bool", fields));
+    assertTrue(fieldExists("sets", fields));
     //assertTrue(classType.findField("bool").getType().getSimpleSourceName().equals("boolean"));
   }
 
@@ -116,13 +118,26 @@ public class ReflectionTestCase extends GWTTestCase {
     assertNotNull(classType.findField("id").getAnnotation(Id.class));
   }
 
+  private boolean hasMethod(String methodName, Method[] methods){
+  	for (Method method : methods){
+  		if (method.getName().equals(methodName))
+  			return true;
+  	}
+  	
+  	return false;
+  }
+  
   public void testMethods() {
   	ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
   	Method[] methods = classType.getMethods();
   	for (Method method : methods)
   		System.out.println(method.toString());
   	System.out.println(methods.length);
-  	assertTrue(methods.length == 12);
+  	
+  	assertTrue(hasMethod("setT", methods));
+  	assertTrue(hasMethod("getT", methods));
+  	assertTrue(hasMethod("getString", methods));
+  	assertTrue(hasMethod("getNames", methods));
   }
 
   public void testInvokeMethod() {
@@ -142,6 +157,12 @@ public class ReflectionTestCase extends GWTTestCase {
     classType.invoke(account, "setNames", new Object[]{names});
     assertTrue(account.getNames().get(1).equals("test2"));
     
+    Set<String> sets = new HashSet<String>();
+    String string = "test1";
+    sets.add(string);
+    classType.invoke(account, "setSets", new Object[]{sets});
+    assertTrue(account.getSets().contains(string));
+    
     //Invoke generic functions which class declared
     assertTrue(account.getT() == null);
     Date date = new Date();
@@ -157,10 +178,13 @@ public class ReflectionTestCase extends GWTTestCase {
   	ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
   	Constructor constructor = classType.findConstructor(new String[]{});
   	assertNotNull(constructor);
-  	Object obj = constructor.newInstance();
+  	TestReflection obj = (TestReflection)constructor.newInstance();
+  	obj.setId("test1");
+  	
   	System.out.println(obj.getClass().getName());
   	System.out.println(TestReflection.class.getName());
   	assertTrue(obj.getClass().getName().equals(TestReflection.class.getName()));
+  	assertTrue(obj.getId().equals("test1"));
   }
   
   public void testCustomTextBox(){
@@ -170,6 +194,12 @@ public class ReflectionTestCase extends GWTTestCase {
     System.out.println(classType.getName());
     assertTrue(classType.getName().equals(TextBox.class.getName()));
     assertTrue(classType.invoke(t, "getText", null).equals("SetByCode"));
+  }
+  
+  public void testGWTClass(){
+  	Class c = TextBox.class;
+  	ClassType type1= TypeOracle.Instance.getClassType(c);
+  	assertTrue(type1.getName().equals(c.getName()));
   }
   
 }
