@@ -27,7 +27,12 @@ import com.gwtent.client.reflection.impl.TypeOracleImpl;
  */
 public class TypeOracleException extends Exception {
 
-  public TypeOracleException() {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public TypeOracleException() {
     super();
   }
 
