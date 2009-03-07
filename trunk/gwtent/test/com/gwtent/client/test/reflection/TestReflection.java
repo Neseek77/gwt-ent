@@ -23,13 +23,16 @@ import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.test.annotations.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity(name="TestReflection")
 @Table(name="Table_Test")
-public class TestReflection implements Reflection {
+public class TestReflection<T> implements Reflection {
 	private Date date;
 	private String string;
 	private boolean bool;
+	private List<String> names;
+	private T t;
 	
 	@Id
   private String id;
@@ -65,6 +68,22 @@ public class TestReflection implements Reflection {
 	}
 	public void setString(String string) {
 		this.string = string;
+	}
+
+	public void setNames(List<String> names) {
+		this.names = names;
+	}
+
+	public List<String> getNames() {
+		return names;
+	}
+
+	public void setT(T t) {
+		this.t = t;
+	}
+
+	public T getT() {
+		return t;
 	}
 
 }
