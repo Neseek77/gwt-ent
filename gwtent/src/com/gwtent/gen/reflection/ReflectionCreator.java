@@ -22,6 +22,7 @@ package com.gwtent.gen.reflection;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
+import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
@@ -313,8 +314,16 @@ public class ReflectionCreator extends LogableSourceCreator {
 			StringBuilder result = new StringBuilder("");
 			for (int i = 0; i < methodParams.length; i++) {
 				String requestType = methodParams[i].getType().getQualifiedSourceName();
-				if (methodParams[i].getType().isTypeParameter() != null)
-					 requestType = methodParams[i].getType().isTypeParameter().getBaseType().getQualifiedSourceName();
+				JType paramType = methodParams[i].getType();
+				if (paramType instanceof JArrayType){
+					paramType = ((JArrayType)paramType).getComponentType();
+				}
+				if (paramType.isTypeParameter() != null)
+					 requestType = paramType.isTypeParameter().getBaseType().getQualifiedSourceName();
+				if (methodParams[i].getType() instanceof JArrayType){
+					if (! requestType.contains("[]"))
+						requestType += "[]";
+				}
 				result.append("("	+ unboxIfNeed(requestType, argeName + "[" + i + "]") + ")");
 
 				if (i != methodParams.length - 1) {
