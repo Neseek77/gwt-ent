@@ -24,6 +24,7 @@ import com.gwtent.client.test.annotations.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name="TestReflection")
 @Table(name="Table_Test")
@@ -32,6 +33,7 @@ public class TestReflection<T> implements Reflection {
 	private String string;
 	private boolean bool;
 	private List<String> names;
+	private Set<String>	sets;
 	private T t;
 	
 	@Id
@@ -84,6 +86,14 @@ public class TestReflection<T> implements Reflection {
 
 	public T getT() {
 		return t;
+	}
+
+	public void setSets(Set<String> sets) {
+		this.sets = sets;
+	}
+
+	public Set<String> getSets() {
+		return sets;
 	}
 
 }
