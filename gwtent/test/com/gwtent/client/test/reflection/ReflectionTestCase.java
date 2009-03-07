@@ -18,6 +18,10 @@
 
 package com.gwtent.client.test.reflection;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -71,6 +75,15 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertTrue(types.length == 1);
   }
   
+  private boolean fieldExists(String fieldName, Field[] fields){
+  	for (Field field : fields){
+  		if (field.getName().equals(fieldName))
+  			return true;
+  	}
+  	
+  	return false;
+  }
+  
   public void testFields() {
     TestReflection test = new TestReflection();
     test.setString("username");
@@ -78,7 +91,10 @@ public class ReflectionTestCase extends GWTTestCase {
     
     ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     Field[] fields = classType.getFields();
-    assertTrue(fields.length == 4);
+    assertTrue(fields.length == 6);
+    assertTrue(fieldExists("t", fields));
+    assertTrue(fieldExists("names", fields));
+    assertTrue(fieldExists("bool", fields));
     //assertTrue(classType.findField("bool").getType().getSimpleSourceName().equals("boolean"));
   }
 
@@ -106,11 +122,11 @@ public class ReflectionTestCase extends GWTTestCase {
   	for (Method method : methods)
   		System.out.println(method.toString());
   	System.out.println(methods.length);
-  	assertTrue(methods.length == 8);
+  	assertTrue(methods.length == 12);
   }
 
   public void testInvokeMethod() {
-    TestReflection account = new TestReflection();
+    TestReflection<Date> account = new TestReflection<Date>();
     account.setString("username");
     assertTrue(account.getString().equals("username"));
     
@@ -118,6 +134,19 @@ public class ReflectionTestCase extends GWTTestCase {
     assertTrue(classType.invoke(account, "getString", null).equals("username"));
     classType.invoke(account, "setString", new String[]{"username set by reflection"});
     assertTrue(account.getString().equals("username set by reflection"));
+    
+    //Invoke generic functions 
+    List<String> names = new ArrayList<String>();
+    names.add("test1");
+    names.add("test2");
+    classType.invoke(account, "setNames", new Object[]{names});
+    assertTrue(account.getNames().get(1).equals("test2"));
+    
+    //Invoke generic functions which class declared
+    assertTrue(account.getT() == null);
+    Date date = new Date();
+    classType.invoke(account, "setT", new Object[]{date});
+    assertTrue(account.getT() == date);
   }
 
   public void testInheritance(){
