@@ -23,6 +23,7 @@ public class TemplateSource extends HTMLTemplatePanel {
   private void addElements() {
     // add elements through annotations
     // add(widget, id);
+
     btn.setStylePrimaryName("style");
   }
 

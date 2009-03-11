@@ -57,6 +57,15 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
       
       return "";
     }
+		
+		public String css(String css){
+		  if (isMethod)
+        lines.add(widgetName + "().setStylePrimaryName(\"" + css + "\");");
+      else
+        lines.add(widgetName + ".setStylePrimaryName(\"" + css + "\");");
+		  
+		  return "";
+		}
 
 		public String getId() {
 			return id;
