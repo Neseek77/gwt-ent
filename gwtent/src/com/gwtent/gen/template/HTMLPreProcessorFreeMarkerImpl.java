@@ -40,29 +40,68 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 			this.isMethod = isMethod;
 		}
 		
-		public String setProperty(String name, String value){
-			if (isMethod)
-				lines.add(widgetName + "().set" + name + "(\"" + value + "\");");
-			else
-				lines.add(widgetName + ".set" + name + "(\"" + value + "\");");
-			
-			return "";
-		}
+//		public String setProperty(String name, String value){
+//			if (isMethod)
+//				lines.add(widgetName + "().set" + name + "(\"" + value + "\");");
+//			else
+//				lines.add(widgetName + ".set" + name + "(\"" + value + "\");");
+//			
+//			return "";
+//		}
+//		
+//		public String setProperty(String name, int value){
+//      if (isMethod)
+//        lines.add(widgetName + "().set" + name + "(" + value + ");");
+//      else
+//        lines.add(widgetName + ".set" + name + "(" + value + ");");
+//      
+//      return "";
+//    }
 		
-		public String setProperty(String name, int value){
+    public String setProperty(String name, Object value){
+      String tempValue = "";
+      if (value instanceof String){
+        tempValue = "\"" + (String)value + "\"";
+      }else{
+        tempValue = value.toString();
+      }
+      
       if (isMethod)
-        lines.add(widgetName + "().set" + name + "(" + value + ");");
+        lines.add(widgetName + "().set" + name + "(" + tempValue + ");");
       else
-        lines.add(widgetName + ".set" + name + "(" + value + ");");
+        lines.add(widgetName + ".set" + name + "(" + tempValue + ");");
+      
+      return "";
+    }
+    
+    public String setProperty(String name, Object value, Object value1){
+      String tempValue = "";
+      if (value instanceof String){
+        tempValue = "\"" + (String)value + "\"";
+      }else{
+        tempValue = value.toString();
+      }
+      
+      String tempValue1 = "";
+      if (value1 instanceof String){
+        tempValue1 = "\"" + (String)value1 + "\"";
+      }else{
+        tempValue1 = value1.toString();
+      }
+      
+      if (isMethod)
+        lines.add(widgetName + "().set" + name + "(" + tempValue + ", " + tempValue1 + ");");
+      else
+        lines.add(widgetName + ".set" + name + "(" + tempValue + ", " + tempValue1 + ");");
       
       return "";
     }
 		
 		public String css(String css){
 		  if (isMethod)
-        lines.add(widgetName + "().setStylePrimaryName(\"" + css + "\");");
+        lines.add(widgetName + "().addStyleName(\"" + css + "\");");
       else
-        lines.add(widgetName + ".setStylePrimaryName(\"" + css + "\");");
+        lines.add(widgetName + ".addStyleName(\"" + css + "\");");
 		  
 		  return "";
 		}

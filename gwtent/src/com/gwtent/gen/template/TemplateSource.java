@@ -24,7 +24,8 @@ public class TemplateSource extends HTMLTemplatePanel {
     // add elements through annotations
     // add(widget, id);
 
-    btn.setStylePrimaryName("style");
+    //btn.setStylePrimaryName("style");
+    btn.addStyleName("style");  //Some widgets not support setStylePrimaryName, ie EXTGWT
   }
 
   private void addEvents() {
