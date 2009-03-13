@@ -89,6 +89,21 @@ public class TemplateTestCase extends GwtEntTestCase {
   }
   
   
+  @HTMLTemplate(value="testhtml_vars.html", variables = {"name=GWTENT"})
+  public static class TestHTMLTemplateVariables extends TestHTMLTemplate{
+
+    
+    public TestHTMLTemplateVariables(String html) {
+      super(html);
+    }
+    
+  }
+  
+  public void testTemplateVariables(){
+    TestHTMLTemplateVariables template = (TestHTMLTemplateVariables) GWT.create(TestHTMLTemplateVariables.class);
+    assertTrue(template.toString().contains("you name is GWTENT"));
+  }
+  
   @HTMLTemplate("testhtml.html")
   public static class TestHTMLTemplateCreateElementInConstructor extends HTMLTemplatePanel{
 
@@ -159,7 +174,6 @@ public class TemplateTestCase extends GwtEntTestCase {
             }
         });
       
-      
       btn.setText("Hello Template World");
       
       link.addClickListener(new ClickListener(){
@@ -167,7 +181,6 @@ public class TemplateTestCase extends GwtEntTestCase {
         public void onClick(Widget sender) {
           Window.alert("Hello");
         }
-        
       });
     }
     

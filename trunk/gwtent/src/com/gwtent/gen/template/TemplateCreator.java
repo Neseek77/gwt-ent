@@ -407,7 +407,7 @@ public class TemplateCreator extends LogableSourceCreator {
       //source.println("addAndReplaceElement(" + sourcePart + ", \"" + elementID + "\");");
       
       if (widget.css().length() > 0){
-        source.println(sourcePart + ".setStylePrimaryName(\"" + widget.css() + "\");");
+        source.println(sourcePart + ".addStyleName(\"" + widget.css() + "\");");
       }
     }
   }
