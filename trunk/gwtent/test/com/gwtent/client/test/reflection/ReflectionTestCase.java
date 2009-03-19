@@ -18,6 +18,7 @@
 
 package com.gwtent.client.test.reflection;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -101,6 +102,9 @@ public class ReflectionTestCase extends GWTTestCase {
   }
 
   public void testAnnotations(){
+    Annotation annotation = null;
+    assertTrue(annotation.annotationType() == null);
+    
     TestReflection test = new TestReflection();
     test.setString("username");
     assertTrue(test.getString().equals("username"));

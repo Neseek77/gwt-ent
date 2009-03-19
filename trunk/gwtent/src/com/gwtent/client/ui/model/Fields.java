@@ -37,7 +37,7 @@ public interface Fields {
 	 * iterator of field
 	 * @return
 	 */
-	public Iterator iterator();
+	public Iterator<Field> iterator();
 	
 	public String getCaption();
 	public void setCaption(String caption);

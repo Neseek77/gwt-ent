@@ -9,6 +9,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.gen.GenUtils;
@@ -174,7 +175,7 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 		try {
 			temp.process(hashMapFromStringList(getVariable(template)), out);
 		} catch (TemplateException e) {
-			new RuntimeException(e.getMessage(), e);
+			new CheckedExceptionWrapper(e.getMessage(), e);
 		}
     out.flush(); 
 		html = out.toString();

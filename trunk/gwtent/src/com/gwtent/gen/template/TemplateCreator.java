@@ -170,7 +170,7 @@ public class TemplateCreator extends LogableSourceCreator {
       return false;  //Document's parent is itself?
     }
 	  
-	  Class annotationClass = annotation.annotationType(); 
+	  Class<? extends Annotation> annotationClass = annotation.annotationType(); 
 	  Annotation[] metaAnnotations = annotationClass.getAnnotations();
     for (Annotation metaAnnotation : metaAnnotations) {
       if (processTemplateAnnotation(metaAnnotation, annotations)) {

@@ -35,9 +35,9 @@ import java.util.Map;
 public class AnnotationStoreImpl implements AnnotationStore {
 
   private final Class<? extends Annotation> clasz;
-  private final Map<String, Object> values;
+  private final Map<String, String> values;
   
-  public AnnotationStoreImpl(Class<? extends Annotation> clasz, Map<String, Object> values){
+  public AnnotationStoreImpl(Class<? extends Annotation> clasz, Map<String, String> values){
     this.clasz = clasz;
     this.values = values;
   }
@@ -46,7 +46,10 @@ public class AnnotationStoreImpl implements AnnotationStore {
     return clasz;
   }
 
-  public Object getValue(String name) {
+  /**
+   * Just support string value for now, all other type is a string here(object.toString())
+   */
+  public String getValue(String name) {
     return values.get(name);
   }
 
