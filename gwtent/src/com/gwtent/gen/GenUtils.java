@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JField;
@@ -31,6 +32,7 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.client.template.HTMLTemplate;
 
 public class GenUtils {
 	
@@ -54,6 +56,11 @@ public class GenUtils {
 		}
 	}
 	
+	/**
+	 * Convert GWT method to 
+	 * @param method GWT JMethod method
+	 * @return Java Method Object
+	 */
 	public static Method gwtMethodToJavaMethod(JMethod method){
 		Class<?> clazz = gwtTypeToJavaClass(method.getEnclosingType());
 		Class<?>[] paramClasses = new Class<?>[method.getParameters().length];
@@ -113,7 +120,14 @@ public class GenUtils {
 		return method.getReturnType().getSimpleSourceName().equals("void");
 	}
 	
-	
+	/**
+	 * Return annotation instance of classType which match annotation class.
+	 * NOTE: this function will check classType and all it's parent to see if annotation class exists
+	 * @param <T>  the type of annotation
+	 * @param classType 
+	 * @param annotationClass
+	 * @return
+	 */
 	public static <T extends Annotation> T getClassTypeAnnotation(JClassType classType, Class<T> annotationClass){
 	  JClassType parent = classType;
 	  while (parent != null){
@@ -124,6 +138,51 @@ public class GenUtils {
 	  }
 	  
 	  return null;
+	}
+	
+	/**
+	 * Check annotation and its meta reflection to see if it's match annotationClass
+	 * if match, return the instance of that annotation, otherwise return null
+	 * @param <T>
+	 * @param annotation
+	 * @param annotationClass
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+  public static <T extends Annotation> T getAnnotationFromAnnotation(Annotation annotation, Class<T> annotationClass){	  
+	 if (annotation.annotationType() == annotationClass){
+	   return (T) annotation;
+	 }else if (annotation.annotationType().getName().startsWith("java.lang.annotation")){
+     return null;  //Document's parent is itself? must check here
+   }else{
+	   Class<? extends Annotation> annotationType = annotation.annotationType(); 
+	   Annotation[] metaAnnotations = annotationType.getAnnotations();
+	   for (Annotation metaAnnotation : metaAnnotations) {
+	     T result = getAnnotationFromAnnotation(metaAnnotation, annotationClass);
+	     if (result != null) {
+	       return result;
+	     }
+	   }
+	 }
+	 
+	 return null;
+	}
+	
+	public static <T extends Annotation> T getClassTypeAnnotationWithMataAnnotation(JClassType classType, Class<T> annotationClass){
+	  JClassType parent = classType;
+    while (parent != null){
+      Annotation[] annotations = AnnotationsHelper.getAnnotations(parent);
+      for (Annotation annotation : annotations){
+        T result = getAnnotationFromAnnotation(annotation, annotationClass);
+        
+        if (result != null)
+          return result;
+      }
+      
+      parent = parent.getSuperclass();
+    }
+    
+    return null;
 	}
 	
 	
@@ -147,8 +206,8 @@ public class GenUtils {
 	
 	/**
 	 * Get All annotations from classType
-	 * NOTE: This is orderd by ParentClass to DevidedClass
-	 * The parentclass's annotation comes frist
+	 * NOTE: This is ordered by ParentClass to DevidedClass
+	 * The parentclass's annotation comes first
 	 * @param <T>
 	 * @param classType
 	 * @param annotationClass

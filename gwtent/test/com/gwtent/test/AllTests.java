@@ -33,6 +33,7 @@ package com.gwtent.test;
 import com.gwtent.client.test.aop.AOPTestCase;
 import com.gwtent.client.test.reflection.ReflectionTestCase;
 import com.gwtent.client.test.template.TemplateTestCase;
+import com.gwtent.client.test.validate.ValidateTestCase;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -42,6 +43,7 @@ public class AllTests {
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
+    suite.addTestSuite(ValidateTestCase.class);
     suite.addTestSuite(StudyTestCase.class);
     suite.addTestSuite(ReflectionTestCase.class);
     suite.addTestSuite(AOPTestCase.class);

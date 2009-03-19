@@ -5,6 +5,8 @@
     
     <inherits name="com.gwtent.GwtEnt"/>
     
+    <inherits name='com.google.gwt.validation.Validation' />
+    
     <source path="client" />
     
      <define-property name="aop.matcher.test" values="null"/>

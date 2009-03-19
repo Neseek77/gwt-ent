@@ -11,7 +11,12 @@ import java.lang.annotation.Target;
  * please see HTMLTemplateTest annotation for more information
  * 
  * Know issues:
- * Just support Static inner class for now
+ * If you want using inner class, Just support Static inner class, this 
+ * is Java language spec.
+ * Can't using ID Selectors for CSS, HTMLTemplatePanel will change the id 
+ * automatically after attach widget to HTML. using css function in HTML
+ * page instead for now. Must change id, otherwise, if you have more then two
+ * instance of HTMLTempaltePanel with same HTML page, the id will duplicate
  * 
  * @author James Luo (JamesLuo.au@gmail.com)
  *

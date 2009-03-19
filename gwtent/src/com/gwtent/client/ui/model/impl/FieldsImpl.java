@@ -30,10 +30,10 @@ import com.gwtent.client.ui.model.Value;
 public class FieldsImpl implements Fields {
 	
 	private String caption;
-	private List fields;
+	private List<Field> fields;
 	
 	public FieldsImpl(){
-		fields = new ArrayList();
+		fields = new ArrayList<Field>();
 	}
 
 	public Field addFieldInfo(String fieldName, String caption, boolean require, String desc, Value value) {
@@ -43,8 +43,8 @@ public class FieldsImpl implements Fields {
 		return info;
 	}
 
-	public Iterator iterator() {
-		return fields.iterator();
+	public Iterator<Field> iterator() {
+	  return fields.iterator();
 	}
 
 	public void addField(Field field) {
