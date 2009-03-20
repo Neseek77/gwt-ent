@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.NotNull;
+
 @Entity(name="TestReflection")
 @Table(name="Table_Test")
 public class TestReflection<T> implements Reflection {
@@ -37,6 +39,7 @@ public class TestReflection<T> implements Reflection {
 	private T t;
 	
 	@Id
+	@NotNull
   private String id;
 	
 	public TestReflection(){

@@ -77,7 +77,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 			
 			sourceWriter.println("public " + className + "(){");
 			sourceWriter.indent();
-			sourceWriter.println("super(\"" + classType.getQualifiedSourceName() + "\");");
+			//sourceWriter.println("super(\"" + classType.getQualifiedSourceName() + "\");");
+			//sourceWriter.println("super(" + classType.getQualifiedSourceName() + ".class);");
+			sourceWriter.println("super(\"" + classType.getQualifiedSourceName() + "\", " + classType.getQualifiedSourceName() + ".class);");
 			sourceWriter.println("addClassMeta();");
 			sourceWriter.println("addAnnotations();");
 			sourceWriter.println("addFields();");

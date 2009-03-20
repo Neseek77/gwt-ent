@@ -1,5 +1,7 @@
 package javax.validation;
 
+import java.util.Map;
+
 /**
  * <pre>--
  * As soon as the classes in javax.validation are available from official sites, this
@@ -15,5 +17,10 @@ public class MinConstraint implements Constraint<Min>{
 
     public boolean isValid(Object value) {
         return ((Number)value).intValue() >= min;
+    }
+
+    public void initialize(Map<String, String> constraintAnnotation) {
+      // TODO Auto-generated method stub
+      
     }
 }

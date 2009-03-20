@@ -30,13 +30,19 @@
 package com.gwtent.client.reflection;
 
 import java.lang.annotation.Annotation;
+import java.util.Map;
 
 public interface AnnotationStore {
   Class<? extends Annotation> annotationType();
   
   /**
-   * Just support string value for now, all other type is a string here(object.toString())
+   * Return the value of an annotation
+   * @param name the name of function name
+   * @return the value of this function, if not point in annotation, it's default value
    */
   public String getValue(String name);
+  
+  
+  public Map<String, String> allValues(); 
   
 }

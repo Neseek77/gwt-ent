@@ -126,16 +126,10 @@ public class ParameterImpl implements HasAnnotations, Parameter {
     return annotations.isAnnotationPresent(annotationClass);
   }
   
-  /**
-   * NOTE: This method is for testing purposes only.
-   */
-  AnnotationStore[] getAnnotations() {
+  public AnnotationStore[] getAnnotations() {
     return annotations.getAnnotations();
   }
 
-  /**
-   * NOTE: This method is for testing purposes only.
-   */
   AnnotationStore[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }

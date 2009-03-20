@@ -1,6 +1,6 @@
 package javax.validation;
 
-import java.lang.reflect.Array;
+//import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 
@@ -18,9 +18,10 @@ public class NotEmptyConstraint implements Constraint<NotEmpty>, StandardConstra
 
     public boolean isValid(Object value) {
         if (value == null) return false;
-        if (value.getClass().isArray()) {
-            return Array.getLength(value) > 0;
-        } else if (value instanceof Collection) {
+//        if (value.getClass().isArray()) {
+//            return Array.getLength(value) > 0;
+//        } else 
+          if (value instanceof Collection) {
             return ((Collection) value).size() > 0;
         } else if (value instanceof Map) {
             return ((Map) value).size() > 0;
@@ -36,5 +37,10 @@ public class NotEmptyConstraint implements Constraint<NotEmpty>, StandardConstra
                 return false;
             }
         };
+    }
+
+    public void initialize(Map<String, String> constraintAnnotation) {
+      // TODO Auto-generated method stub
+      
     }
 }

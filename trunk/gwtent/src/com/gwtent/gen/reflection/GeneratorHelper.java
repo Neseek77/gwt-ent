@@ -35,6 +35,7 @@ import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,7 +131,7 @@ public class GeneratorHelper {
 	public static void addAnnotation(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, 
 	    String AnnotationStoreVarName, SourceWriter source, Annotation annotation){
 	  source.println("{");
-	  source.println("Map<String, Object> values = new HashMap<String, Object>();");
+	  source.println("Map<String, String> values = new HashMap<String, String>();");
 	  String mapVarName = "values";
 	  //source.println(mapVarName + ".clear();");
 	  try {
@@ -142,7 +143,7 @@ public class GeneratorHelper {
         try {
           //Currently just support mothod without parameters
           value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
-          source.println(mapVarName + ".put(\"" + method.getName() + "\", \"" + value.toString() + "\");");
+          source.println(mapVarName + ".put(\"" + method.getName() + "\", \"" + toString(value) + "\");");
         } catch (Exception e){
         	throw new CheckedExceptionWrapper(e);
         }
@@ -152,6 +153,24 @@ public class GeneratorHelper {
     }
     source.println(AnnotationStoreVarName + " = new AnnotationStoreImpl(" + annotation.annotationType().getName() + ".class, " + mapVarName + ");");
     source.println("}");
+	}
+	
+	private static String toString(Object object){
+	  if (object instanceof Class)
+	    return ((Class)object).getName();
+	  else if (object.getClass().isArray()){
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("[");
+	    for (int i = 0; i < Array.getLength(object); i++){
+	      if (i > 0)
+	        sb.append(", ");
+	      sb.append(Array.get(object, i).toString());
+	    }
+	    sb.append("]");
+	    return sb.toString();
+	  }
+	  else
+	    return object.toString();
 	}
 	
 	/**

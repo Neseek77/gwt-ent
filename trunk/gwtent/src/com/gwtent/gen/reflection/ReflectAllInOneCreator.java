@@ -20,16 +20,21 @@
 package com.gwtent.gen.reflection;
 
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.validation.Constraint;
 
 import org.aspectj.lang.annotation.Aspect;
 
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
+import com.google.gwt.core.ext.typeinfo.HasAnnotations;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
@@ -37,6 +42,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.Reflection;
+import com.gwtent.client.reflection.Reflectionable;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
@@ -99,15 +105,21 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	}
 	
 	
+	//TODO refactor by source visitor pattern
+	
 	private List<JClassType> getAllReflectionClasses() throws NotFoundException{
 		List<JClassType> types = new ArrayList<JClassType>();
 		
 //		try {
 			JClassType reflectionClass = typeOracle.getType(Reflection.class.getCanonicalName());
+			JClassType constraintClass = typeOracle.getType(Constraint.class.getCanonicalName());  //For temp use, will refactor here to support full @Reflectionable
 			for (JClassType classType : typeOracle.getTypes()) {
-				if ((classType.isAssignableTo(reflectionClass)) || (classType.getAnnotation(Aspect.class) != null)){
+			  //|| (classType.getAnnotation(Aspect.class) != null)
+				if ((classType.isAssignableTo(reflectionClass)) || (classType.isAssignableTo(constraintClass))
+				    || (GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectionable.class) != null)){
 					if (! genExclusion(classType)){
 						processRelationClasses(types, classType);
+						processAnnotationClasses(types, classType);
 						addClassIfNotExists(types, classType);
 					}
 				}
@@ -123,23 +135,53 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	private void processRelationClasses(List<JClassType> types, JClassType classType){
 		if (classType.getSuperclass() != null){
 			processRelationClasses(types, classType.getSuperclass());
+			processAnnotationClasses(types, classType.getSuperclass());
 			addClassIfNotExists(types, classType.getSuperclass());
 		}
 		
 		for (JClassType type : classType.getImplementedInterfaces()){
-			addClassIfNotExists(types, type);
+		  processAnnotationClasses(types, type);
+		  addClassIfNotExists(types, type);
 		}
 		
 		for (JField field : classType.getFields()) {
-			addClassIfNotExists(types, field.getType().isClassOrInterface());
+		  processAnnotationClasses(types, field);
+		  addClassIfNotExists(types, field.getType().isClassOrInterface());
 		}
 		
 		for (JMethod method : classType.getMethods()){
 			if (method.getReturnType() != null)
-				addClassIfNotExists(types, method.getReturnType().isClassOrInterface());
+			  processAnnotationClasses(types, method);
+			  addClassIfNotExists(types, method.getReturnType().isClassOrInterface());
+			  
 			
 			//TODO How about parameters?
 		}
+	}
+	
+	private void processAnnotationClasses(List<JClassType> types, HasAnnotations annotations){
+	  Annotation[] annos= AnnotationsHelper.getAnnotations(annotations);
+	  if (annos == null)
+	    return;
+	  
+	  for (Annotation annotation : annos){
+	    processAnnotation(types, annotation);
+	  }
+	}
+	
+	private void processAnnotation(List<JClassType> types, Annotation annotation){
+	  if (annotation.annotationType().getName().startsWith("java.lang.annotation")){
+	     return;  //Document's parent is itself? must check here
+	   }else{
+	     JClassType classType = this.typeOracle.findType(annotation.annotationType().getCanonicalName());
+	     addClassIfNotExists(types, classType);
+	     
+	     Class<? extends Annotation> annotationType = annotation.annotationType(); 
+	     Annotation[] metaAnnotations = annotationType.getAnnotations();
+	     for (Annotation metaAnnotation : metaAnnotations) {
+	       processAnnotation(types, metaAnnotation);
+	     }
+	   }
 	}
 	
 	private void addClassIfNotExists(List<JClassType> types, JClassType classType){

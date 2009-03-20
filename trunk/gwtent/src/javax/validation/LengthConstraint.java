@@ -1,5 +1,7 @@
 package javax.validation;
 
+import java.util.Map;
+
 /**
  * <pre>--
  * As soon as the classes in javax.validation are available from official sites, this
@@ -50,5 +52,10 @@ public class LengthConstraint implements Constraint<Length>, StandardConstraint 
                 }
             }
         };
+    }
+
+    public void initialize(Map<String, String> constraintAnnotation) {
+      this.min = Integer.parseInt(constraintAnnotation.get("min"));
+      this.max = Integer.parseInt(constraintAnnotation.get("max"));
     }
 }

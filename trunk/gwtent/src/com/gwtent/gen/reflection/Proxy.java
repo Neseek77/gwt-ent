@@ -40,7 +40,7 @@ public class Proxy extends ClassTypeImpl {
 	
 
 	public Proxy(){
-		super("classname");
+		super("className", Proxy.class);
 		addFields();
 		addMethods();
 		

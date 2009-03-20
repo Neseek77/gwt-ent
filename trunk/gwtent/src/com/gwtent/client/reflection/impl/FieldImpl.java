@@ -152,7 +152,7 @@ public class FieldImpl extends Field implements HasMetaData, AccessDef, HasAnnot
   /**
    * NOTE: This method is for testing purposes only.
    */
-  AnnotationStore[] getAnnotations() {
+  public AnnotationStore[] getAnnotations() {
     return annotations.getAnnotations();
   }
 

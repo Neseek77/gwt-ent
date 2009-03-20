@@ -53,4 +53,8 @@ public class AnnotationStoreImpl implements AnnotationStore {
     return values.get(name);
   }
 
+  public Map<String, String> allValues() {
+    return values;
+  }
+
 }

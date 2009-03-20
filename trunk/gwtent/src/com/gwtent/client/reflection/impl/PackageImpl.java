@@ -129,7 +129,7 @@ public class PackageImpl implements HasAnnotations, Package {
 	  /**
 	   * NOTE: This method is for testing purposes only.
 	   */
-	  AnnotationStore[] getAnnotations() {
+	  public AnnotationStore[] getAnnotations() {
 	    return annotations.getAnnotations();
 	  }
 
