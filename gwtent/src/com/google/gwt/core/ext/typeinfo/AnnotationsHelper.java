@@ -31,6 +31,21 @@ package com.google.gwt.core.ext.typeinfo;
 import java.lang.annotation.Annotation;
 
 public class AnnotationsHelper {
+  public static Annotation[] getAnnotations(HasAnnotations annotations){
+    if (annotations instanceof JClassType)
+      return getAnnotations((JClassType)annotations);
+    else if (annotations instanceof JAbstractMethod)
+      return getAnnotations((JAbstractMethod)annotations);
+    else if (annotations instanceof JField)
+      return getAnnotations((JField)annotations);
+    else if (annotations instanceof JPackage)
+      return getAnnotations((JPackage)annotations);
+    else if (annotations instanceof JParameter)
+      return getAnnotations((JParameter)annotations);
+    else
+      return null;
+  }
+  
   public static Annotation[] getAnnotations(JClassType classType){
     return classType.getAnnotations();
   }

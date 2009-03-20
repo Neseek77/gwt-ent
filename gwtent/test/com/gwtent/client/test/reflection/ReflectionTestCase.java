@@ -25,9 +25,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.NotNull;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
+import com.gwtent.client.reflection.AnnotationStore;
+import com.gwtent.client.reflection.AnnotationStoreImpl;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.Field;
@@ -102,8 +107,12 @@ public class ReflectionTestCase extends GWTTestCase {
   }
 
   public void testAnnotations(){
-    Annotation annotation = null;
-    assertTrue(annotation.annotationType() == null);
+//    Annotation annotation = null;
+//    assertTrue(annotation.annotationType() == null);
+    
+    new AnnotationStoreImpl(Entity.class, null);
+    new AnnotationStoreImpl(javax.validation.NotNull.class, null);
+    new AnnotationStoreImpl(javax.validation.ConstraintValidator.class, null);
     
     TestReflection test = new TestReflection();
     test.setString("username");
@@ -120,6 +129,28 @@ public class ReflectionTestCase extends GWTTestCase {
     
     //Field Annotations
     assertNotNull(classType.findField("id").getAnnotation(Id.class));
+    
+    classType = TypeOracle.Instance.getClassType(Id.class);
+    assertNotNull(classType);
+    
+    classType = TypeOracle.Instance.getClassType(NotNull.class);
+    assertNotNull(classType);
+    
+    AnnotationStore[] annos = classType.getAnnotations();
+    AnnotationStore storeConstraintValidator = getAnnotation(annos, ConstraintValidator.class);
+    assertNotNull(storeConstraintValidator);
+    
+    
+  }
+  
+  private AnnotationStore getAnnotation(AnnotationStore[] annos, Class<? extends Annotation>clazz){
+    ClassType classType = TypeOracle.Instance.getClassType(clazz);
+    for (AnnotationStore anno : annos){
+      if (anno.annotationType().getName() == classType.getName())
+        return anno;
+    }
+    
+    return null;
   }
 
   private boolean hasMethod(String methodName, Method[] methods){

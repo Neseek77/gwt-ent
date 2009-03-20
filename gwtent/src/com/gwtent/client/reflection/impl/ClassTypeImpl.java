@@ -84,6 +84,7 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	private final Map nestedTypes = new HashMap();
 
 	private ClassTypeImpl superclass;
+	private final Class<?> declaringClass;
 
 	private Package declaringPackage;
 
@@ -104,10 +105,11 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 			throw new NotFoundException(methodName + "not found or unimplement?");
 	}
 
-	public ClassTypeImpl(String qualifiedName) {
+	public ClassTypeImpl(String qualifiedName, Class<?> declaringClass) {
 		TypeOracleImpl.putType(this, qualifiedName);
 		this.name = qualifiedName; 
 		this.lazyQualifiedName = qualifiedName;
+		this.declaringClass = declaringClass;
 		
 //		if (! qualifiedName.equals("java.lang.Object"))
 //			setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("java.lang.Object").isClassOrInterface());
@@ -125,13 +127,14 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	 */
 	public ClassTypeImpl(PackageImpl declaringPackage, ClassTypeImpl enclosingType,
 			boolean isLocalType, String name, boolean isInterface,
-			boolean isDefaultInstantiable) {
+			boolean isDefaultInstantiable, Class<?> declaringClass) {
 
 		this.declaringPackage = declaringPackage;
 		this.enclosingType = enclosingType;
 		this.isLocalType = isLocalType;
 		this.name = name;
 		this.savedIsDefaultInstantiable = isDefaultInstantiable;
+		this.declaringClass = declaringClass;
 
 		this.isInterface = isInterface;
 		if (enclosingType == null) {
@@ -177,6 +180,8 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	 * @see com.gwtent.client.reflection.ClassType#findMethod(java.lang.String, com.gwtent.client.reflection.Type[])
 	 */
 	public MethodImpl findMethod(String name, Type[] paramTypes) {
+	  if (paramTypes == null)
+	    paramTypes = new Type[] {};
 		MethodImpl[] overloads = getOverloads(name);
 		for (int i = 0; i < overloads.length; i++) {
 			MethodImpl candidate = overloads[i];
@@ -293,9 +298,9 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	public Method getMethod(String name, Type[] paramTypes)
 			throws NotFoundException {
 		Method result = findMethod(name, paramTypes);
-		if (result == null) {
-			throw new NotFoundException();
-		}
+//		if (result == null) {
+//			throw new NotFoundException();
+//		}
 		return result;
 	}
 
@@ -712,7 +717,7 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
     return annotations.isAnnotationPresent(annotationClass);
   }
   
-  AnnotationStore[] getAnnotations() {
+  public AnnotationStore[] getAnnotations() {
     return annotations.getAnnotations();
   }
 
@@ -729,5 +734,9 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 		
 		return null;
 	}
+
+  public Class<?> getDeclaringClass() {
+    return declaringClass;
+  }
 
 }

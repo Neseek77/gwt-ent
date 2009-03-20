@@ -276,7 +276,7 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
   /**
    * NOTE: This method is for testing purposes only.
    */
-  AnnotationStore[] getAnnotations() {
+  public AnnotationStore[] getAnnotations() {
     return annotations.getAnnotations();
   }
 

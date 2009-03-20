@@ -56,4 +56,6 @@ public interface HasAnnotations {
   
   
   void addAnnotations(List<AnnotationStore> annotations);
+  
+  AnnotationStore[] getAnnotations();
 }

@@ -1,5 +1,7 @@
 package javax.validation;
 
+import java.util.Map;
+
 /**
  * <pre>--
  * As soon as the classes in javax.validation are available from official sites, this
@@ -13,5 +15,10 @@ public class NotNullConstraint implements Constraint<NotNull>{
 
     public boolean isValid(Object value) {
         return value != null;
+    }
+
+    public void initialize(Map<String, String> constraintAnnotation) {
+      // TODO Auto-generated method stub
+      
     }
 }

@@ -24,6 +24,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.gwtent.client.reflection.Reflectionable;
+
 /**
  * Aspect declaration
  *
@@ -31,6 +33,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Reflectionable
 public @interface Aspect {
 
     /**

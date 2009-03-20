@@ -32,19 +32,29 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 	
 	public Constructor findConstructor(String[] paramTypes);
 
+	/**
+	 * Get field
+	 * @param name the field name to find
+	 * @return the field, if not found, return null
+	 */
 	public Field getField(String name);
 
 	public Field[] getFields();
 
 	public ClassType[] getImplementedInterfaces();
 
-	public Method getMethod(String name, Type[] paramTypes)
-			throws NotFoundException;
+	/**
+	 * get method
+	 * @param name the method name
+	 * @param paramTypes the Type of parameters, can be null.
+	 * @return if not found, return null
+	 */
+	public Method getMethod(String name, Type[] paramTypes);
 	
 	public List getMetaDataMerge(String tagName);
 
 	/*
-	 * Returns the declared methods of this class (not any superclasses or
+	 * Returns the declared methods of this class (not include superclasses or
 	 * superinterfaces).
 	 */
 	public Method[] getMethods();
@@ -55,6 +65,7 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 //	public Package getPackage();
 
 	public ClassType getSuperclass();
+	public Class<?> getDeclaringClass();
 	
 	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException;
 
