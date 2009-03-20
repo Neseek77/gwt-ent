@@ -1,5 +1,5 @@
 #summary How to use reflection provided by gwt-ent
-#labels Featured,Phase-Design
+#labels Featured,Phase-Design,Reflection,GWT
 
 = Introduction =
 
