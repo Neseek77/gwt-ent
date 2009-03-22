@@ -42,6 +42,22 @@ public interface AnnotationStore {
    */
   public String getValue(String name);
   
+  /**
+   * Get annotation value as ClassType, this annotation must returns a class
+   * For example: Class<? extends Constraint> value();
+   * @param name the function name
+   * @return the ClassType of the class
+   */
+  public ClassType getAsClassType(String name);
+  
+  /**
+   * Get annotation value as Array of String, this annotation must returns an array
+   * For exmpale: @Target({METHOD, FIELD}) will return {"METHOD", "FIELD"}
+   * @param name
+   * @return
+   */
+  public String[] getAsStringArray(String name);
+  
   
   public Map<String, String> allValues(); 
   

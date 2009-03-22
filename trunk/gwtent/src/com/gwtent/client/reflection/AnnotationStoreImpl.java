@@ -57,4 +57,19 @@ public class AnnotationStoreImpl implements AnnotationStore {
     return values;
   }
 
+	public ClassType getAsClassType(String name) {
+		String value = getValue(name);
+		return TypeOracle.Instance.getClassType(value);
+	}
+
+	public String[] getAsStringArray(String name) {
+		String value = getValue(name).trim();
+		if ((value.startsWith("[")) && (value.endsWith("]"))){
+			value = value.substring(1, value.length() - 1);
+			return value.split(",");
+		}
+		
+		return null;
+	}
+
 }
