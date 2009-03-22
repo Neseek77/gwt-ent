@@ -19,7 +19,7 @@
 
 package com.gwtent.client.reflection;
 
-public abstract class Field implements HasMetaData, AccessDef, HasAnnotations {
+public interface Field extends HasMetaData, AccessDef, HasAnnotations {
 
 	public abstract ClassType getEnclosingType();
 
@@ -28,5 +28,8 @@ public abstract class Field implements HasMetaData, AccessDef, HasAnnotations {
 	public abstract Type getType();
 	
 	public abstract String getTypeName();
+	
+	public abstract Object getFieldValue(Object instance);
+	public abstract void setFieldValue(Object instance, Object value);
 
 }

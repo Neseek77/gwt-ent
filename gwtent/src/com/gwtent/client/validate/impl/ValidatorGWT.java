@@ -2,8 +2,10 @@ package com.gwtent.client.validate.impl;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Constraint;
@@ -75,10 +77,13 @@ public class ValidatorGWT<T> implements Validator<T>{
       String propertyName, String... groups) {
     List<String> lstGroups = new ArrayList<String>();
     for (String str : groups){
-      lstGroups.add(str);
+    	if (lstGroups.indexOf(str) < 0)
+    		lstGroups.add(str);
     }
     if (lstGroups.size() <= 0)
       lstGroups.add("default");
+    
+    
     
     ClassType type = TypeOracle.Instance.getClassType(object.getClass());
     if (type == null)
@@ -88,19 +93,67 @@ public class ValidatorGWT<T> implements Validator<T>{
     
     Field field = type.getField(propertyName);
     if (field != null){
-      doValidate(object, propertyName, type, icSet, field, "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
+      doValidate(object, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
     }else{
       Method method = type.getMethod(propertyName, null);
       if (method != null)
-        doValidate(object, propertyName, type, icSet, method, propertyName);
+        doValidate(object, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), propertyName);
     }
     
     return icSet;
   }
+  
+  private List<AnnotationStore> getValidateAnnotationsAndOrder(HasAnnotations field, List<String> lstGroups){
+  	List<AnnotationStore> lStore = new ArrayList<AnnotationStore>();
+  	Map<String, List<AnnotationStore>> map = new HashMap<String, List<AnnotationStore>>();
+  	for (String str : lstGroups)
+  		map.put(str, new ArrayList<AnnotationStore>());
+  	
+  	for (AnnotationStore store : field.getAnnotations()){
+  		if (isConstraintAnnotation(store)){
+  			String[] groups = store.getAsStringArray("groups");
+  			if ((groups == null) || (groups.length <= 0))
+  				groups = new String[] {"default"};
+  			else{
+  				if (!stringExists(groups, "default"))
+  					groups = appendArray(groups, "default");
+  			}
+  			
+  			for (String group : groups){
+  				if (lstGroups.indexOf(group) >= 0){
+  					map.get(group).add(store);
+  				}
+  			}
+  			
+  		}
+  	}
+  	
+  	for (String str : lstGroups){
+  		lStore.addAll(map.get(str));
+  	}
+  	
+  	return lStore;
+  }
+  
+  private boolean stringExists(String[] strs, String value){
+  	for (String str : strs){
+  		if (str.equals(value))
+  			return true;
+  	}
+  	
+  	return false;
+  }
+  
+  private String[] appendArray(String[] strs, String value){
+  	String[] result = new String[strs.length + 1];
+  	for (int i = 0; i < strs.length; i++)
+  		result[i] = strs[i];
+  	result[result.length - 1] = value;
+  	return result;
+  }
 
   private void doValidate(T object, String propertyName, ClassType type,
-      Set<InvalidConstraint<T>> icSet, HasAnnotations field, String getterName) {
-    AnnotationStore[] annotations = field.getAnnotations();
+      Set<InvalidConstraint<T>> icSet, List<AnnotationStore> annotations, String getterName) {
     for (AnnotationStore store : annotations){
       Constraint constraint = createConstraintFromAnnotation(store);
       if (constraint != null){
@@ -119,12 +172,17 @@ public class ValidatorGWT<T> implements Validator<T>{
       }
     }
   }
+  
+  private boolean isConstraintAnnotation(AnnotationStore store){
+  	AnnotationStore storeConstraintValidator = ReflectionUtils.getMetaAnnotation(store, ConstraintValidator.class);
+    return (storeConstraintValidator != null);
+  }
 
   private Constraint createConstraintFromAnnotation(AnnotationStore store) {
+  	if (!isConstraintAnnotation(store))
+  		return null;
+  	
     AnnotationStore storeConstraintValidator = ReflectionUtils.getMetaAnnotation(store, ConstraintValidator.class);
-    if (storeConstraintValidator == null)
-      return null;
-    
     String className = storeConstraintValidator.getValue("value");
     ClassType ctConstraintValidator = TypeOracle.Instance.getClassType(className);
     if (ctConstraintValidator == null)

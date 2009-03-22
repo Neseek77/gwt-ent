@@ -29,10 +29,11 @@ import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
+import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Type;
 
 
-public class FieldImpl extends Field implements HasMetaData, AccessDef, HasAnnotations{
+public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 
 
 	private final ClassType enclosingType;
@@ -167,4 +168,30 @@ public class FieldImpl extends Field implements HasMetaData, AccessDef, HasAnnot
       List<AnnotationStore> annotations) {
     this.annotations.addAnnotations(annotations);
   }
+
+	public Object getFieldValue(Object instance) {
+		Method getter = this.getEnclosingType().findMethod(getGetterName(), new String[]{});
+		if (getter != null){
+			return getter.invoke(instance, new Object[]{});
+		}else{
+			throw new RuntimeException("Can not found getter of field (" + getName() + ").");
+		}
+	}
+	
+	public String getGetterName(){
+		return "get" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
+	}
+	
+	public String getSetterName(){
+	  return "set" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
+	}
+
+	public void setFieldValue(Object instance, Object value) {
+		Method setter = this.getEnclosingType().findMethod(getSetterName(), new String[]{});
+		if (setter != null){
+			setter.invoke(instance, new Object[]{value});
+		}else{
+			throw new RuntimeException("Can not found setter of field (" + getName() + ").");
+		}
+	}
 }
