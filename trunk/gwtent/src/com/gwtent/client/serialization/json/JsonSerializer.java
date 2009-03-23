@@ -3,6 +3,7 @@ package com.gwtent.client.serialization.json;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
@@ -13,6 +14,7 @@ import com.google.gwt.json.client.JSONValue;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.ReflectionUtils;
+import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.serialization.AbstractDataContractSerializer;
 import com.gwtent.client.serialization.DataMember;
 
@@ -22,18 +24,33 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		return value;
 	}
 	
-	public String serializeObject(Object object, ClassType type){
+	protected String serializeObject(Object object, ClassType type){
 		StringBuilder sb = new StringBuilder();
 		
-		if (object instanceof Map){
-			
-		}else	if (object instanceof Iterable){
-			
-		} else {
-			sb.append(serializePureObject(object, type).toString());
-		}
+		
+  	sb.append(serialize(object, type).toString());
 		
 		return sb.toString();
+	}
+	
+	private JSONValue serialize(Object object, ClassType type){
+		if (object instanceof Map){
+			return null;
+		}else	if (object instanceof Iterable){
+			return serializeIterable((Iterable)object);
+		} else {
+			return serializePureObject(object, type);
+		}
+	}
+	
+	private JSONValue serializeIterable(Iterable objects){
+		JSONArray result = new JSONArray();
+		int index = 0;
+		for (Object obj : objects){
+			result.set(index, serialize(obj, TypeOracle.Instance.getClassType(obj.getClass())));
+			index++;
+		}
+		return result;
 	}
 	
 	private JSONValue serializePureObject(Object object, ClassType type){
