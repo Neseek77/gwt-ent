@@ -1,5 +1,6 @@
 package com.gwtent.client.serialization.json;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
@@ -19,9 +21,23 @@ import com.gwtent.client.serialization.AbstractDataContractSerializer;
 import com.gwtent.client.serialization.DataMember;
 
 public class JsonSerializer extends AbstractDataContractSerializer{
-	public Object deserializeObject(String json, ClassType type){
+	protected Object deserializeObject(String json, ClassType type){
 		JSONValue value = JSONParser.parse(json);
-		return value;
+		
+		Constructor constructor = type.findConstructor(new String[0]);
+		Object result = constructor.newInstance();
+		
+		if (value instanceof JSONArray){
+			if (result instanceof Collection){
+				
+			}else{
+				throw new RuntimeException("JSONArray request a Collection object to contain it.");
+			}
+		}else if (value instanceof JSONObject){
+			
+		}
+		
+		return result;
 	}
 	
 	protected String serializeObject(Object object, ClassType type){
@@ -41,6 +57,16 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		} else {
 			return serializePureObject(object, type);
 		}
+	}
+	
+	private void deserializeArray(JSONArray array, Collection object){
+		for (int i = 0; i < array.size(); i++){
+	//		object.add(o);
+		}
+	}
+	
+	private Object deserializeObject(JSONObject value){
+		return null;
 	}
 	
 	private JSONValue serializeIterable(Iterable objects){
