@@ -11,7 +11,7 @@ public class SerializationTestCase extends GwtEntTestCase{
 		Person p = new Person();
 		p.setName("A");
 		p.setAge(50);
-		p.setSex(Sex.FEMALE);
+		//p.setSex(Sex.FEMALE);
 		JsonSerializer serializer = new JsonSerializer();
 		String jsonPerson = serializer.serializeObject(p);
 		System.out.println(jsonPerson);
