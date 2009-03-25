@@ -6,12 +6,12 @@ import com.gwtent.client.reflection.TypeOracle;
 
 public abstract class AbstractDataContractSerializer implements DataContractSerializer {
 
-	public Object deserializeObject(String json, Class<?> clazz) {
+	public <T extends Object> T deserializeObject(String json, Class<T> clazz, ObjectFactory<Object> objectFactory) {
 		ClassType type = TypeOracle.Instance.getClassType(clazz);
-		return deserializeObject(json, type);
+		return (T) deserializeObject(json, type, objectFactory);
 	}
 	
-	protected abstract Object deserializeObject(String json, ClassType type);
+	protected abstract Object deserializeObject(String json, ClassType type, ObjectFactory<Object> objectFactory);
 	protected abstract String serializeObject(Object object, ClassType type);
 
 	public String serializeObject(Object object) {

@@ -19,9 +19,10 @@ import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.serialization.AbstractDataContractSerializer;
 import com.gwtent.client.serialization.DataMember;
+import com.gwtent.client.serialization.ObjectFactory;
 
 public class JsonSerializer extends AbstractDataContractSerializer{
-	protected Object deserializeObject(String json, ClassType type){
+	protected Object deserializeObject(String json, ClassType type, ObjectFactory<Object> objectFactory){
 		JSONValue value = JSONParser.parse(json);
 		
 		Constructor constructor = type.findConstructor(new String[0]);
@@ -29,12 +30,12 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		
 		if (value instanceof JSONArray){
 			if (result instanceof Collection){
-				
+				deserializeArray((JSONArray)value, (Collection)result, objectFactory);
 			}else{
 				throw new RuntimeException("JSONArray request a Collection object to contain it.");
 			}
 		}else if (value instanceof JSONObject){
-			
+			deserializePureObject((JSONObject)value, result);
 		}
 		
 		return result;
@@ -59,14 +60,33 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		}
 	}
 	
-	private void deserializeArray(JSONArray array, Collection object){
+	private void deserializeArray(JSONArray array, Collection object, ObjectFactory<Object> objectFactory){
 		for (int i = 0; i < array.size(); i++){
-	//		object.add(o);
+			Object objectItem = objectFactory.getObject();
+			deserializePureObject((JSONObject)(array.get(i)), objectItem);
+			object.add(objectItem);
 		}
 	}
 	
-	private Object deserializeObject(JSONObject value){
-		return null;
+	private void deserializePureObject(JSONObject value, Object obj){
+		ClassType type = TypeOracle.Instance.getClassType(obj.getClass());
+		for (Field field : type.getFields()){
+			
+			if (value.containsKey(field.getName())){
+				JSONValue fieldValue = value.get(field.getName());
+				Object fieldObject = null;
+				if (fieldValue instanceof JSONNull)
+					fieldObject = null;
+				else if (fieldValue instanceof JSONBoolean)
+					fieldObject = ((JSONBoolean)fieldValue).booleanValue();
+				else if (fieldValue instanceof JSONNumber)
+					fieldObject = ((JSONNumber)fieldValue).doubleValue();
+				else 
+					fieldObject = ((JSONString)fieldValue).stringValue();
+				
+				field.setFieldValue(obj, fieldObject);
+			}			
+		}
 	}
 	
 	private JSONValue serializeIterable(Iterable objects){
