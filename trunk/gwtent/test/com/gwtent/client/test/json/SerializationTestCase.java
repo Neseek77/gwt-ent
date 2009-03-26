@@ -3,6 +3,8 @@ package com.gwtent.client.test.json;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.gwtent.client.common.ObjectFactory;
 import com.gwtent.client.serialization.json.JsonSerializer;
 import com.gwtent.client.test.GwtEntTestCase;
 
@@ -17,14 +19,28 @@ public class SerializationTestCase extends GwtEntTestCase{
 		System.out.println(jsonPerson);
 		
 		serializer = new JsonSerializer();
+		Object a = new Double(50);
+
+//		p.setAge(((((Integer)a).intValue())));
 		Person p1 = serializer.deserializeObject(jsonPerson, Person.class, null);
 		assertTrue(p1.getName().equals(p.getName()));
 		assertTrue(p1.getAge() == p.getAge());
 		
 		
-		List<Person> people = new ArrayList<Person>();
+		People people = new People();
 		people.add(p);
 		serializer = new JsonSerializer();
-		System.out.println(serializer.serializeObject(people));
+		String json = serializer.serializeObject(people);
+		System.out.println(json);
+		
+		serializer = new JsonSerializer();
+		People p2 = serializer.deserializeObject(json, People.class, new ObjectFactory<Object>(){
+
+			public Object getObject() {
+				return new Person();
+			}});
+		assertTrue(p2.size() == 1);
+		assertTrue(p2.get(0).getName().equals(p.getName()));
+		assertTrue(p2.get(0).getAge() == p.getAge());
 	}
 }
