@@ -2,10 +2,11 @@ package com.gwtent.client.test.json;
 
 import com.gwtent.client.serialization.DataContract;
 import com.gwtent.client.serialization.DataMember;
+import com.gwtent.client.serialization.DoubleConvert;
 
 
 @DataContract
-public class Person {
+public class Person implements DoubleConvert {
 
 	@DataMember
 	private String name;
@@ -33,4 +34,8 @@ public class Person {
 //		return sex;
 //	}
 //	
+	public void convertDouble(String propertyName, Double value) {
+		if (propertyName.equals("age"))
+			setAge(value.intValue());
+	}
 }
