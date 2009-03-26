@@ -104,6 +104,10 @@ public class ReflectionTestCase extends GWTTestCase {
     assertTrue(fieldExists("bool", fields));
     assertTrue(fieldExists("sets", fields));
     //assertTrue(classType.findField("bool").getType().getSimpleSourceName().equals("boolean"));
+    
+    Field field = classType.findField("bool");
+    field.setFieldValue(test, Boolean.TRUE);
+    assertTrue((Boolean)field.getFieldValue(test));
   }
 
   public void testAnnotations(){
@@ -173,6 +177,13 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertTrue(hasMethod("getT", methods));
   	assertTrue(hasMethod("getString", methods));
   	assertTrue(hasMethod("getNames", methods));
+  	
+  	//Test find method with autobox
+  	Method method = classType.findMethod("setBool", "boolean");
+  	assertTrue(method != null);
+  	//Not finished yet
+  	//method = classType.findMethod("setBool", "java.lang.Boolean");
+    //assertTrue(method != null);
   }
 
   public void testInvokeMethod() {
