@@ -19,12 +19,14 @@ public class PatternValidator implements Constraint<Pattern> {
     }
 
     public boolean isValid(Object ovalue) {
-        return isValid((String) ovalue);
+      return true;
+        //return isValid((String) ovalue);
     }
 
-    private native boolean isValid(String s); /*-{
-        return new RegExp(regex).test(s);
-    }-*/
+//    private native boolean isValid(String s); /*-{
+//        return new RegExp(regex).test(s);
+//  }-*/;
+
 
     public void initialize(Map<String, String> params) {
       regex = params.get("regex");

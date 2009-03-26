@@ -3,6 +3,7 @@ package com.gwtent.client.validate;
 import javax.validation.Validator;
 
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
 
 public class ValidatorFactoryDefault implements ClientValidatorFactory{
@@ -13,12 +14,10 @@ public class ValidatorFactoryDefault implements ClientValidatorFactory{
   }
 
   public <T> Validator<T> getValidator(Class<T> clazz) {
-    if (ValidateUtils.checkReflection(clazz)){
-      ClassType classType = TypeOracle.Instance.getClassType(clazz);
-      return getValidator(classType);
-    }
+    ReflectionUtils.checkReflection(clazz);
     
-    return null;
+    ClassType classType = TypeOracle.Instance.getClassType(clazz);
+    return getValidator(classType);
   }
 
 }

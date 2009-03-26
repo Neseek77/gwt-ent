@@ -6,6 +6,56 @@ import java.util.List;
 
 public class ReflectionUtils {
   
+  public static class ReflectionRequiredException extends RuntimeException{
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
+    public ReflectionRequiredException(){
+      super();
+    }
+    
+    public ReflectionRequiredException(String message){
+      super(message);
+    }
+  } 
+  
+  public static void reflectionRequired(String className, String msg){
+    throw new ReflectionRequiredException("your class should have reflection information before this opeartion. This can be done by annotated class with \"@Reflectionable\" annotations, ie: \"@Reflectionable\", \"@Validtable\", \"@DataContract\" or implement flag interface \"Reflection\". Current class is : " + className + "\n" + msg);
+  }
+  
+  public static void reflectionRequired(Class<?> clazz){
+    reflectionRequired(clazz.getName(), null);
+  }
+  
+  public static void reflectionRequired(Class<?> clazz, String msg){
+    reflectionRequired(clazz.getName(), msg);
+  }
+  
+  public static boolean checkReflection(String className){
+    boolean result = TypeOracle.Instance.getClassType(className) != null;
+    
+    if (! result)
+      ReflectionUtils.reflectionRequired(className, "");
+    
+    return result;
+  }
+
+  /**
+   * Check clazz to see if it have reflection information
+   * if not, raise a ReflectionRequiredException
+   * @param clazz
+   */
+  public static void checkReflection(Class<?> clazz){
+    boolean result = TypeOracle.Instance.getClassType(clazz) != null;
+    
+    if (! result)
+      ReflectionUtils.reflectionRequired(clazz.getName(), "");
+  }
+  
+  
 	/**
 	 * Find annotation from array of annotations
 	 * @param annos the array of annotations
