@@ -195,7 +195,7 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.ClassType#findMethod(java.lang.String, java.lang.String[])
 	 */
-	public MethodImpl findMethod(String name, String[] paramTypes) {
+	public MethodImpl findMethod(String name, String... paramTypes) {
 		MethodImpl[] overloads = getOverloads(name);
 		for (int i = 0; i < overloads.length; i++) {
 			MethodImpl candidate = overloads[i];

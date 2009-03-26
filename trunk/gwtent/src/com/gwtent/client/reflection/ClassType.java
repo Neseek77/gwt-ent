@@ -28,7 +28,8 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 
 	public Method findMethod(String name, Type[] paramTypes);
 
-	public Method findMethod(String name, String[] paramTypes);
+	//public Method findMethod(String name, String[] paramTypes);
+	public Method findMethod(String name, String... paramTypes);
 	
 	public Constructor findConstructor(String[] paramTypes);
 

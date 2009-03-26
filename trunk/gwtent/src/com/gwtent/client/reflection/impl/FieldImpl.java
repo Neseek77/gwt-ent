@@ -20,6 +20,7 @@
 package com.gwtent.client.reflection.impl;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -186,9 +187,26 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 	  return "set" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
 	}
 
+	private Method setter = null;
 	public void setFieldValue(Object instance, Object value) {
-		Method setter = this.getEnclosingType().findMethod(getSetterName(), new String[]{});
-		if (setter != null){
+	  if (setter == null){
+	    String typeName = value.getClass().getName();
+	    String setterName = getSetterName();
+	    setter = this.getEnclosingType().findMethod(setterName, new String[]{typeName});
+	    
+	    if (setter == null){
+	      List<Method> methods = new ArrayList<Method>();
+	      for (Method method : getEnclosingType().getMethods()){
+	        if ((method.getName().equals(setterName)) && (method.getParameters().length == 1)){
+	          methods.add(method);
+	        }
+	      }
+	      if (methods.size() == 1)
+	        setter = methods.get(0);
+	    }
+	  }
+
+	  if (setter != null){
 			setter.invoke(instance, new Object[]{value});
 		}else{
 			throw new RuntimeException("Can not found setter of field (" + getName() + ").");

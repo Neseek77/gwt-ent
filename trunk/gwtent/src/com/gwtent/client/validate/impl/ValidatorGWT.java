@@ -58,7 +58,7 @@ public class ValidatorGWT<T> implements Validator<T>{
   public Set<InvalidConstraint<T>> validate(T object, String... groups) {
     ClassType type = TypeOracle.Instance.getClassType(object.getClass());
     if (type == null)
-      ValidateUtils.reflectionRequired(object.getClass());
+      ReflectionUtils.reflectionRequired(object.getClass());
     
     Set<InvalidConstraint<T>> icSet = new HashSet<InvalidConstraint<T>>();
     
@@ -87,7 +87,7 @@ public class ValidatorGWT<T> implements Validator<T>{
     
     ClassType type = TypeOracle.Instance.getClassType(object.getClass());
     if (type == null)
-      ValidateUtils.reflectionRequired(object.getClass());
+      ReflectionUtils.reflectionRequired(object.getClass());
     
     Set<InvalidConstraint<T>> icSet = new HashSet<InvalidConstraint<T>>();
     
@@ -186,7 +186,7 @@ public class ValidatorGWT<T> implements Validator<T>{
     String className = storeConstraintValidator.getValue("value");
     ClassType ctConstraintValidator = TypeOracle.Instance.getClassType(className);
     if (ctConstraintValidator == null)
-      ValidateUtils.reflectionRequired(className, "To make ConstraintValidator works with GWT, please makesure its reflection enabled.");
+      ReflectionUtils.reflectionRequired(className, "To make ConstraintValidator works with GWT, please makesure its reflection enabled.");
     Class clazz = ctConstraintValidator.getDeclaringClass();
     Constraint constraint = ConstraintFactoryCacheImpl.getInstance().getInstance(clazz);
     constraint.initialize(store.allValues());
