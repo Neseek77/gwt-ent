@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.gwtent.client.common.ObjectFactory;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.Field;
@@ -19,10 +20,11 @@ import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.serialization.AbstractDataContractSerializer;
 import com.gwtent.client.serialization.DataMember;
-import com.gwtent.client.serialization.ObjectFactory;
+import com.gwtent.client.serialization.DoubleConvert;
 
 public class JsonSerializer extends AbstractDataContractSerializer{
-	protected Object deserializeObject(String json, ClassType type, ObjectFactory<Object> objectFactory){
+	protected Object deserializeObject(String json, ClassType type, 
+			ObjectFactory<Object> objectFactory, DoubleConvert doubleConvert){
 		JSONValue value = JSONParser.parse(json);
 		
 		Constructor constructor = type.findConstructor(new String[0]);
@@ -30,12 +32,12 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		
 		if (value instanceof JSONArray){
 			if (result instanceof Collection){
-				deserializeArray((JSONArray)value, (Collection)result, objectFactory);
+				deserializeArray((JSONArray)value, (Collection)result, objectFactory, doubleConvert);
 			}else{
 				throw new RuntimeException("JSONArray request a Collection object to contain it.");
 			}
 		}else if (value instanceof JSONObject){
-			deserializePureObject((JSONObject)value, result);
+			deserializePureObject((JSONObject)value, result, doubleConvert);
 		}
 		
 		return result;
@@ -60,15 +62,15 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		}
 	}
 	
-	private void deserializeArray(JSONArray array, Collection object, ObjectFactory<Object> objectFactory){
+	private void deserializeArray(JSONArray array, Collection object, ObjectFactory<Object> objectFactory, DoubleConvert doubleConvert){
 		for (int i = 0; i < array.size(); i++){
 			Object objectItem = objectFactory.getObject();
-			deserializePureObject((JSONObject)(array.get(i)), objectItem);
+			deserializePureObject((JSONObject)(array.get(i)), objectItem, doubleConvert);
 			object.add(objectItem);
 		}
 	}
 	
-	private void deserializePureObject(JSONObject value, Object obj){
+	private void deserializePureObject(JSONObject value, Object obj, DoubleConvert doubleConvert){
 		ClassType type = TypeOracle.Instance.getClassType(obj.getClass());
 		for (Field field : type.getFields()){
 			
@@ -84,7 +86,10 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 				else 
 					fieldObject = ((JSONString)fieldValue).stringValue();
 				
-				field.setFieldValue(obj, fieldObject);
+				if ((obj instanceof DoubleConvert) && (fieldValue instanceof JSONNumber))
+					((DoubleConvert)obj).convertDouble(field.getName(), (Double)fieldObject);
+				else
+					field.setFieldValue(obj, fieldObject);
 			}			
 		}
 	}
