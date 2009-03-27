@@ -213,15 +213,18 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		composer.addImport("com.gwtent.client.reflection.impl.*");
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("java.util.*");
-		
-		Set<String> imports = new HashSet<String>();
-		for (JClassType aClassType : allReflectionClasses){
-			String str = aClassType.getPackage().getName() + ".*";
-			if (! imports.contains(str)){
-				imports.add(str);
-				composer.addImport(str);
-			}
-		}
+
+		//James remove the following, some times client package have the same 
+		//class name which is used by system(ie: Map), if using both package
+		//Compiler will raise error.
+//		Set<String> imports = new HashSet<String>();
+//		for (JClassType aClassType : allReflectionClasses){
+//			String str = aClassType.getPackage().getName() + ".*";
+//			if (! imports.contains(str)){
+//				imports.add(str);
+//				composer.addImport(str);
+//			}
+//		}
 
 		PrintWriter printWriter = context.tryCreate(logger, packageName, simpleName);
 		if (printWriter == null) {
