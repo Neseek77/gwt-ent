@@ -30,22 +30,27 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		Constructor constructor = type.findConstructor(new String[0]);
 		Object result = constructor.newInstance();
 		
+		deserialize(value, result, type);
+		
+		return result;
+	}
+
+	private void deserialize(JSONValue value, Object result, ClassType type) {
 		if (value instanceof JSONArray){
+			
 			if (result instanceof Collection){
-				deserializeArray((JSONArray)value, (Collection)result, objectFactory, doubleConvert);
+				ObjectFactory objectFactory = new ObjectReflectionFactory(type);
+				deserializeArray((JSONArray)value, (Collection)result, objectFactory);
 			}else{
 				throw new RuntimeException("JSONArray request a Collection object to contain it.");
 			}
 		}else if (value instanceof JSONObject){
-			deserializePureObject((JSONObject)value, result, doubleConvert);
+			deserializePureObject((JSONObject)value, result);
 		}
-		
-		return result;
 	}
 	
 	protected String serializeObject(Object object, ClassType type){
 		StringBuilder sb = new StringBuilder();
-		
 		
   	sb.append(serialize(object, type).toString());
 		
@@ -62,15 +67,15 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		}
 	}
 	
-	private void deserializeArray(JSONArray array, Collection object, ObjectFactory<Object> objectFactory, DoubleConvert doubleConvert){
+	private void deserializeArray(JSONArray array, Collection object, ObjectFactory<Object> objectFactory){
 		for (int i = 0; i < array.size(); i++){
 			Object objectItem = objectFactory.getObject();
-			deserializePureObject((JSONObject)(array.get(i)), objectItem, doubleConvert);
+			deserializePureObject((JSONObject)(array.get(i)), objectItem);
 			object.add(objectItem);
 		}
 	}
 	
-	private void deserializePureObject(JSONObject value, Object obj, DoubleConvert doubleConvert){
+	private void deserializePureObject(JSONObject value, Object obj){
 		ClassType type = TypeOracle.Instance.getClassType(obj.getClass());
 		for (Field field : type.getFields()){
 			

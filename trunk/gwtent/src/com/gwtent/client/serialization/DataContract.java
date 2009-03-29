@@ -11,5 +11,12 @@ import com.gwtent.client.reflection.Reflectionable;
 @Target(ElementType.TYPE)
 @Reflectionable
 public @interface DataContract {
-
+	
+	/**
+	 * if tagart class is a container, ie, List, Set
+	 * This return the contained object class
+	 * TList<Person>, here is Person.class
+	 * @return
+	 */
+	Class<?> clazz() default Object.class;
 }
