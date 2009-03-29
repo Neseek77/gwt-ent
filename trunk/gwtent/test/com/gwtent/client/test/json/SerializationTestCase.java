@@ -10,6 +10,7 @@ import com.gwtent.client.test.GwtEntTestCase;
 
 public class SerializationTestCase extends GwtEntTestCase{
 	public void testJson(){
+		//Person to JSON string
 		Person p = new Person();
 		p.setName("A");
 		p.setAge(50);
@@ -17,28 +18,31 @@ public class SerializationTestCase extends GwtEntTestCase{
 		JsonSerializer serializer = new JsonSerializer();
 		String jsonPerson = serializer.serializeObject(p);
 		System.out.println(jsonPerson);
-		
-		serializer = new JsonSerializer();
-		Object a = new Double(50);
 
-//		p.setAge(((((Integer)a).intValue())));
+		//JSON string to Person
+		serializer = new JsonSerializer();
 		Person p1 = serializer.deserializeObject(jsonPerson, Person.class, null);
+		//Test it
 		assertTrue(p1.getName().equals(p.getName()));
 		assertTrue(p1.getAge() == p.getAge());
 		
 		
+		//ArrayList to JSON string
 		People people = new People();
 		people.add(p);
 		serializer = new JsonSerializer();
 		String json = serializer.serializeObject(people);
 		System.out.println(json);
 		
+		//JSON to arraylist object
 		serializer = new JsonSerializer();
-		People p2 = serializer.deserializeObject(json, People.class, new ObjectFactory<Object>(){
+		People p2 = serializer.deserializeObject(json, People.class, new ObjectFactory(){
 
 			public Object getObject() {
 				return new Person();
 			}});
+		
+		//test it
 		assertTrue(p2.size() == 1);
 		assertTrue(p2.get(0).getName().equals(p.getName()));
 		assertTrue(p2.get(0).getAge() == p.getAge());
