@@ -81,20 +81,25 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 			
 			if (value.containsKey(field.getName())){
 				JSONValue fieldValue = value.get(field.getName());
-				Object fieldObject = null;
-				if (fieldValue instanceof JSONNull)
-					fieldObject = null;
-				else if (fieldValue instanceof JSONBoolean)
-					fieldObject = ((JSONBoolean)fieldValue).booleanValue();
-				else if (fieldValue instanceof JSONNumber)
-					fieldObject = ((JSONNumber)fieldValue).doubleValue();
-				else 
-					fieldObject = ((JSONString)fieldValue).stringValue();
-				
-				if ((obj instanceof DoubleConvert) && (fieldValue instanceof JSONNumber))
-					((DoubleConvert)obj).convertDouble(field.getName(), (Double)fieldObject);
-				else
-					field.setFieldValue(obj, fieldObject);
+					
+				if (fieldValue instanceof JSONObject){
+					
+				}else{
+					Object fieldObject = null;
+					if (fieldValue instanceof JSONNull)
+						fieldObject = null;
+					else if (fieldValue instanceof JSONBoolean)
+						fieldObject = ((JSONBoolean)fieldValue).booleanValue();
+					else if (fieldValue instanceof JSONNumber)
+						fieldObject = ((JSONNumber)fieldValue).doubleValue();
+					else if (fieldValue instanceof JSONString) 
+						fieldObject = ((JSONString)fieldValue).stringValue();
+					
+					if ((obj instanceof DoubleConvert) && (fieldValue instanceof JSONNumber))
+						((DoubleConvert)obj).convertDouble(field.getName(), (Double)fieldObject);
+					else
+						field.setFieldValue(obj, fieldObject);
+				}
 			}			
 		}
 	}
