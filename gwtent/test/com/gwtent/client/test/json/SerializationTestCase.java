@@ -21,7 +21,7 @@ public class SerializationTestCase extends GwtEntTestCase{
 
 		//JSON string to Person
 		serializer = new JsonSerializer();
-		Person p1 = serializer.deserializeObject(jsonPerson, Person.class, null);
+		Person p1 = serializer.deserializeObject(jsonPerson, Person.class);
 		//Test it
 		assertTrue(p1.getName().equals(p.getName()));
 		assertTrue(p1.getAge() == p.getAge());
@@ -36,11 +36,7 @@ public class SerializationTestCase extends GwtEntTestCase{
 		
 		//JSON to arraylist object
 		serializer = new JsonSerializer();
-		People p2 = serializer.deserializeObject(json, People.class, new ObjectFactory(){
-
-			public Object getObject() {
-				return new Person();
-			}});
+		People p2 = serializer.deserializeObject(json, People.class);
 		
 		//test it
 		assertTrue(p2.size() == 1);

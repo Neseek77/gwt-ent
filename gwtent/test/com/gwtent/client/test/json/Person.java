@@ -6,7 +6,7 @@ import com.gwtent.client.serialization.DoubleConvert;
 
 
 @DataContract
-public class Person implements DoubleConvert {
+public class Person {
 
 	@DataMember
 	private String name;
