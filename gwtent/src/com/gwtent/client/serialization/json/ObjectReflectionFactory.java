@@ -20,16 +20,18 @@ public class ObjectReflectionFactory implements ObjectFactory<Object> {
 	 */
 	public ObjectReflectionFactory(AnnotationStore annotation){
 		ClassType type = null;
-		if (annotation.getValue("className").length() > 0){
+		if (annotation.getValue("className") != null && annotation.getValue("className").length() > 0){
 			type = TypeOracle.Instance.getClassType(annotation.getValue("className"));
 		}else if (annotation.getValue("clazz").length() > 0){
-			String typeName = annotation.getValue("clazz").replace("$", ".");
+			String typeName = annotation.getValue("clazz");
 			if (! typeName.equals("java.lang.Object")){
-				type = TypeOracle.Instance.getClassType(typeName);
+				type = annotation.getAsClassType("clazz");
 			}
 		}
 		if (type != null)
 			setType(type);
+		else
+			throw new RuntimeException("Can not found ClassType from annotation(DataContract or DataMember request \"clazz\" value when annotation a Collection(ie List)");
 	}
 	
 	private void setType(ClassType type){

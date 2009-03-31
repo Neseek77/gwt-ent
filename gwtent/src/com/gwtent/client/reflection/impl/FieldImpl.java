@@ -190,9 +190,11 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 	private Method setter = null;
 	public void setFieldValue(Object instance, Object value) {
 	  if (setter == null){
-	    String typeName = value.getClass().getName();
-	    String setterName = getSetterName();
-	    setter = this.getEnclosingType().findMethod(setterName, new String[]{typeName});
+	  	String setterName = getSetterName();
+	  	if (value != null){
+	  		String typeName = value.getClass().getName();
+		    setter = this.getEnclosingType().findMethod(setterName, new String[]{typeName});
+	  	}
 	    
 	    if (setter == null){
 	      List<Method> methods = new ArrayList<Method>();

@@ -19,12 +19,12 @@ import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.serialization.AbstractDataContractSerializer;
+import com.gwtent.client.serialization.DataContract;
 import com.gwtent.client.serialization.DataMember;
 import com.gwtent.client.serialization.DoubleConvert;
 
 public class JsonSerializer extends AbstractDataContractSerializer{
-	protected Object deserializeObject(String json, ClassType type, 
-			ObjectFactory<Object> objectFactory, DoubleConvert doubleConvert){
+	protected Object deserializeObject(String json, ClassType type){
 		JSONValue value = JSONParser.parse(json);
 		
 		Constructor constructor = type.findConstructor(new String[0]);
@@ -35,17 +35,25 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		return result;
 	}
 
-	private void deserialize(JSONValue value, Object result, ClassType type) {
+	/**
+	 * Convert value to obj 
+	 * 
+	 * @param value
+	 * @param obj
+	 * @param type the classtype of obj
+	 */
+	private void deserialize(JSONValue value, Object obj, ClassType type) {
 		if (value instanceof JSONArray){
 			
-			if (result instanceof Collection){
-				ObjectFactory objectFactory = new ObjectReflectionFactory(type);
-				deserializeArray((JSONArray)value, (Collection)result, objectFactory);
+			if (obj instanceof Collection){
+				//Expect @DataContract(clazz=XXXX.class), XXXX is the object class we gona create
+				ObjectFactory<Object> objectFactory = new ObjectReflectionFactory(type.getAnnotation(DataContract.class));
+				deserializeArray((JSONArray)value, (Collection)obj, objectFactory);
 			}else{
 				throw new RuntimeException("JSONArray request a Collection object to contain it.");
 			}
 		}else if (value instanceof JSONObject){
-			deserializePureObject((JSONObject)value, result);
+			deserializePureObject((JSONObject)value, obj);
 		}
 	}
 	
@@ -95,12 +103,33 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 					else if (fieldValue instanceof JSONString) 
 						fieldObject = ((JSONString)fieldValue).stringValue();
 					
-					if ((obj instanceof DoubleConvert) && (fieldValue instanceof JSONNumber))
-						((DoubleConvert)obj).convertDouble(field.getName(), (Double)fieldObject);
+					if (fieldValue instanceof JSONNumber){
+						handleDouble(obj, field, fieldValue);
+					}
 					else
 						field.setFieldValue(obj, fieldObject);
 				}
 			}			
+		}
+	}
+
+	private void handleDouble(Object instance, Field field, JSONValue jsonValue) {
+		Double doubleValue = ((JSONNumber)jsonValue).doubleValue();
+		if ((instance instanceof DoubleConvert))
+			((DoubleConvert)instance).convertDouble(field.getName(), doubleValue);
+		else{
+			//Convert double automatically
+			if (field.getTypeName().equals(java.lang.Integer.class.getName()) || field.getTypeName().equals("int")){
+				field.setFieldValue(instance, doubleValue.intValue());
+			}else if (field.getTypeName().equals(java.lang.Float.class.getName()) || field.getTypeName().equals("long")){
+				field.setFieldValue(instance, doubleValue.floatValue());
+			}else if (field.getTypeName().equals(java.lang.Byte.class.getName()) || field.getTypeName().equals("byte")){
+				field.setFieldValue(instance, doubleValue.byteValue());
+			}else if (field.getTypeName().equals(java.lang.Short.class.getName()) || field.getTypeName().equals("short")){
+				field.setFieldValue(instance, doubleValue.shortValue());
+			}else if (field.getTypeName().equals(java.lang.Long.class.getName()) || field.getTypeName().equals("long")){
+				field.setFieldValue(instance, doubleValue.longValue());
+			}
 		}
 	}
 	
