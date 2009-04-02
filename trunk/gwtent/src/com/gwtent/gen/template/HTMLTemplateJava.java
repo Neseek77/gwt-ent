@@ -17,6 +17,7 @@ public class HTMLTemplateJava {
   private List<String> variables = new ArrayList<String>();
   private boolean compileToSource = true;
   private boolean autoAddWidget = true;
+  private boolean autoDefineCSS = true;
   
   public void setValue(String value) {
     this.value = value;
@@ -65,5 +66,11 @@ public class HTMLTemplateJava {
   }
   public boolean isAutoAddWidget() {
     return autoAddWidget;
+  }
+  public void setAutoDefineCSS(boolean autoDefineCSS) {
+    this.autoDefineCSS = autoDefineCSS;
+  }
+  public boolean isAutoDefineCSS() {
+    return autoDefineCSS;
   }
 }

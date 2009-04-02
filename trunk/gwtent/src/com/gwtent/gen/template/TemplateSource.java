@@ -48,6 +48,11 @@ public class TemplateSource extends HTMLTemplatePanel {
   
   private void _CodeFromHTML(){
   	//btn.setText("SetFromHTML");
+    
+  }
+  
+  private void _SetCSS(){
+    //btn.addStyleName("ID");    
   }
 
   public TemplateSource() {
@@ -56,6 +61,7 @@ public class TemplateSource extends HTMLTemplatePanel {
     addElements();
     addEvents();
     _CodeFromHTML();
+    _SetCSS();
   }
 
 }
