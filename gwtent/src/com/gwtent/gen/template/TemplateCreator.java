@@ -108,6 +108,7 @@ public class TemplateCreator extends LogableSourceCreator {
 	  templateJava.setCompileToSource(template.compileToSource());
 	  templateJava.setHtml(template.html());
 	  templateJava.setVariables(template.variables());
+	  templateJava.setAutoDefineCSS(template.autoDefineCSS());
 	}
 	
 	private void setHTMLTemplateJavaByReflection(Annotation annotation, HTMLTemplateJava templateJava){
@@ -141,6 +142,8 @@ public class TemplateCreator extends LogableSourceCreator {
         templateJava.setHtml((String)value);
       }else if (methodName.equals("variables")){
         templateJava.setVariables((String[])value);
+      }else if (methodName.equals("autoDefineCSS")){
+        templateJava.setAutoDefineCSS((Boolean)value);
       }
     }    
   }
@@ -174,7 +177,7 @@ public class TemplateCreator extends LogableSourceCreator {
 	  Annotation[] metaAnnotations = annotationClass.getAnnotations();
     for (Annotation metaAnnotation : metaAnnotations) {
       if (processTemplateAnnotation(metaAnnotation, annotations)) {
-        annotations.add(metaAnnotation);
+        annotations.add(annotation);
         return true;
       }
     }
@@ -295,10 +298,10 @@ public class TemplateCreator extends LogableSourceCreator {
 		JClassType curType = classType;
 		while (curType != null) {
 		  for (JField aField: curType.getFields()){
-	      processField(source, aField);
+	      processField(source, aField, template);
 	    }
 	    for (JMethod aField: curType.getMethods()){
-	      processMethod(source, aField);
+	      processMethod(source, aField, template);
 	    }
 	    
 	    curType = curType.getSuperclass();
@@ -377,27 +380,27 @@ public class TemplateCreator extends LogableSourceCreator {
     }
 	}
 
-  private void processMethod(SourceWriter source, JMethod aField) {
+  private void processMethod(SourceWriter source, JMethod aField, HTMLTemplateJava template) {
     HTMLWidget widget = aField.getAnnotation(HTMLWidget.class);
     if (widget != null){
       if (aField.isPrivate())
         throw new RuntimeException("@Widget can't apply to private method, please make sure subclass can access this method if you  are using @Widget.");
       
-      processWidget(source, widget, aField.getName() + "()", aField.getName());
+      processWidget(source, widget, aField.getName() + "()", aField.getName(), template);
     }
   }
 
-  private void processField(SourceWriter source, JField aField) {
+  private void processField(SourceWriter source, JField aField, HTMLTemplateJava template) {
     HTMLWidget widget = aField.getAnnotation(HTMLWidget.class);
     if (widget != null){
       if (aField.isPrivate())
         throw new RuntimeException("@Widget can't apply to private field, please make sure subclass can access this field if you  are using @Widget.");
       
-      processWidget(source, widget, aField.getName(), aField.getName());
+      processWidget(source, widget, aField.getName(), aField.getName(), template);
     }
   }
   
-  private void processWidget(SourceWriter source, HTMLWidget widget, String sourcePart, String elementName){
+  private void processWidget(SourceWriter source, HTMLWidget widget, String sourcePart, String elementName, HTMLTemplateJava template){
     if (widget != null){
       String elementID = widget.value();
       if (elementID.length() <= 0)
@@ -408,6 +411,10 @@ public class TemplateCreator extends LogableSourceCreator {
       
       if (widget.css().length() > 0){
         source.println(sourcePart + ".addStyleName(\"" + widget.css() + "\");");
+      }
+      
+      if (template.isAutoDefineCSS()){
+        source.println(sourcePart + ".addStyleName(\"" + elementID + "\");");
       }
     }
   }

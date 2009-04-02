@@ -45,6 +45,13 @@ public @interface HTMLTemplate {
   String html() default "";
   
   /**
+   * If this is true, every widgets will got a CSS when it add to HTML  
+   * The CSS name is the ID of this widget.
+   * @return
+   */
+  boolean autoDefineCSS() default true;
+  
+  /**
    * The custom variable of this template. 
    * Using "=" to indent key and value
    * "name=GWTENT"
