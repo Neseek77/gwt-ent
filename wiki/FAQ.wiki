@@ -1,0 +1,14 @@
+#summary FAQ
+
+= Introduction =
+
+FAQ
+
+
+= Details =
+
+= ClassNotFoundException =
+Error java.lang.ClassNotFoundException: abc.def.BaseHTMLTemplate
+Resolving annotation '@BaseHTMLTemplate("folder/html1.html")
+  
+  Please check your -cp parameter, make sure it pointer to somewhere which contains your annotations *classes*
