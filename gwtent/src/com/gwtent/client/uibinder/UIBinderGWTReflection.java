@@ -44,6 +44,8 @@ public abstract class UIBinderGWTReflection implements UIBinder {
   }
   
 
+  protected abstract void doInit(Widget widget, Object model, Field field, ClassType classType);
+  
   public void init(Widget widget, Object model, String path) {
     this.widget = widget;
     this.path = path;
@@ -56,6 +58,9 @@ public abstract class UIBinderGWTReflection implements UIBinder {
     }
     this.model = parentModel;
     this.classTypeModel = TypeOracle.Instance.getClassType(model.getClass());
+    
+    
+    //doInit(widget, this.model, )
   }
 
 

@@ -18,5 +18,5 @@ public @interface DataContract {
 	 * TList<Person>, here is Person.class
 	 * @return
 	 */
-	Class<?> clazz() default Object.class;
+	Class<?> type() default Object.class;
 }
