@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface DataMember {
 	String name() default "";
 	
-	String className() default "";
-	Class<?> clazz() default Object.class;
+	String typeName() default "";
+	Class<?> type() default Object.class;
 	
 }

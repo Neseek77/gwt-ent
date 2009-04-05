@@ -5,7 +5,9 @@
     <inherits name="com.google.gwt.xml.XML"/>
     
     <inherits name="org.aspectj.lang.annotation.AspectJAnnotation"/>
+    <!-- 
     <inherits name="javax.validation.Validation"/>
+     -->
     
     <!-- <inherits name="com.gwtext.GwtExt"/> -->
     
