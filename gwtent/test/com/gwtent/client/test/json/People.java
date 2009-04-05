@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.gwtent.client.serialization.DataContract;
 import com.gwtent.client.serialization.DataMember;
 
-@DataContract(clazz=Person.class)
+@DataContract(type=Person.class)
 public class People extends ArrayList<Person> {
 
 	/**
