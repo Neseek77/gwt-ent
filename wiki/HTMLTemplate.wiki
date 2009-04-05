@@ -2,10 +2,57 @@
 
 = Introduction =
 
-Add your content here.
+By default, GWT just support one HTML page on one module. gwt-ent make multiple HTML page possible for GWT, and introduce Annotations to make all of these easier to use.
 
 
-= Details =
+= Overview =
+{{{
+public class TemplateTestCase extends GwtEntTestCase {
+
+  @HTMLTemplate("testhtml.html")
+  public static class TestHTMLTemplate extends HTMLTemplatePanel{
+
+    @HTMLWidget
+    protected Button btn = new Button();
+    
+    @HTMLWidget
+    protected Hyperlink link = new Hyperlink();
+    
+    @HTMLWidget("btn1")
+    protected Button getButton(){
+      return new Button();
+    }
+    
+    @HTMLEvent("linkHanldByGWT")
+    protected void onLinkClickEvent(){
+      
+    }
+    
+    public TestHTMLTemplate(String html) {
+      super(html);
+      
+      btn.setText("Hello Template World");
+      
+      link.addClickListener(new ClickListener(){
+
+        public void onClick(Widget sender) {
+          Window.alert("Hello");
+        }
+        
+      });
+    }
+    
+  }
+  
+
+  
+  public void testTemplate(){
+    TestHTMLTemplate template = (TestHTMLTemplate) GWT.create(TestHTMLTemplate.class);
+    //Using you template here 
+    assertTrue(template.btn.getText().equals("SetFromHTML"));
+  }
+
+}}}
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
