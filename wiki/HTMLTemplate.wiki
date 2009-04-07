@@ -1,4 +1,5 @@
 #summary Annotation based HTML template framework for GWT
+#labels Featured
 
 = Introduction =
 
@@ -53,6 +54,32 @@ public class TemplateTestCase extends GwtEntTestCase {
   }
 
 }}}
+
+HTML
+{{{
+<table>
+<tr>
+<td id="btn">
+${btn.setProperty("Text", "SetFromHTML")}
+${btn.setProperty("Width", "200")}
+${btn.css("css_btn")}
+</td>
+<td id="btn1">
+</td>
+<td id="link">
+link
+</td>
+</td>
+<td >
+<a id="linkHanldByGWT" class="home" title="Handle by GWT" href="a">  Click Here </a>
+</td>
+</tr>
+</table>
+}}}
+
+
+= Two way communication =
+
 
 
 = Annotations =
@@ -159,4 +186,3 @@ public @interface HTMLWidget {
   String css() default "";
 }
 }}}
-
