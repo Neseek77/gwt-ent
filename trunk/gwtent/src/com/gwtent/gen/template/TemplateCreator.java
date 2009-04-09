@@ -221,7 +221,7 @@ public class TemplateCreator extends LogableSourceCreator {
 		source.println("private static String getHTML(){");
 		source.indent();
 		if (template.getValue() != ""){
-		  String url = template.getValue();
+		  String url = template.getBasePath() + template.getValue();
 		  if (url.toUpperCase().indexOf("HTTP://") > 0){
 		    
 		  }else{
