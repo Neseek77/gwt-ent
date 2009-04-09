@@ -20,7 +20,12 @@ public class HTMLTemplatePanel extends HTMLPanel {
   public void add(Widget widget, String id) {
     if (widget != null){
 //      widget.setWidth("100%");
-      super.add(widget, id);
+      try {
+        super.add(widget, id);
+      } catch (NoSuchElementException e) {
+        throw new NoSuchElementException(e.getMessage() + " If you modify HTML out of Eclipse, please refresh the HTML folder in eclipse before you run this application.");
+      }
+      
       //this.getElement().getChildNodes()
       //TODO Should rename all nodes, not just the nodes added here
       getElementById(id).setId(id + idCount);  //if HTMLPanel instance twice? the id will be same which will cause problems when add widget by id
