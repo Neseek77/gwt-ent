@@ -25,7 +25,6 @@
 package javax.persistence;
 
 import java.util.Date;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -51,11 +50,13 @@ public interface Query {
 
     public Query setParameter(String name, Date value, TemporalType temporalType);
 
-    public Query setParameter(String name, Calendar value, TemporalType temporalType);
+    //Comment here, no Calendar define in GWT
+    //public Query setParameter(String name, Calendar value, TemporalType temporalType);
 
     public Query setParameter(int position, Object value);
 
     public Query setParameter(int position, Date value, TemporalType temporalType);
 
-    public Query setParameter(int position, Calendar value, TemporalType temporalType);
+  //Comment here, no Calendar define in GWT
+    //public Query setParameter(int position, Calendar value, TemporalType temporalType);
 }

@@ -5,6 +5,8 @@
       <inherits name='com.google.gwt.gears.Gears'/>
       
       <inherits name="com.gwtent.GwtEnt"/>
+      
+      <inherits name="javax.persistence.Persistence"/>
 	
       <!-- Inherit the default GWT style sheet.  You can change       -->
       <!-- the theme of your GWT application by uncommenting          -->
@@ -25,6 +27,8 @@
       
       <!-- <source path="com.gwtent.client.orm.test.domain" /> -->
       <source path="client" />
+      <!-- 
 	 <source path="javax/persistence" />
+	  -->
 	 
 </module>
