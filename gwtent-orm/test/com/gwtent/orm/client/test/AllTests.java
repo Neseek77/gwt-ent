@@ -21,7 +21,7 @@ public class AllTests {
     TestSuite suite = new TestSuite("Test for com.gwtent.client.orm.test");
     //$JUnit-BEGIN$
     suite.addTestSuite(GearsTestCase.class);
-    suite.addTestSuite(ReflectionTestCase.class);
+    //suite.addTestSuite(ReflectionTestCase.class);
     //$JUnit-END$
     return suite;
   }
