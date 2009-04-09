@@ -129,7 +129,9 @@ public class SecurityAcegiImpl implements Security, ApplicationEventPublisherAwa
 		}
 
 		SecurityContextHolder.getContext().setAuthentication(authResult);
-		request.getSession().setAttribute(SPRING_SECURITY_LAST_USERNAME_KEY, TextUtils.escapeEntities(username));
+		
+		if (request != null)
+		  request.getSession().setAttribute(SPRING_SECURITY_LAST_USERNAME_KEY, TextUtils.escapeEntities(username));
     
 
 		if (logger.isDebugEnabled()) {
