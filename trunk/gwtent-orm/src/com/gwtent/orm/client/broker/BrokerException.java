@@ -1,6 +1,8 @@
 package com.gwtent.orm.client.broker;
 
-@SuppressWarnings("serial")
+
 public class BrokerException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 }
