@@ -427,6 +427,9 @@ public class TemplateCreator extends LogableSourceCreator {
 	 * @return sourceWriter
 	 */
 	public SourceWriter doGetSourceWriter(JClassType classType) throws Exception {
+	  if (classType.isAbstract())
+	    throw new RuntimeException("HTML Template Class (" + classType.getQualifiedSourceName() + ") can NOT be a abstract class.");
+	  
 		String packageName = classType.getPackage().getName();
 		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(

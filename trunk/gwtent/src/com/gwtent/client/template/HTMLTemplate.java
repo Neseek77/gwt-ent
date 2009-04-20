@@ -18,6 +18,11 @@ import java.lang.annotation.Target;
  * page instead for now. Must change id, otherwise, if you have more then two
  * instance of HTMLTempaltePanel with same HTML page, the id will duplicate
  * 
+ * TODO
+ * Some time when attach a HTMLTemplate to a big project
+ * The id maybe will used by others, make sure the id just used for 
+ * the current html template, not the whole page
+ * 
  * @author James Luo (JamesLuo.au@gmail.com)
  *
  */
