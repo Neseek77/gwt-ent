@@ -11,11 +11,12 @@ import com.gwtent.client.uibinder.UIBinderManager;
 import com.gwtent.client.uibinder.UIBinderManager.ModelCallback;
 
 @HTMLTemplate("testhtml.html")
-public class EditScreen extends HTMLTemplatePanel {
+public class EditScreenUIBind extends HTMLTemplatePanel {
 
-  private TestModel testModel = null;
+  //for now, models in path must can be accessed by sub class
+  protected TestModel testModel = null;
 
-  public EditScreen(String html) {
+  public EditScreenUIBind(String html) {
     super(html);
     
 //    uiBinderManager.addBinder(txtFirstName, "firstName", false, TestModel.class);
@@ -26,36 +27,36 @@ public class EditScreen extends HTMLTemplatePanel {
     //This function do nothing, cause binding system has not been initialized
     modelChanged();
     
-    this.getUIBinderManager().addBinder(txtBindToVariable, "", false, String.class,
-        new ModelRootAccessor(){
-
-          public Object getValue() {
-            return varToBind;
-          }
-
-          public void setValue(Object value) {
-            varToBind = (String)value;
-          }});
-    
-    getUIBinderManager().addBinder(txtFirstName, "firstName", false, TestModel.class,
-        new ModelRootAccessor(){
-
-          public Object getValue() {
-            return testModel;
-          }
-
-          public void setValue(Object value) {
-            //
-          }});
+//    this.getUIBinderManager().addBinder(txtBindToVariable, "", false, String.class,
+//        new ModelRootAccessor(){
+//
+//          public Object getValue() {
+//            return varToBind;
+//          }
+//
+//          public void setValue(Object value) {
+//            varToBind = (String)value;
+//          }});
+//    
+//    getUIBinderManager().addBinder(txtFirstName, "firstName", false, TestModel.class,
+//        new ModelRootAccessor(){
+//
+//          public Object getValue() {
+//            return testModel;
+//          }
+//
+//          public void setValue(Object value) {
+//            //
+//          }});
     //UIBinderFactory.getUIBinder(TextBox.class).binder(txtFirstName, this, testModel, "testModel.firstName");
   }
   
   @HTMLWidget
-  //@UIBind(path="testModel.firstName")
+  @UIBind(path="testModel.firstName")
   protected TextBox txtFirstName = new TextBox();
   
   @HTMLWidget
-  //@UIBind(path="varToBind")
+  @UIBind(path="varToBind")
   protected TextBox txtBindToVariable = new TextBox();
   
   public TextBox getTxtBindToVariable() {
@@ -66,7 +67,7 @@ public class EditScreen extends HTMLTemplatePanel {
     this.txtBindToVariable = txtBindToVariable;
   }
 
-  private String varToBind = "abc";
+  protected String varToBind = "abc";
 
   public TextBox getTxtFirstName() {
     return txtFirstName;
