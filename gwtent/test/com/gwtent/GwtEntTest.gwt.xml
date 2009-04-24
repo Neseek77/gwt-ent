@@ -6,6 +6,7 @@
     <inherits name="com.gwtent.GwtEnt"/>
     
     <inherits name='com.google.gwt.validation.Validation' />
+    <inherits name="javax.validation.Validation"/>
     
     <source path="client" />
     
