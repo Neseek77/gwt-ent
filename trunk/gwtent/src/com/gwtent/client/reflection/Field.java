@@ -21,15 +21,30 @@ package com.gwtent.client.reflection;
 
 public interface Field extends HasMetaData, AccessDef, HasAnnotations {
 
-	public abstract ClassType getEnclosingType();
+	public ClassType getEnclosingType();
 
-	public abstract String getName();
+	public String getName();
 
-	public abstract Type getType();
+	public Type getType();
 	
-	public abstract String getTypeName();
+	public String getTypeName();
 	
-	public abstract Object getFieldValue(Object instance);
-	public abstract void setFieldValue(Object instance, Object value);
+	/**
+	 * Get field value from instance
+	 * This function suppose the Getter exists and can be accessed be subclass
+	 * 
+	 * @param instance
+	 * @return the field value of instance
+	 */
+	public Object getFieldValue(Object instance);
+	
+	/**
+	 * Set field value of instance
+	 * This function supposed the Setter exists and can be accessed by subclass
+	 * 
+	 * @param instance
+	 * @param value
+	 */
+	public void setFieldValue(Object instance, Object value);
 
 }

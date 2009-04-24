@@ -42,10 +42,10 @@ import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.MethodInvokeException;
 import com.gwtent.client.reflection.NotFoundException;
 import com.gwtent.client.reflection.Package;
-import com.gwtent.client.reflection.Parameter;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.uibinder.Parameter;
 
 /**
  * Type representing a Java class or interface type.

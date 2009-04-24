@@ -120,6 +120,34 @@ public class GenUtils {
 		return method.getReturnType().getSimpleSourceName().equals("void");
 	}
 	
+	public static JField findField(JClassType classType, String fieldName){
+	  JField result = null;
+    JClassType parent = classType;
+    while (parent != null){
+      result = parent.findField(fieldName);
+      if (result != null)
+        return result;
+      
+      parent = parent.getSuperclass();
+    }
+    
+    return null;
+  }
+	
+	public static JMethod findMethod(JClassType classType, String name, JType[] paramTypes){
+	  JMethod result = null;
+    JClassType parent = classType;
+    while (parent != null){
+      result = parent.findMethod(name, paramTypes);
+      if (result != null)
+        return result;
+      
+      parent = parent.getSuperclass();
+    }
+    
+    return null;
+	}
+	
 	/**
 	 * Return annotation instance of classType which match annotation class.
 	 * NOTE: this function will check classType and all it's parent to see if annotation class exists

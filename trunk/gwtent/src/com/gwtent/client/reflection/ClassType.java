@@ -31,6 +31,18 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 	//public Method findMethod(String name, String[] paramTypes);
 	public Method findMethod(String name, String... paramTypes);
 	
+	/**
+	 * For now this function just return if the class can be constructed using a simple <code>new</code>
+   * operation. Specifically, the class must
+   * <ul>
+   * <li>be a class rather than an interface, </li>
+   * <li>have either no constructors or a parameterless constructor, and</li>
+   * <li>be a top-level class or a static nested class.</li>
+   * </ul>
+   * 
+	 * @param paramTypes
+	 * @return
+	 */
 	public Constructor findConstructor(String[] paramTypes);
 
 	/**
