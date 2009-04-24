@@ -17,7 +17,10 @@
  *******************************************************************************/
 
 
-package com.gwtent.client.reflection;
+package com.gwtent.client.uibinder;
+
+import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.Type;
 
 
 public interface Parameter {

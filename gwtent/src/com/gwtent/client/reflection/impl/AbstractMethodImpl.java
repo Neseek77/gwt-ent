@@ -33,8 +33,8 @@ import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.Parameter;
 import com.gwtent.client.reflection.Type;
+import com.gwtent.client.uibinder.Parameter;
 
 public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations, AbstractMethod {
 

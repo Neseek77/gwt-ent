@@ -4,18 +4,43 @@ import java.util.NoSuchElementException;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwtent.client.uibinder.UIBinderManager;
 
+/**
+ * HTMLTemplatePanel
+ * 
+ * CSS Style: 
+ * 
+ * @author James Luo (JamesLuo.au@gmail.com)
+ *
+ */
 public class HTMLTemplatePanel extends HTMLPanel {
 
   private static int idCount = 0;
   
   public HTMLTemplatePanel(String html) {
     super(html);
+    
+    this.addStyleName("gwtent-HTMLTemplatePanel");
   }
   
-//  public HTMLTemplatePanel() {
-//    super("");
-//  }
+  
+  private UIBinderManager uiBinderManager = new UIBinderManager();
+  
+  public UIBinderManager getUIBinderManager() {
+    return uiBinderManager;
+  }
+  
+  /**
+   * Call here if you changed model by your code
+   * PLEASE NOTE: DO NOT call this function in your constructor
+   * because the binding system has not been initialized
+   * 
+   */
+  public void modelChanged(String... pathPrefixs){
+    uiBinderManager.modelChanged(pathPrefixs);
+  }
+
   
   public void add(Widget widget, String id) {
     if (widget != null){

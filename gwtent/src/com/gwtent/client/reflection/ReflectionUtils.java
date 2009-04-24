@@ -26,6 +26,11 @@ public class ReflectionUtils {
     throw new ReflectionRequiredException("your class should have reflection information before this opeartion. This can be done by annotated class with \"@Reflectionable\" annotations, ie: \"@Reflectionable\", \"@Validtable\", \"@DataContract\" or implement flag interface \"Reflection\". Current class is : " + className + "\n" + msg);
   }
   
+  /**
+   * clazz must have reflection information before continue
+   * 
+   * @param clazz
+   */
   public static void reflectionRequired(Class<?> clazz){
     reflectionRequired(clazz.getName(), null);
   }

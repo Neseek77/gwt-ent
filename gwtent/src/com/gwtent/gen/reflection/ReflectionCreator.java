@@ -85,7 +85,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
 			if ((classType.isClass() != null) && GenUtils.hasPublicDefaultConstructor(classType)){
-				if (! classType.isAbstract()){
+				if ((! classType.isAbstract()) && (classType.isDefaultInstantiable())){
 					sourceWriter.println("new ConstructorImpl(this, \"" + className + "\"){");
 					sourceWriter.println("	public Object newInstance() {");
 					sourceWriter.println("return new " + classType.getQualifiedSourceName() + "();");

@@ -29,7 +29,7 @@ package com.gwtent.client.uibinder;
  * 2007-12-25 下午08:30:11
  *
  */
-public interface ModelValue {
+public interface ModelValue<T> {
 	public boolean getReadOnly();
 	public void setReadOnly(boolean readOnly);
 	
@@ -37,6 +37,11 @@ public interface ModelValue {
 	
 	public UIBinderValidator getValidator();
 	
-	public Object getValue();
-	public void setValue(Object value);
+	public T getValue();
+	public void setValue(T value);
+	
+	public void doValueChanged();
+	
+	public void addValueChangedListener(IValueChangedListener listener);
+	public void removeValueChangedListener(IValueChangedListener listener);
 }

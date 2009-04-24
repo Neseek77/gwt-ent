@@ -26,10 +26,10 @@ import java.util.Map;
 
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.NotFoundException;
-import com.gwtent.client.reflection.Parameter;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.uibinder.Parameter;
 
 public class TypeOracleImpl implements TypeOracle {
 

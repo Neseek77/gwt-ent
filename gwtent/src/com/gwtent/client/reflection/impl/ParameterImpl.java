@@ -26,9 +26,9 @@ import java.util.Map;
 import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.Parameter;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.uibinder.Parameter;
 
 public class ParameterImpl implements HasAnnotations, Parameter {
 	private final String name;

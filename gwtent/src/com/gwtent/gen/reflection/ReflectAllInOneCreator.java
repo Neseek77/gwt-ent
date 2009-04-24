@@ -116,7 +116,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			for (JClassType classType : typeOracle.getTypes()) {
 			  //|| (classType.getAnnotation(Aspect.class) != null)
 				if ((classType.isAssignableTo(reflectionClass)) || (classType.isAssignableTo(constraintClass))
-				    || (GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectionable.class) != null)){
+				    || (GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectionable.class) != null)
+				    //|| classType.getQualifiedSourceName().startsWith("java.lang")
+				    //|| classType.getQualifiedSourceName().startsWith("java.util")
+				    ){
 					if (! genExclusion(classType)){
 						processRelationClasses(types, classType);
 						processAnnotationClasses(types, classType);
@@ -192,7 +195,11 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			classType = this.typeOracle.findType(classType.getQualifiedSourceName());
 		}
 		
-		if ((classType != null) && (types.indexOf(classType) < 0)){
+		//we just process public classes
+		if ((classType == null) || (!classType.isPublic()))
+		  return;  
+		
+		if ((types.indexOf(classType) < 0)){
 			types.add(classType);
 		}
 	}

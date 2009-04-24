@@ -5,6 +5,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Button;
 import com.gwtent.client.template.HTMLTemplatePanel;
+import com.gwtent.client.uibinder.ModelRootAccessor;
 
 public class TemplateSource extends HTMLTemplatePanel {
 
@@ -46,6 +47,19 @@ public class TemplateSource extends HTMLTemplatePanel {
     }
   }
   
+  private void _BindToEditor(){
+    //for each all @UIBind
+    getUIBinderManager().addBinder(btn, "path", false, TemplateSource.class, 
+        new ModelRootAccessor(){
+          public Object getValue() {
+            return "";
+          }
+
+          public void setValue(Object value) {
+            //
+          }});
+  }
+  
   private void _CodeFromHTML(){
   	//btn.setText("SetFromHTML");
     
@@ -60,6 +74,7 @@ public class TemplateSource extends HTMLTemplatePanel {
 
     addElements();
     addEvents();
+    _BindToEditor();
     _CodeFromHTML();
     _SetCSS();
   }
