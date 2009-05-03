@@ -19,6 +19,7 @@
 
 package com.gwtent.client.aop.advice;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 
 import com.gwtent.client.aop.intercept.MethodInvocation;
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.uibinder.Parameter;
 
@@ -83,9 +83,9 @@ public class ArgsBinderImpl implements ArgsBinder{
 	 * @param value
 	 */
 	private int getReturningParamIndex(Method method){
-		AnnotationStore annotation = method.getAnnotation(AfterReturning.class);
+		AfterReturning annotation = method.getAnnotation(AfterReturning.class);
 		if (annotation != null){
-			String paramName = annotation.getValue("returning").toString();
+			String paramName = annotation.returning().toString();
 			return getParamIndexByName(method, paramName);
 		}
 
@@ -102,9 +102,9 @@ public class ArgsBinderImpl implements ArgsBinder{
 	 * @return
 	 */
 	private int getAfterThrowingParamIndex(Method method){
-		AnnotationStore annotation = method.getAnnotation(AfterThrowing.class);
+		AfterThrowing annotation = method.getAnnotation(AfterThrowing.class);
 		if (annotation != null){
-			String paramName = annotation.getValue("throwing").toString();
+			String paramName = annotation.throwing().toString();
 			return getParamIndexByName(method, paramName);
 		}
 		

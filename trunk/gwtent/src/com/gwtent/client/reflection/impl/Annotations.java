@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.HasAnnotations;
 
 /**
@@ -36,13 +35,13 @@ class Annotations implements HasAnnotations {
   /**
    * All annotations declared on the annotated element.
    */
-  private final Map<Class<?>, AnnotationStore> declaredAnnotations = new HashMap<Class<?>, AnnotationStore>();
+  private final Map<Class<?>, Annotation> declaredAnnotations = new HashMap<Class<?>, Annotation>();
 
   /**
    * Lazily initialized collection of annotations declared on or inherited by
    * the annotated element.
    */
-  private Map<Class<?>, AnnotationStore> lazyAnnotations = null;
+  private Map<Class<?>, Annotation> lazyAnnotations = null;
 
   /**
    * If not <code>null</code> the parent to inherit annotations from.
@@ -54,43 +53,43 @@ class Annotations implements HasAnnotations {
   
   Annotations(Annotations otherAnnotations) {
     if (otherAnnotations != null) {
-      AnnotationStore[] otherDeclaredAnnotations = otherAnnotations.getDeclaredAnnotations();
-      for (AnnotationStore otherDeclaredAnnotation : otherDeclaredAnnotations) {
+      Annotation[] otherDeclaredAnnotations = otherAnnotations.getDeclaredAnnotations();
+      for (Annotation otherDeclaredAnnotation : otherDeclaredAnnotations) {
         addAnnotation(otherDeclaredAnnotation.annotationType(),
             otherDeclaredAnnotation);
       }
     }
   }
 
-  Annotations(Map<Class<? extends Annotation>, AnnotationStore> declaredAnnotations) {
+  Annotations(Map<Class<? extends Annotation>, Annotation> declaredAnnotations) {
     this.declaredAnnotations.putAll(declaredAnnotations);
   }
 
   public void addAnnotations(
-      List<AnnotationStore> annotations) {
+      List<Annotation> annotations) {
     if (annotations != null) {
-      for (AnnotationStore store : annotations) {
+      for (Annotation store : annotations) {
         declaredAnnotations.put(store.annotationType(), store);
       }
       //declaredAnnotations.putAll(annotations);
     }
   }
 
-  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
     initializeAnnotations();
-    return lazyAnnotations.get(annotationClass);
+    return (T) lazyAnnotations.get(annotationClass);
     //return annotationClass.cast(lazyAnnotations.get(annotationClass));
   }
 
-  public AnnotationStore[] getAnnotations() {
+  public Annotation[] getAnnotations() {
     initializeAnnotations();
-    Collection<AnnotationStore> values = lazyAnnotations.values();
-    return values.toArray(new AnnotationStore[values.size()]);
+    Collection<Annotation> values = lazyAnnotations.values();
+    return values.toArray(new Annotation[values.size()]);
   }
 
-  public AnnotationStore[] getDeclaredAnnotations() {
-    Collection<AnnotationStore> values = declaredAnnotations.values();
-    return values.toArray(new AnnotationStore[values.size()]);
+  public Annotation[] getDeclaredAnnotations() {
+    Collection<Annotation> values = declaredAnnotations.values();
+    return values.toArray(new Annotation[values.size()]);
   }
 
   public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
@@ -98,7 +97,7 @@ class Annotations implements HasAnnotations {
   }
 
   void addAnnotation(Class<?> annotationClass,
-      AnnotationStore annotationInstance) {
+      Annotation annotationInstance) {
     assert (annotationClass != null);
     assert (annotationInstance != null);
     assert (!declaredAnnotations.containsKey(annotationClass));
@@ -116,9 +115,9 @@ class Annotations implements HasAnnotations {
     }
 
     if (parent != null) {
-      lazyAnnotations = new HashMap<Class<?>, AnnotationStore>();
+      lazyAnnotations = new HashMap<Class<?>, Annotation>();
       parent.initializeAnnotations();
-      for (Entry<Class<?>, AnnotationStore> entry : parent.lazyAnnotations.entrySet()) {
+      for (Entry<Class<?>, Annotation> entry : parent.lazyAnnotations.entrySet()) {
 //        if (entry.getValue().annotationType().isAnnotationPresent(
 //            Inherited.class)) {
 //          lazyAnnotations.put(entry.getKey(), entry.getValue());

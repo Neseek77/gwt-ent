@@ -32,7 +32,7 @@ package com.gwtent.client.reflection;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
-public class AnnotationStoreImpl implements AnnotationStore {
+public class AnnotationStoreImpl implements Annotation {
 
   private final Class<? extends Annotation> clasz;
   private final Map<String, String> values;

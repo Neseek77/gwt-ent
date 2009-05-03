@@ -41,7 +41,7 @@ public interface HasAnnotations {
    * @return instance of the specified annotation type if it is present on this
    *         element or <code>null</code> if it is not
    */
-  <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass);
+  <T extends Annotation> T getAnnotation(Class<T> annotationClass);
 
   /**
    * Returns <code>true</code> if this item has an annotation of the specified
@@ -55,7 +55,7 @@ public interface HasAnnotations {
   boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
   
   
-  void addAnnotations(List<AnnotationStore> annotations);
+  void addAnnotations(List<Annotation> annotations);
   
-  AnnotationStore[] getAnnotations();
+  Annotation[] getAnnotations();
 }

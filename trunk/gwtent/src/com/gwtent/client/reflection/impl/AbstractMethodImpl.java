@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.gwtent.client.reflection.AbstractMethod;
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ArrayType;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
@@ -265,7 +264,7 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
 		return true;
 	}
 	
-  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
     return annotations.getAnnotation(annotationClass);
   }
   
@@ -276,19 +275,19 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
   /**
    * NOTE: This method is for testing purposes only.
    */
-  public AnnotationStore[] getAnnotations() {
+  public Annotation[] getAnnotations() {
     return annotations.getAnnotations();
   }
 
   /**
    * NOTE: This method is for testing purposes only.
    */
-  AnnotationStore[] getDeclaredAnnotations() {
+  Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
   
   public void addAnnotations(
-      List<AnnotationStore> annotations) {
+      List<Annotation> annotations) {
     this.annotations.addAnnotations(annotations);
   }
   
