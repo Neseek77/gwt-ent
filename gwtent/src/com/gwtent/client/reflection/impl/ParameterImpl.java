@@ -21,9 +21,7 @@ package com.gwtent.client.reflection.impl;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Type;
@@ -118,7 +116,7 @@ public class ParameterImpl implements HasAnnotations, Parameter {
 		this.typeName = typeName;
 	}
 	
-  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
     return annotations.getAnnotation(annotationClass);
   }
   
@@ -126,16 +124,16 @@ public class ParameterImpl implements HasAnnotations, Parameter {
     return annotations.isAnnotationPresent(annotationClass);
   }
   
-  public AnnotationStore[] getAnnotations() {
+  public Annotation[] getAnnotations() {
     return annotations.getAnnotations();
   }
 
-  AnnotationStore[] getDeclaredAnnotations() {
+  Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
   
   public void addAnnotations(
-      List<AnnotationStore> annotations) {
+      List<Annotation> annotations) {
     this.annotations.addAnnotations(annotations);
   }
 }

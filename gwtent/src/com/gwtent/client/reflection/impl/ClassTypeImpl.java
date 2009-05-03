@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.gwtent.client.reflection.AccessDef;
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ArrayType;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
@@ -44,7 +43,6 @@ import com.gwtent.client.reflection.NotFoundException;
 import com.gwtent.client.reflection.Package;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
-import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.uibinder.Parameter;
 
 /**
@@ -705,11 +703,11 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	}
 	
   public void addAnnotations(
-      List<AnnotationStore> declaredAnnotations) {
+      List<Annotation> declaredAnnotations) {
     annotations.addAnnotations(declaredAnnotations);
   }
   
-  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
     return annotations.getAnnotation(annotationClass);
   }
   
@@ -717,11 +715,11 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
     return annotations.isAnnotationPresent(annotationClass);
   }
   
-  public AnnotationStore[] getAnnotations() {
+  public Annotation[] getAnnotations() {
     return annotations.getAnnotations();
   }
 
-  AnnotationStore[] getDeclaredAnnotations() {
+  Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
 

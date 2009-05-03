@@ -15,14 +15,12 @@ import javax.validation.InvalidConstraint;
 import javax.validation.MessageResolver;
 import javax.validation.Validator;
 
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.validate.ValidateUtils;
 
 public class ValidatorGWT<T> implements Validator<T>{
 
@@ -103,15 +101,16 @@ public class ValidatorGWT<T> implements Validator<T>{
     return icSet;
   }
   
-  private List<AnnotationStore> getValidateAnnotationsAndOrder(HasAnnotations field, List<String> lstGroups){
-  	List<AnnotationStore> lStore = new ArrayList<AnnotationStore>();
-  	Map<String, List<AnnotationStore>> map = new HashMap<String, List<AnnotationStore>>();
+  private List<Annotation> getValidateAnnotationsAndOrder(HasAnnotations field, List<String> lstGroups){
+  	List<Annotation> lStore = new ArrayList<Annotation>();
+  	Map<String, List<Annotation>> map = new HashMap<String, List<Annotation>>();
   	for (String str : lstGroups)
-  		map.put(str, new ArrayList<AnnotationStore>());
+  		map.put(str, new ArrayList<Annotation>());
   	
-  	for (AnnotationStore store : field.getAnnotations()){
+  	for (Annotation store : field.getAnnotations()){
   		if (isConstraintAnnotation(store)){
-  			String[] groups = store.getAsStringArray("groups");
+  			String[] groups = (String[])ReflectionUtils.getAnnotationValueByName(store, "groups");
+  			
   			if ((groups == null) || (groups.length <= 0))
   				groups = new String[] {"default"};
   			else{
@@ -153,8 +152,8 @@ public class ValidatorGWT<T> implements Validator<T>{
   }
 
   private void doValidate(T object, String propertyName, ClassType type,
-      Set<InvalidConstraint<T>> icSet, List<AnnotationStore> annotations, String getterName) {
-    for (AnnotationStore store : annotations){
+      Set<InvalidConstraint<T>> icSet, List<Annotation> annotations, String getterName) {
+    for (Annotation store : annotations){
       Constraint constraint = createConstraintFromAnnotation(store);
       if (constraint != null){
         Object valueToValidate = null;
@@ -166,30 +165,29 @@ public class ValidatorGWT<T> implements Validator<T>{
         
         if (!constraint.isValid(valueToValidate)){
           InvalidConstraintImpl<T> ic = new InvalidConstraintImpl<T>(object.getClass(), null,
-              store.getValue("message"), propertyName, object, valueToValidate);
+            ReflectionUtils.getAnnotationValueByName(store, "message").toString(), propertyName, object, valueToValidate);
           icSet.add(ic);
         }
       }
     }
   }
   
-  private boolean isConstraintAnnotation(AnnotationStore store){
-  	AnnotationStore storeConstraintValidator = ReflectionUtils.getMetaAnnotation(store, ConstraintValidator.class);
+  private boolean isConstraintAnnotation(Annotation store){
+  	Annotation storeConstraintValidator = ReflectionUtils.getMetaAnnotation(store, ConstraintValidator.class);
     return (storeConstraintValidator != null);
   }
 
-  private Constraint createConstraintFromAnnotation(AnnotationStore store) {
+  private Constraint createConstraintFromAnnotation(Annotation store) {
   	if (!isConstraintAnnotation(store))
   		return null;
   	
-    AnnotationStore storeConstraintValidator = ReflectionUtils.getMetaAnnotation(store, ConstraintValidator.class);
-    String className = storeConstraintValidator.getValue("value");
-    ClassType ctConstraintValidator = TypeOracle.Instance.getClassType(className);
+  	ConstraintValidator storeConstraintValidator = ReflectionUtils.getMetaAnnotation(store, ConstraintValidator.class);
+    ClassType ctConstraintValidator = TypeOracle.Instance.getClassType(storeConstraintValidator.value());
     if (ctConstraintValidator == null)
-      ReflectionUtils.reflectionRequired(className, "To make ConstraintValidator works with GWT, please makesure its reflection enabled.");
+      ReflectionUtils.reflectionRequired(storeConstraintValidator.value(), "To make ConstraintValidator works with GWT, please makesure its reflection enabled.");
     Class clazz = ctConstraintValidator.getDeclaringClass();
     Constraint constraint = ConstraintFactoryCacheImpl.getInstance().getInstance(clazz);
-    constraint.initialize(store.allValues());
+    constraint.initialize(store);
     return constraint;
   }
 

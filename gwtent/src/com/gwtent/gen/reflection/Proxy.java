@@ -24,13 +24,17 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
 
 import com.gwtent.client.reflection.AnnotationStoreImpl;
 import com.gwtent.client.reflection.MethodInvokeException;
+import com.gwtent.client.reflection.impl.AnnotationImpl;
 import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.reflection.impl.ConstructorImpl;
 import com.gwtent.client.reflection.impl.FieldImpl;
 import com.gwtent.client.reflection.impl.MethodImpl;
 import com.gwtent.client.reflection.impl.ParameterImpl;
+import com.gwtent.client.reflection.impl.TypeOracleImpl;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +122,102 @@ public class Proxy extends ClassTypeImpl {
 	  values.put("name", "Test_Table");
 	  //AnnotationStoreImpl store = new AnnotationStoreImpl(com.gwtent.test.TestAnnotation.class, values);
 	}
+	
+	private static class org_aspectj_lang_annotation_Before extends com.gwtent.client.reflection.impl.ClassTypeImpl {
+  	
+  	private static class org_aspectj_lang_annotation_BeforeImpl extends AnnotationImpl implements org.aspectj.lang.annotation.Before{
+
+  		private final String argNames;
+  		private final String value;
+  		
+  		public org_aspectj_lang_annotation_BeforeImpl(Class<? extends Annotation> clazz, String argNames, String value){
+  			super(clazz);
+  			this.argNames = argNames;
+  			this.value = value;
+  		}
+  		
+			public String argNames() {
+				return argNames;
+			}
+
+			public String value() {
+				return value;
+			}
+  		
+  	}
+  	
+  public org_aspectj_lang_annotation_Before(){
+    super("org.aspectj.lang.annotation.Before", org.aspectj.lang.annotation.Before.class);
+    addClassMeta();
+    addAnnotations();
+    addFields();
+    addMethods();
+    
+    if (TypeOracleImpl.findType("java.lang.Object") != null)
+    setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("java.lang.Object").isClassOrInterface());
+    
+    if (TypeOracleImpl.findType("java.lang.annotation.Annotation") != null)
+    addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType("java.lang.annotation.Annotation").isClassOrInterface());
+  }
+  
+  public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {
+    org.aspectj.lang.annotation.Before content = (org.aspectj.lang.annotation.Before)instance;
+    if (args == null){
+      args = new Object[]{};
+    }
+    if (methodName.equals("value")) {
+      checkInvokeParams(methodName, 0, args);
+      return (Object)content.value();
+    } else if (methodName.equals("argNames")) {
+      checkInvokeParams(methodName, 0, args);
+      return (Object)content.argNames();
+    } else return super.invoke(instance, methodName, args);
+  }
+  
+  
+  protected void addClassMeta(){
+    this.addMetaData("author", new String[]{"<a", "href=\"mailto:alex", "AT", "gnilux", "DOT", "com\">Alexandre", "Vasseur</a>"});
+  }
+  
+  protected void addAnnotations(){
+      {
+      List<Annotation> list = new ArrayList<Annotation>();
+      AnnotationStoreImpl store = null;
+      {
+      Map<String, String> values = new HashMap<String, String>();
+      values.put("value", "RUNTIME");
+      store = new AnnotationStoreImpl(java.lang.annotation.Retention.class, values);
+      }
+      list.add(store);
+      {
+      Map<String, String> values = new HashMap<String, String>();
+      values.put("value", "[METHOD]");
+      store = new AnnotationStoreImpl(java.lang.annotation.Target.class, values);
+      }
+      list.add(store);
+      this.addAnnotations(list);
+      }
+  }
+  
+  protected void addFields(){
+    FieldImpl field = null;
+  }
+  
+  protected void addMethods(){
+    MethodImpl method = null;
+    method = new MethodImpl(this, "value");
+    method.addModifierBits(32); 
+    method.setReturnTypeName("java.lang.String");
+    method.addMetaData("null", new String[]{});
+    
+    method = new MethodImpl(this, "argNames");
+    method.addModifierBits(32); 
+    method.setReturnTypeName("java.lang.String");
+    method.addMetaData("null", new String[]{});
+    
+  }
+}
+	
 
 
 }

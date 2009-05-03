@@ -60,6 +60,20 @@ public class ReflectionUtils {
       ReflectionUtils.reflectionRequired(clazz.getName(), "");
   }
   
+  /**
+   * Get value from annotation which named "methodName"
+   * i.e: Annotation(value="abc")
+   * 
+   * @param annotation annotation
+   * @param methodName "value"
+   * @return "abc"
+   */
+  public static Object getAnnotationValueByName(Annotation annotation, String methodName){
+  	ClassType type = TypeOracle.Instance.getClassType(annotation.annotationType());
+  	Method method = type.findMethod(methodName);
+  	return method.invoke(annotation);
+  }
+  
   
 	/**
 	 * Find annotation from array of annotations
@@ -67,11 +81,11 @@ public class ReflectionUtils {
 	 * @param clazz the class of annotation
 	 * @return the annotation which meet clazz
 	 */
-  public static AnnotationStore getAnnotation(AnnotationStore[] annos, Class<? extends Annotation>clazz){
+  public static <T extends Annotation> T getAnnotation(Annotation[] annos, Class<T>clazz){
     ClassType classType = TypeOracle.Instance.getClassType(clazz);
-    for (AnnotationStore anno : annos){
+    for (Annotation anno : annos){
       if (anno.annotationType().getName() == classType.getName())
-        return anno;
+        return (T) anno;
     }
     
     return null;
@@ -83,7 +97,7 @@ public class ReflectionUtils {
    * @param clazz the meta annotation
    * @return if store has annotated by meta annotation, return that annotation, otherwise, return null
    */
-  public static AnnotationStore getMetaAnnotation(AnnotationStore store, Class<? extends Annotation> clazz) {
+  public static <T extends Annotation>T getMetaAnnotation(Annotation store, Class<T> clazz) {
     ClassType annoClass = TypeOracle.Instance.getClassType(store.annotationType());
     if (annoClass != null){
       return ReflectionUtils.getAnnotation(annoClass.getAnnotations(), clazz);
@@ -100,7 +114,7 @@ public class ReflectionUtils {
   public static Field[] getAllFields(ClassType classType, Class<? extends Annotation> clazz){
   	List<Field> fields = new ArrayList<Field>();
   	for (Field field : classType.getFields()){
-  		AnnotationStore annotation = getAnnotation(field.getAnnotations(), clazz);
+  		Annotation annotation = getAnnotation(field.getAnnotations(), clazz);
   		if (annotation != null)
   			fields.add(field);
   	}
@@ -116,7 +130,7 @@ public class ReflectionUtils {
   public static Method[] getAllMethods(ClassType classType, Class<? extends Annotation> clazz){
   	List<Method> methods = new ArrayList<Method>();
   	for (Method method : classType.getMethods()){
-  		AnnotationStore annotation = getAnnotation(method.getAnnotations(), clazz);
+  		Annotation annotation = getAnnotation(method.getAnnotations(), clazz);
   		if (annotation != null)
   			methods.add(method);
   	}

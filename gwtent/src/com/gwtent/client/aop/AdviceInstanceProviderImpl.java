@@ -19,6 +19,7 @@
 
 package com.gwtent.client.aop;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +36,6 @@ import com.gwtent.client.aop.advice.AfterThrowingAdvice;
 import com.gwtent.client.aop.advice.AroundAdvice;
 import com.gwtent.client.aop.advice.BeforeAdvice;
 import com.gwtent.client.aop.intercept.MethodInterceptor;
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Method;
 
@@ -113,9 +113,9 @@ public class AdviceInstanceProviderImpl implements AdviceInstanceProvider {
 		Object result = singletonAspects.get(classType);
 		
 		if (result == null){
-			AnnotationStore annotation = classType.getAnnotation(Aspect.class);
+			Aspect annotation = classType.getAnnotation(Aspect.class);
 			if (annotation != null){
-				if ((annotation.getValue("value") == "") || ("singleton".equalsIgnoreCase(annotation.getValue("value").toString()))){
+				if ((annotation.value() == "") || ("singleton".equalsIgnoreCase(annotation.value().toString()))){
 					result = classType.findConstructor(new String[]{}).newInstance();
 					singletonAspects.put(classType, result);
 				}

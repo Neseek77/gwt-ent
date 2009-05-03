@@ -21,6 +21,10 @@ package com.gwtent.gen.reflection;
 
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -94,7 +98,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		for(JClassType type : types){
 			String className = type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
 			sourceWriter.indent();
-			sourceWriter.println("private class " + className + " extends com.gwtent.client.reflection.impl.ClassTypeImpl {");
+			sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.ClassTypeImpl {");
 			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle).createSource();
 			sourceWriter.outdent();
 			sourceWriter.println("}");
@@ -109,6 +113,13 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	private List<JClassType> getAllReflectionClasses() throws NotFoundException{
 		List<JClassType> types = new ArrayList<JClassType>();
+
+		//System annotations
+		addClassIfNotExists(types, typeOracle.getType(Retention.class.getCanonicalName()));
+		addClassIfNotExists(types, typeOracle.getType(Documented.class.getCanonicalName()));
+		addClassIfNotExists(types, typeOracle.getType(Inherited.class.getCanonicalName()));
+		addClassIfNotExists(types, typeOracle.getType(Target.class.getCanonicalName()));
+		addClassIfNotExists(types, typeOracle.getType(Deprecated.class.getCanonicalName()));
 		
 //		try {
 			JClassType reflectionClass = typeOracle.getType(Reflection.class.getCanonicalName());
@@ -174,7 +185,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	private void processAnnotation(List<JClassType> types, Annotation annotation){
 	  if (annotation.annotationType().getName().startsWith("java.lang.annotation")){
-	     return;  //Document's parent is itself? must check here
+	     return;  //Document's parent is itself, must check here
 	   }else{
 	     JClassType classType = this.typeOracle.findType(annotation.annotationType().getCanonicalName());
 	     addClassIfNotExists(types, classType);

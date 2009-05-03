@@ -19,8 +19,6 @@
 
 package com.gwtent.gen.aop;
 
-import java.lang.annotation.Annotation;
-
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -29,7 +27,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
 import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.gwtent.client.reflection.AnnotationStore;
 
 public class AOPUtils {
 

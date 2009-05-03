@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.NotFoundException;
@@ -114,11 +113,11 @@ public class PackageImpl implements HasAnnotations, Package {
 	  }
 	  
 	  public void addAnnotations(
-	      List<AnnotationStore> annotations) {
+	      List<Annotation> annotations) {
 	    this.annotations.addAnnotations(annotations);
 	  }
 	  
-	  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+	  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 	    return annotations.getAnnotation(annotationClass);
 	  }
 	  
@@ -129,14 +128,14 @@ public class PackageImpl implements HasAnnotations, Package {
 	  /**
 	   * NOTE: This method is for testing purposes only.
 	   */
-	  public AnnotationStore[] getAnnotations() {
+	  public Annotation[] getAnnotations() {
 	    return annotations.getAnnotations();
 	  }
 
 	  /**
 	   * NOTE: This method is for testing purposes only.
 	   */
-	  AnnotationStore[] getDeclaredAnnotations() {
+	  Annotation[] getDeclaredAnnotations() {
 	    return annotations.getDeclaredAnnotations();
 	  }
 }

@@ -22,10 +22,8 @@ package com.gwtent.client.reflection.impl;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.gwtent.client.reflection.AccessDef;
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
@@ -143,7 +141,7 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 		this.typeName = typeName;
 	}
 	
-  public <T extends Annotation> AnnotationStore getAnnotation(Class<T> annotationClass) {
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
     return annotations.getAnnotation(annotationClass);
   }
   
@@ -154,19 +152,19 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
   /**
    * NOTE: This method is for testing purposes only.
    */
-  public AnnotationStore[] getAnnotations() {
+  public Annotation[] getAnnotations() {
     return annotations.getAnnotations();
   }
 
   /**
    * NOTE: This method is for testing purposes only.
    */
-  AnnotationStore[] getDeclaredAnnotations() {
+  Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
 
   public void addAnnotations(
-      List<AnnotationStore> annotations) {
+      List<Annotation> annotations) {
     this.annotations.addAnnotations(annotations);
   }
 
