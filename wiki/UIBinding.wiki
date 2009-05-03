@@ -1,5 +1,5 @@
 #labels Featured,UIBinding
-#UIBinding framework from gwt-ent
+UIBinding framework from gwt-ent
 
 = Introduction =
 
@@ -10,6 +10,17 @@ to use it.
   # Annotation with HTML Template
   # Intergrate by Code
 
+= Registe UI Bind =
+  Before you can use ui binding, please registe your ui binder first, depends on which kind of UI library you are using, you need registe or create UI binder by your self.
+  GWT-ENT provider GWT and GXT editor UI Binders.
+  {{{
+  GWTUIBinderRegister.register();   //if you are using GWT UI stuff
+  GxtUIBinderRegister.register();   //if you are using GXT framework
+  }}}
+
+  You can register both or more.
+
+  You can get more information about create UI Binders of your UI stuff in this document.
 
 = The easier way, Annotation with HTML Template =
 
