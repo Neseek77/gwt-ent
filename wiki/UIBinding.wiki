@@ -1,0 +1,57 @@
+#labels Featured,UIBinding
+#UIBinding framework from gwt-ent
+
+= Introduction =
+
+GWT-ENT offer a easy to use UI Binding framework for GWT users.
+It's based on GWT-ENT reflection implement, and provide two way 
+to use it.
+
+  # Annotation with HTML Template
+  # Intergrate by Code
+
+
+= The easier way, Annotation with HTML Template =
+
+  HTML Template introduce a new Annotation "UIBind".
+  {{{
+  @HTMLWidget
+  @UIBind(path="testModel.firstName")
+  protected TextBox txtFirstName = new TextBox();
+  }}}
+  This is mean widget TextBox named txtFirstName will bind to testModel.firstName.
+
+  UIBind support variable binding as well.
+  {{{
+  @HTMLWidget
+  @UIBind(path="varToBind")
+  protected TextBox txtBindToVariable = new TextBox();
+  }}}
+
+= Integrate UIBind via code =
+  
+  {{{
+    UIBinderManager uiBinderManager = new UIBinderManager();
+
+    uiBinderManager.addBinder(txtBindToVariable, "", false, String.class,
+        new ModelRootAccessor(){
+
+          public Object getValue() {
+            return varToBind;
+          }
+
+          public void setValue(Object value) {
+            varToBind = (String)value;
+          }});
+    
+    uiBinderManager.addBinder(txtFirstName, "firstName", false, TestModel.class,
+        new ModelRootAccessor(){
+
+          public Object getValue() {
+            return testModel;
+          }
+
+          public void setValue(Object value) {
+            //
+          }});
+  }}}
