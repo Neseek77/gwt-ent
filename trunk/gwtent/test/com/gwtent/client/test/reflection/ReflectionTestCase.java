@@ -28,10 +28,7 @@ import java.util.Set;
 import javax.validation.ConstraintValidator;
 import javax.validation.NotNull;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-
-import com.gwtent.client.reflection.AnnotationStore;
 import com.gwtent.client.reflection.AnnotationStoreImpl;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
@@ -39,7 +36,6 @@ import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.reflection.impl.ClassTypeImpl;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.client.test.annotations.Id;
 import com.gwtent.client.test.annotations.Table;
@@ -125,8 +121,8 @@ public class ReflectionTestCase extends GWTTestCase {
     ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
     //Class Annotations
     assertNotNull(classType.getAnnotation(Entity.class));
-    assertTrue(classType.getAnnotation(Entity.class).getValue("name").equals("TestReflection"));
-    assertTrue(classType.getAnnotation(Table.class).getValue("name").equals("Table_Test"));
+    assertTrue(classType.getAnnotation(Entity.class).name().equals("TestReflection"));
+    assertTrue(classType.getAnnotation(Table.class).name().equals("Table_Test"));
     
     //Method Annotations
     assertNotNull(classType.findMethod("getId", new String[]{}).getAnnotation(Id.class));
@@ -140,16 +136,16 @@ public class ReflectionTestCase extends GWTTestCase {
     classType = TypeOracle.Instance.getClassType(NotNull.class);
     assertNotNull(classType);
     
-    AnnotationStore[] annos = classType.getAnnotations();
-    AnnotationStore storeConstraintValidator = getAnnotation(annos, ConstraintValidator.class);
+    Annotation[] annos = classType.getAnnotations();
+    Annotation storeConstraintValidator = getAnnotation(annos, ConstraintValidator.class);
     assertNotNull(storeConstraintValidator);
     
     
   }
   
-  private AnnotationStore getAnnotation(AnnotationStore[] annos, Class<? extends Annotation>clazz){
+  private Annotation getAnnotation(Annotation[] annos, Class<? extends Annotation>clazz){
     ClassType classType = TypeOracle.Instance.getClassType(clazz);
-    for (AnnotationStore anno : annos){
+    for (Annotation anno : annos){
       if (anno.annotationType().getName() == classType.getName())
         return anno;
     }
