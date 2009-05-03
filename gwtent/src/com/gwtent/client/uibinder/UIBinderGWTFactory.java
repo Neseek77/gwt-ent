@@ -103,7 +103,6 @@ public class UIBinderGWTFactory {
    * override this function to register more functions
    */
   protected void registeBinders(){
-    getUIBinderGWTRegister().register(new TextBoxBinder.SupportedEditors());
-    getUIBinderGWTRegister().register(new RichTextAreaBinder.BinderMetaData());
+    
   }
 }
