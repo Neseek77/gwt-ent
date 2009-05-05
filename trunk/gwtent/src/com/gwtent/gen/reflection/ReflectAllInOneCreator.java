@@ -147,6 +147,18 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	}
 	
 	private void processRelationClasses(List<JClassType> types, JClassType classType){
+		if (classType == null)	
+			return;
+		
+		if (classType.isParameterized() != null || 
+				classType.isRawType() != null || 
+				classType.isWildcard() != null || 
+				classType.isTypeParameter() != null)
+			return;
+		
+		if (types.indexOf(classType) >= 0)
+			return;
+		
 		if (classType.getSuperclass() != null){
 			processRelationClasses(types, classType.getSuperclass());
 			processAnnotationClasses(types, classType.getSuperclass());
@@ -154,19 +166,27 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		}
 		
 		for (JClassType type : classType.getImplementedInterfaces()){
+			processRelationClasses(types, type);
 		  processAnnotationClasses(types, type);
 		  addClassIfNotExists(types, type);
 		}
 		
 		for (JField field : classType.getFields()) {
 		  processAnnotationClasses(types, field);
-		  addClassIfNotExists(types, field.getType().isClassOrInterface());
+		  
+		  if (field.getType().isClassOrInterface() != null)
+		  	addClassIfNotExists(types, field.getType().isClassOrInterface());
+				processRelationClasses(types, field.getType().isClassOrInterface());
 		}
 		
 		for (JMethod method : classType.getMethods()){
-			if (method.getReturnType() != null)
-			  processAnnotationClasses(types, method);
+			processAnnotationClasses(types, method);
+			
+			if (method.getReturnType() != null && method.getReturnType().isClassOrInterface() != null){
 			  addClassIfNotExists(types, method.getReturnType().isClassOrInterface());
+			  
+			  processRelationClasses(types, method.getReturnType().isClassOrInterface());
+			}
 			  
 			
 			//TODO How about parameters?
