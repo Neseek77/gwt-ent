@@ -24,11 +24,33 @@ import java.util.List;
 
 public interface ClassType extends HasAnnotations, HasMetaData {
 
+	/**
+	 * Find Field
+	 * if not found in current class
+	 * will try find it in parent class
+	 * @param name
+	 * @return
+	 */
 	public Field findField(String name);
 
+	/**
+	 * Find method
+	 * If not found in current class
+	 * will try to find it in parent class
+	 * 
+	 * @param name
+	 * @param paramTypes
+	 * @return
+	 */
 	public Method findMethod(String name, Type[] paramTypes);
 
 	//public Method findMethod(String name, String[] paramTypes);
+	
+	/**
+	 * Find method
+	 * If not found in current class
+	 * will try to find it in parent class
+	 */
 	public Method findMethod(String name, String... paramTypes);
 	
 	/**
@@ -52,6 +74,10 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 	 */
 	public Field getField(String name);
 
+	/**
+	 * The Fields in current Class
+	 * @return
+	 */
 	public Field[] getFields();
 
 	public ClassType[] getImplementedInterfaces();
