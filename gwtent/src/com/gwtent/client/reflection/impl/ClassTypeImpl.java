@@ -171,23 +171,32 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	 * @see com.gwtent.client.reflection.ClassType#findField(java.lang.String)
 	 */
 	public FieldImpl findField(String name) {
-		return (FieldImpl) fields.get(name);
+		FieldImpl field = (FieldImpl) fields.get(name);
+		if (field == null && this.getSuperclass() != null)
+		  field = this.getSuperclass().findField(name);
+		
+		return field; 
 	}
 
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.ClassType#findMethod(java.lang.String, com.gwtent.client.reflection.Type[])
 	 */
 	public MethodImpl findMethod(String name, Type[] paramTypes) {
+		MethodImpl method = null;
 	  if (paramTypes == null)
 	    paramTypes = new Type[] {};
 		MethodImpl[] overloads = getOverloads(name);
 		for (int i = 0; i < overloads.length; i++) {
 			MethodImpl candidate = overloads[i];
 			if (candidate.hasParamTypes(paramTypes)) {
-				return candidate;
+				method = candidate;
 			}
 		}
-		return null;
+		
+		if (method == null && this.getSuperclass() != null)
+			method = this.getSuperclass().findMethod(name, paramTypes);
+		
+		return method;
 	}
 	
 	/* (non-Javadoc)
