@@ -57,6 +57,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	private List<String> allGeneratedClassNames = new ArrayList<String>();
 	private List<JClassType> allReflectionClasses = null;
+	
+	private Set<JClassType> relationClassesProcessed = new HashSet<JClassType>();
 
 	public ReflectAllInOneCreator(TreeLogger logger, GeneratorContext context,
 			String typeName) {
@@ -156,7 +158,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 				classType.isTypeParameter() != null)
 			return;
 		
-		if (types.indexOf(classType) >= 0)
+		if (relationClassesProcessed.contains(classType))
 			return;
 		
 		if (classType.getSuperclass() != null){
@@ -171,21 +173,30 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		  addClassIfNotExists(types, type);
 		}
 		
+		relationClassesProcessed.add(classType);
+		
 		for (JField field : classType.getFields()) {
 		  processAnnotationClasses(types, field);
 		  
-		  if (field.getType().isClassOrInterface() != null)
-		  	addClassIfNotExists(types, field.getType().isClassOrInterface());
-				processRelationClasses(types, field.getType().isClassOrInterface());
+		  JClassType type = field.getType().isClassOrInterface();
+		  if (type != null)
+		  	if (! type.isAssignableTo(classType))  //some times, it's itself of devided class
+  		  	processRelationClasses(types, type);
+		  
+		  	addClassIfNotExists(types, type);
 		}
 		
 		for (JMethod method : classType.getMethods()){
 			processAnnotationClasses(types, method);
 			
+			JClassType type = null;
 			if (method.getReturnType() != null && method.getReturnType().isClassOrInterface() != null){
+				type = method.getReturnType().isClassOrInterface();
+				
+				if (! type.isAssignableTo(classType))
+					processRelationClasses(types, method.getReturnType().isClassOrInterface());
+				
 			  addClassIfNotExists(types, method.getReturnType().isClassOrInterface());
-			  
-			  processRelationClasses(types, method.getReturnType().isClassOrInterface());
 			}
 			  
 			
