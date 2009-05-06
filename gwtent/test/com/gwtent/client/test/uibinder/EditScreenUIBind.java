@@ -5,6 +5,7 @@ import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.client.template.UIBind;
+import com.gwtent.client.uibinder.GWTUIBinderRegister;
 import com.gwtent.client.uibinder.ModelRootAccessor;
 import com.gwtent.client.uibinder.UIBinderGWTFactory;
 import com.gwtent.client.uibinder.UIBinderManager;
@@ -19,6 +20,7 @@ public class EditScreenUIBind extends HTMLTemplatePanel {
   public EditScreenUIBind(String html) {
     super(html);
     
+    GWTUIBinderRegister.register();
 //    uiBinderManager.addBinder(txtFirstName, "firstName", false, TestModel.class);
     
     testModel = new TestModel();
