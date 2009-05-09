@@ -7,7 +7,7 @@ import com.google.gwt.validation.client.NotEmpty;
 import com.google.gwt.validation.client.NotNull;
 import com.google.gwt.validation.client.interfaces.IValidatable;
 
-@GroupSequence(name="default", sequence={"minimal","full","extended"})
+@GroupSequence({Minimal.class, Full.class, Extended.class})
 public class Person implements IValidatable {
   
   @NotNull(groups={"minimal","full"})
