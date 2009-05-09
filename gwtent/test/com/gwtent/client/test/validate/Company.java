@@ -8,7 +8,7 @@ import javax.validation.NotNull;
 import com.gwtent.client.validate.Validatable;
 
 @Validatable
-@GroupSequence(name="default", sequence={"minimal","full","extended"})
+@GroupSequence({Minimal.class, Full.class, Extended.class})
 public class Company {
   
   @NotNull(groups={"minimal","full"})
