@@ -256,7 +256,9 @@ public class TemplateCreator extends LogableSourceCreator {
             // repeat until all lines is read
             while ((text = reader.readLine()) != null)
             {
-              text = text.replace("\"", "\\\"");
+              text = text.replace("\\", "\\\\");
+            	text = text.replace("\"", "\\\"");
+              
               
               if (contents.length() > 0){
                 contents.append("+");
