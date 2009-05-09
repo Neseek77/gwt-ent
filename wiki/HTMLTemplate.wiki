@@ -80,7 +80,43 @@ link
 
 = Two way communication =
 
+  == Functions supported in HTML ==
 
+  === setProperty ===
+  # ID.setProperty("PropertyName", Value)
+  # ID.setProperty("PropertyName", Value1, Value2)
+  
+  The the property value of ID(widget)
+  The function will convert to code invoke, i.e:
+  {{{${btn.setProperty("Text", "SetFromHTML")}}}}
+  Will be convert to:
+  {{{btn.setText("SetFromHTML")}}}
+  There is no validate so far, so if you got compile error of generated code, please check the functions you made.
+
+  === CSS or css ===
+  # ID.CSS("CSSName")
+  # ID.css("CSSName")
+  Set the css style of the widget.
+  i.e:
+  {{{${btn.css("css_btn")}}}}
+  Will be convert to:
+  {{{btn.addStyleName("css_btn")}}}
+
+  === Text or text ===
+  #ID.Text("TextValue")
+  #ID.text("TextValue")
+  Set the text property to widget, this is equel to ID.setProperty("Text", "TextValue")
+
+  === Width or width ===
+  #ID.Width(WidthValue)
+  #ID.Width(WidthValue)
+  Set the width property of widget, this is equel to ID.setProperty("Width", WidthValue)
+  WidthValue can be a String (i.e:"100%") or a Number(i.e: 800)
+
+  === Height or height ===
+  #ID.Height(HeightValue)
+  #ID.height(HeightValue)
+  Set the Height property of widget, this is equel to ID.setProperty("Height", HeightValue)
 
 = Annotations =
 {{{
