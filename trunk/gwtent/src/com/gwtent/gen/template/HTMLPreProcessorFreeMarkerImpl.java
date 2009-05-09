@@ -106,7 +106,36 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 		  
 		  return "";
 		}
+		
+		public String CSS(String css){
+		  return css(css);
+		}
+		
+		public String text(String text){
+			return this.setProperty("Text", text);
+		}
+		
+		public String Text(String text){
+			return text(text);
+		}
 
+		public String Width(Object value){
+			return this.setProperty("Width", value);
+		}
+		
+		public String width(Object value){
+			return this.setProperty("Width", value);
+		}
+		
+		public String Height(Object value){
+			return this.setProperty("Height", value);
+		}
+		
+		public String height(Object value){
+			return this.setProperty("Height", value);
+		}
+		
+		
 		public String getId() {
 			return id;
 		}
