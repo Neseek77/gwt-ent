@@ -66,3 +66,12 @@ to use it.
             //
           }});
   }}}
+
+= Tips =
+
+  === Using function call to reduce length of path ===
+  {{{
+  @UIBind(path="getSomething().abc")
+
+  For now just support function call with out parameters
+  }}}
