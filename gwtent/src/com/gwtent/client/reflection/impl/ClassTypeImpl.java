@@ -34,6 +34,7 @@ import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.ArrayType;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
+import com.gwtent.client.reflection.EnumType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
@@ -745,5 +746,9 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
   public Class<?> getDeclaringClass() {
     return declaringClass;
   }
+
+	public EnumType isEnum() {
+		return null;
+	}
 
 }

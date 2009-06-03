@@ -5,11 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.gwtent.client.reflection.Reflectionable;
+import com.gwtent.client.reflection.Reflectable;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Reflectionable
+@Reflectable
 public @interface Validatable {
 
 }

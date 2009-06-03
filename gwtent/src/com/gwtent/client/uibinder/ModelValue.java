@@ -37,6 +37,13 @@ public interface ModelValue<T> {
 	
 	public UIBinderValidator getValidator();
 	
+	/**
+	 * The Class of last level
+	 * i.e: a.b.c.d, this is the class of d
+	 * @return
+	 */
+	public Class<?> getValueClass();
+	
 	public T getValue();
 	public void setValue(T value);
 	

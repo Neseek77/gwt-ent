@@ -13,22 +13,21 @@ public class ModelValueGWTImpl extends ModelValueImpl implements ModelValue<Obje
 
   final Field field;
   final Method method;
-  private final Class<?> root;
+  
   final String fullPath;
 //ClassType of the root
   private final ClassType instanceClassType;
   
   
-  public ModelValueGWTImpl(Class<?> root, String fullPath, boolean readOnly, ModelRootAccessor rootAccessor){
-    super(readOnly, rootAccessor);
+  public ModelValueGWTImpl(Class<?> rootClass, String fullPath, boolean readOnly, ModelRootAccessor rootAccessor){
+    super(rootClass, readOnly, rootAccessor);
     
-    this.root = root;
     this.fullPath = fullPath;
     this.readOnly = readOnly;
     
-    instanceClassType = TypeOracle.Instance.getClassType(root);
+    instanceClassType = TypeOracle.Instance.getClassType(rootClass);
     
-    ClassType lastLevelClassType = PathResolver.getLastClassTypeByPath(root, fullPath);
+    ClassType lastLevelClassType = PathResolver.getLastClassTypeByPath(rootClass, fullPath);
     
     String lastPath = PathResolver.getLastElementByPath(fullPath);
     
@@ -74,5 +73,14 @@ public class ModelValueGWTImpl extends ModelValueImpl implements ModelValue<Obje
       }
     }
   }
+
+	public Class<?> getValueClass() {
+		if (field != null)
+			return ((ClassType)field.getType()).getDeclaringClass();
+		else if (method != null)
+			return ((ClassType)method.getReturnType()).getDeclaringClass();
+		
+		return null;
+	}
 
 }

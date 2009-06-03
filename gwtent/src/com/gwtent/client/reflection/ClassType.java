@@ -21,6 +21,8 @@ package com.gwtent.client.reflection;
 
 import java.util.List;
 
+import com.google.gwt.core.ext.typeinfo.JEnumType;
+
 
 public interface ClassType extends HasAnnotations, HasMetaData {
 
@@ -105,6 +107,8 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 
 	public ClassType getSuperclass();
 	public Class<?> getDeclaringClass();
+	
+	public EnumType isEnum();
 	
 	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException;
 

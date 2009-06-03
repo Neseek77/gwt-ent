@@ -66,7 +66,7 @@ public class UIBinderGWTFactory {
   
   public static ModelValue getModelValue(Class<?> root, String path, boolean readOnly, ModelRootAccessor valueAccessor){
     if (path == null || path.length() <= 0)
-      return new ModelValueImpl(readOnly, valueAccessor);
+      return new ModelValueImpl(root, readOnly, valueAccessor);
     else
       return new ModelValueGWTImpl(root, path, readOnly, valueAccessor);
   }
