@@ -7,21 +7,21 @@ import java.lang.annotation.Target;
 
 import org.aspectj.lang.annotation.Aspect;
 
-import com.gwtent.client.reflection.Reflectionable;
+import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.gen.GenUtils;
 
 import junit.framework.TestCase;
 
 public class TestGenUtils extends TestCase {
 
-  @Reflectionable
+  @Reflectable
   public class A {
     
   }
   
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.TYPE)
-  @Reflectionable
+  @Reflectable
   public @interface MyReflectionable {
 
   }
@@ -33,11 +33,11 @@ public class TestGenUtils extends TestCase {
   }
   
   public void testGetClassTypeAnnotationWithMataAnnotation(){
-    Reflectionable result = GenUtils.getAnnotationFromAnnotation(B.class.getAnnotation(MyReflectionable.class), Reflectionable.class);
+    Reflectable result = GenUtils.getAnnotationFromAnnotation(B.class.getAnnotation(MyReflectionable.class), Reflectable.class);
     
     assertTrue(result != null);
     
-    result = GenUtils.getAnnotationFromAnnotation(B.class.getAnnotation(Aspect.class), Reflectionable.class);
+    result = GenUtils.getAnnotationFromAnnotation(B.class.getAnnotation(Aspect.class), Reflectable.class);
     assertTrue(result == null);
   }
   
