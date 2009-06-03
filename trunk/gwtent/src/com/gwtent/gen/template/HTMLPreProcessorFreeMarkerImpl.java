@@ -203,7 +203,7 @@ public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 		Writer out = new StringWriter();
 		try {
 			temp.process(hashMapFromStringList(getVariable(template)), out);
-		} catch (TemplateException e) {
+		} catch (Exception e) {
 			new CheckedExceptionWrapper(e.getMessage(), e);
 		}
     out.flush(); 

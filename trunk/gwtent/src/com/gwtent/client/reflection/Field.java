@@ -19,6 +19,7 @@
 
 package com.gwtent.client.reflection;
 
+
 public interface Field extends HasMetaData, AccessDef, HasAnnotations {
 
 	public ClassType getEnclosingType();
@@ -46,5 +47,7 @@ public interface Field extends HasMetaData, AccessDef, HasAnnotations {
 	 * @param value
 	 */
 	public void setFieldValue(Object instance, Object value);
+	
+	public EnumConstant isEnumConstant();
 
 }

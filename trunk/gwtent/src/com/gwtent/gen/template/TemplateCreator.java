@@ -241,8 +241,8 @@ public class TemplateCreator extends LogableSourceCreator {
 		  	
 		  	try {
 					this.htmlProcessor.process(source, classType, template);
-				} catch (IOException e1) {
-					throw new RuntimeException(e1.toString(), e1);
+				} catch (Exception e1) {
+					throw new CheckedExceptionWrapper(e1.toString(), e1);
 				}
 		  	
 		    StringBuffer contents = new StringBuffer();
@@ -337,9 +337,13 @@ public class TemplateCreator extends LogableSourceCreator {
     source.outdent();
     source.println("}");
 	}
-		
+	
 	private String findClassTypeByPath(JClassType classType, String path){
 	  String firstPath = PathResolver.getFirstElementByPath(path);
+	  
+	  if (firstPath.endsWith("()")){
+	  	firstPath = firstPath.substring(0, firstPath.length() - 2);
+	  }
 	  
 	  if (GenUtils.findField(classType, firstPath) != null)
 	    return GenUtils.findField(classType, firstPath).getType().getQualifiedSourceName();

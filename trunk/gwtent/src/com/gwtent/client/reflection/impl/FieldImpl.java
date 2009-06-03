@@ -25,11 +25,13 @@ import java.util.List;
 
 import com.gwtent.client.reflection.AccessDef;
 import com.gwtent.client.reflection.ClassType;
+import com.gwtent.client.reflection.EnumConstant;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Type;
+import com.gwtent.client.reflection.TypeOracle;
 
 
 public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
@@ -81,6 +83,9 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 	 */
 	public Type getType() {
 //	    assert (type != null);
+		if (type == null)
+			return TypeOracle.Instance.getType(this.getTypeName());
+		else
 	    return type;
 	  }
 
@@ -211,5 +216,9 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 		}else{
 			throw new RuntimeException("Can not found setter of field (" + getName() + ").");
 		}
+	}
+
+	public EnumConstant isEnumConstant() {
+		return null;
 	}
 }

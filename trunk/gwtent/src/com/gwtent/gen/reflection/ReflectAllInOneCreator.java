@@ -46,7 +46,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.reflection.Reflectionable;
+import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
@@ -100,7 +100,11 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		for(JClassType type : types){
 			String className = type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
 			sourceWriter.indent();
-			sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.ClassTypeImpl {");
+			if (type.isEnum() == null)
+				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.ClassTypeImpl {");
+			else
+				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.EnumTypeImpl {");
+
 			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle).createSource();
 			sourceWriter.outdent();
 			sourceWriter.println("}");
@@ -129,7 +133,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			for (JClassType classType : typeOracle.getTypes()) {
 			  //|| (classType.getAnnotation(Aspect.class) != null)
 				if ((classType.isAssignableTo(reflectionClass)) || (classType.isAssignableTo(constraintClass))
-				    || (GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectionable.class) != null)
+				    || (GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectable.class) != null)
 				    //|| classType.getQualifiedSourceName().startsWith("java.lang")
 				    //|| classType.getQualifiedSourceName().startsWith("java.util")
 				    ){

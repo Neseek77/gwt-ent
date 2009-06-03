@@ -1,7 +1,13 @@
 package com.gwtent.client.uibinder;
 
 
-
+/**
+ * 
+ * @author JamesLuo@gmail.com
+ *
+ * @param <T> the editor type
+ * @param <D> the data type which editor supposed
+ */
 public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 
   public abstract static class BinderMetaData implements IBinderMetaData{
@@ -31,7 +37,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     
     value.addValueChangedListener(new ValueChangedListener());
     
-    doValueChanged();
+    //doValueChanged();
   }
   
   protected void doValueChanged(){

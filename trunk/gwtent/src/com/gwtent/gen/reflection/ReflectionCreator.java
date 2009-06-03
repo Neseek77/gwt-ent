@@ -300,8 +300,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField field = fields[i];
-				source.println("field = new FieldImpl(this, \"" + field.getName()
-						+ "\");");
+				if (field.isEnumConstant() == null)
+					source.println("field = new FieldImpl(this, \"" + field.getName()	+ "\");");
+				else
+					source.println("field = new EnumConstantImpl(this, \"" + field.getName()	+ "\", " + field.isEnumConstant().getOrdinal() + ");");
+				
 				source.println("field.addModifierBits("
 						+ GeneratorHelper.AccessDefToInt(field) + "); ");
 				source.println("field.setTypeName(\""
@@ -665,7 +668,12 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
-		composer.setSuperclass("com.gwtent.client.reflection.impl.ClassTypeImpl");
+		if (classType.isEnum() == null)
+			composer.setSuperclass("com.gwtent.client.reflection.impl.ClassTypeImpl");
+		else
+			composer.setSuperclass("com.gwtent.client.reflection.impl.EnumTypeImpl");
+		
+			
 		// composer.addImplementedInterface(
 		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport("com.gwtent.client.*");

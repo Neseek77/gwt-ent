@@ -2,7 +2,7 @@ package com.gwtent.client.uibinder;
 
 /**
  * 
- * @author JLuo
+ * @author JamesLuo@gmail.com
  *
  * @param <T> the editor type
  * @param <D> the data type which editor supposed

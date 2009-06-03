@@ -19,11 +19,13 @@ import com.gwtent.client.uibinder.UIBinderValidator;
  */
 public class ModelValueImpl implements ModelValue<Object> {
 
-  public ModelValueImpl(boolean readOnly, ModelRootAccessor rootAccessor){
+  public ModelValueImpl(Class<?> rootClass, boolean readOnly, ModelRootAccessor rootAccessor){
+  	this.rootClass = rootClass;
     this.readOnly = readOnly;
     this.rootAccessor = rootAccessor;
   }
   
+  private final Class<?> rootClass;
   protected ModelRootAccessor rootAccessor;
   protected boolean readOnly;
   private Set<IValueChangedListener> listeners = new HashSet<IValueChangedListener>();
@@ -70,4 +72,8 @@ public class ModelValueImpl implements ModelValue<Object> {
   public void removeValueChangedListener(IValueChangedListener listener) {
     listeners.remove(listener);
   }
+
+	public Class<?> getValueClass() {
+		return rootClass;
+	}
 }
