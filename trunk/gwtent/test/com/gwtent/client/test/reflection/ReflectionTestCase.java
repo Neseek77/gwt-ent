@@ -244,4 +244,17 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertTrue(type1.getName().equals(c.getName()));
   }
   
+  public void testEnum(){
+  	ClassType classType = TypeOracle.Instance.getClassType(Sex.class);
+  	assertTrue(classType.isEnum() != null);
+  	assertTrue(classType.isEnum().getEnumConstants().length == 2);
+  	assertTrue(classType.isEnum().getEnumConstants()[0].getOrdinal() == Sex.FEMALE.ordinal());
+  	assertTrue(classType.isEnum().getEnumConstants()[0].getName() == Sex.FEMALE.name());
+  	assertTrue(classType.isEnum().getEnumConstants()[1].getOrdinal() == Sex.MALE.ordinal());
+  	assertTrue(classType.isEnum().getEnumConstants()[1].getName() == Sex.MALE.name());
+
+  	Object code = classType.getField("name").getFieldValue(Sex.FEMALE);
+  	assertTrue(Sex.FEMALE.getName().equals(code.toString()));
+  }
+  
 }

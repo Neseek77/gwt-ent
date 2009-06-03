@@ -1,14 +1,7 @@
 package com.gwtent.client.test.uibinder;
 
-import java.util.Set;
-
-import javax.validation.InvalidConstraint;
-import javax.validation.Validator;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.validation.client.interfaces.IValidator;
 import com.gwtent.client.test.GwtEntTestCase;
-import com.gwtent.client.validate.impl.ValidatorGWT;
 
 public class UIBinderTestCase extends GwtEntTestCase{
 

@@ -5,18 +5,13 @@ import java.util.Set;
 import javax.validation.InvalidConstraint;
 import javax.validation.Validator;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.validation.client.interfaces.IValidator;
 import com.gwtent.client.test.GwtEntTestCase;
 import com.gwtent.client.validate.impl.ValidatorGWT;
 
 public class ValidateTestCase extends GwtEntTestCase{
 
   public void testValidate(){
-    IValidator<Person> validator = GWT.create(Person.class);
-    Person person = new Person();
-    validator.validateProperty(person, "firstName", "a");
-    validator.validate(person);
+
   }
   
   public void testValidateGWT(){
