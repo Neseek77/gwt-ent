@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * The HTMLEvent
- * The event handler should looks like this:
+ * The event handler should looks like the following:
  * public void onButton1ClickEvent(Event event);
  * public void onButton1ClickEvent();
  * 
@@ -18,10 +18,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface HTMLEvent {
   /**
-   * The DOM ID of this event service to
+   * The DOM ID list of this event service to
    * TODO: Guess DOM ID from event handle name
    */
-  String value();
+  String[] value();
+  
   
   /**
    * Event type, default ONCLICK

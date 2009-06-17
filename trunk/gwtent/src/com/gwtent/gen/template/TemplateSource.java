@@ -58,6 +58,10 @@ public class TemplateSource extends HTMLTemplatePanel {
           public void setValue(Object value) {
             //
           }});
+    
+    //....
+    
+    doAfterBinderAllEditors();
   }
   
   private void _CodeFromHTML(){

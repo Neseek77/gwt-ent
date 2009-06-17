@@ -77,7 +77,7 @@ public class PagingPanel extends Grid{
 	
 	private int pageSize = 20;
 	private int totalRecords;
-	private int displayPages;
+	private int displayPages = 10;
 	
 	private int currentPageIndex;
 	
@@ -130,6 +130,9 @@ public class PagingPanel extends Grid{
 	 * @param displayPages
 	 */
 	public void setDisplayPages(int displayPages) {
+		if (displayPages < 5)
+			throw new RuntimeException("Display pages must more the 5 pages.");
+		
 		this.displayPages = displayPages;
 	}
 
@@ -157,6 +160,52 @@ public class PagingPanel extends Grid{
 		this.resizeRows(0);
 	}
 	
+	private enum CurrentIndexPosition {
+		FirstSeg, SecSeg, LastSeg;
+		
+		//FirstSeg     XXXXXX...XXX
+		//SecSeg       XXX...XXX...XX
+		//LastSeg      XXX...XXXXXX
+	} 
+	
+	private void updatePageLinks(){
+//		int pageLinkCount = getPages();
+//		if (pageLinkCount > this.displayPages){
+//			pageLinkCount = this.displayPages;
+//			
+//			int subSegement = this.displayPages / 3; //每一段有多长
+//			CurrentIndexPosition pos = CurrentIndexPosition.FirstSeg;
+//			if (currentPageIndex <= subSegement * 2)  //10 page, 1-6 just show first and last segement
+//				pos = CurrentIndexPosition.FirstSeg;
+//			if (currentPageIndex > displayPages - subSegement * 2)
+//				pos = CurrentIndexPosition.LastSeg;
+//			else
+//				pos = CurrentIndexPosition.SecSeg;
+//				
+//			
+//			if (pos == CurrentIndexPosition.FirstSeg){
+//				for (int i = 0; i < subSegement * 2; i++){
+//					createPageLink(i);
+//				}
+//			}
+//			
+//		}else{
+			this.resize(1, getPages());
+			
+			for (int i = 0; i < getPages(); i++){
+				createPageLink(i);
+			}
+//		}
+	}
+
+	/**
+	 * 
+	 * @param index which index we are creating
+	 */
+	private void createPageLink(int index) {
+		this.setWidget(0, index, new PagingLink(pageSize * index, pageSize, index, pagingClickListenerImpl));
+	}
+	
 	private void sizeChanged(){
 		clearElements();
 		
@@ -167,11 +216,7 @@ public class PagingPanel extends Grid{
 			return;
 		
 		if (this.totalRecords > 0){
-			this.resize(1, getPages());
-			
-			for (int i = 0; i < getPages(); i++){
-				this.setWidget(0, i, new PagingLink(pageSize * i, pageSize, i, pagingClickListenerImpl));
-			}
+			updatePageLinks();
 		}
 	}
 	

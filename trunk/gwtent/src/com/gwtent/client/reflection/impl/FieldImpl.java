@@ -30,6 +30,7 @@ import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
+import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 
@@ -174,7 +175,7 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
   }
 
 	public Object getFieldValue(Object instance) {
-		Method getter = this.getEnclosingType().findMethod(getGetterName(), new String[]{});
+		Method getter = ReflectionUtils.getGetter(this.getEnclosingType(), this.getName());
 		if (getter != null){
 			return getter.invoke(instance, new Object[]{});
 		}else{
@@ -182,33 +183,10 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 		}
 	}
 	
-	public String getGetterName(){
-		return "get" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
-	}
-	
-	public String getSetterName(){
-	  return "set" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
-	}
-
 	private Method setter = null;
 	public void setFieldValue(Object instance, Object value) {
 	  if (setter == null){
-	  	String setterName = getSetterName();
-	  	if (value != null){
-	  		String typeName = value.getClass().getName();
-		    setter = this.getEnclosingType().findMethod(setterName, new String[]{typeName});
-	  	}
-	    
-	    if (setter == null){
-	      List<Method> methods = new ArrayList<Method>();
-	      for (Method method : getEnclosingType().getMethods()){
-	        if ((method.getName().equals(setterName)) && (method.getParameters().length == 1)){
-	          methods.add(method);
-	        }
-	      }
-	      if (methods.size() == 1)
-	        setter = methods.get(0);
-	    }
+	  	setter = ReflectionUtils.getSetter(this.getEnclosingType(), this.getName(), value);
 	  }
 
 	  if (setter != null){
