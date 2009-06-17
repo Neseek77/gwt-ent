@@ -3,7 +3,10 @@ package com.gwtent.client.uibinder.gxt;
 import com.extjs.gxt.ui.client.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
+import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.gwtent.client.common.ObjectFactory;
@@ -23,7 +26,8 @@ public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
   public static class BinderMetaData<D> implements IBinderMetaData<TextField<D>, D>{
 
     public Class<?>[] getSupportedEditors() {
-      return new Class<?>[]{TextField.class, TextArea.class, NumberField.class};
+      return new Class<?>[]{TextField.class, TextArea.class, 
+      		NumberField.class, DateField.class, CheckBox.class};
     }
 
     public ObjectFactory<UIBinder<TextField<D>, D>> getFactory() {
@@ -39,11 +43,15 @@ public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
     }
   }
   
+  protected void doSetValueToModel(){
+  	getModelValue().setValue(getWidget().getValue());
+  }
+  
   protected void doInit(TextField<D> widget, ModelValue<D> value) {
     widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-        getModelValue().setValue(getWidget().getValue()); //be.value); be.value always null
+      	doSetValueToModel();
       }});
   }
 

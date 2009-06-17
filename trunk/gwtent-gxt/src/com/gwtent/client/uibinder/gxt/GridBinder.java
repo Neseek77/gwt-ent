@@ -15,7 +15,7 @@ import com.gwtent.client.uibinder.gxt.model.ModelDataAdapter;
  * 
  * To use this binder
  * you have to declare your grid like this:
- * public Grid<ModelDataAdapter<POJO>>
+ * {@code} Grid<ModelDataAdapter<POJO>>
  * ModelDataAdapter implement ModelData automatically for you
  * 
  * @author James Luo (JamesLuo.au@gmail.com)
