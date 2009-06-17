@@ -6,6 +6,83 @@ import java.util.List;
 
 public class ReflectionUtils {
   
+	public static String[] getGetterNames(String name){
+		name = name.substring(0, 1).toUpperCase() + name.substring(1);
+		String[] result = {"get" + name,
+				"is" + name};
+		return result;
+	}
+	
+	public static String[] getSetterNames(String name){
+		String[] result = {"set" + name.substring(0, 1).toUpperCase() + name.substring(1)};
+		return result;
+	}
+	
+	/**
+	 * Guess setter method of a field name
+	 * if get more then 1 method, this function will raise an error
+	 * if you have the value to set into a field, please using 
+	 * getSetter(ClassType, fieldName, ObjectVlaue)
+	 * 
+	 * @param classType
+	 * @param fieldName
+	 * @return
+	 */
+	public static Method getSetter(ClassType classType, String fieldName){
+		for (String methodName : getSetterNames(fieldName)){
+			List<Method> methods = new ArrayList<Method>();
+      for (Method method : classType.getMethods()){
+        if ((method.getName().equals(methodName)) && (method.getParameters().length == 1)){
+          methods.add(method);
+        }
+      }
+      
+      if (methods.size() == 1)
+        return methods.get(0);
+      else{
+      	if (methods.size() > 1)
+        	throw new RuntimeException("Found more then one setter of " + fieldName + " in class " + classType.getName());
+      }
+		}
+		
+		if (classType.getSuperclass() != null)
+			return getSetter(classType.getSuperclass(), fieldName);
+		
+		return null;
+	}
+	
+	/**
+	 * If you have value to set into field
+	 * please using this function, this function will check more and 
+	 * found the right method of the value
+	 * 
+	 * @param classType
+	 * @param fieldName
+	 * @param value
+	 * @return
+	 */
+	public static Method getSetter(ClassType classType, String fieldName, Object value){
+		String typeName = value.getClass().getName();
+		for (String methodName : getSetterNames(fieldName)){
+			Method method = classType.findMethod(methodName, new String[]{typeName});
+			
+			if (method != null)
+				return method;
+		}
+		
+		return getSetter(classType, fieldName);
+	}
+	
+	public static Method getGetter(ClassType classType, String fieldName){
+		for (String methodName : getGetterNames(fieldName)){
+			Method method = classType.findMethod(methodName);
+			if (method != null)
+				return method;
+		}
+		
+		return null;
+	}
+	
   public static class ReflectionRequiredException extends RuntimeException{
 
     /**

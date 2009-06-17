@@ -8,14 +8,34 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Reflectable {
+
+	
+  /**
+   * If relationTypes is true, 
+   * All the types of field, return types of Methods, parameter types
+   * of Methods will generate reflection information
+   * 
+   * @return
+   */
+  public boolean relationTypes() default false;
+  
   
   /**
-   * not finish yet.
-   * 
-   * If this assigned, all the class which assignable with 
-   * "assignableClasses" will make its reflection enabled
-   * 
-   * @return the classes you want generate reflection information
+   * If this is true, All super classes to TObject will generate reflection information
+   * default false
    */
-  public Class<?>[] assignableClasses() default {};
+  public boolean superClasses() default false;
+  
+  
+  /**
+   * if this is true, for different targets this annotation apply to:
+   * 
+   * if annotate to a class, this is mean All subClasses will generate reflection information
+   * if annotate to a interface, then all implement classes will generate reflection information,
+   * if annotate to an annotation, then all types annotated by this annotation will generate reflection information
+   * 
+   * default false
+   */
+  public boolean assignableClasses() default false;
+  
 }

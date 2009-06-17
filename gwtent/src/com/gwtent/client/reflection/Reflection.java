@@ -21,7 +21,7 @@ package com.gwtent.client.reflection;
 
 
 /**
- * Marker interface that Reflection system can operat it. 
+ * Marker interface that Reflection system can operate it. 
  */
 public interface Reflection {
 

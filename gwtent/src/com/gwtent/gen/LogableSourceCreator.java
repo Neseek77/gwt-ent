@@ -158,7 +158,11 @@ public abstract class LogableSourceCreator {
 	
 	
 	protected String getSimpleUnitName(JClassType classType){
-		return classType.getName().replace('.', '_') + getSUFFIX();
+		return getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
+	}
+	
+	protected String getSimpleUnitNameWithOutSuffix(JClassType classType){
+		return classType.getName().replace('.', '_');
 	}
 	
 	

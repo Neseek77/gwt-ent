@@ -372,6 +372,9 @@ public class TemplateCreator extends LogableSourceCreator {
       
       curType = curType.getSuperclass();
     }
+    
+    source.println("doAfterBinderAllEditors();");
+    
     source.outdent();
     source.println("}");
 	}
@@ -440,22 +443,25 @@ public class TemplateCreator extends LogableSourceCreator {
       for (JMethod method: curType.getMethods()){
         HTMLEvent event = GenUtils.getMethodAnnotation(method, HTMLEvent.class);
         if (event != null){
-          String elementId = event.value(); //TODO guest elementid by method.getName()
-          int eventType = event.eventType().getEvent();
+          String[] elementIds = event.value(); //TODO guest elementid by method.getName()
+          
           String eventTypeVarName = getEventTypeVariableName(method);
-          source.println("element = DOM.getElementById(\"" + elementId + "\");");
+          int eventType = event.eventType().getEvent();
           source.println("final int " + eventTypeVarName + " = " + eventType + ";");
-          source.println("if (element != null) {");
-          source.println("  DOM.sinkEvents(element, Event.ONCLICK);");
-
-          source.println("  DOM.setEventListener(element, new com.google.gwt.user.client.EventListener() {");
-          source.println("    public void onBrowserEvent(Event event) {");
-          source.println("      if (DOM.eventGetType(event) == " + eventTypeVarName + ") {");
-          source.println("        " + makeEventCall(method));
-          source.println("      }");
-          source.println("    }");
-          source.println("  });");
-          source.println("}");
+          
+          for (String elementId : elementIds){
+            source.println("element = DOM.getElementById(\"" + elementId + "\");");
+            source.println("if (element != null) {");
+            source.println("  DOM.sinkEvents(element, Event.ONCLICK);");
+            source.println("  DOM.setEventListener(element, new com.google.gwt.user.client.EventListener() {");
+            source.println("    public void onBrowserEvent(Event event) {");
+            source.println("      if (DOM.eventGetType(event) == " + eventTypeVarName + ") {");
+            source.println("        " + makeEventCall(method));
+            source.println("      }");
+            source.println("    }");
+            source.println("  });");
+            source.println("}");
+          }
         }
                 
       }

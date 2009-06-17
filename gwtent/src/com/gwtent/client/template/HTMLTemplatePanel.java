@@ -40,6 +40,14 @@ public class HTMLTemplatePanel extends HTMLPanel {
   public void modelChanged(String... pathPrefixs){
     uiBinderManager.modelChanged(pathPrefixs);
   }
+  
+  /**
+   * Can override this function.
+   * This function will be called by generated code 
+   * when all editor finished binding.
+   */
+  protected void doAfterBinderAllEditors(){
+  }
 
   
   public void add(Widget widget, String id) {

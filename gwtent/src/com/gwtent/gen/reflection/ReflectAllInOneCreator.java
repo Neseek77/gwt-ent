@@ -98,7 +98,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	private List<String> genAllClasses(List<JClassType> types, SourceWriter sourceWriter){
 		List<String> result = new ArrayList<String>();
 		for(JClassType type : types){
-			String className = type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
+			String className = type.getPackage().getName().replace('.', '_') + '_' + getSimpleUnitNameWithOutSuffix(type); //type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
 			sourceWriter.indent();
 			if (type.isEnum() == null)
 				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.ClassTypeImpl {");
@@ -129,7 +129,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		
 //		try {
 			JClassType reflectionClass = typeOracle.getType(Reflection.class.getCanonicalName());
-			JClassType constraintClass = typeOracle.getType(Constraint.class.getCanonicalName());  //For temp use, will refactor here to support full @Reflectionable
+			JClassType constraintClass = typeOracle.getType(Constraint.class.getCanonicalName());  //For temp use, will refactor here to support full @Reflectable
 			for (JClassType classType : typeOracle.getTypes()) {
 			  //|| (classType.getAnnotation(Aspect.class) != null)
 				if ((classType.isAssignableTo(reflectionClass)) || (classType.isAssignableTo(constraintClass))
