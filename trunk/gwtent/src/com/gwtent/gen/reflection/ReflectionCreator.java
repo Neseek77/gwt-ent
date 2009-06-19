@@ -92,7 +92,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// ".class);");
 			sourceWriter.println("super(\"" + classType.getQualifiedSourceName()
 					+ "\", " + classType.getQualifiedSourceName() + ".class);");
-			sourceWriter.println("addClassMeta();");
+			//sourceWriter.println("addClassMeta();");
 			sourceWriter.println("addAnnotations();");
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
@@ -220,7 +220,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println();
 
 			// -----Add Class MetaData--------------------------------
-			addClassMeta(classType, sourceWriter);
+			//addClassMeta(classType, sourceWriter);
 			// -----Add Class Annotation------------------------------------
 			addClassAnnotation(classType, sourceWriter);
 			// -----Add fields----------------------------------------
@@ -262,17 +262,17 @@ public class ReflectionCreator extends LogableSourceCreator {
       sourceWriter.println("}");
 		}
 
-		protected void addClassMeta(JClassType classType, SourceWriter source) {
-			source.println();
-
-			source.println("protected void addClassMeta(){");
-			source.indent();
-
-			GeneratorHelper.addMetaDatas("this", source, classType);
-
-			source.outdent();
-			source.println("}");
-		}
+//		protected void addClassMeta(JClassType classType, SourceWriter source) {
+//			source.println();
+//
+//			source.println("protected void addClassMeta(){");
+//			source.indent();
+//
+//			GeneratorHelper.addMetaDatas("this", source, classType);
+//
+//			source.outdent();
+//			source.println("}");
+//		}
 
 		protected void addClassAnnotation(JClassType classType, SourceWriter source) {
 			source.println();

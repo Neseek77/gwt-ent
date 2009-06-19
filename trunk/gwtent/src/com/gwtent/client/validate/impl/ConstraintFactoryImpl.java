@@ -1,14 +1,13 @@
 package com.gwtent.client.validate.impl;
 
-import javax.validation.Constraint;
-import javax.validation.ConstraintFactory;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorFactory;
 
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.validate.ValidateUtils;
 
-public class ConstraintFactoryImpl implements ConstraintFactory {
+public class ConstraintFactoryImpl implements ConstraintValidatorFactory {
 
   private static ConstraintFactoryImpl instance = new ConstraintFactoryImpl();
   
@@ -16,12 +15,12 @@ public class ConstraintFactoryImpl implements ConstraintFactory {
     return instance;
   }
   
-  @SuppressWarnings("unchecked")
-  public <T extends Constraint> T getInstance(Class<T> constraintClass) {
-    ClassType type = TypeOracle.Instance.getClassType(constraintClass);
+
+	public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
+		ClassType type = TypeOracle.Instance.getClassType(key);
     
     Constructor constructor = type.findConstructor(new String[]{});
     return (T) constructor.newInstance();
-  }
+	}
 
 }

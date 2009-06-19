@@ -3,68 +3,96 @@ package javax.validation;
 import java.util.Set;
 
 /**
- * <pre>--
- * As soon as the classes in javax.validation are available from official sites, this
- * class will be removed from this compilation unit.
- * --</pre>
- * <p/>
- * Validate a given object type
- *
+ * Validate bean instances. Implementations of this interface must be
+ * thread-safe.
+ * 
  * @author Emmanuel Bernard
+ * @author Hardy Ferentschik
  */
-public interface Validator<T> {
-    /**
-     * validate all constraints on object
-     *
-     * @param object object to validate
-     * @param groups group name(s) targeted for validation (default to <code>default</code>)
-     * @return invalid constrains or an empty Set if none
-     * @throws IllegalArgumentException e if object is null
-     */
-    Set<InvalidConstraint<T>> validate(T object, String... groups);
+public interface Validator {
+	/**
+	 * Validates all constraints on object.
+	 * 
+	 * @param object
+	 *          object to validate
+	 * @param groups
+	 *          groups targeted for validation (default to
+	 *          {@link javax.validation.groups.Default})
+	 * 
+	 * @return constraint violations or an empty Set if none
+	 * 
+	 * @throws IllegalArgumentException
+	 *           if object is null
+	 * @throws ValidationException
+	 *           if a non recoverable error happens during the validation process
+	 */
+	<T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups);
 
-    /**
-     * validate all constraints on <code>propertyName</code> property of object
-     *
-     * @param object       object to validate
-     * @param propertyName property to validate
-     * @param groups       group name(s) targeted for validation (default to <code>default</code>)
-     * @return invalid constrains or an empty Set if none
-     * @throws IllegalArgumentException e if object is null
-     */
-    Set<InvalidConstraint<T>> validateProperty(T object, String propertyName, String... groups);
+	/**
+	 * Validates all constraints placed on the property named
+	 * &lt;code&gt;propertyName&lt;/code&gt; of <code>object</code>
+	 * 
+	 * @param object
+	 *          object to validate
+	 * @param propertyName
+	 *          property to validate (ie field and getter constraints)
+	 * @param groups
+	 *          groups targeted for validation (default to
+	 *          {@link javax.validation.groups.Default})
+	 * 
+	 * @return constraint violations or an empty Set if none
+	 * 
+	 * @throws IllegalArgumentException
+	 *           if object is null, if propertyName null, empty or not a valid
+	 *           object property
+	 * @throws ValidationException
+	 *           if a non recoverable error happens during the validation process
+	 */
+	<T> Set<ConstraintViolation<T>> validateProperty(T object,
+			String propertyName, Class<?>... groups);
 
-    /**
-     * validate all constraints on <code>propertyName</code> property
-     * if the property value is <code>value</code>
-     * <p/>
-     * TODO express limitations of InvalidConstraint in this case
-     *
-     * @param propertyName property to validate
-     * @param value        property value to validate
-     * @param groups       group name(s) targeted for validation (default to <code>default</code>)
-     * @return invalid constrains or an empty Set if none
-     */
-    Set<InvalidConstraint<T>> validateValue(String propertyName, Object value, String... groups);
+	/**
+	 * Validates all constraints placed on the property named
+	 * <code>propertyName</code> would the property value be <code>value</code>
+	 * <p/>
+	 * <code>ConstraintViolation</code> objects return null for
+	 * {@link ConstraintViolation#getRootBean()} and
+	 * {@link ConstraintViolation#getLeafBean()}
+	 * 
+	 * @param beanType
+	 *          the bean type
+	 * @param propertyName
+	 *          property to validate
+	 * @param value
+	 *          property value to validate
+	 * @param groups
+	 *          groups targeted for validation (default to
+	 *          {@link javax.validation.groups.Default})
+	 * 
+	 * @return constraint violations or an empty Set if none
+	 * 
+	 * @throws IllegalArgumentException
+	 *           if object is null, if propertyName null, empty or not a valid
+	 *           object property
+	 * @throws ValidationException
+	 *           if a non recoverable error happens during the validation process
+	 */
+	<T> Set<ConstraintViolation<T>> validateValue(Class<T> beanType,
+			String propertyName, Object value, Class<?>... groups);
 
-    //[...]
-    /**
-     * return true if at least one constraint declaration is present for the given bean
-     * or if one property is marked for validation cascade
-     */
-    boolean hasConstraints();
-
-    /** return the class level constraints */
-    ElementDescriptor getBeanConstraints();
-
-    /**
-     * return the property level constraints for a given propertyName
-     * or null if either the property does not exist or has no constraint
-     */
-    ElementDescriptor getConstraintsForProperty(String propertyName);
-
-    /** return the property names having at least a constraint defined */
-    Set<String> getValidatedProperties();
-
-    void setMessageResolver(MessageResolver messageResolver);
+	/**
+	 * Return the descriptor object describing bean constraints The returned
+	 * object (and associated objects including ConstraintDescriptors) are
+	 * immutable.
+	 * 
+	 * @param clazz
+	 *          class type evaluated
+	 * 
+	 * @return the bean descriptor for the specified class.
+	 * 
+	 * @throws ValidationException
+	 *           if a non recoverable error happens during the metadata discovery
+	 *           or if some constraints are invalid.
+	 */
+	//BeanDescriptor getConstraintsForClass(Class<?> clazz);
 }

@@ -4,16 +4,23 @@ import java.util.NoSuchElementException;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.client.uibinder.UIBinderManager;
 
 /**
  * HTMLTemplatePanel
+ * 
+ * All subclasses of HTMLTemplatePanel will generate light reflection information
+ * No Super classes, No relation class types
+ * You can override it by place new @Reflectable annotation.
  * 
  * CSS Style: 
  * 
  * @author James Luo (JamesLuo.au@gmail.com)
  *
  */
+
+@Reflectable(relationTypes=false, superClasses=false, assignableClasses=true)
 public class HTMLTemplatePanel extends HTMLPanel {
 
   private static int idCount = 0;

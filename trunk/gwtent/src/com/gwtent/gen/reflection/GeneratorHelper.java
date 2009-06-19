@@ -29,6 +29,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.AccessDef;
@@ -252,7 +253,7 @@ public class GeneratorHelper {
 		if (object instanceof String){
 	  	return "\"" + object.toString() + "\"";
 	  }else if (object instanceof Class){
-	    return ((Class)object).getName() + ".class";    //inner class will got problem
+	    return ((Class)object).getCanonicalName() + ".class";    //inner class will got problem
 	  }else if (object.getClass().isArray()){
 	    StringBuilder sb = new StringBuilder();
 	    //new ElementType[]{ElementType.ANNOTATION_TYPE};

@@ -3,26 +3,26 @@ package com.gwtent.client.validate.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.Constraint;
-import javax.validation.ConstraintFactory;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorFactory;
 
-public class ConstraintFactoryCacheImpl implements ConstraintFactory {
+public class ConstraintFactoryCacheImpl implements ConstraintValidatorFactory {
 
   private static ConstraintFactoryCacheImpl instance = new ConstraintFactoryCacheImpl();
   public static ConstraintFactoryCacheImpl getInstance(){
     return instance;
   }
   
-  private Map<Class<?>, Constraint> map = new HashMap<Class<?>, Constraint>(); 
+  private Map<Class<?>, ConstraintValidator<?, ?>> map = new HashMap<Class<?>, ConstraintValidator<?, ?>>(); 
   
-  public <T extends Constraint> T getInstance(Class<T> constraintClass) {
-    T result = (T) map.get(constraintClass);
+	public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
+		T result = (T) map.get(key);
     if (result == null){
-      result = ConstraintFactoryImpl.getInstance().getInstance(constraintClass);
-      map.put(constraintClass, result);
+      result = ConstraintFactoryImpl.getInstance().getInstance(key);
+      map.put(key, result);
     }
     
     return result;
-  }
+	}
 
 }

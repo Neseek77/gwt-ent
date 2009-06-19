@@ -21,6 +21,7 @@ package com.gwtent.gen;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.google.gwt.core.ext.Generator;
@@ -97,6 +98,9 @@ public abstract class LogableSourceCreator {
 	public String generate() throws UnableToCompleteException{
 		JClassType classType;
 		try {
+			logger.log(Type.INFO, "Start generate UNIT for " + typeName + " in " + this.getClass().getName());
+			Calendar start = Calendar.getInstance();
+			
 			classType = typeOracle.getType(typeName);
 			if (genExclusion(classType)){
 				return null;
@@ -110,6 +114,9 @@ public abstract class LogableSourceCreator {
 				source.outdent();
 				source.commit(logger);
 			}
+			
+			logger.log(Type.INFO, "Code commited, Unit name: " + getUnitName(classType) + " Time:" + (start.getTimeInMillis() - Calendar.getInstance().getTimeInMillis()));
+			
 			return getUnitName(classType);
 		} catch (Throwable e) {
 			this.logger.log(Type.ERROR, e.getMessage(), e);

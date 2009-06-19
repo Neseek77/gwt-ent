@@ -10,6 +10,11 @@ import java.lang.annotation.Target;
 public @interface Reflectable {
 
 	
+	/**
+	 * True if you want generate annotation information
+	 */
+	public boolean annotation() default true;
+	
   /**
    * If relationTypes is true, 
    * All the types of field, return types of Methods, parameter types

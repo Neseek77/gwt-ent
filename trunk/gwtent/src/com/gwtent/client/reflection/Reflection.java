@@ -21,8 +21,10 @@ package com.gwtent.client.reflection;
 
 
 /**
- * Marker interface that Reflection system can operate it. 
+ * if implement this interface, generate will create full reflection information
+ * 
  */
+@Reflectable(relationTypes=true, superClasses=true, assignableClasses=true)
 public interface Reflection {
 
 }

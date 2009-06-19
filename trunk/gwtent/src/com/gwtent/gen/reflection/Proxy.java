@@ -148,7 +148,7 @@ public class Proxy extends ClassTypeImpl {
   	
   public org_aspectj_lang_annotation_Before(){
     super("org.aspectj.lang.annotation.Before", org.aspectj.lang.annotation.Before.class);
-    addClassMeta();
+    //addClassMeta();
     addAnnotations();
     addFields();
     addMethods();
@@ -175,9 +175,9 @@ public class Proxy extends ClassTypeImpl {
   }
   
   
-  protected void addClassMeta(){
-    this.addMetaData("author", new String[]{"<a", "href=\"mailto:alex", "AT", "gnilux", "DOT", "com\">Alexandre", "Vasseur</a>"});
-  }
+//  protected void addClassMeta(){
+//    this.addMetaData("author", new String[]{"<a", "href=\"mailto:alex", "AT", "gnilux", "DOT", "com\">Alexandre", "Vasseur</a>"});
+//  }
   
   protected void addAnnotations(){
       {

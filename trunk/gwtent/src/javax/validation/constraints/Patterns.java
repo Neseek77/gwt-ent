@@ -1,8 +1,8 @@
-package javax.validation;
+package javax.validation.constraints;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
 import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
@@ -14,17 +14,8 @@ import java.lang.annotation.Target;
  * --</pre>
  */
 @Documented
-@ConstraintValidator(PatternValidator.class)
-@Target({METHOD, FIELD})
+@Target({ElementType.METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface Pattern {
-    /** regular expression */
-    String regex();
-
-    /** Flags parameter for Pattern.compile() */
-    int flags() default 0;
-
-    String message() default "{beancheck.pattern}";
-
-    String[] groups() default {};
+public @interface Patterns {
+    Pattern[] value();
 }
