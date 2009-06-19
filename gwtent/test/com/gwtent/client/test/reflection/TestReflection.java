@@ -26,7 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.NotNull;
+import javax.validation.constraints.NotNull;
+
 
 @Entity(name="TestReflection")
 @Table(name="Table_Test")
