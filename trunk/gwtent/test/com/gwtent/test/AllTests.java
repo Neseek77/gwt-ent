@@ -32,6 +32,7 @@ package com.gwtent.test;
 
 import com.gwtent.client.test.annotations.AnnotationTestCase;
 import com.gwtent.client.test.aop.AOPTestCase;
+import com.gwtent.client.test.i18n.I18NTestCase;
 import com.gwtent.client.test.json.SerializationTestCase;
 import com.gwtent.client.test.reflection.ReflectionTestCase;
 import com.gwtent.client.test.template.TemplateTestCase;
@@ -46,6 +47,7 @@ public class AllTests {
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
+    suite.addTestSuite(I18NTestCase.class);
     suite.addTestSuite(AnnotationTestCase.class);
     suite.addTestSuite(UIBinderTestCase.class);
     suite.addTestSuite(SerializationTestCase.class);

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintValidator;
-import javax.validation.NotNull;
+import javax.validation.constraints.NotNull;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.gwtent.client.reflection.AnnotationStoreImpl;
@@ -111,8 +111,7 @@ public class ReflectionTestCase extends GWTTestCase {
 //    assertTrue(annotation.annotationType() == null);
     
     new AnnotationStoreImpl(Entity.class, null);
-    new AnnotationStoreImpl(javax.validation.NotNull.class, null);
-    new AnnotationStoreImpl(javax.validation.ConstraintValidator.class, null);
+    new AnnotationStoreImpl(javax.validation.constraints.NotNull.class, null);
     
     TestReflection test = new TestReflection();
     test.setString("username");
@@ -135,12 +134,7 @@ public class ReflectionTestCase extends GWTTestCase {
     
     classType = TypeOracle.Instance.getClassType(NotNull.class);
     assertNotNull(classType);
-    
-    Annotation[] annos = classType.getAnnotations();
-    Annotation storeConstraintValidator = getAnnotation(annos, ConstraintValidator.class);
-    assertNotNull(storeConstraintValidator);
-    
-    
+        
   }
   
   private Annotation getAnnotation(Annotation[] annos, Class<? extends Annotation>clazz){
