@@ -62,7 +62,8 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 
 	private final Map<String, FieldImpl> fields = new HashMap<String, FieldImpl>();
 
-	private final List<ClassTypeImpl> interfaces = new ArrayList<ClassTypeImpl>();
+	private List<ClassTypeImpl> lasyinterfaces = null;
+	private final List<Class<?>> interfaces = new ArrayList<Class<?>>();
 
 	private boolean isInterface = false;
 
@@ -157,9 +158,9 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 		}
 	}
 
-	public void addImplementedInterface(ClassTypeImpl intf) {
-//		assert (intf != null);
-		interfaces.add(intf);
+	
+	public void addImplementedInterface(Class<?> clazz){
+		interfaces.add(clazz);
 	}
 
 	public void addModifierBits(int bits) {
@@ -247,7 +248,7 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 	 * @see com.gwtent.client.reflection.ClassType#getImplementedInterfaces()
 	 */
 	public ClassType[] getImplementedInterfaces() {
-		return (ClassTypeImpl[]) interfaces.toArray(TypeOracleImpl.NO_JCLASSES);
+		return (ClassTypeImpl[]) lasyinterfaces.toArray(TypeOracleImpl.NO_JCLASSES);
 	}
 
 	public String getJNISignature() {
@@ -652,8 +653,8 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 		if (superclass != null) {
 			superclass.acceptSubtype(me);
 		}
-		for (int i = 0, n = interfaces.size(); i < n; ++i) {
-			ClassTypeImpl intf = (ClassTypeImpl) interfaces.get(i);
+		for (int i = 0, n = lasyinterfaces.size(); i < n; ++i) {
+			ClassTypeImpl intf = (ClassTypeImpl) lasyinterfaces.get(i);
 			intf.acceptSubtype(me);
 		}
 	}
