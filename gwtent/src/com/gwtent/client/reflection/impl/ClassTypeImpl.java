@@ -49,7 +49,7 @@ import com.gwtent.client.uibinder.Parameter;
 /**
  * Type representing a Java class or interface type.
  */
-public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, HasAnnotations, ClassType {
+public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations, ClassType {
 
 	private final Set<ClassTypeImpl> allSubtypes = new HashSet<ClassTypeImpl>();
 	private final Annotations annotations = new Annotations();
@@ -86,8 +86,6 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 	private final Class<?> declaringClass;
 
 	private Package declaringPackage;
-
-	private final HasMetaData metaData = new MetaData();
 
 	private boolean savedIsDefaultInstantiable;
 
@@ -261,50 +259,6 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 		return "L" + packageName + typeName + ";";
 	}
 
-	/**
-	 * Manages doc comment metadata for an AST item. The structure of the metadata
-	 * attempts to mirror the way in which tags and values were originally declared.
-	 * 
-	 * <p>
-	 * For example, for the following declaration
-	 * 
-	 * <pre>
-	 * /**
-	 *  * @myTag value1 value2
-	 *  * @myTag value3 value4
-	 *  * ... 
-	 * </pre>
-	 * 
-	 * a call to <code>getMetaData("myTag")</code> would return this array of
-	 * string arrays
-	 * 
-	 * <pre>
-	 *[0][0] = value1
-	 *[0][1] = value2
-	 *[1][0] = value3
-	 *[1][1] = value4
-	 * </pre>
-	 * 
-	 * </p>
-	 */
-	public String[][] getMetaData(String tagName) {
-		return metaData.getMetaData(tagName);
-	}
-	
-	public List getMetaDataMerge(String tagName){
-		String[][] metaDatas = getMetaData(tagName);
-		List result = new ArrayList();
-		for (int i = 0; i < metaDatas.length; i++){
-			for (int j = 0; j < metaDatas[i].length; j++){
-				result.add(metaDatas[i][j]);
-			}
-		}
-		return result;
-	}
-
-	public String[] getMetaDataTags() {
-		return metaData.getMetaDataTags();
-	}
 
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.ClassType#getMethod(java.lang.String, com.gwtent.client.reflection.Type[])
@@ -704,10 +658,6 @@ public class ClassTypeImpl extends TypeImpl implements HasMetaData, AccessDef, H
 		}
 	}
 
-	public void addMetaData(String tagName, String[] values) {
-		metaData.addMetaData(tagName, values);
-
-	}
 
 	public boolean isFinal() {
 		return false;

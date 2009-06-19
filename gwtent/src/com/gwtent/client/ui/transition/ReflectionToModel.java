@@ -75,7 +75,7 @@ public class ReflectionToModel implements POJOToModel {
 			//ClassType classType = (ClassType)GWT.create(clasz);
 			Domain domain = new DomainImpl();
 			domain.setInstance(pojo);
-			domain.setCaption(ClassTypeHelper.getAllMetaData(classType, ClassTypeHelper.CLASS_CAPTION_METADATA));
+			//domain.setCaption(ClassTypeHelper.getAllMetaData(classType, ClassTypeHelper.CLASS_CAPTION_METADATA));
 			addFields(domain, classType);
 			addActions(domain, classType);
 			return domain;
@@ -155,13 +155,13 @@ public class ReflectionToModel implements POJOToModel {
 
 	private List getFieldNamesByClassMetaData(ClassType classType) {
 		List result = new ArrayList();
-		Utils.addListByStrIFNotExists(classType.getMetaDataMerge(ClassTypeHelper.CLASS_FIELD_LIST_METADATA), result);
+		//Utils.addListByStrIFNotExists(classType.getMetaDataMerge(ClassTypeHelper.CLASS_FIELD_LIST_METADATA), result);
 		return result;
 	}
 	
 	private List getActionNamesByClassMetaData(ClassType classType) {
 		List result = new ArrayList();
-		Utils.addListByStrIFNotExists(classType.getMetaDataMerge(ClassTypeHelper.CLASS_ACTION_LIST_METADATA), result);
+		//Utils.addListByStrIFNotExists(classType.getMetaDataMerge(ClassTypeHelper.CLASS_ACTION_LIST_METADATA), result);
 		return result;
 	}
 	

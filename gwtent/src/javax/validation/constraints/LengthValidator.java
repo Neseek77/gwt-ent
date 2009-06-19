@@ -1,6 +1,10 @@
-package javax.validation;
+package javax.validation.constraints;
 
-import java.util.Map;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.StandardConstraint;
+import javax.validation.StandardConstraintDescriptor;
+
 
 /**
  * <pre>--
@@ -10,7 +14,7 @@ import java.util.Map;
  * <p/>
  * Check that a string length is between min and max
  */
-public class LengthConstraint implements Constraint<Length>, StandardConstraint {
+public class LengthValidator implements ConstraintValidator<Length, String>, StandardConstraint {
     private int min;
     private int max;
 
@@ -25,21 +29,6 @@ public class LengthConstraint implements Constraint<Length>, StandardConstraint 
         max = constraint.max();
     }
 
-    /**
-     * Validate a specified value.
-     * returns false if the specified value does not conform to the definition
-     *
-     * @throws IllegalArgumentException if the object is not of type String
-     */
-    public boolean isValid(Object value) {
-        if (value == null) return true;
-        if (!(value instanceof String)) {
-            throw new IllegalArgumentException("Expected String type");
-        }
-        String string = (String) value;
-        int length = string.length();
-        return length >= min && length <= max;
-    }
 
     /** Returns the standard constraint descriptor in accordance with the max constraint */
     public StandardConstraintDescriptor getStandardConstraintDescriptor() {
@@ -54,8 +43,17 @@ public class LengthConstraint implements Constraint<Length>, StandardConstraint 
         };
     }
 
-    public void initialize(Map<String, String> constraintAnnotation) {
-      this.min = Integer.parseInt(constraintAnnotation.get("min"));
-      this.max = Integer.parseInt(constraintAnnotation.get("max"));
-    }
+    /**
+     * Validate a specified value.
+     * returns false if the specified value does not conform to the definition
+     *
+     * @throws IllegalArgumentException if the object is not of type String
+     */
+		public boolean isValid(String value,
+				ConstraintValidatorContext constraintValidatorContext) {
+			if (value == null) return true;
+      
+      int length = value.length();
+      return length >= min && length <= max;
+		}
 }

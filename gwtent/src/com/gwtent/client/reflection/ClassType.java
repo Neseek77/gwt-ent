@@ -24,7 +24,7 @@ import java.util.List;
 import com.google.gwt.core.ext.typeinfo.JEnumType;
 
 
-public interface ClassType extends HasAnnotations, HasMetaData {
+public interface ClassType extends HasAnnotations {
 
 	/**
 	 * Find Field
@@ -92,7 +92,7 @@ public interface ClassType extends HasAnnotations, HasMetaData {
 	 */
 	public Method getMethod(String name, Type[] paramTypes);
 	
-	public List getMetaDataMerge(String tagName);
+	//public List getMetaDataMerge(String tagName);
 
 	/*
 	 * Returns the declared methods of this class (not include superclasses or

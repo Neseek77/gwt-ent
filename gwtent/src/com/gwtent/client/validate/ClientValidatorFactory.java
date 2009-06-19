@@ -12,6 +12,6 @@ public interface ClientValidatorFactory extends ValidatorFactory {
    * @param classType the object ClassType to validate
    * @return The Validator fo this class
    */
-  public <T extends Object> Validator<T> getValidator(ClassType classType);
+  public Validator getValidator(ClassType classType);
   
 }

@@ -8,12 +8,12 @@ import com.gwtent.client.reflection.TypeOracle;
 
 public class ValidatorFactoryDefault implements ClientValidatorFactory{
 
-  public <T> Validator<T> getValidator(ClassType classType) {
+  public Validator getValidator(ClassType classType) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public <T> Validator<T> getValidator(Class<T> clazz) {
+  public Validator getValidator(Class<?> clazz) {
     ReflectionUtils.checkReflection(clazz);
     
     ClassType classType = TypeOracle.Instance.getClassType(clazz);

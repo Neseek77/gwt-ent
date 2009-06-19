@@ -196,6 +196,16 @@ public class GenUtils {
 	 return null;
 	}
 	
+	/**
+	 * Get annotation from a classType.
+	 * This function will search all super class to try to find out the annotation.
+	 * If not found in super class, this function will try all implement interfaces.
+	 * 
+	 * @param <T>
+	 * @param classType The class type 
+	 * @param annotationClass The annotation class
+	 * @return if found, return the annotation, otherwise return null
+	 */
 	public static <T extends Annotation> T getClassTypeAnnotationWithMataAnnotation(JClassType classType, Class<T> annotationClass){
 	  JClassType parent = classType;
     while (parent != null){
@@ -208,6 +218,19 @@ public class GenUtils {
       }
       
       parent = parent.getSuperclass();
+    }
+    
+    //if not found in super class, found it in implement interfaces
+    parent = classType;
+    while (parent != null){
+    	for (JClassType inter : parent.getImplementedInterfaces()){
+    		T result = getClassTypeAnnotationWithMataAnnotation(inter, annotationClass);
+    		
+    		if (result != null)
+    			return result;
+    	}
+    	
+    	parent = parent.getSuperclass();
     }
     
     return null;

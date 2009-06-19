@@ -10,6 +10,6 @@ public interface ValidatorFactory {
    * @param clazz the object class to validate
    * @return the Validator of this class
    */
-  public abstract <T extends Object> Validator<T> getValidator(Class<T> clazz);
+  public abstract Validator getValidator(Class<?> clazz);
 
 }

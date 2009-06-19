@@ -1,12 +1,13 @@
-package javax.validation;
+package javax.validation.constraints;
 
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
 import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
-import java.io.Serializable;
+
+import javax.validation.Constraint;
 
 /**
  * <pre>--
@@ -15,13 +16,15 @@ import java.io.Serializable;
  * --</pre>
  */
 @Documented
-@ConstraintValidator(MinConstraint.class)
-@Target({ElementType.METHOD, FIELD})
+@Constraint(validatedBy=LengthValidator.class)
+@Target({METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface Min {
-    String[] groups() default {};
+public @interface Length {
+    int min() default 0;
 
-    int value();
+    int max() default Integer.MAX_VALUE;
 
-    String message() default "{beancheck.min}";
+    String message() default "{constraint_length}";
+
+    Class<?>[] groups() default {};
 }

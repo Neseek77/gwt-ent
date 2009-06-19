@@ -1,4 +1,4 @@
-package javax.validation;
+package javax.validation.constraints;
 
 import java.lang.annotation.Documented;
 import static java.lang.annotation.ElementType.FIELD;
@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 
+import javax.validation.Constraint;
+
 /**
  * <pre>--
  * As soon as the classes in javax.validation are available from official sites, this
@@ -14,11 +16,11 @@ import java.lang.annotation.Target;
  * --</pre>
  */
 @Documented
-@ConstraintValidator(NotNullConstraint.class)
+@Constraint(validatedBy=NotNullValidator.class)
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface NotNull {
-    String message() default "{beancheck.notNull}";
+    String message() default "{constraint_notNull}";
 
-    String[] groups() default {};
+    Class<?>[] groups() default {};
 }
