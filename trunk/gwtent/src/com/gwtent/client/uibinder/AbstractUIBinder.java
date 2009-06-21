@@ -1,5 +1,11 @@
 package com.gwtent.client.uibinder;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
+import com.google.gwt.user.client.ui.UIObject;
+import com.gwtent.client.validate.ValidatorFactory;
 import com.gwtent.client.validate.ui.ErrorMessagePanel;
 
 
@@ -34,22 +40,44 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 
   	private ErrorMessagePanel msgPanel;
   	
+  	private ErrorMessagePanel getMsgPanel(){
+  		if (msgPanel == null)
+  			msgPanel = new ErrorMessagePanel();
+  		
+  		return msgPanel;
+  	}
+  	
   	public ValidateValueChangedByBindingListener(){
   		
   	}
   	
-		public void afterValueChanged(Object value) {
+		public void afterValueChanged(Object instance, String property, Object value) {
 			
 		}
 
-		public boolean beforeValueChange(Object value) {
-			return true;
+		public boolean beforeValueChange(Object instance, String property, Object value) {
+			Set<ConstraintViolation<Object>> scv = ValidatorFactory.getGWTValidator().validateProperty(instance, property, validateGroups);
+			if (scv.size() > 0){
+				for (ConstraintViolation<Object> cv : scv){
+					getMsgPanel().addErrorMsg(cv.getMessage());
+				}
+				
+				if (getWidget() instanceof UIObject)
+					getMsgPanel().showPanel((UIObject)getWidget());
+				
+				return false;
+			}else{
+				return true;
+			}			
+			
 		}
   }
   
   public void binder(T widget, ModelValue<D> value, Class<?>... validateGroups) {
     this.widget = widget;
     this.modelValue = value;
+    
+    this.validateGroups = validateGroups;
     
     doInit(widget, value);
     
@@ -83,6 +111,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   
   private T widget;
   private ModelValue<D> modelValue;
+  private Class<?>[] validateGroups;
   
   public T getWidget() {
     return widget;
