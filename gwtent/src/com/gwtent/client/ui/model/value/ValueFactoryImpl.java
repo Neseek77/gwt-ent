@@ -158,7 +158,8 @@ public class ValueFactoryImpl implements ValueFactory {
 		ValidateChain chain = new ValidateChainImpl();
 		
 		com.gwtent.client.reflection.Field field = classType.findField(fieldName);
-		String[] validateNames = ClassTypeHelper.getValidateNames(field);
+		//TODO MetaData
+		String[] validateNames = null;//ClassTypeHelper.getValidateNames(field);
 
 		ExpressionProcessorList processorList = new ExpressionProcessorList();
 		for (int i = 0; i < validateNames.length; i++){

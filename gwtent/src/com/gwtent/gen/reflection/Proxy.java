@@ -101,7 +101,7 @@ public class Proxy extends ClassTypeImpl {
 		FieldImpl field = new FieldImpl(this, "name");
 		//field.addModifierBits(0);   
 		//field.addMetaData(tagName, values);  //for... every meta
-		field.addMetaData("tag", new String[]{"meta1", "meta2"});
+		//field.addMetaData("tag", new String[]{"meta1", "meta2"});
 		field.setTypeName("typeName");
 		addField(field);
 	}
@@ -156,8 +156,7 @@ public class Proxy extends ClassTypeImpl {
     if (TypeOracleImpl.findType("java.lang.Object") != null)
     setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("java.lang.Object").isClassOrInterface());
     
-    if (TypeOracleImpl.findType("java.lang.annotation.Annotation") != null)
-    addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType("java.lang.annotation.Annotation").isClassOrInterface());
+    addImplementedInterface(java.lang.annotation.Annotation.class);
   }
   
   public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {
@@ -208,12 +207,12 @@ public class Proxy extends ClassTypeImpl {
     method = new MethodImpl(this, "value");
     method.addModifierBits(32); 
     method.setReturnTypeName("java.lang.String");
-    method.addMetaData("null", new String[]{});
+    //method.addMetaData("null", new String[]{});
     
     method = new MethodImpl(this, "argNames");
     method.addModifierBits(32); 
     method.setReturnTypeName("java.lang.String");
-    method.addMetaData("null", new String[]{});
+    //method.addMetaData("null", new String[]{});
     
   }
 }

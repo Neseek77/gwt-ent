@@ -23,24 +23,20 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.gwtent.client.reflection.AbstractMethod;
 import com.gwtent.client.reflection.ArrayType;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.HasAnnotations;
-import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.uibinder.Parameter;
 
-public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations, AbstractMethod {
+public abstract class AbstractMethodImpl implements HasAnnotations, AbstractMethod {
 
 	private boolean isVarArgs = false;
 
-	private final HasMetaData metaData = new MetaData();
-	
 	private final Annotations annotations =  new Annotations();
 
 
@@ -56,10 +52,6 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
 	// Only the builder can construct
 	AbstractMethodImpl(String name) {
 		this.name = name;
-	}
-
-	public void addMetaData(String tagName, String[] values) {
-		metaData.addMetaData(tagName, values);
 	}
 
 	public void addModifierBits(int bits) {
@@ -89,14 +81,6 @@ public abstract class AbstractMethodImpl implements HasMetaData, HasAnnotations,
 	 * @see com.gwtent.client.reflection.AbstractMethod#getEnclosingType()
 	 */
 	public abstract ClassType getEnclosingType();
-
-	public String[][] getMetaData(String tagName) {
-		return metaData.getMetaData(tagName);
-	}
-
-	public String[] getMetaDataTags() {
-		return metaData.getMetaDataTags();
-	}
 
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.AbstractMethod#getName()

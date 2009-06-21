@@ -1,5 +1,7 @@
 package com.gwtent.client.uibinder;
 
+import com.gwtent.client.validate.ui.ErrorMessagePanel;
+
 
 /**
  * 
@@ -26,10 +28,26 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     public void valueChanged() {
       doValueChanged();
     }
-    
   }
   
-  public void binder(T widget, ModelValue<D> value) {
+  public class ValidateValueChangedByBindingListener implements IValueChangedByBindingListener{
+
+  	private ErrorMessagePanel msgPanel;
+  	
+  	public ValidateValueChangedByBindingListener(){
+  		
+  	}
+  	
+		public void afterValueChanged(Object value) {
+			
+		}
+
+		public boolean beforeValueChange(Object value) {
+			return true;
+		}
+  }
+  
+  public void binder(T widget, ModelValue<D> value, Class<?>... validateGroups) {
     this.widget = widget;
     this.modelValue = value;
     
@@ -37,7 +55,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     
     value.addValueChangedListener(new ValueChangedListener());
     
-    //doValueChanged();
+    value.addValueChangedByBindingListener(new ValidateValueChangedByBindingListener());
   }
   
   protected void doValueChanged(){

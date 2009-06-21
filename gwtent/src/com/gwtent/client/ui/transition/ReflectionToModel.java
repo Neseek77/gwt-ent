@@ -24,16 +24,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Field;
-import com.gwtent.client.reflection.HasMetaData;
-import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.reflection.Type;
-import com.gwtent.client.ui.ClassTypeHelper;
 import com.gwtent.client.ui.Utils;
 import com.gwtent.client.ui.model.Action;
 import com.gwtent.client.ui.model.Domain;
-import com.gwtent.client.ui.model.Value;
 import com.gwtent.client.ui.model.impl.ActionImpl;
 import com.gwtent.client.ui.model.impl.DomainImpl;
 import com.gwtent.client.ui.model.value.ValueFactory;
@@ -111,46 +105,49 @@ public class ReflectionToModel implements POJOToModel {
 		}
 	}
 	
-	protected com.gwtent.client.ui.model.Field addField(Domain domain, ClassType classType, String fieldName){
-		HasMetaData metaData = null;
-		String typeName = "";
-		Field srcField = classType.findField(fieldName);
-		if (srcField != null){
-			metaData = srcField;
-			typeName = srcField.getTypeName();
-		}else{  
-			Method srcMethod = classType.findMethod(fieldName, new Type[]{});
-			if (srcMethod != null){
-				metaData = srcMethod;
-				typeName = srcMethod.getReturnTypeName();
-			}
-		}
-		
-		if (metaData != null){
-			Value value = valueFactory.factory(pojo, classType, fieldName, typeName);
-			if (value == null){
-				throw new TransitionException("value factory return null, is type:" + typeName + "have correct value type.");
-			}
-			com.gwtent.client.ui.model.Field destField = new com.gwtent.client.ui.model.impl.FieldImpl();
-			updateFieldByMetaData(destField, classType, metaData, fieldName);
-			//TODO destField.setRequire(false); set require by validate
-			destField.setRequire(false);
-			destField.setValue(value);
-			domain.addField(destField);
-			return destField;
-		}else{
-			return null;
-		}
-	}
 	
-	protected void updateFieldByMetaData(com.gwtent.client.ui.model.Field field, ClassType classType, HasMetaData metaData, String name){
-		String caption = ClassTypeHelper.getCaption(classType, pojo, metaData);
-		if (caption.length() <= 0) caption = name;
-		field.setCaption(caption);
-		
-		String desc = ClassTypeHelper.getDesc(classType, pojo, metaData);
-		field.setDesc(desc);
+	protected com.gwtent.client.ui.model.Field addField(Domain domain, ClassType classType, String fieldName){
+		return null;
+		//TODO MetaData
+//		HasMetaData metaData = null;
+//		String typeName = "";
+//		Field srcField = classType.findField(fieldName);
+//		if (srcField != null){
+//			metaData = srcField;
+//			typeName = srcField.getTypeName();
+//		}else{  
+//			Method srcMethod = classType.findMethod(fieldName, new Type[]{});
+//			if (srcMethod != null){
+//				metaData = srcMethod;
+//				typeName = srcMethod.getReturnTypeName();
+//			}
+//		}
+//		
+//		if (metaData != null){
+//			Value value = valueFactory.factory(pojo, classType, fieldName, typeName);
+//			if (value == null){
+//				throw new TransitionException("value factory return null, is type:" + typeName + "have correct value type.");
+//			}
+//			com.gwtent.client.ui.model.Field destField = new com.gwtent.client.ui.model.impl.FieldImpl();
+//			updateFieldByMetaData(destField, classType, metaData, fieldName);
+//			//TODO destField.setRequire(false); set require by validate
+//			destField.setRequire(false);
+//			destField.setValue(value);
+//			domain.addField(destField);
+//			return destField;
+//		}else{
+//			return null;
+//		}
 	}
+//	
+//	protected void updateFieldByMetaData(com.gwtent.client.ui.model.Field field, ClassType classType, HasMetaData metaData, String name){
+//		String caption = ClassTypeHelper.getCaption(classType, pojo, metaData);
+//		if (caption.length() <= 0) caption = name;
+//		field.setCaption(caption);
+//		
+//		String desc = ClassTypeHelper.getDesc(classType, pojo, metaData);
+//		field.setDesc(desc);
+//	}
 
 
 	private List getFieldNamesByClassMetaData(ClassType classType) {
@@ -168,21 +165,21 @@ public class ReflectionToModel implements POJOToModel {
 	
 	private List getFieldNamesByFieldMetaData(ClassType classType) {
 		List result = new ArrayList();
-		Field[] fields = classType.getFields();
-		for (int i = 0; i < fields.length; i++){
-			Field field = fields[i];
-			if (ClassTypeHelper.queryHaveMetaData(field, ClassTypeHelper.FIELD_FLAG_METADATA)){
-				result.add(field.getName());
-			} 
-		}
-		
-		Method[] methods = classType.getMethods();
-		for (int i = 0; i < methods.length; i++){
-			Method method = methods[i];
-			if (ClassTypeHelper.queryHaveMetaData(method, ClassTypeHelper.FIELD_FLAG_METADATA)){
-				result.add(method.getName());
-			} 
-		}
+//		Field[] fields = classType.getFields();
+//		for (int i = 0; i < fields.length; i++){
+//			Field field = fields[i];
+//			if (ClassTypeHelper.queryHaveMetaData(field, ClassTypeHelper.FIELD_FLAG_METADATA)){
+//				result.add(field.getName());
+//			} 
+//		}
+//		
+//		Method[] methods = classType.getMethods();
+//		for (int i = 0; i < methods.length; i++){
+//			Method method = methods[i];
+//			if (ClassTypeHelper.queryHaveMetaData(method, ClassTypeHelper.FIELD_FLAG_METADATA)){
+//				result.add(method.getName());
+//			} 
+//		}
 		
 		return result;
 	}
@@ -190,13 +187,13 @@ public class ReflectionToModel implements POJOToModel {
 	private List getActionNamesByMethodMetaData(ClassType classType) {
 		List result = new ArrayList();
 		
-		Method[] methods = classType.getMethods();
-		for (int i = 0; i < methods.length; i++){
-			Method method = methods[i];
-			if (ClassTypeHelper.queryHaveMetaData(method, ClassTypeHelper.ACTION_FLAG_METADATA)){
-				result.add(method.getName());
-			} 
-		}
+//		Method[] methods = classType.getMethods();
+//		for (int i = 0; i < methods.length; i++){
+//			Method method = methods[i];
+//			if (ClassTypeHelper.queryHaveMetaData(method, ClassTypeHelper.ACTION_FLAG_METADATA)){
+//				result.add(method.getName());
+//			} 
+//		}
 		
 		return result;
 	}

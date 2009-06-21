@@ -27,30 +27,6 @@ import com.gwtent.client.validate.impl.ConstraintValidatorContextImpl.ErrorMsg;
 
 public class ValidatorGWT implements Validator{
 
-  private void notSupportYet(){
-    throw new RuntimeException("No support yet.");
-  }
-  
-  public ElementDescriptor getBeanConstraints() {
-    notSupportYet();
-    return null;
-  }
-
-  public ElementDescriptor getConstraintsForProperty(String propertyName) {
-    notSupportYet();
-    return null;
-  }
-
-  public Set<String> getValidatedProperties() {
-    notSupportYet();
-    return null;
-  }
-
-  public boolean hasConstraints() {
-    notSupportYet();
-    return false;
-  }
-
   public <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
     ClassType type = TypeOracle.Instance.getClassType(object.getClass());
     if (type == null)
@@ -135,9 +111,9 @@ public class ValidatorGWT implements Validator{
 		return false;
 	}
   
-	private boolean classAssignable(List<Class<?>> classes, Class<?> classToCheck){
-		for (Class<?> clazz : classes){
-			if (ReflectionUtils.isAssignable(clazz, classToCheck))
+	private boolean classAssignable(Class<?> parentClass, List<Class<?>> classesToCheck){
+		for (Class<?> clazz : classesToCheck){
+			if (ReflectionUtils.isAssignable(parentClass, clazz))
 				return true;
 		}
 		
@@ -158,7 +134,7 @@ public class ValidatorGWT implements Validator{
   				annoGroups = new Class<?>[] {Default.class};
   			
   			for (Class<?> annoGroup : annoGroups){
-  				if (classAssignable(requestGroups, annoGroup)){
+  				if (classAssignable(annoGroup, requestGroups)){
   					if (lStore.indexOf(store) < 0)
   						lStore.add(store);
   				}

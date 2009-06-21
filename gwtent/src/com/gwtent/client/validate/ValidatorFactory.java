@@ -2,14 +2,19 @@ package com.gwtent.client.validate;
 
 import javax.validation.Validator;
 
-public interface ValidatorFactory {
+import com.gwtent.client.validate.impl.ValidatorGWT;
 
-  /**
-   * Get validator for a class
-   * @param <T>
-   * @param clazz the object class to validate
-   * @return the Validator of this class
-   */
-  public abstract Validator getValidator(Class<?> clazz);
+public class ValidatorFactory {
+
+	//private static ValidatorFactoryDefault factory = new ValidatorFactoryDefault();
+	
+	private ValidatorFactory(){
+		
+	}
+	
+	private static ValidatorGWT validatorGWT = new ValidatorGWT();
+  public static Validator getGWTValidator() {
+  	return validatorGWT;
+  }
 
 }

@@ -124,11 +124,12 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			sourceWriter.println();
 			for (JClassType type : classType.getImplementedInterfaces()) {
-				sourceWriter.println("if (" + "TypeOracleImpl.findType(\""
-						+ type.getQualifiedSourceName() + "\")" + " != null)");
-				sourceWriter
-						.println("addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType(\""
-								+ type.getQualifiedSourceName() + "\").isClassOrInterface());");
+				//sourceWriter.println("if (" + "TypeOracleImpl.findType(\""
+				//		+ type.getQualifiedSourceName() + "\")" + " != null)");
+				//sourceWriter
+				//		.println("addImplementedInterface((ClassTypeImpl)TypeOracleImpl.findType(\""
+				//				+ type.getQualifiedSourceName() + "\").isClassOrInterface());");
+				sourceWriter.println("addImplementedInterface(" + type.getQualifiedSourceName() + ".class);");
 			}
 			sourceWriter.outdent();
 			sourceWriter.println("}");
@@ -310,7 +311,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				source.println("field.setTypeName(\""
 						+ field.getType().getQualifiedSourceName() + "\");");
 
-				GeneratorHelper.addMetaDatas("field", source, field);
+				//GeneratorHelper.addMetaDatas("field", source, field);
 
 				Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
 				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
@@ -345,7 +346,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				source.println("method.setReturnTypeName(\""
 						+ method.getReturnType().getQualifiedSourceName() + "\");");
 
-				GeneratorHelper.addMetaDatas("method", source, method);
+				//GeneratorHelper.addMetaDatas("method", source, method);
 				JParameter[] params = method.getParameters();
 				for (int j = 0; j < params.length; j++) {
 					JParameter param = params[j];

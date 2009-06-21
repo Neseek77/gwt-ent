@@ -1,3 +1,80 @@
+.validate_pnl {
+	float:left;
+	opacity:1;
+}
+
+.validate_tb table, tbody{
+	border-collapse:collapse;
+  border-spacing:0;
+}
+
+.validate_tb .tl{
+	background: url('imgs/validate/tl.png') no-repeat;
+}
+.validate_tb .t{
+	background: url('imgs/validate/t.png') repeat-x;
+	height: 16px;
+}
+.validate_tb .tr{
+	background: url('imgs/validate/tr.png') no-repeat;
+}
+.validate_tb .l{
+	background: url('imgs/validate/l.png') repeat-y;
+	width : 16px;
+}
+.validate_tb .r{
+	background: url('imgs/validate/r.png') repeat-y;
+	width: 16px;
+}
+.validate_tb .bl{
+	background: url('imgs/validate/bl.png') no-repeat;
+}
+.validate_tb .b{
+	background: url('imgs/validate/b.png') no-repeat;
+	height: 25px;
+}
+.validate_tb .br{
+	background: url('imgs/validate/br.png') no-repeat;
+}
+.validate_tb .c{
+	background: url('imgs/validate/c.png') repeat;
+}
+.validate_tb .close {
+	float: right;
+	background: url('imgs/validate/close.png') no-repeat;
+	position: relative;
+	margin-left: 5px;
+	display: block;
+	width: 10px;
+	height: 10px;
+	cursor: pointer;
+}
+.validate_tb .err {
+	float: left;
+}
+.validate_tb p {
+	width : auto;
+	display: block;
+	font-size: 10px;
+	font-family: tahoma, verdana, "sans-serif";
+	margin : 0;
+	padding : 0;
+	border : 0;
+	color : #FFF;
+}
+
+.fc-error {
+	border : 1px solid #888;
+	margin-top : 5px;
+	background-color : #EAEAEA;
+}
+.fc-error p {
+	margin : 5px;
+	color : #A00;
+}
+
+
+
 .gwtent-pagination {
     padding: 5px;
     float: right;

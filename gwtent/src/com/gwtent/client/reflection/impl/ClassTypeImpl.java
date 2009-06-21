@@ -37,13 +37,13 @@ import com.gwtent.client.reflection.Constructor;
 import com.gwtent.client.reflection.EnumType;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
-import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.MethodInvokeException;
 import com.gwtent.client.reflection.NotFoundException;
 import com.gwtent.client.reflection.Package;
 import com.gwtent.client.reflection.PrimitiveType;
 import com.gwtent.client.reflection.Type;
+import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.uibinder.Parameter;
 
 /**
@@ -248,6 +248,14 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 	 * @see com.gwtent.client.reflection.ClassType#getImplementedInterfaces()
 	 */
 	public ClassType[] getImplementedInterfaces() {
+		if (lasyinterfaces == null){
+			lasyinterfaces = new ArrayList<ClassTypeImpl>();
+			for (Class<?> clazz : interfaces){
+				ClassType type = TypeOracle.Instance.getClassType(clazz);
+				if (type != null)
+					lasyinterfaces.add((ClassTypeImpl) type);
+			}
+		}
 		return (ClassTypeImpl[]) lasyinterfaces.toArray(TypeOracleImpl.NO_JCLASSES);
 	}
 

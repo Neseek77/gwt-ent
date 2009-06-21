@@ -14,7 +14,7 @@ import javax.validation.StandardConstraintDescriptor;
  * <p/>
  * Check that a string length is between min and max
  */
-public class LengthValidator implements ConstraintValidator<Length, String>, StandardConstraint {
+public class SizeValidator implements ConstraintValidator<Size, String>, StandardConstraint {
     private int min;
     private int max;
 
@@ -24,7 +24,7 @@ public class LengthValidator implements ConstraintValidator<Length, String>, Sta
      *
      * @param constraint the constraint definition
      */
-    public void initialize(Length constraint) {
+    public void initialize(Size constraint) {
         min = constraint.min();
         max = constraint.max();
     }
@@ -51,7 +51,7 @@ public class LengthValidator implements ConstraintValidator<Length, String>, Sta
      */
 		public boolean isValid(String value,
 				ConstraintValidatorContext constraintValidatorContext) {
-			if (value == null) return true;
+			if (value == null) return false;
       
       int length = value.length();
       return length >= min && length <= max;

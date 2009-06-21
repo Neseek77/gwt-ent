@@ -22,7 +22,7 @@ package com.gwtent.client.reflection;
 import com.gwtent.client.uibinder.Parameter;
 
 
-public interface AbstractMethod extends HasAnnotations, HasMetaData  {
+public interface AbstractMethod extends HasAnnotations  {
 
 	public Parameter findParameter(String name);
 
