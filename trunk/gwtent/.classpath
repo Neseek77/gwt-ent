@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/aspectjlib.jar"/>
 	<classpathentry kind="lib" path="lib/aspectjrt.jar"/>
 	<classpathentry kind="lib" path="lib/aspectjweaver.jar"/>
+	<classpathentry kind="lib" path="lib/freemarker.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
