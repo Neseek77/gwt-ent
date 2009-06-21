@@ -37,7 +37,7 @@ public class UIBinderTestCase extends GwtEntTestCase{
     sreen.getUIBinderManager().modelChanged();
     assertOK(sreen);
     
-    //sreen.getTxtFirstName().setText("set by text box");
+    sreen.getTxtFirstName().setText("set by text box");
     //assertOK(sreen);
   }
   
