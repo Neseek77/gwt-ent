@@ -8,9 +8,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.validate.ui.ErrorMessageBox;
+import com.gwtent.client.validate.ui.ErrorMessagePanel;
 import com.gwtent.sample.client.Phone.Receiver;
 
 
@@ -50,8 +53,8 @@ public class Application implements EntryPoint {
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    testReflection();
-    testAOP();
+//    testReflection();
+//    testAOP();
 
     final Button button = new Button("Click me");
     final TextArea label = new TextArea();
@@ -67,9 +70,29 @@ public class Application implements EntryPoint {
     // to hard-code IDs.  Instead, you could, for example, search for all 
     // elements with a particular CSS class and replace them with widgets.
     //
-    RootPanel.get("slot1").add(button);
-    RootPanel.get("slot2").add(label);
+    //RootPanel.get("slot1").add(button);
+    //RootPanel.get("slot2").add(label);
+    
+    errorPnl = new ErrorMessagePanel();
+    errorPnl.addErrorMsg("Hello, you must input abcedfadfasffsdfasfasf.");
+    errorPnl.addErrorMsg("Other one message");
+    
+    validateBtn.addClickListener(new ClickListener(){
+
+			public void onClick(Widget sender) {
+				errorPnl.showPanel(text);
+			}});
+    
+    
+    
+    RootPanel.get("validator").add(text);
+    RootPanel.get("validatorBtn").add(validateBtn);
+    //RootPanel.get("panelTest").add(errorPnl);
   }
+  
+  private ErrorMessagePanel errorPnl = null;
+  private Button validateBtn = new Button("Validate");
+  private TextBox text = new TextBox();
   
   static class Test extends Object {
     public void dummy() {
