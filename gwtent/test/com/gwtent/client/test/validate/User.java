@@ -1,9 +1,10 @@
 package com.gwtent.client.test.validate;
 
 import javax.validation.GroupSequence;
-import javax.validation.constraints.Length;
+import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 
 import com.gwtent.client.validate.Validatable;
 
@@ -17,12 +18,12 @@ public class User {
   
   @NotNull
   @NotEmpty
-  @Length(min=8)
+  @Size(min=8, max=200)
   private String name;
   
   @NotNull(groups={Groups.Billable.class})
   @NotEmpty(groups={Groups.Billable.class})
-  @Length(min=8, max=90, groups={Groups.Billable.class})
+  @Size(min=8, max=90, groups={Groups.Billable.class})
   private String address;
   
   @NotNull(groups={Groups.BuyInOneClick.class})

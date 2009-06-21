@@ -7,6 +7,8 @@ import javax.validation.Validator;
 
 import com.google.gwt.core.client.GWT;
 import com.gwtent.client.test.GwtEntTestCase;
+import com.gwtent.client.test.validate.Groups.Billable;
+import com.gwtent.client.test.validate.Groups.BuyInOneClick;
 import com.gwtent.client.validate.GWTValidateMessageStore;
 import com.gwtent.client.validate.impl.ValidatorGWT;
 import com.gwtent.client.validate.message.ValidateMessages;
@@ -35,27 +37,32 @@ public class ValidateTestCase extends GwtEntTestCase{
   	GWTValidateMessageStore.getInstance().addMessageObject(message, ValidateMessages.class);
   	
     Validator validator = new ValidatorGWT();
-    User company = new User();
-    Set<ConstraintViolation<User>> ics = validator.validateProperty(company, "name");
-    assertTrue(ics.size() > 0);
+    User user = new User();
+    Set<ConstraintViolation<User>> ics = validator.validateProperty(user, "name");
+    assertTrue(ics.size() == 3);
     assertTrue(isMessageExists(ics, "must not be empty"));
     assertTrue(isMessageExists(ics, "must not be null"));
+    assertTrue(isMessageExists(ics, "size must be between 8 and 200"));
     
-    ics = validator.validate(company);
-    assertTrue(ics.size() > 0);
+    ics = validator.validate(user, BuyInOneClick.class);
+    assertTrue(ics.size() == 8);
   }
   
   public void testValidateGWTGroup(){
   	GWTValidateMessageStore.getInstance().addMessageObject(GWT.create(ValidateMessages.class), ValidateMessages.class);
   	
     Validator validator = new ValidatorGWT();
-    User company = new User();
+    User user = new User();
     
-    Set<ConstraintViolation<User>> ics = validator.validateProperty(company, "name");
-    assertTrue(ics.size() > 0);
+    Set<ConstraintViolation<User>> ics = validator.validateProperty(user, "name");
+    assertTrue(ics.size() == 3);
     
-    ics = validator.validate(company);
-    assertTrue(ics.size() > 0);
+    ics = validator.validate(user, Billable.class);
+    assertTrue(ics.size() == 6);
+    
+    ics = validator.validate(user, BuyInOneClick.class);
+    assertTrue(ics.size() == 8);
+    
   }
   
 }
