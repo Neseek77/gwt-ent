@@ -8,5 +8,5 @@ package com.gwtent.client.uibinder;
  * @param <D> the data type which editor supposed
  */
 public interface UIBinder<T, D> {
-  public void binder(T widget, ModelValue<D> value);
+  public void binder(T widget, ModelValue<D> value, Class<?>... validateGroups);
 }

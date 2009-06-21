@@ -16,15 +16,15 @@ import javax.validation.Constraint;
  * --</pre>
  */
 @Documented
-@Constraint(validatedBy=LengthValidator.class)
+@Constraint(validatedBy=SizeValidator.class)
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface Length {
+public @interface Size {
     int min() default 0;
 
     int max() default Integer.MAX_VALUE;
 
-    String message() default "{constraint_length}";
+    String message() default "{constraint_size}";
 
     Class<?>[] groups() default {};
 }

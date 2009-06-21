@@ -20,7 +20,6 @@
 package com.gwtent.client.reflection.impl;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.gwtent.client.reflection.AccessDef;
@@ -28,14 +27,13 @@ import com.gwtent.client.reflection.ClassType;
 import com.gwtent.client.reflection.EnumConstant;
 import com.gwtent.client.reflection.Field;
 import com.gwtent.client.reflection.HasAnnotations;
-import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 
 
-public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
+public class FieldImpl implements Field, AccessDef, HasAnnotations{
 
 
 	private final ClassType enclosingType;
@@ -50,8 +48,6 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 	  private Type type;
 	  private String typeName;
 	  
-	  private final HasMetaData metaData = new MetaData();
-
 	  public FieldImpl(ClassTypeImpl enclosingType, String name) {
 	    this.enclosingType = enclosingType;
 	    this.name = name;
@@ -125,19 +121,6 @@ public class FieldImpl implements Field, HasMetaData, AccessDef, HasAnnotations{
 	  public void setType(Type type) {
 	    this.type = type;
 	  }
-
-	public void addMetaData(String tagName, String[] values) {
-		metaData.addMetaData(tagName, values);
-		
-	}
-
-	public String[][] getMetaData(String tagName) {
-		return metaData.getMetaData(tagName);
-	}
-
-	public String[] getMetaDataTags() {
-		return metaData.getMetaDataTags();
-	}
 
 	public String getTypeName() {
 		return typeName;

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.gwtent.client.reflection.pathResolver.PathResolver;
+import com.gwtent.client.uibinder.IValueChangedByBindingListener;
 import com.gwtent.client.uibinder.IValueChangedListener;
 import com.gwtent.client.uibinder.ModelRootAccessor;
 import com.gwtent.client.uibinder.ModelValue;
@@ -29,6 +30,7 @@ public class ModelValueImpl implements ModelValue<Object> {
   protected ModelRootAccessor rootAccessor;
   protected boolean readOnly;
   private Set<IValueChangedListener> listeners = new HashSet<IValueChangedListener>();
+  private Set<IValueChangedByBindingListener> changedByBindingListeners = new HashSet<IValueChangedByBindingListener>();
 
   public String getAsString() {
     Object value = getValue();
@@ -56,7 +58,10 @@ public class ModelValueImpl implements ModelValue<Object> {
   }
 
   public void setValue(Object value) {
-    rootAccessor.setValue(value);
+  	if (doBeforeChangedByBinding(value)){
+      rootAccessor.setValue(value);
+      doAfterChangedByBinding(value);
+  	}
   }
 
   public void doValueChanged() {
@@ -71,6 +76,30 @@ public class ModelValueImpl implements ModelValue<Object> {
 
   public void removeValueChangedListener(IValueChangedListener listener) {
     listeners.remove(listener);
+  }
+  
+  protected boolean doBeforeChangedByBinding(Object value){
+  	boolean result = true;
+  	for (IValueChangedByBindingListener listener : changedByBindingListeners){
+  		if (! listener.beforeValueChange(value))
+  			result = false;
+  	}
+  	
+  	return result;
+  }
+  
+  protected void doAfterChangedByBinding(Object value){
+  	for (IValueChangedByBindingListener listener : changedByBindingListeners){
+  		listener.afterValueChanged(value);
+  	}	
+  }
+  
+  public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener){
+  	changedByBindingListeners.remove(listener);
+  }
+  
+  public void addValueChangedByBindingListener(IValueChangedByBindingListener listener){
+  	changedByBindingListeners.add(listener);
   }
 
 	public Class<?> getValueClass() {

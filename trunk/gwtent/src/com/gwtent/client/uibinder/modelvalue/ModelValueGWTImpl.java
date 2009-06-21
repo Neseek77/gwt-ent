@@ -68,16 +68,21 @@ public class ModelValueGWTImpl extends ModelValueImpl implements ModelValue<Obje
   
   
   public void setValue(Object value) {
-    Object instance = super.getValue();
+  	if (doBeforeChangedByBinding(value)){
+  		Object instance = super.getValue();
+      
+      setter = ReflectionUtils.getSetter(lastLevelClassType, lastPath);
+      if (setter != null){
+      	Object lastLevel = PathResolver.getInstanceLastLevelByPath(instance, fullPath);
+      	if (lastLevel == null)  //TODO null? throw error or just return?
+      		return; 
+      	
+      	setter.invoke(lastLevel, value);
+      }
+  		
+      doAfterChangedByBinding(value);
+  	}
     
-    setter = ReflectionUtils.getSetter(lastLevelClassType, lastPath);
-    if (setter != null){
-    	Object lastLevel = PathResolver.getInstanceLastLevelByPath(instance, fullPath);
-    	if (lastLevel == null)  //TODO null? throw error or just return?
-    		return; 
-    	
-    	setter.invoke(lastLevel, value);
-    }
 //    if (field != null){
 //      Object lastLevel = PathResolver.getInstanceLastLevelByPath(instance, fullPath);
 //      if (lastLevel != null){

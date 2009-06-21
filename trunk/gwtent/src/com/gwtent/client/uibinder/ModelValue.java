@@ -47,8 +47,21 @@ public interface ModelValue<T> {
 	public T getValue();
 	public void setValue(T value);
 	
+	  /**
+	   * Invoke when value changed by class, NOT by binding system.
+	   * This is used for notice binding system something changed, please update editor.
+	   */
 	public void doValueChanged();
 	
+	 /**
+	   * Invoke when value changed by class, NOT by binding system.
+	   * This is used for notice binding system something changed, please update editor.
+	   * 
+	   * @see doValueChanged()
+	   */
 	public void addValueChangedListener(IValueChangedListener listener);
 	public void removeValueChangedListener(IValueChangedListener listener);
+	
+	public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener);
+  public void addValueChangedByBindingListener(IValueChangedByBindingListener listener);
 }

@@ -26,5 +26,5 @@ public interface TypeOracle {
 	
 	public Type getType(String name);
 	public ClassType getClassType(String name);
-	public ClassType getClassType(Class<?> classz);
+	public ClassType getClassType(Class<?> clazz);
 }

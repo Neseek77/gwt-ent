@@ -20,10 +20,7 @@
 package com.gwtent.client.ui.model.impl;
 
 import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.HasMetaData;
 import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.impl.MethodImpl;
-import com.gwtent.client.ui.ClassTypeHelper;
 import com.gwtent.client.ui.model.Action;
 import com.gwtent.client.ui.model.ActionCallBack;
 
@@ -58,16 +55,18 @@ public class ActionImpl implements Action {
 	
 	protected void findCaption(){
 		if (actionMethod != null){
-			if (ClassTypeHelper.getAllMetaData(actionMethod, ClassTypeHelper.ACTION_CPATION_METADATA).length() > 0){
-				this.caption = ClassTypeHelper.getAllMetaData(actionMethod, ClassTypeHelper.ACTION_CPATION_METADATA);
-			}
+			//TODO MetaData
+			//if (ClassTypeHelper.getAllMetaData(actionMethod, ClassTypeHelper.ACTION_CPATION_METADATA).length() > 0){
+			//	this.caption = ClassTypeHelper.getAllMetaData(actionMethod, ClassTypeHelper.ACTION_CPATION_METADATA);
+			//}
 		}
 		
 		if (this.caption.length() <= 0){
 			if (asyncActionMethod != null){
-				if (ClassTypeHelper.getAllMetaData(asyncActionMethod, ClassTypeHelper.ACTION_CPATION_METADATA).length() > 0){
-					this.caption = ClassTypeHelper.getAllMetaData(asyncActionMethod, ClassTypeHelper.ACTION_CPATION_METADATA);
-				}
+				//TODO MetaData
+				//if (ClassTypeHelper.getAllMetaData(asyncActionMethod, ClassTypeHelper.ACTION_CPATION_METADATA).length() > 0){
+				//	this.caption = ClassTypeHelper.getAllMetaData(asyncActionMethod, ClassTypeHelper.ACTION_CPATION_METADATA);
+				//}
 			}
 		}
 	}
