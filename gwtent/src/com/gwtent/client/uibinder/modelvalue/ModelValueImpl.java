@@ -58,10 +58,10 @@ public class ModelValueImpl implements ModelValue<Object> {
   }
 
   public void setValue(Object value) {
-  	if (doBeforeChangedByBinding(value)){
+  	//if (doBeforeChangedByBinding(value)){
       rootAccessor.setValue(value);
-      doAfterChangedByBinding(value);
-  	}
+      //doAfterChangedByBinding(value);
+  	//}
   }
 
   public void doValueChanged() {
@@ -78,19 +78,26 @@ public class ModelValueImpl implements ModelValue<Object> {
     listeners.remove(listener);
   }
   
-  protected boolean doBeforeChangedByBinding(Object value){
+  /**
+   * 
+   * @param instance last level instance
+   * @param property last level path
+   * @param value the value
+   * @return
+   */
+  protected boolean doBeforeChangedByBinding(Object instance, String property, Object value){
   	boolean result = true;
   	for (IValueChangedByBindingListener listener : changedByBindingListeners){
-  		if (! listener.beforeValueChange(value))
+  		if (! listener.beforeValueChange(instance, property, value))
   			result = false;
   	}
   	
   	return result;
   }
   
-  protected void doAfterChangedByBinding(Object value){
+  protected void doAfterChangedByBinding(Object instance, String property, Object value){
   	for (IValueChangedByBindingListener listener : changedByBindingListeners){
-  		listener.afterValueChanged(value);
+  		listener.afterValueChanged(instance, property, value);
   	}	
   }
   
