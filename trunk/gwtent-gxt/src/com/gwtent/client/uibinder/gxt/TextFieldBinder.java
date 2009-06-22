@@ -43,20 +43,22 @@ public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
     }
   }
   
-  protected void doSetValueToModel(){
-  	getModelValue().setValue(getWidget().getValue());
-  }
-  
+ 
   protected void doInit(TextField<D> widget, ModelValue<D> value) {
     widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-      	doSetValueToModel();
+      	setEditorValueToValue();
       }});
   }
 
   protected void setValueToEditor(D value, TextField<D> widget) {
     widget.setValue(value);
   }
+
+	@Override
+	protected void setEditorValueToValue() {
+		getModelValue().setValue(getWidget().getValue());
+	}
 
 }

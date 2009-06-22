@@ -29,16 +29,12 @@ public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>,
       return new Class<?>[]{};
     }
   }
-	
-	protected void doSetValueToModel(){
-  	getModelValue().setValue(getWidget().getSimpleValue());
-  }
 
 	protected void doInit(SimpleComboBox<D> widget, ModelValue<D> value) {
 		widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-      	doSetValueToModel();
+      	setEditorValueToValue();
       }});
 	}
 
@@ -49,5 +45,10 @@ public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>,
 			widget.setValue(null);
 		else
   		widget.setSimpleValue(value);
+	}
+
+	@Override
+	protected void setEditorValueToValue() {
+		getModelValue().setValue(getWidget().getSimpleValue());
 	}
 }
