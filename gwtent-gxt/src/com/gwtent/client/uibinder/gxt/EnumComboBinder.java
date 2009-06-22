@@ -41,13 +41,7 @@ public class EnumComboBinder<T extends Enum<T>> extends AbstractUIBinder<EnumCom
 		widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-      	if (getWidget().getSelection().size() > 0){
-      		SimpleComboValue<T> value = getWidget().getSelection().get(0);
-    			getModelValue().setValue(value.getValue());
-      		return;
-      	}
-      	
-      	getModelValue().setValue(null);
+      	setEditorValueToValue();
       }});
 	}
 
@@ -63,6 +57,17 @@ public class EnumComboBinder<T extends Enum<T>> extends AbstractUIBinder<EnumCom
 		}
 		
 		widget.setSelection(values);
+	}
+
+	@Override
+	protected void setEditorValueToValue() {
+		if (getWidget().getSelection().size() > 0){
+  		SimpleComboValue<T> value = getWidget().getSelection().get(0);
+			getModelValue().setValue(value.getValue());
+  		return;
+  	}
+  	
+  	getModelValue().setValue(null);
 	}
 
 
