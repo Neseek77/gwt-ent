@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.groups.Default;
+
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
@@ -401,7 +403,24 @@ public class TemplateCreator extends LogableSourceCreator {
       if (! rootValueName.endsWith("()")){
         setCode = rootValueName + " = (" + findClassTypeByPath(classType, path)+")value;";
       }
-          
+        
+      String autoValidate = "false";
+      if (bind.autoValidate())
+      	autoValidate = "true";
+      
+      //new Class<?>[]{Default.class}
+      StringBuilder sb = new StringBuilder();
+      sb.append("new Class<?>[]{");
+      boolean first = true;
+      for (Class<?> clazz : bind.groups()){
+      	if (!first)
+      		sb.append(", ");
+      	
+      	sb.append(clazz.getCanonicalName()).append(".class");
+      	
+      	first = false;
+      }
+      sb.append("}");
       
       source.println("getUIBinderManager().addBinder(" + widgetSource +", \"" + PathResolver.getResetElementByPath(path) + "\", "
           + readonly.toString() + ", " + findClassTypeByPath(classType, path) + ".class,\n" + 
@@ -411,7 +430,7 @@ public class TemplateCreator extends LogableSourceCreator {
         "          }\n" +
         "          public void setValue(Object value) {\n" +
         "            " + setCode + "\n" +           
-        "          }});");
+        "          }}, "+ autoValidate +", " + sb.toString() + ");");
     }
   }
 	

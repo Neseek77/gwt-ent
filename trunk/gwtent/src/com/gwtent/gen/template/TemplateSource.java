@@ -1,5 +1,7 @@
 package com.gwtent.gen.template;
 
+import javax.validation.groups.Default;
+
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -57,7 +59,7 @@ public class TemplateSource extends HTMLTemplatePanel {
 
           public void setValue(Object value) {
             //
-          }});
+          }}, true, new Class<?>[]{Default.class});  //validate Groups
     
     //....
     

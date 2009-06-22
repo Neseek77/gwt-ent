@@ -62,13 +62,11 @@ public class MessageInterpolatorGWTImpl implements MessageInterpolator {
 				}
 			}
 			
-			if (messageTypes.keySet().size() <= 0)
-				throw new RuntimeException("Please using [GWTValidateMessageStore.getInstance().addMessageObject] setup your message class first.");
-			
 			StringBuilder sb = new StringBuilder();
 			sb.append("Can not found message method from message class list. please ensure function [").append(messageTemplate).append("(...)] exists in the following classes: ");
 			for (ClassType type : messageTypes.keySet())
 				sb.append(type.getName());
+			sb.append(". You can using [GWTValidateMessageStore.getInstance().addMessageObject] setup your message class.");
 			throw new RuntimeException(sb.toString());
 			
 		}else{

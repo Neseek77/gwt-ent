@@ -39,6 +39,8 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   public class ValidateValueChangedByBindingListener implements IValueChangedByBindingListener{
 
   	private ErrorMessagePanel msgPanel;
+  	private Set<ConstraintViolation<Object>> scv = null;
+  	private boolean showMessagesToUI = true;
   	
   	private ErrorMessagePanel getMsgPanel(){
   		if (msgPanel == null)
@@ -54,16 +56,27 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 		public void afterValueChanged(Object instance, String property, Object value) {
 			
 		}
+		
+		public Set<ConstraintViolation<Object>> getValidateResult(){
+			return scv;
+		}
 
 		public boolean beforeValueChange(Object instance, String property, Object value) {
-			Set<ConstraintViolation<Object>> scv = ValidatorFactory.getGWTValidator().validateProperty(instance, property, validateGroups);
+			if (msgPanel != null){
+				getMsgPanel().clearErrorMsgs();
+				getMsgPanel().hide();
+			}
+			
+			scv = ValidatorFactory.getGWTValidator().validateValue((Class<Object>)instance.getClass(), property, value, validateGroups);
 			if (scv.size() > 0){
-				for (ConstraintViolation<Object> cv : scv){
-					getMsgPanel().addErrorMsg(cv.getMessage());
+				if (showMessagesToUI){
+					for (ConstraintViolation<Object> cv : scv){
+						getMsgPanel().addErrorMsg(cv.getMessage());
+					}
+					
+					if (getWidget() instanceof UIObject)
+						getMsgPanel().showPanel((UIObject)getWidget());
 				}
-				
-				if (getWidget() instanceof UIObject)
-					getMsgPanel().showPanel((UIObject)getWidget());
 				
 				return false;
 			}else{
@@ -71,9 +84,17 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 			}			
 			
 		}
+
+		public void setShowMessagesToUI(boolean showMessagesToUI) {
+			this.showMessagesToUI = showMessagesToUI;
+		}
+
+		public boolean isShowMessagesToUI() {
+			return showMessagesToUI;
+		}
   }
   
-  public void binder(T widget, ModelValue<D> value, Class<?>... validateGroups) {
+  public void binder(T widget, ModelValue<D> value, boolean autoValidate, Class<?>... validateGroups) {
     this.widget = widget;
     this.modelValue = value;
     
@@ -83,7 +104,24 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     
     value.addValueChangedListener(new ValueChangedListener());
     
-    value.addValueChangedByBindingListener(new ValidateValueChangedByBindingListener());
+    if (autoValidate){
+    	validateListener = new ValidateValueChangedByBindingListener();
+    	value.addValueChangedByBindingListener(validateListener);
+    }
+    	
+  }
+  
+  public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
+  	if (validateListener != null)
+  		validateListener.setShowMessagesToUI(showMessagesToUI);
+  	
+  	setEditorValueToValue();
+  	if (validateListener != null){
+  		validateListener.setShowMessagesToUI(true);
+  		return validateListener.getValidateResult();
+  	}
+  	
+  	return null;
   }
   
   protected void doValueChanged(){
@@ -106,9 +144,16 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
    * @param widget the widget want display the value
    */
   protected abstract void setValueToEditor(D value, T widget);
-
-
   
+  /**
+   * Get the value from editor and put it to inner Value object
+   * Some times this function will be called by straight way(for now i.e ValidateProcess)
+   * 
+   */
+  protected abstract void setEditorValueToValue();
+
+
+  private ValidateValueChangedByBindingListener validateListener;
   private T widget;
   private ModelValue<D> modelValue;
   private Class<?>[] validateGroups;

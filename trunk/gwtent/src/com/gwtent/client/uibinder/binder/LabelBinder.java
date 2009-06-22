@@ -24,11 +24,6 @@ public class LabelBinder extends AbstractUIBinder<Label, Object> {
     }
   }
   
-  protected void doValueChangedByWidget(){
-  	//Label never change
-    //this.getModelValue().setValue(this.getWidget().getHTML());
-  }
-  
   protected void doInit(final Label widget, final ModelValue<Object> value) {
     
   }
@@ -40,5 +35,10 @@ public class LabelBinder extends AbstractUIBinder<Label, Object> {
       widget.setText("");
     
   }
+
+	@Override
+	protected void setEditorValueToValue() {
+		//Label never change
+	}
 
 }

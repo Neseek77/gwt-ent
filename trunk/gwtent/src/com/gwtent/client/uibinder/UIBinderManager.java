@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+
+import com.google.gwt.user.client.ui.UIObject;
 import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.common.ObjectFactory;
 import com.gwtent.client.uibinder.modelvalue.ModelValueGWTImpl;
@@ -58,12 +61,12 @@ public class UIBinderManager {
    * @param valueAccessor
    */
   public <T extends Object> void addBinder(T uiObject, String path, boolean readOnly, Class<?> modelClass,
-      ModelRootAccessor valueAccessor){
+      ModelRootAccessor valueAccessor, boolean autoValidate, Class<?>... groups){
   	try {
   		uiObjectList.add(uiObject);
       UIBinder binder = UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinder(uiObject.getClass());
       ModelValue value = UIBinderGWTFactory.getModelValue(modelClass, path, readOnly, valueAccessor);
-      binder.binder(uiObject, value);
+      binder.binder(uiObject, value, autoValidate, groups);
       binders.put(binder, value);
 		} catch (Exception e) {
 			throw new CheckedExceptionWrapper(e.getMessage() + "\n Path:" + path + " UIObject:" + uiObject + " ModelClass:" + modelClass, e);
@@ -86,6 +89,23 @@ public class UIBinderManager {
     for (ModelValue value : binders.values()){
       (value).doValueChanged();
     }
+  }
+  
+  public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
+  	Set<ConstraintViolation<Object>> result = new HashSet<ConstraintViolation<Object>>();
+  	for (UIBinder binder : binders.keySet()){
+  		result.addAll(binder.validate(showMessagesToUI, validateGroups));
+  	}
+  	return result;
+  }
+  
+  public void validate(UIObject widget, Class<?>... validateGroups){
+  	for (UIBinder binder : binders.keySet()){
+  		if (binder.getWidget() == widget){
+  			binder.validate(true, validateGroups);
+  			return;
+  		}
+  	}
   }
   
 }

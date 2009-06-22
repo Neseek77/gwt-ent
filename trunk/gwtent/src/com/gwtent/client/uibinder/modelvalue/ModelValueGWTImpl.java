@@ -44,7 +44,7 @@ public class ModelValueGWTImpl extends ModelValueImpl implements
 		if (getter == null)
 			throw new RuntimeException("Can't get getter of " + lastPath + " on "
 					+ lastLevelClassType.getName());
-
+		
 		// this.field = lastLevelClassType.getField(lastPath);
 		// if (field == null){
 		// this.getter = lastLevelClassType.getMethod(lastPath, null);
@@ -99,6 +99,8 @@ public class ModelValueGWTImpl extends ModelValueImpl implements
 	}
 
 	public Class<?> getValueClass() {
+		ReflectionUtils.checkReflection(getter.getReturnTypeName());
+		
 		return ((ClassType) getter.getReturnType()).getDeclaringClass();
 
 		// if (field != null)

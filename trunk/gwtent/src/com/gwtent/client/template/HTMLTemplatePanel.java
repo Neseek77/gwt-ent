@@ -1,8 +1,12 @@
 package com.gwtent.client.template;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.client.uibinder.UIBinderManager;
@@ -47,6 +51,15 @@ public class HTMLTemplatePanel extends HTMLPanel {
   public void modelChanged(String... pathPrefixs){
     uiBinderManager.modelChanged(pathPrefixs);
   }
+  
+  public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
+  	return uiBinderManager.validate(showMessagesToUI, validateGroups);
+  }
+  
+  public void validate(UIObject widget, Class<?>... validateGroups){
+  	uiBinderManager.validate(widget, validateGroups);
+  }
+  
   
   /**
    * Can override this function.

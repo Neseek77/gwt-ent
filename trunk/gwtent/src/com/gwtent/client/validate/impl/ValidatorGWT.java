@@ -92,11 +92,11 @@ public class ValidatorGWT implements Validator{
     
     Field field = type.getField(propertyName);
     if (field != null){
-      doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), ReflectionUtils.getGetter(type, propertyName), groups);
+      doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), value, groups);
     }else{
       Method method = type.getMethod(propertyName, null);
       if (method != null)
-        doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), method, groups);
+        doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), value, groups);
     }
     
     return icSet;

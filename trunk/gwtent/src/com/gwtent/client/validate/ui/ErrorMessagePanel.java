@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ErrorMessagePanel extends PopupPanel{
 	public ErrorMessagePanel(){
+		setZIndex(this, 5000);  //Fix for thirdparty componenets, i.e, gxt, gwtext
+		
 		this.box = new ErrorMessageBox();
 		box.setShowCloseButton(true);
 		this.add(box);
@@ -27,6 +29,7 @@ public class ErrorMessagePanel extends PopupPanel{
 	}
 
 	public void showPanel(final UIObject uiObject){
+		setZIndex(this, 5000);
 		//this.setPopupPosition(getLeft(uiObject), getTop(uiObject));
 		
 		//this.show();
@@ -39,6 +42,10 @@ public class ErrorMessagePanel extends PopupPanel{
 	
 	public void addErrorMsg(String msg){
 		box.addErrorMsg(msg);
+	}
+	
+	public void clearErrorMsgs(){
+		box.clearErrorMsgs();
 	}
 	
 	private int getTop(UIObject uiObject, int offsetHeight){
@@ -57,6 +64,11 @@ public class ErrorMessagePanel extends PopupPanel{
     DOM.setStyleAttribute(elem, "top", "");
     DOM.setStyleAttribute(elem, "position", "");
   }
+	
+	protected void setZIndex(Widget w, int zindex){
+		Element h = w.getElement();
+		DOM.setStyleAttribute(h, "z-index", String.valueOf(zindex));
+	}
 	
 	protected void setWidgetPositionImpl(Widget w, int left, int top) {
     Element h = w.getElement();
