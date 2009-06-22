@@ -102,7 +102,7 @@ public class ReflectionUtils {
   } 
   
   public static void reflectionRequired(String className, String msg){
-    throw new ReflectionRequiredException("your class should have reflection information before this opeartion. This can be done by annotated class with \"@Reflectionable\" annotations, ie: \"@Reflectable\", \"@Validtable\", \"@DataContract\" or implement flag interface \"Reflection\". Current class is : " + className + "\n" + msg);
+    throw new ReflectionRequiredException("your class should have reflection information before this opeartion. This can be done by annotated class with \"@Reflectable\" annotations, i.e: \"@Reflectable\", \"@Reflect_Domain\", \"@Reflect_Full\", \"@Reflect_Mini\", \"@Validtable\", \"@DataContract\" or implement flag interface \"Reflection\". if you are facing the class which you can not modify(i.e java.*, javax.*), you can using @Reflectable(relationTypes=true) or @Reflect_Domain to your class. Current class is : " + className + "\n" + msg);
   }
   
   /**

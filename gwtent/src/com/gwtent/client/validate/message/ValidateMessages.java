@@ -35,4 +35,7 @@ public interface ValidateMessages extends Messages {
 	String constraint_future();
 	String constraint_pattern(String regexp);
 	String constraint_notEmpty();
+	
+	//
+	String constraint_required();
 }

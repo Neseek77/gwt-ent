@@ -28,10 +28,7 @@ public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
     
   }
   
-  protected void doValueChangedByWidget(){
-    this.getModelValue().setValue(this.getWidget().getHTML());
-  }
-  
+
   protected void doInit(final RichTextArea widget, final ModelValue<String> value) {
     widget.addFocusListener(new FocusListener(){
 
@@ -39,14 +36,14 @@ public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
       }
 
       public void onLostFocus(Widget sender) {
-        doValueChangedByWidget();
+      	setEditorValueToValue();
       }});
     
     widget.addKeyboardListener(new KeyboardListener(){
 
       public void onKeyDown(Widget sender, char keyCode, int modifiers) {
         if (keyCode == KeyboardListener.KEY_ENTER)
-          doValueChangedByWidget();
+        	setEditorValueToValue();
       }
 
       public void onKeyPress(Widget sender, char keyCode, int modifiers) {
@@ -63,5 +60,10 @@ public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
       widget.setHTML("");
     
   }
+
+	@Override
+	protected void setEditorValueToValue() {
+		this.getModelValue().setValue(this.getWidget().getHTML());
+	}
 
 }

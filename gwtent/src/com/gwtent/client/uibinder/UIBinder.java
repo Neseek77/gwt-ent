@@ -1,5 +1,9 @@
 package com.gwtent.client.uibinder;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+
 /**
  * 
  * @author JamesLuo@gmail.com
@@ -8,5 +12,8 @@ package com.gwtent.client.uibinder;
  * @param <D> the data type which editor supposed
  */
 public interface UIBinder<T, D> {
-  public void binder(T widget, ModelValue<D> value, Class<?>... validateGroups);
+  public void binder(T widget, ModelValue<D> value, boolean autoValidate, Class<?>... validateGroups);
+  public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups);
+  
+  public T getWidget();
 }
