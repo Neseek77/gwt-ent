@@ -52,6 +52,13 @@ public class HTMLTemplatePanel extends HTMLPanel {
     uiBinderManager.modelChanged(pathPrefixs);
   }
   
+  /**
+   * Validate this page, you can override with your version
+   * 
+   * @param showMessagesToUI
+   * @param validateGroups
+   * @return
+   */
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
   	return uiBinderManager.validate(showMessagesToUI, validateGroups);
   }

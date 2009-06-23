@@ -112,4 +112,12 @@ public class ModelValueImpl implements ModelValue<Object> {
 	public Class<?> getValueClass() {
 		return rootClass;
 	}
+
+	public Class<?> getRootClass() {
+		return rootClass;
+	}
+
+	public String getPropertyPath() {
+		return null;
+	}
 }

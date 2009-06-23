@@ -36,9 +36,4 @@ public class LabelBinder extends AbstractUIBinder<Label, Object> {
     
   }
 
-	@Override
-	protected void setEditorValueToValue() {
-		//Label never change
-	}
-
 }

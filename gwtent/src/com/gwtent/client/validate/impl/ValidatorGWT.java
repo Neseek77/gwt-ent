@@ -23,6 +23,8 @@ import com.gwtent.client.reflection.HasAnnotations;
 import com.gwtent.client.reflection.Method;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.client.reflection.pathResolver.PathResolver;
+import com.gwtent.client.reflection.pathResolver.PathResolver.ENullInPath;
 import com.gwtent.client.validate.impl.ConstraintValidatorContextImpl.ErrorMsg;
 
 public class ValidatorGWT implements Validator{
@@ -58,14 +60,27 @@ public class ValidatorGWT implements Validator{
     ClassType type = TypeOracle.Instance.getClassType(object.getClass());
     if (type == null)
       ReflectionUtils.reflectionRequired(object.getClass());
+
+    //Path of propertyName support
+    type = PathResolver.getLastClassTypeByPath(object.getClass(),	propertyName);
     
+    try {  //let end user handle it
+			object = (T) PathResolver.getInstanceLastLevelByPath(object, propertyName);
+		} catch (ENullInPath e) {
+			throw new IllegalArgumentException(e.getMessage(), e);
+			//return icSet;  //error in half of path?
+		}
+    propertyName = PathResolver.getLastElementByPath(propertyName);
+
     Set<ConstraintViolation<T>> icSet = new HashSet<ConstraintViolation<T>>();
-    
     Field field = type.getField(propertyName);
     if (field != null){
       doValidate(object, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), ReflectionUtils.getGetter(type, propertyName), groups);
     }else{
       Method method = type.getMethod(propertyName, null);
+      if (method == null)
+      	method = ReflectionUtils.getGetter(type, propertyName);
+      
       if (method != null)
         doValidate(object, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), method, groups);
     }
@@ -88,6 +103,10 @@ public class ValidatorGWT implements Validator{
     if (type == null)
       ReflectionUtils.reflectionRequired(beanType);
     
+    //Path of propertyName support
+    type = PathResolver.getLastClassTypeByPath(beanType,	propertyName);
+    propertyName = PathResolver.getLastElementByPath(propertyName);
+    
     Set<ConstraintViolation<T>> icSet = new HashSet<ConstraintViolation<T>>();
     
     Field field = type.getField(propertyName);
@@ -95,6 +114,9 @@ public class ValidatorGWT implements Validator{
       doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), value, groups);
     }else{
       Method method = type.getMethod(propertyName, null);
+      if (method == null)
+      	method = ReflectionUtils.getGetter(type, propertyName);
+      
       if (method != null)
         doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), value, groups);
     }
@@ -169,6 +191,8 @@ public class ValidatorGWT implements Validator{
   }
 
   /**
+   * This function supposed:
+   * propertyName is the property of object or beanType, not a path.
    * 
    * @param <T>
    * @param object Can be Null, if not instance object

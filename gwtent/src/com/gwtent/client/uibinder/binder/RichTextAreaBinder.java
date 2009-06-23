@@ -36,14 +36,14 @@ public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
       }
 
       public void onLostFocus(Widget sender) {
-      	setEditorValueToValue();
+      	setEditorToValue(getWidget().getHTML());
       }});
     
     widget.addKeyboardListener(new KeyboardListener(){
 
       public void onKeyDown(Widget sender, char keyCode, int modifiers) {
         if (keyCode == KeyboardListener.KEY_ENTER)
-        	setEditorValueToValue();
+        	setEditorToValue(getWidget().getHTML());
       }
 
       public void onKeyPress(Widget sender, char keyCode, int modifiers) {
@@ -60,10 +60,4 @@ public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
       widget.setHTML("");
     
   }
-
-	@Override
-	protected void setEditorValueToValue() {
-		this.getModelValue().setValue(this.getWidget().getHTML());
-	}
-
 }

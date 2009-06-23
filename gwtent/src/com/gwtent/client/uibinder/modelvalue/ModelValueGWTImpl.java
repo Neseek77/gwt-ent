@@ -110,5 +110,13 @@ public class ModelValueGWTImpl extends ModelValueImpl implements
 		//		
 		// return null;
 	}
+	
+	public Class<?> getRootClass() {
+		return instanceClassType.getDeclaringClass();
+	}
+	
+	public String getPropertyPath() {
+		return fullPath;
+	}
 
 }

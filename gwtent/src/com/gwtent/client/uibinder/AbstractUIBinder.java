@@ -36,92 +36,51 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     }
   }
   
-  public class ValidateValueChangedByBindingListener implements IValueChangedByBindingListener{
-
-  	private ErrorMessagePanel msgPanel;
-  	private Set<ConstraintViolation<Object>> scv = null;
-  	private boolean showMessagesToUI = true;
-  	
-  	private ErrorMessagePanel getMsgPanel(){
-  		if (msgPanel == null)
-  			msgPanel = new ErrorMessagePanel();
-  		
-  		return msgPanel;
-  	}
-  	
-  	public ValidateValueChangedByBindingListener(){
-  		
-  	}
-  	
-		public void afterValueChanged(Object instance, String property, Object value) {
-			
+  private ErrorMessagePanel msgPanel;
+  
+  private ErrorMessagePanel getMsgPanel(){
+		if (msgPanel == null)
+			msgPanel = new ErrorMessagePanel();
+		
+		return msgPanel;
+	}
+  
+  private Set<ConstraintViolation<Object>> doValidate(boolean showMessagesToUI, D value, Class<?>... validateGroups){
+  	if (msgPanel != null){
+			getMsgPanel().clearErrorMsgs();
+			getMsgPanel().hide();
 		}
 		
-		public Set<ConstraintViolation<Object>> getValidateResult(){
-			return scv;
-		}
-
-		public boolean beforeValueChange(Object instance, String property, Object value) {
-			if (msgPanel != null){
-				getMsgPanel().clearErrorMsgs();
-				getMsgPanel().hide();
-			}
-			
-			scv = ValidatorFactory.getGWTValidator().validateValue((Class<Object>)instance.getClass(), property, value, validateGroups);
-			if (scv.size() > 0){
-				if (showMessagesToUI){
-					for (ConstraintViolation<Object> cv : scv){
-						getMsgPanel().addErrorMsg(cv.getMessage());
-					}
-					
-					if (getWidget() instanceof UIObject)
-						getMsgPanel().showPanel((UIObject)getWidget());
+  	Set<ConstraintViolation<Object>> scv = ValidatorFactory.getGWTValidator().validateValue((Class<Object>)getModelValue().getRootClass(), getModelValue().getPropertyPath(), value, validateGroups);
+		if (scv.size() > 0){
+			if (showMessagesToUI){
+				for (ConstraintViolation<Object> cv : scv){
+					getMsgPanel().addErrorMsg(cv.getMessage());
 				}
 				
-				return false;
-			}else{
-				return true;
-			}			
-			
+				if (getWidget() instanceof UIObject)
+					getMsgPanel().showPanel((UIObject)getWidget());
+			}
 		}
-
-		public void setShowMessagesToUI(boolean showMessagesToUI) {
-			this.showMessagesToUI = showMessagesToUI;
-		}
-
-		public boolean isShowMessagesToUI() {
-			return showMessagesToUI;
-		}
+		
+		return scv;
   }
+  
   
   public void binder(T widget, ModelValue<D> value, boolean autoValidate, Class<?>... validateGroups) {
     this.widget = widget;
     this.modelValue = value;
+    this.autoValidate = autoValidate;
     
-    this.validateGroups = validateGroups;
+    this.autoValidateGroups = validateGroups;
     
     doInit(widget, value);
     
-    value.addValueChangedListener(new ValueChangedListener());
-    
-    if (autoValidate){
-    	validateListener = new ValidateValueChangedByBindingListener();
-    	value.addValueChangedByBindingListener(validateListener);
-    }
-    	
+    value.addValueChangedListener(new ValueChangedListener());    	
   }
   
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
-  	if (validateListener != null)
-  		validateListener.setShowMessagesToUI(showMessagesToUI);
-  	
-  	setEditorValueToValue();
-  	if (validateListener != null){
-  		validateListener.setShowMessagesToUI(true);
-  		return validateListener.getValidateResult();
-  	}
-  	
-  	return null;
+  	return this.doValidate(showMessagesToUI, getModelValue().getValue(), validateGroups);
   }
   
   protected void doValueChanged(){
@@ -146,17 +105,27 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   protected abstract void setValueToEditor(D value, T widget);
   
   /**
-   * Get the value from editor and put it to inner Value object
-   * Some times this function will be called by straight way(for now i.e ValidateProcess)
+   * When value changed by Editor, please invoke this function to set the new value into inner ModelValue object
    * 
+   * This function will do Validate(if need) before setup to it.
+   * 
+   * If not invoke this function, the validate function will be lost.
    */
-  protected abstract void setEditorValueToValue();
+  protected void setEditorToValue(D value){
+  	if (autoValidate){  //auto validate and validate failed, direct return
+  		if (doValidate(true, value, autoValidateGroups).size() > 0)
+  			return;
+  	}
+  	
+  	modelValue.setValue(value);
+  }
 
 
-  private ValidateValueChangedByBindingListener validateListener;
+  private boolean autoValidate;
+  private Class<?>[] autoValidateGroups;
+  
   private T widget;
   private ModelValue<D> modelValue;
-  private Class<?>[] validateGroups;
   
   public T getWidget() {
     return widget;
@@ -165,4 +134,12 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   public ModelValue<D> getModelValue() {
     return modelValue;
   }
+
+	public void setAutoValidate(boolean autoValidate) {
+		this.autoValidate = autoValidate;
+	}
+
+	public boolean isAutoValidate() {
+		return autoValidate;
+	}
 }
