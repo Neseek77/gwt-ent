@@ -44,7 +44,7 @@ public class TextBoxBinder extends AbstractUIBinder<TextBoxBase, String> {
   
   public class ChangeListenerImpl implements ChangeListener{
     public void onChange(Widget sender) {
-    	setEditorValueToValue();
+    	setEditorToValue(getWidget().getText());
     }
   }
   
@@ -60,11 +60,6 @@ public class TextBoxBinder extends AbstractUIBinder<TextBoxBase, String> {
 		widget.setText(value);
 	}
 
-
-	@Override
-	protected void setEditorValueToValue() {
-		getModelValue().setValue(getWidget().getText());
-	}
 
   
 }

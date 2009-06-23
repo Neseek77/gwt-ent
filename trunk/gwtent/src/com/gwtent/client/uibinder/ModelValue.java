@@ -43,6 +43,18 @@ public interface ModelValue<T> {
 	 * @return
 	 */
 	public Class<?> getValueClass();
+	/**
+	 * The Root class
+	 * i.e: a.b.c.d, this is the class of a
+	 * @return
+	 */
+	public Class<?> getRootClass();
+	
+	/**
+	 * The full path, how to get value from RootClass
+	 * @return
+	 */
+	public String getPropertyPath();
 	
 	public T getValue();
 	public void setValue(T value);

@@ -94,7 +94,9 @@ public class UIBinderManager {
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
   	Set<ConstraintViolation<Object>> result = new HashSet<ConstraintViolation<Object>>();
   	for (UIBinder binder : binders.keySet()){
-  		result.addAll(binder.validate(showMessagesToUI, validateGroups));
+  		Set<ConstraintViolation<Object>> r = binder.validate(showMessagesToUI, validateGroups);
+  		if (r != null)
+  			result.addAll(r);
   	}
   	return result;
   }

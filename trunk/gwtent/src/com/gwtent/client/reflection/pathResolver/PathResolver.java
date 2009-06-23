@@ -111,7 +111,7 @@ public class PathResolver {
     }
     
     if (object == null)
-      throw new RuntimeException("Path returns null, full path: " + fullPath + "current path: " + path);
+      throw new ENullInPath(fullPath, path);
     
     ReflectionUtils.checkReflection(object.getClass());
     return object;
@@ -139,5 +139,29 @@ public class PathResolver {
     }
     
     return parentModel;
+  }
+  
+  
+  public static class ENullInPath extends RuntimeException{
+
+		private static final long serialVersionUID = 1L;
+		private final String fullPath;
+		private final String errorPath;
+		public ENullInPath(String fullPath, String errorPath){
+			this.fullPath = fullPath;
+			this.errorPath = errorPath;
+		}
+		
+		public String getErrorPath() {
+			return errorPath;
+		}
+		public String getFullPath() {
+			return fullPath;
+		}
+		
+		public String getMessage() {
+			return "Path returns null, full path: " + fullPath + "current error path: " + errorPath;
+		}
+  	
   }
 }
