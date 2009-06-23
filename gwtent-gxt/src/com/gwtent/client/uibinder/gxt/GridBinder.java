@@ -53,9 +53,4 @@ public class GridBinder<D extends Iterable<Object>> extends AbstractUIBinder<Gri
     }
   }
 
-	@Override
-	protected void setEditorValueToValue() {
-	//This grid is read only
-	}
-
 }

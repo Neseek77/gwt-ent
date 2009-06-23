@@ -34,7 +34,7 @@ public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>,
 		widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-      	setEditorValueToValue();
+      	setEditorToValue(getWidget().getSimpleValue());
       }});
 	}
 
@@ -47,8 +47,4 @@ public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>,
   		widget.setSimpleValue(value);
 	}
 
-	@Override
-	protected void setEditorValueToValue() {
-		getModelValue().setValue(getWidget().getSimpleValue());
-	}
 }
