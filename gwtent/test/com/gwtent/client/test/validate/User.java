@@ -22,9 +22,7 @@ public class User {
   private String name;
   
   @NotNull(groups={Groups.Billable.class})
-  @NotEmpty(groups={Groups.Billable.class})
-  @Size(min=8, max=90, groups={Groups.Billable.class})
-  private String address;
+  private Address address;
   
   @NotNull(groups={Groups.BuyInOneClick.class})
   @NotEmpty(groups={Groups.BuyInOneClick.class})
@@ -38,11 +36,11 @@ public class User {
     return name;
   }
 
-  public void setAddress(String address) {
+  public void setAddress(Address address) {
     this.address = address;
   }
 
-  public String getAddress() {
+  public Address getAddress() {
     return address;
   }
 

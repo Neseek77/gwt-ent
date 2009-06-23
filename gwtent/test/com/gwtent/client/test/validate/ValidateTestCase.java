@@ -45,7 +45,7 @@ public class ValidateTestCase extends GwtEntTestCase{
     assertTrue(isMessageExists(ics, "size must be between 8 and 200"));
     
     ics = validator.validate(user, BuyInOneClick.class);
-    assertTrue(ics.size() == 8);
+    assertTrue(ics.size() == 6);
   }
   
   public void testValidateGWTGroup(){
@@ -58,11 +58,28 @@ public class ValidateTestCase extends GwtEntTestCase{
     assertTrue(ics.size() == 3);
     
     ics = validator.validate(user, Billable.class);
-    assertTrue(ics.size() == 6);
+    assertTrue(ics.size() == 4);
     
     ics = validator.validate(user, BuyInOneClick.class);
-    assertTrue(ics.size() == 8);
+    assertTrue(ics.size() == 6);
     
+  }
+  
+  public void testValidatePropertyPath(){
+  	Validator validator = new ValidatorGWT();
+    User user = new User();
+    
+    try {
+			Set<ConstraintViolation<User>> ics = validator.validateProperty(user, "address.postCode");
+			//should get error, path return null
+			assertTrue(false);
+		} catch (Exception e) {
+			assertTrue(true);
+		}
+		
+		user.setAddress(new Address());
+		Set<ConstraintViolation<User>> ics = validator.validateProperty(user, "address.postCode");
+		assertTrue(ics.size() == 1);
   }
   
 }
