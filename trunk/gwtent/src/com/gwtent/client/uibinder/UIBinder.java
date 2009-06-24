@@ -15,5 +15,8 @@ public interface UIBinder<T, D> {
   public void binder(T widget, ModelValue<D> value, boolean autoValidate, Class<?>... validateGroups);
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups);
   
+  public boolean isAutoValidate();
   public T getWidget();
+  
+  public void hideValidateMessageBox();
 }

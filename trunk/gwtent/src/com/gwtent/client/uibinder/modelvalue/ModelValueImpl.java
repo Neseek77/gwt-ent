@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.gwtent.client.reflection.pathResolver.PathResolver;
 import com.gwtent.client.uibinder.IValueChangedByBindingListener;
-import com.gwtent.client.uibinder.IValueChangedListener;
+import com.gwtent.client.uibinder.IValueChangedOutSideListener;
 import com.gwtent.client.uibinder.ModelRootAccessor;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinderValidator;
@@ -29,7 +29,7 @@ public class ModelValueImpl implements ModelValue<Object> {
   private final Class<?> rootClass;
   protected ModelRootAccessor rootAccessor;
   protected boolean readOnly;
-  private Set<IValueChangedListener> listeners = new HashSet<IValueChangedListener>();
+  private Set<IValueChangedOutSideListener> listeners = new HashSet<IValueChangedOutSideListener>();
   private Set<IValueChangedByBindingListener> changedByBindingListeners = new HashSet<IValueChangedByBindingListener>();
 
   public String getAsString() {
@@ -65,16 +65,16 @@ public class ModelValueImpl implements ModelValue<Object> {
   }
 
   public void doValueChanged() {
-    for (IValueChangedListener listener : listeners){
+    for (IValueChangedOutSideListener listener : listeners){
       listener.valueChanged();
     }
   }
 
-  public void addValueChangedListener(IValueChangedListener listener) {
+  public void addValueChangedListener(IValueChangedOutSideListener listener) {
     listeners.add(listener);    
   }
 
-  public void removeValueChangedListener(IValueChangedListener listener) {
+  public void removeValueChangedListener(IValueChangedOutSideListener listener) {
     listeners.remove(listener);
   }
   

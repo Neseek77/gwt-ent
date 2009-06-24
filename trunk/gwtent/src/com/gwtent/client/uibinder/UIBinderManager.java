@@ -87,8 +87,42 @@ public class UIBinderManager {
    */
   public void modelChanged(String... pathPrefixs){
     for (ModelValue value : binders.values()){
-      (value).doValueChanged();
+    	if (isMatchPrefix(value, pathPrefixs))
+    		(value).doValueChanged();
     }
+  }
+  
+  private boolean isMatchPrefix(ModelValue value, String... pathPrefixs){
+  	if (pathPrefixs == null || pathPrefixs.length <= 0)
+  		return true;
+  	
+  	for (String pathPrefix : pathPrefixs){
+  		if (value.getPropertyPath().startsWith(pathPrefix))
+  			return true;
+  	}
+  	
+  	return false;
+  }
+  
+  /**
+   * 
+   * @param pathPrefixs, the Prefix of path, if null, all path match
+   * @param showMessagesToUI
+   * @param validateGroups
+   * @return
+   */
+  public Set<ConstraintViolation<Object>> validate(String[] pathPrefixs, boolean showMessagesToUI, Class<?>... validateGroups){
+  	Set<ConstraintViolation<Object>> result = new HashSet<ConstraintViolation<Object>>();
+  	for (UIBinder binder : binders.keySet()){
+  		ModelValue value = binders.get(binder);
+  		
+  		if (isMatchPrefix(value, pathPrefixs)){
+  			Set<ConstraintViolation<Object>> r = binder.validate(showMessagesToUI, validateGroups);
+    		if (r != null)
+    			result.addAll(r);
+  		}
+    }
+  	return result;
   }
   
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
@@ -101,13 +135,20 @@ public class UIBinderManager {
   	return result;
   }
   
-  public void validate(UIObject widget, Class<?>... validateGroups){
+  public Set<ConstraintViolation<Object>> validate(UIObject widget, boolean showMessagesToUI, Class<?>... validateGroups){
   	for (UIBinder binder : binders.keySet()){
   		if (binder.getWidget() == widget){
-  			binder.validate(true, validateGroups);
-  			return;
+  			return binder.validate(showMessagesToUI, validateGroups);
   		}
   	}
+  	
+  	return null;
   }
   
+  
+  public void hideAllValidateMessages(){
+  	for (UIBinder binder : binders.keySet()){
+  		binder.hideValidateMessageBox();
+  	}
+  }
 }
