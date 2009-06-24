@@ -9,13 +9,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.common.ObjectFactory;
 import com.gwtent.client.uibinder.AbstractUIBinder;
 import com.gwtent.client.uibinder.IBinderMetaData;
-import com.gwtent.client.uibinder.IValueChangedListener;
+import com.gwtent.client.uibinder.IValueChangedOutSideListener;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
 
 public class TextBoxBinder extends AbstractUIBinder<TextBoxBase, String> {
   
-  public static class SupportedEditors implements IBinderMetaData<TextBoxBase, String>{
+  public static class BinderMetaData implements IBinderMetaData<TextBoxBase, String>{
 
     public Class<?>[] getSupportedEditors() {
       return new Class<?>[]{TextBox.class, TextArea.class, PasswordTextBox.class};
@@ -34,7 +34,7 @@ public class TextBoxBinder extends AbstractUIBinder<TextBoxBase, String> {
     }
   }
   
-  public class ValueChangedListener implements IValueChangedListener{
+  public class ValueChangedListener implements IValueChangedOutSideListener{
 
     public void valueChanged() {
       doValueChanged();

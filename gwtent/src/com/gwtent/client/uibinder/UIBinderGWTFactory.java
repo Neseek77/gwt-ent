@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.gwtent.client.common.ObjectFactory;
 import com.gwtent.client.uibinder.binder.RichTextAreaBinder;
-import com.gwtent.client.uibinder.binder.TextBoxBinder;
+import com.gwtent.client.uibinder.binder.CheckBoxBinder;
 import com.gwtent.client.uibinder.modelvalue.ModelValueGWTImpl;
 import com.gwtent.client.uibinder.modelvalue.ModelValueImpl;
 

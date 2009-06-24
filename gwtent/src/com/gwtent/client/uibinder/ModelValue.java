@@ -71,8 +71,8 @@ public interface ModelValue<T> {
 	   * 
 	   * @see doValueChanged()
 	   */
-	public void addValueChangedListener(IValueChangedListener listener);
-	public void removeValueChangedListener(IValueChangedListener listener);
+	public void addValueChangedListener(IValueChangedOutSideListener listener);
+	public void removeValueChangedListener(IValueChangedOutSideListener listener);
 	
 	public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener);
   public void addValueChangedByBindingListener(IValueChangedByBindingListener listener);

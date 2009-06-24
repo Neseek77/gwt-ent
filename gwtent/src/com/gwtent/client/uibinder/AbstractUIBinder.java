@@ -29,7 +29,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     }
   }
   
-  public class ValueChangedListener implements IValueChangedListener{
+  public class ValueChangedOutSideListener implements IValueChangedOutSideListener{
 
     public void valueChanged() {
       doValueChanged();
@@ -76,7 +76,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     
     doInit(widget, value);
     
-    value.addValueChangedListener(new ValueChangedListener());    	
+    value.addValueChangedListener(new ValueChangedOutSideListener());    	
   }
   
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
@@ -141,5 +141,10 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 
 	public boolean isAutoValidate() {
 		return autoValidate;
+	}
+	
+	public void hideValidateMessageBox(){
+		if (msgPanel != null)
+			this.getMsgPanel().hide();
 	}
 }

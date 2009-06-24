@@ -52,6 +52,18 @@ public class HTMLTemplatePanel extends HTMLPanel {
     uiBinderManager.modelChanged(pathPrefixs);
   }
   
+  
+  /**
+   * 
+   * @param pathPrefixs, the Prefix of path, if null, all path match
+   * @param showMessagesToUI
+   * @param validateGroups
+   * @return
+   */
+  public Set<ConstraintViolation<Object>> validate(String[] pathPrefixs, boolean showMessagesToUI, Class<?>... validateGroups){
+  	return uiBinderManager.validate(pathPrefixs, showMessagesToUI, validateGroups);
+  }
+  
   /**
    * Validate this page, you can override with your version
    * 
@@ -63,8 +75,12 @@ public class HTMLTemplatePanel extends HTMLPanel {
   	return uiBinderManager.validate(showMessagesToUI, validateGroups);
   }
   
-  public void validate(UIObject widget, Class<?>... validateGroups){
-  	uiBinderManager.validate(widget, validateGroups);
+  public Set<ConstraintViolation<Object>> validate(UIObject widget, boolean showMessagesToUI, Class<?>... validateGroups){
+  	return uiBinderManager.validate(widget, showMessagesToUI, validateGroups);
+  }
+  
+  public void hideAllValidateMessages(){
+  	uiBinderManager.hideAllValidateMessages();
   }
   
   
