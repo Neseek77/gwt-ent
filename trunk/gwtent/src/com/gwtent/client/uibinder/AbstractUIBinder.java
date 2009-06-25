@@ -39,8 +39,11 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   private ErrorMessagePanel msgPanel;
   
   private ErrorMessagePanel getMsgPanel(){
-		if (msgPanel == null)
-			msgPanel = new ErrorMessagePanel();
+		if (msgPanel == null){
+			if (getWidget() instanceof UIObject)
+				msgPanel = new ErrorMessagePanel(((UIObject)getWidget()).getElement());
+		}
+			
 		
 		return msgPanel;
 	}
@@ -53,13 +56,12 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 		
   	Set<ConstraintViolation<Object>> scv = ValidatorFactory.getGWTValidator().validateValue((Class<Object>)getModelValue().getRootClass(), getModelValue().getPropertyPath(), value, validateGroups);
 		if (scv.size() > 0){
-			if (showMessagesToUI){
+			if (showMessagesToUI && isableToShowValidateMessage){
 				for (ConstraintViolation<Object> cv : scv){
 					getMsgPanel().addErrorMsg(cv.getMessage());
 				}
 				
-				if (getWidget() instanceof UIObject)
-					getMsgPanel().showPanel((UIObject)getWidget());
+				getMsgPanel().showPanel();
 			}
 		}
 		
@@ -73,6 +75,9 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     this.autoValidate = autoValidate;
     
     this.autoValidateGroups = validateGroups;
+    
+    isableToShowValidateMessage = (widget instanceof UIObject);
+    	
     
     doInit(widget, value);
     
@@ -121,6 +126,9 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   }
 
 
+  //sometimes the bind editor don't have an element? not inherited UIObject?
+  private boolean isableToShowValidateMessage;
+  
   private boolean autoValidate;
   private Class<?>[] autoValidateGroups;
   
@@ -144,7 +152,11 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 	}
 	
 	public void hideValidateMessageBox(){
-		if (msgPanel != null)
+		if (msgPanel != null && isableToShowValidateMessage)
 			this.getMsgPanel().hide();
+	}
+
+	public boolean isIsableToShowValidateMessage() {
+		return isableToShowValidateMessage;
 	}
 }
