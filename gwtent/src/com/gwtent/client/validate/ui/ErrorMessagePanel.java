@@ -4,16 +4,26 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ErrorMessagePanel extends PopupPanel{
-	public ErrorMessagePanel(){
-		setZIndex(this, 5000);  //Fix for thirdparty componenets, i.e, gxt, gwtext
+public class ErrorMessagePanel extends SimplePanel{
+	public ErrorMessagePanel(Element elem){
+		super();
 		
+		attachedElement = elem;
+		parentElement = DOM.getParent(elem);
+		
+		
+		//setZIndex(this, 5000);  //Fix for thirdparty componenets, i.e, gxt, gwtext
+		
+		panel = new SimplePanel();
 		this.box = new ErrorMessageBox();
 		box.setShowCloseButton(true);
-		this.add(box);
+		panel.setWidget(box);
+		this.add(panel);
+		panel.setStylePrimaryName("validate_pnl");
 		
 		box.getLinkClose().addClickListener(new ClickListener(){
 
@@ -21,23 +31,47 @@ public class ErrorMessagePanel extends PopupPanel{
 				ErrorMessagePanel.this.hide();
 			}});
 		
-		this.setStylePrimaryName("validate_pnl");
+		//this.setStylePrimaryName("validate_pnl");
 	}
 	
 	public ErrorMessageBox getErrorBox() {
 		return box;
 	}
-
-	public void showPanel(final UIObject uiObject){
+	
+	private final Element parentElement;
+	private final Element attachedElement;
+	private final SimplePanel panel;
+	
+	protected com.google.gwt.user.client.Element getContainerElement() {
+		return parentElement;
+	}
+	
+	public void hide(){
+		panel.setVisible(false);
+		this.setVisible(false);
+	}
+	
+	public void showPanel(){
 		setZIndex(this, 5000);
-		//this.setPopupPosition(getLeft(uiObject), getTop(uiObject));
 		
+		panel.setVisible(true);
+		
+		int offsetWidth = box.getOffsetWidth();
+		int offsetHeight = box.getOffsetHeight();
+		
+		panel.setWidth(String.valueOf(offsetWidth) + "px");
+		panel.setHeight(String.valueOf(offsetHeight) + "px");
+		
+		this.setWidgetPositionImpl(panel, getLeft(attachedElement, offsetWidth), getTop(attachedElement, offsetHeight));
+		
+		
+		this.setVisible(true);
 		//this.show();
-		this.setPopupPositionAndShow(new PositionCallback(){
-
-			public void setPosition(int offsetWidth, int offsetHeight) {
-				setPopupPosition(getLeft(uiObject, offsetWidth), getTop(uiObject, offsetHeight));
-			}});
+//		this.setPopupPositionAndShow(new PositionCallback(){
+//
+//			public void setPosition(int offsetWidth, int offsetHeight) {
+//				setPopupPosition(getLeft(attachedElement, offsetWidth), getTop(attachedElement, offsetHeight));
+//			}});
 	}
 	
 	public void addErrorMsg(String msg){
@@ -48,15 +82,17 @@ public class ErrorMessagePanel extends PopupPanel{
 		box.clearErrorMsgs();
 	}
 	
-	private int getTop(UIObject uiObject, int offsetHeight){
-		int result = uiObject.getAbsoluteTop();
+	private int getTop(Element uiObject, int offsetHeight){
+		//int result = uiObject.getAbsoluteTop();
 	  //result = result - box.getOffsetHeight();
+		int result = uiObject.getOffsetTop();
 		result = result - offsetHeight;
 	  return result;
 	}
 	
-	private int getLeft(UIObject uiObject, int offsetWidth){
-		return uiObject.getAbsoluteLeft() + uiObject.getOffsetWidth() - 40;
+	private int getLeft(Element uiObject, int offsetWidth){
+		//return uiObject.getAbsoluteLeft() + uiObject.getOffsetWidth() - 40;
+		return uiObject.getOffsetLeft() + uiObject.getOffsetWidth() - 40;
 	}
 	
 	private static void changeToStaticPositioning(Element elem) {
@@ -81,5 +117,9 @@ public class ErrorMessagePanel extends PopupPanel{
     }
   }
 	
+	public Element getAttachedElement() {
+		return attachedElement;
+	}
+
 	private final ErrorMessageBox box;
 }

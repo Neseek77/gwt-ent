@@ -269,6 +269,10 @@ public class ValidatorGWT implements Validator{
     if (getter == null){
     	throw new RuntimeException("getter not exists in class(" + type.getName() + ") for property(" + propertyName + ")");
     }
+    
+    if (annotations == null || annotations.size() <= 0)
+    	return;
+    
     try {
       valueToValidate = getter.invoke(object);
     } catch (Exception e) {
