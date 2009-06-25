@@ -2,28 +2,24 @@ package com.gwtent.client.validate.ui;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventPreview;
 import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.KeyboardListenerCollection;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ErrorMessagePanel extends SimplePanel{
-	public ErrorMessagePanel(Element elem){
+public class ErrorMessagePanel extends SimplePanel implements EventPreview{
+	public ErrorMessagePanel(){
 		super();
-		
-		attachedElement = elem;
-		parentElement = DOM.getParent(elem);
-		
 		
 		//setZIndex(this, 5000);  //Fix for thirdparty componenets, i.e, gxt, gwtext
 		
-		panel = new SimplePanel();
 		this.box = new ErrorMessageBox();
 		box.setShowCloseButton(true);
-		panel.setWidget(box);
-		this.add(panel);
-		panel.setStylePrimaryName("validate_pnl");
+		this.add(box);
 		
 		box.getLinkClose().addClickListener(new ClickListener(){
 
@@ -31,39 +27,44 @@ public class ErrorMessagePanel extends SimplePanel{
 				ErrorMessagePanel.this.hide();
 			}});
 		
-		//this.setStylePrimaryName("validate_pnl");
+		this.setStylePrimaryName("validate_pnl");
 	}
 	
 	public ErrorMessageBox getErrorBox() {
 		return box;
 	}
 	
-	private final Element parentElement;
-	private final Element attachedElement;
-	private final SimplePanel panel;
 	
-	protected com.google.gwt.user.client.Element getContainerElement() {
-		return parentElement;
-	}
 	
 	public void hide(){
-		panel.setVisible(false);
+		DOM.removeEventPreview(this);
 		this.setVisible(false);
 	}
 	
-	public void showPanel(){
+	protected void onDetach() {
+    super.onDetach();
+  }
+	
+	public void showPanel(Element attachedElement){
+		if (! isAttached){
+			Element parent = DOM.getParent(attachedElement);
+			DOM.appendChild(parent, this.getElement());
+			isAttached = true;
+		}
+		
+		DOM.addEventPreview(this);
+		
 		setZIndex(this, 5000);
 		
-		panel.setVisible(true);
+		box.setVisible(true);
 		
 		int offsetWidth = box.getOffsetWidth();
 		int offsetHeight = box.getOffsetHeight();
 		
-		panel.setWidth(String.valueOf(offsetWidth) + "px");
-		panel.setHeight(String.valueOf(offsetHeight) + "px");
+		//panel.setWidth(String.valueOf(offsetWidth) + "px");
+		//panel.setHeight(String.valueOf(offsetHeight) + "px");
 		
-		this.setWidgetPositionImpl(panel, getLeft(attachedElement, offsetWidth), getTop(attachedElement, offsetHeight));
-		
+		this.setWidgetPositionImpl(this, getLeft(attachedElement, offsetWidth), getTop(attachedElement, offsetHeight));
 		
 		this.setVisible(true);
 		//this.show();
@@ -83,9 +84,9 @@ public class ErrorMessagePanel extends SimplePanel{
 	}
 	
 	private int getTop(Element uiObject, int offsetHeight){
-		//int result = uiObject.getAbsoluteTop();
+		int result = uiObject.getAbsoluteTop();
 	  //result = result - box.getOffsetHeight();
-		int result = uiObject.getOffsetTop();
+		//int result = uiObject.getOffsetTop();
 		result = result - offsetHeight;
 	  return result;
 	}
@@ -111,15 +112,42 @@ public class ErrorMessagePanel extends SimplePanel{
     if ((left == -1) && (top == -1)) {
       changeToStaticPositioning(h);
     } else {
+    	if (left < 0)
+    		left = 0;
+    	if (top < 0)
+    		top = 0;
+    	
       DOM.setStyleAttribute(h, "position", "absolute");
       DOM.setStyleAttribute(h, "left", left + "px");
       DOM.setStyleAttribute(h, "top", top + "px");
     }
   }
-	
-	public Element getAttachedElement() {
-		return attachedElement;
-	}
 
 	private final ErrorMessageBox box;
+
+	public boolean onEventPreview(Event event) {
+		Element target = DOM.eventGetTarget(event);
+
+//    boolean eventTargetsPopup = (target != null)
+//        && DOM.isOrHasChild(getElement(), target);
+
+    int type = DOM.eventGetType(event);
+    switch (type) {
+      
+
+      case Event.ONCLICK:
+      case Event.ONDBLCLICK: {
+        if (target != null) {
+        	if (target == box.getLinkClose().getElement())
+        		hide();
+        }
+        break;
+      }
+    }
+    
+    
+    return true;
+	}
+	
+	private boolean isAttached = false;
 }
