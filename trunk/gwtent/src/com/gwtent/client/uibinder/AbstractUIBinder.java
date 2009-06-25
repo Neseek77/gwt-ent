@@ -41,7 +41,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   private ErrorMessagePanel getMsgPanel(){
 		if (msgPanel == null){
 			if (getWidget() instanceof UIObject)
-				msgPanel = new ErrorMessagePanel(((UIObject)getWidget()).getElement());
+				msgPanel = new ErrorMessagePanel();
 		}
 			
 		
@@ -61,7 +61,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 					getMsgPanel().addErrorMsg(cv.getMessage());
 				}
 				
-				getMsgPanel().showPanel();
+				getMsgPanel().showPanel(((UIObject)getWidget()).getElement());
 			}
 		}
 		
