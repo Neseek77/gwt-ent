@@ -80,7 +80,7 @@ public class Application implements EntryPoint {
     validateBtn.addClickListener(new ClickListener(){
 
 			public void onClick(Widget sender) {
-				errorPnl.showPanel(text);
+				errorPnl.showPanel(text.getElement());
 			}});
     
     
