@@ -10,15 +10,5 @@
     <welcome-file>Gwtent_showcase.html</welcome-file>
   </welcome-file-list>
   
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.gwtent.showcase.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/gwtent_showcase/greet</url-pattern>
-  </servlet-mapping>
 
 </web-app>
