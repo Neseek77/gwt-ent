@@ -16,4 +16,15 @@
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.gwtent.showcase.client.Gwtent_showcase'/>
+  
+  
+  <!-- Use a generator to create the source code -->
+  <generate-with class="com.gwtent.showcase.generator.ShowcaseGenerator">
+    <when-type-assignable class="com.gwtent.showcase.client.Gwtent_showcase.GeneratorInfo" />
+  </generate-with>
+  
+  
+  <!-- Internationalization support. -->
+  <extend-property name="locale" values="en"/>
+  <extend-property name="locale" values="zh"/>
 </module>
