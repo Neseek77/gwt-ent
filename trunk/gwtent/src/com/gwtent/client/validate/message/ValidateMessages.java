@@ -38,4 +38,5 @@ public interface ValidateMessages extends Messages {
 	
 	//
 	String constraint_required();
+	String constraint_regular(String regexp);
 }

@@ -57,7 +57,7 @@ public interface ModelValue<T> {
 	public String getPropertyPath();
 	
 	public T getValue();
-	public void setValue(T value);
+	public boolean setValue(T value);
 	
 	  /**
 	   * Invoke when value changed by class, NOT by binding system.

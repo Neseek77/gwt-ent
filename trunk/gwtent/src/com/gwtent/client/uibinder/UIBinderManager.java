@@ -15,7 +15,7 @@ import com.gwtent.client.common.ObjectFactory;
 import com.gwtent.client.uibinder.modelvalue.ModelValueGWTImpl;
 import com.gwtent.client.uibinder.modelvalue.ModelValueImpl;
 
-public class UIBinderManager {
+public class UIBinderManager implements IValueChangedByBindingListener{
   
   private Map<UIBinder, ModelValue> binders = new HashMap<UIBinder, ModelValue>();
   private List<Object> uiObjectList = new ArrayList<Object>();
@@ -24,7 +24,6 @@ public class UIBinderManager {
     public Object getModel();
   }
   
-
   
   /**
    * @param uiObject the widget or any object you defined, ie: TextBox
@@ -66,6 +65,7 @@ public class UIBinderManager {
   		uiObjectList.add(uiObject);
       UIBinder binder = UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinder(uiObject.getClass());
       ModelValue value = UIBinderGWTFactory.getModelValue(modelClass, path, readOnly, valueAccessor);
+      value.addValueChangedByBindingListener(this);
       binder.binder(uiObject, value, autoValidate, groups);
       binders.put(binder, value);
 		} catch (Exception e) {
@@ -151,4 +151,24 @@ public class UIBinderManager {
   		binder.hideValidateMessageBox();
   	}
   }
+  
+  public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener){
+  	changedByBindingListeners.remove(listener);
+  }
+  
+  public void addValueChangedByBindingListener(IValueChangedByBindingListener listener){
+  	changedByBindingListeners.add(listener);
+  }
+  
+  private ValueChangedByBindingListenerCollection changedByBindingListeners = new ValueChangedByBindingListenerCollection();
+
+	public void afterValueChanged(Object instance, String property, Object value) {
+		changedByBindingListeners.fireAfterValueChanged(instance, property, value);
+	}
+
+	public boolean beforeValueChange(Object instance, String property,
+			Object value) {
+		return changedByBindingListeners.fireBeforeValueChange(instance, property, value);
+	}
+  
 }

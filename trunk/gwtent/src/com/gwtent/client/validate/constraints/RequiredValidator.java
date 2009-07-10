@@ -9,16 +9,6 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.StandardConstraint;
 import javax.validation.StandardConstraintDescriptor;
 
-/**
- * Description: Check the non emptyness of the element.
- * 
- * <pre>
- * --
- * As soon as the classes in javax.validation are available from official sites, this
- * class will be removed from this compilation unit.
- * --
- * </pre>
- **/
 public class RequiredValidator implements
 		ConstraintValidator<Required, Object>, StandardConstraint {
 	public void initialize(Required constraintAnnotation) {

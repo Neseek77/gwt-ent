@@ -6,6 +6,7 @@ import com.gwtent.client.uibinder.AbstractUIBinder;
 import com.gwtent.client.uibinder.IBinderMetaData;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 import com.gwtent.client.widget.RadioBoolSelector;
 import com.gwtent.client.widget.RadioSelector;
 import com.gwtent.client.widget.ValueChangedListener;

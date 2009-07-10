@@ -76,6 +76,10 @@ public class ErrorMessageBox extends FlexTable {
 		
 		tblErrors.setHTML(0, 0, "");
 	}
+	
+	public boolean hasErrorMessages(){
+		return (tblErrors.getRowCount() > 1) || (tblErrors.getRowCount() == 1 && tblErrors.getHTML(0, 0) != null && tblErrors.getHTML(0, 0).length() > 0);
+	}
 
 	Hyperlink getLinkClose(){
 		return linkClose;

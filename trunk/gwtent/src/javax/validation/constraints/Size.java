@@ -9,12 +9,7 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 
-/**
- * <pre>--
- * As soon as the classes in javax.validation are available from official sites, this
- * class will be removed from this compilation unit.
- * --</pre>
- */
+
 @Documented
 @Constraint(validatedBy=SizeValidator.class)
 @Target({METHOD, FIELD})

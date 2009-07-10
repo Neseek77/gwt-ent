@@ -68,7 +68,7 @@ public class ModelValueGWTImpl extends ModelValueImpl implements
 		return null;
 	}
 
-	public void setValue(Object value) {
+	public boolean setValue(Object value) {
 
 		Object instance = super.getValue();
 
@@ -77,13 +77,16 @@ public class ModelValueGWTImpl extends ModelValueImpl implements
 			Object lastLevel = PathResolver.getInstanceLastLevelByPath(instance,
 					fullPath);
 			if (lastLevel == null) // TODO null? throw error or just return?
-				return;
+				return false;
 
 			if (doBeforeChangedByBinding(lastLevel, lastPath, value)) {
 				setter.invoke(lastLevel, value);
 				doAfterChangedByBinding(lastLevel, lastPath, value);
+				return true;
 			}
 		}
+		
+		return false;
 
 		// if (field != null){
 		// Object lastLevel = PathResolver.getInstanceLastLevelByPath(instance,
