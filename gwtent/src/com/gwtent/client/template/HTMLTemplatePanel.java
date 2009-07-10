@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.reflection.Reflectable;
+import com.gwtent.client.uibinder.IValueChangedByBindingListener;
 import com.gwtent.client.uibinder.UIBinderManager;
 
 /**
@@ -24,7 +25,7 @@ import com.gwtent.client.uibinder.UIBinderManager;
  *
  */
 
-@Reflectable(relationTypes=false, superClasses=false, assignableClasses=true)
+//@dReflectable(relationTypes=false, superClasses=false, assignableClasses=true)
 public class HTMLTemplatePanel extends HTMLPanel {
 
   private static int idCount = 0;
@@ -81,6 +82,14 @@ public class HTMLTemplatePanel extends HTMLPanel {
   
   public void hideAllValidateMessages(){
   	uiBinderManager.hideAllValidateMessages();
+  }
+
+  public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener){
+  	uiBinderManager.removeValueChangedByBindingListener(listener);
+  }
+  
+  public void addValueChangedByBindingListener(IValueChangedByBindingListener listener){
+  	uiBinderManager.addValueChangedByBindingListener(listener);
   }
   
   

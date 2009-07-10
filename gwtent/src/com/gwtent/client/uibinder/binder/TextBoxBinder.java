@@ -12,6 +12,7 @@ import com.gwtent.client.uibinder.IBinderMetaData;
 import com.gwtent.client.uibinder.IValueChangedOutSideListener;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 
 public class TextBoxBinder extends AbstractUIBinder<TextBoxBase, String> {
   
@@ -44,7 +45,7 @@ public class TextBoxBinder extends AbstractUIBinder<TextBoxBase, String> {
   
   public class ChangeListenerImpl implements ChangeListener{
     public void onChange(Widget sender) {
-    	setEditorToValue(getWidget().getText());
+			setEditorToValue(getWidget().getText());
     }
   }
   

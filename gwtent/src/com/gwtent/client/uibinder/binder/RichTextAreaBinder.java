@@ -9,6 +9,7 @@ import com.gwtent.client.uibinder.AbstractUIBinder;
 import com.gwtent.client.uibinder.IBinderMetaData;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 
 public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
 
@@ -36,7 +37,7 @@ public class RichTextAreaBinder extends AbstractUIBinder<RichTextArea, String> {
       }
 
       public void onLostFocus(Widget sender) {
-      	setEditorToValue(getWidget().getHTML());
+				setEditorToValue(getWidget().getHTML());
       }});
     
     widget.addKeyboardListener(new KeyboardListener(){

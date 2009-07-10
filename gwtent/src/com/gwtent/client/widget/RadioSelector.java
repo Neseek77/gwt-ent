@@ -81,6 +81,13 @@ public class RadioSelector<T extends Object> extends FlexTable {
     }
 	}
 	
+	public void setEnabled(boolean enabled) {
+		for (Data data : values){
+			if (data.getRadio() != null)
+				data.getRadio().setEnabled(enabled);
+		}
+	}
+	
 	private class Data {
 		public Data(String groupID, T value, String label){
 			radio = new RadioButton(groupID);

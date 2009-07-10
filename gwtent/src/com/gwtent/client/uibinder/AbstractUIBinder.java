@@ -36,6 +36,19 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
     }
   }
   
+  public static class EditorToValueSetException extends RuntimeException{
+
+		private static final long serialVersionUID = 1L;
+
+		public EditorToValueSetException(String message) {
+			super(message);
+		}
+		
+		public EditorToValueSetException(String message, Throwable cause) {
+      super(message, cause);
+  }
+  }
+  
   private ErrorMessagePanel msgPanel;
   
   private ErrorMessagePanel getMsgPanel(){
@@ -89,7 +102,13 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   }
   
   protected void doValueChanged(){
-    setValueToEditor(modelValue.getValue(), widget);
+  	settingValue = true;
+  	
+    try {
+			setValueToEditor(modelValue.getValue(), widget);
+		} finally {
+			settingValue = false;
+		}
   }
   
   /**
@@ -104,6 +123,10 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
    * this function will be called by doValueChanged()
    * it's mean every time model changed by code(not by user)
    * this function will be called
+   * 
+   * <P>Before this function be called, isSettingValue will set to True,
+   * after finish this, isSettingValue will set to False.</P> 
+   * 
    * @param value, the value, maybe sometime it's null, please check it
    * @param widget the widget want display the value
    */
@@ -115,14 +138,43 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
    * This function will do Validate(if need) before setup to it.
    * 
    * If not invoke this function, the validate function will be lost.
+   * 
+   * if not pass validation or for some reason, the value can't write to target, return false,
+   * The exception will be throw
    */
-  protected void setEditorToValue(D value){
-  	if (autoValidate){  //auto validate and validate failed, direct return
-  		if (doValidate(true, value, autoValidateGroups).size() > 0)
-  			return;
-  	}
+  protected boolean setEditorToValue(D value) throws EditorToValueSetException{
+  	if (this.isSettingValue())
+  		return false;   //is setting value to Editor, so direct return
   	
-  	modelValue.setValue(value);
+  	if (autoValidate && isAutoValidatable()){  //auto validate and validate failed, direct return
+  		if (doValidate(true, value, autoValidateGroups).size() > 0){
+  			doValueChanged();
+  			return false;
+  			//throw new EditorToValueSetException("Validate error.");
+  		}
+  	}
+  	boolean s = false;
+  	try {
+			s = modelValue.setValue(value);
+			if (s)
+				return true;
+		} catch (Exception e) {
+			doValueChanged();
+			return false;
+			//throw new EditorToValueSetException(e.getMessage(), e);
+		}
+		
+  	doValueChanged();
+  	return false;
+  }
+  
+  /**
+   * Override this function if you dont autoValidate worked.
+   * For example, you don't autoValidate worked when your editor is disabled.
+   * @return
+   */
+  protected boolean isAutoValidatable(){
+  	return true;
   }
 
 
@@ -134,6 +186,8 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   
   private T widget;
   private ModelValue<D> modelValue;
+  
+  private boolean settingValue;
   
   public T getWidget() {
     return widget;
@@ -152,11 +206,19 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 	}
 	
 	public void hideValidateMessageBox(){
-		if (msgPanel != null && isableToShowValidateMessage)
+		if (msgPanel != null)
 			this.getMsgPanel().hide();
 	}
 
 	public boolean isIsableToShowValidateMessage() {
 		return isableToShowValidateMessage;
+	}
+
+	public void setSettingValue(boolean isSettingValue) {
+		this.settingValue = isSettingValue;
+	}
+
+	public boolean isSettingValue() {
+		return settingValue;
 	}
 }

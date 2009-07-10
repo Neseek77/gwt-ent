@@ -10,12 +10,23 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 
+/**
+ * <pre>
+ * --
+ * As soon as the classes in javax.validation are available from official sites, this
+ * class will be removed from this compilation unit.
+ * --
+ * </pre>
+ **/
 @Documented
-@Constraint(validatedBy = RequiredValidator.class)
+@Constraint(validatedBy = RegularValidator.class)
 @Target( { METHOD, FIELD })
 @Retention(RUNTIME)
-public @interface Required {
+public @interface Regular {
+	/** regular expression */
+	String regex();
+	
 	Class<?>[] groups() default {};
 
-	String message() default "{constraint_required}";
+	String message() default "{constraint_regular}";
 }

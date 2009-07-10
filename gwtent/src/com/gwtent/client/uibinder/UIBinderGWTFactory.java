@@ -14,11 +14,21 @@ public class UIBinderGWTFactory {
   
   public class UIBinderGWTRegister{
     private Map<Class<?>, ObjectFactory<UIBinder>> map = new HashMap<Class<?>, ObjectFactory<UIBinder>>();
-    
+
+    /**
+     * Register editor class to bind system
+     * @param clazz The Editor class
+     * @param factory The factory, tell binder how to create the UIBinder Object
+     */
     public void register(Class<?> clazz, ObjectFactory<UIBinder> factory){
       map.put(clazz, factory);
     }
     
+    /**
+     * Register editor class to bind system
+     * @param classes The Editor classes
+     * @param factory The factory, tell binder how to create the UIBinder Object
+     */
     public void register(Class<?>[] classes, ObjectFactory<UIBinder> factory){
       for (Class<?> clazz : classes){
         register(clazz, factory);

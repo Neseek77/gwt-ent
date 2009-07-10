@@ -57,9 +57,10 @@ public class ModelValueImpl implements ModelValue<Object> {
     this.readOnly = readOnly;
   }
 
-  public void setValue(Object value) {
+  public boolean setValue(Object value) {
   	//if (doBeforeChangedByBinding(value)){
       rootAccessor.setValue(value);
+      return true;
       //doAfterChangedByBinding(value);
   	//}
   }
