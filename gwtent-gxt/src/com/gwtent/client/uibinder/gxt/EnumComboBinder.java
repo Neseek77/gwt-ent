@@ -12,6 +12,7 @@ import com.gwtent.client.uibinder.AbstractUIBinder;
 import com.gwtent.client.uibinder.IBinderMetaData;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 import com.gwtent.client.uibinder.gxt.widget.EnumCombo;
 
 public class EnumComboBinder<T extends Enum<T>> extends AbstractUIBinder<EnumCombo<T>, T> {
@@ -43,11 +44,12 @@ public class EnumComboBinder<T extends Enum<T>> extends AbstractUIBinder<EnumCom
       public void handleEvent(FieldEvent be) {
       	if (getWidget().getSelection().size() > 0){
       		SimpleComboValue<T> value = getWidget().getSelection().get(0);
-      		setEditorToValue(value.getValue());
+					setEditorToValue(value.getValue());
       		return;
       	}
       	
-      	setEditorToValue(null);
+				setEditorToValue(null);
+
       }});
 	}
 
