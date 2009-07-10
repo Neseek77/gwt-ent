@@ -53,23 +53,7 @@ public class Gwtent_showcase implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button btnReflection = new Button("Reflection");
-		final Button btnAOP = new Button("AOP");
-		
-		RootPanel.get("btnReflection").add(btnReflection);
-		RootPanel.get("btnAOP").add(btnAOP);
-		
-		btnReflection.addClickHandler(new ClickHandler(){
-
-			public void onClick(ClickEvent event) {
-				testReflection();
-			}});
-		
-		btnAOP.addClickHandler(new ClickHandler(){
-
-			public void onClick(ClickEvent event) {
-				testAOP();
-			}});
+		RootPanel.get().add((MainPageHTMLPanel)GWT.create(MainPageHTMLPanel.class));
 	}
 
 }
