@@ -14,6 +14,7 @@ import com.gwtent.client.uibinder.AbstractUIBinder;
 import com.gwtent.client.uibinder.IBinderMetaData;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 
 /**
  * 
@@ -43,13 +44,16 @@ public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
     }
   }
   
- 
+  protected boolean isAutoValidatable(){
+  	return getWidget().isEnabled();
+  }
+  
   protected void doInit(TextField<D> widget, ModelValue<D> value) {
     widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-      	setEditorToValue(getWidget().getValue());
-      	
+				setEditorToValue(getWidget().getValue());
+				
       }});
   }
 

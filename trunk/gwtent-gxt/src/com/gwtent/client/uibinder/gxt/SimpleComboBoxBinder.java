@@ -9,6 +9,7 @@ import com.gwtent.client.uibinder.AbstractUIBinder;
 import com.gwtent.client.uibinder.IBinderMetaData;
 import com.gwtent.client.uibinder.ModelValue;
 import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 
 public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>, D> {
 	public static class BinderMetaData<D> implements IBinderMetaData<SimpleComboBox<D>, D>{
@@ -34,7 +35,11 @@ public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>,
 		widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
-      	setEditorToValue(getWidget().getSimpleValue());
+      	try {
+					setEditorToValue(getWidget().getSimpleValue());
+				} catch (EditorToValueSetException e) {
+					doValueChanged();
+				}
       }});
 	}
 
