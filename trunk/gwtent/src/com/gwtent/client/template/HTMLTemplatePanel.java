@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,6 +42,14 @@ public class HTMLTemplatePanel extends HTMLPanel {
   
   public UIBinderManager getUIBinderManager() {
     return uiBinderManager;
+  }
+  
+  protected void onLoad() {
+  	doSinkBrowserEvents();
+  }
+  
+  protected void doSinkBrowserEvents(){
+  	
   }
   
   /**
@@ -116,8 +125,16 @@ public class HTMLTemplatePanel extends HTMLPanel {
       getElementById(id).setId(id + idCount);  //if HTMLPanel instance twice? the id will be same which will cause problems when add widget by id
       idCount++;
     }else{
-      throw new NoSuchElementException("add widget to html, id: " + id);
+    	noSuchElement("add widget to html, id: " + id);
     }
+  }
+  
+  protected void noSuchElement(String msg){
+  	throw new NoSuchElementException(msg);
+  }
+  
+  protected void noSuchElementWhenSinkEvent(String id){
+  	noSuchElement("No such elemnet when Handle event to element, wrong id or this panel may no attach to document, id: " + id);
   }
 
 }

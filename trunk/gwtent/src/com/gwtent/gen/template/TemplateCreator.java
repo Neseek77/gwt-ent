@@ -319,7 +319,7 @@ public class TemplateCreator extends LogableSourceCreator {
 		source.outdent();
 		source.println("}");
 		
-		source.println("private void addEvents() {");
+		source.println("protected void doSinkBrowserEvents() {");
 		source.indent();
 		processEvents(source, classType);
 		source.outdent();
@@ -333,7 +333,7 @@ public class TemplateCreator extends LogableSourceCreator {
     source.indent();
     source.println("super(getHTML());");
     source.println("addElements();");
-    source.println("addEvents();");
+    //source.println("addEvents();");
     source.println("_BindToEditor();");
     source.println("_CodeFromHTML();");
     source.outdent();
@@ -479,7 +479,8 @@ public class TemplateCreator extends LogableSourceCreator {
             source.println("      }");
             source.println("    }");
             source.println("  });");
-            source.println("}");
+            source.println("}else");
+            source.println("  noSuchElementWhenSinkEvent(\"" + elementId + "\");");
           }
         }
                 

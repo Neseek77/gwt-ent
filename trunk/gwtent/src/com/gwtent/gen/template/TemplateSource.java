@@ -31,7 +31,7 @@ public class TemplateSource extends HTMLTemplatePanel {
     btn.addStyleName("style");  //Some widgets not support setStylePrimaryName, ie EXTGWT
   }
 
-  private void addEvents() {
+  protected void doSinkBrowserEvents() {
     com.google.gwt.user.client.Element element = null;
 
     element = DOM.getElementById("");
@@ -46,7 +46,8 @@ public class TemplateSource extends HTMLTemplatePanel {
           }
         }
       });
-    }
+    }else
+    	noSuchElementWhenSinkEvent("id");
   }
   
   private void _BindToEditor(){
@@ -79,7 +80,6 @@ public class TemplateSource extends HTMLTemplatePanel {
     super(getHTML());
 
     addElements();
-    addEvents();
     _BindToEditor();
     _CodeFromHTML();
     _SetCSS();
