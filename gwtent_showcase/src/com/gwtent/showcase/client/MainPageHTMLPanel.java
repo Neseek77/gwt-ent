@@ -1,8 +1,10 @@
 package com.gwtent.showcase.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DeckPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.gwtent.client.template.HTMLEvent;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
@@ -13,8 +15,6 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 
 	public MainPageHTMLPanel(String html) {
 		super(html);
-		
-		dolinkEnglishClick();
 	}
 
 	@HTMLWidget
@@ -26,7 +26,7 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 		
 	}
 	
-	@HTMLEvent(value = {"linkEnglish", "abcdef"})
+	@HTMLEvent(value = {"linkEnglish"})
 	protected void dolinkEnglishClick(){
 		Window.alert("English");
 	}
@@ -39,8 +39,12 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 		}
 		
 		content.showWidget(0);
+		Window.alert("English");
 	}
 	
+	protected void onSinkBrowserEvent(Event event){
+		Window.alert("Event: " + event);
+	}
 	
 	private HTMLTplMainPage tplMainPage;
 }
