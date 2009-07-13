@@ -54,6 +54,7 @@ public class Gwtent_showcase implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		RootPanel.get().add((MainPageHTMLPanel)GWT.create(MainPageHTMLPanel.class));
+		//RootPanel.get().add(new MainPageHTMLPanel__Template_Test());
 	}
 
 }
