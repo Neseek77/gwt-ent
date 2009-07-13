@@ -28,10 +28,104 @@ p{
 	margin:0.5em 0 1em;
 }
 
+#header, #content, #footer {
+margin:0 auto;
+min-width:960px;
+width:960px;
+}
+
+#header {
+height:40px;
+margin-bottom:10px;
+}
 
 #MainPage #header #links {
 	float: right;
 }
+
+#topBar ul {
+	float:left;
+	list-style-type:none;
+	margin-top:20px;
+	padding:0;
+	width:960px;
+	background-attachment: scroll;
+	background-color: transparent;
+	background-image: url(imgs/topbar.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
+
+#topBar ul li {
+	float:left;
+	text-indent:-9999px;
+	list-style-type:none;
+	overflow:hidden;
+}
+
+#topBar ul li a {
+	display:block;
+	height:38px;
+	background-attachment: scroll;
+	background-color: transparent;
+	background-image: url(imgs/topbar.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
+
+#topBar ul li a#linkHome {
+background-position:0 -117px;
+width:76px;
+}
+
+#topBar ul li a#linkHome:hover,#topBar ul li a#linkHome:focus,#topBar ul li a#linkHome:active{background-position:0 -156px;}
+
+#topBar ul li.selected a#linkHome{background-position:0 -195px;}
+
+#topBar ul li a#linkReflection {
+background-position:-76px -117px;
+width:125px;
+}
+
+#topBar ul li a#linkReflection:hover,#topBar ul li a#linkReflection:focus,#topBar ul li a#linkReflection:active{
+background-position:-76px -156px;
+}
+
+#topBar ul li.selected a#linkReflection {
+background-position:-76px -195px;
+}
+
+#topBar ul li a#linkAOP{
+background-position:-201px -117px;
+width:152px;
+}
+#topBar ul li a#linkAOP:hover,#topBar ul li a#linkAOP:focus,#topBar ul li a#linkAOP:active{background-position:-201px -156px;}
+ul#topNav li.selected a.#linkAOP{background-position:-201px -195px;}
+
+
+#topBar ul li a#linkHTMLTemplate{
+background-position:-353px -117px;
+width:150px;
+}
+#topBar ul li a#linkHTMLTemplate:hover,#topBar ul li a#linkHTMLTemplate:focus,#topBar ul li a#linkHTMLTemplate:active{background-position:-353px -156px;}
+ul#topNav li.selected a.#linkHTMLTemplate{background-position:-353px -195px;}
+
+#topBar ul li a#linkValidation{
+background-position:-503px -117px;
+width:67px;
+}
+#topBar ul li a#linkValidation:hover,#topBar ul li a#linkValidation:active,#topBar ul li a#linkValidation:focus{background-position:-503px -156px;}
+ul#topNav li.selected a.#linkValidation{background-position:-503px -195px;}
+
+#topBar ul li a#linkUIBinding{
+background-position:-570px -117px;
+width:67px;
+}
+#topBar ul li a#linkUIBinding:hover,#topBar ul li a#linkUIBinding:active,#topBar ul li a#linkUIBinding:focus{background-position:-570px -156px;}
+ul#topNav li.selected a.#linkUIBinding{background-position:-570px -195px;}
+
 
 #footer p{
 	line-height:1.5em;

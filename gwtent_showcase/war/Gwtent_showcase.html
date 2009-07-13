@@ -10,11 +10,10 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
-    <link type="text/css" rel="stylesheet" href="Gwtent_showcase.css">
-
+    <!-- Dont want gwt css override my one -->
+    <link rel="stylesheet" href="gwt/standard/standard.css"> 
+		<link type="text/css" rel="stylesheet" href="Gwtent_showcase.css">
+		
     <!--                                           -->
     <!-- Any title is fine                         -->
     <!--                                           -->
@@ -26,6 +25,8 @@
     <!-- be added before this line.                -->
     <!--                                           -->
     <script type="text/javascript" language="javascript" src="gwtent_showcase/gwtent_showcase.nocache.js"></script>
+    
+    
   </head>
 
   <!--                                           -->
@@ -38,6 +39,7 @@
     <!-- OPTIONAL: include this if you want history support -->
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
 
+	
     
   </body>
 </html>
