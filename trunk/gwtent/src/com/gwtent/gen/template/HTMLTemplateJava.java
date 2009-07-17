@@ -18,6 +18,7 @@ public class HTMLTemplateJava {
   private boolean compileToSource = true;
   private boolean autoAddWidget = true;
   private boolean autoDefineCSS = true;
+  private boolean renameId = true;
   
   public void setValue(String value) {
     this.value = value;
@@ -73,4 +74,10 @@ public class HTMLTemplateJava {
   public boolean isAutoDefineCSS() {
     return autoDefineCSS;
   }
+	public void setRenameId(boolean renameId) {
+		this.renameId = renameId;
+	}
+	public boolean isRenameId() {
+		return renameId;
+	}
 }

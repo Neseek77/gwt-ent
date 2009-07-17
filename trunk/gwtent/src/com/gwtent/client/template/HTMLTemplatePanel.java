@@ -30,6 +30,7 @@ import com.gwtent.client.uibinder.UIBinderManager;
 public class HTMLTemplatePanel extends HTMLPanel {
 
   private static int idCount = 0;
+  private boolean renameIdWhenAddWidget = true;
   
   public HTMLTemplatePanel(String html) {
     super(html);
@@ -122,8 +123,10 @@ public class HTMLTemplatePanel extends HTMLPanel {
       
       //this.getElement().getChildNodes()
       //TODO Should rename all nodes, not just the nodes added here
-      getElementById(id).setId(id + idCount);  //if HTMLPanel instance twice? the id will be same which will cause problems when add widget by id
-      idCount++;
+      if (renameIdWhenAddWidget){
+      	getElementById(id).setId(id + idCount);  //if HTMLPanel instance twice? the id will be same which will cause problems when add widget by id
+	      idCount++;
+      }
     }else{
     	noSuchElement("add widget to html, id: " + id);
     }
@@ -136,5 +139,13 @@ public class HTMLTemplatePanel extends HTMLPanel {
   protected void noSuchElementWhenSinkEvent(String id){
   	noSuchElement("No such elemnet when Handle event to element, wrong id or this panel may no attach to document, id: " + id);
   }
+
+	public void setRenameIdWhenAddWidget(boolean renameIdWhenAddWidget) {
+		this.renameIdWhenAddWidget = renameIdWhenAddWidget;
+	}
+
+	public boolean isRenameIdWhenAddWidget() {
+		return renameIdWhenAddWidget;
+	}
 
 }

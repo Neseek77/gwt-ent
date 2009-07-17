@@ -116,6 +116,7 @@ public class TemplateCreator extends LogableSourceCreator {
 	  templateJava.setHtml(template.html());
 	  templateJava.setVariables(template.variables());
 	  templateJava.setAutoDefineCSS(template.autoDefineCSS());
+	  templateJava.setRenameId(template.renameId());
 	}
 	
 	private void setHTMLTemplateJavaByReflection(Annotation annotation, HTMLTemplateJava templateJava){
@@ -150,6 +151,8 @@ public class TemplateCreator extends LogableSourceCreator {
       }else if (methodName.equals("variables")){
         templateJava.setVariables((String[])value);
       }else if (methodName.equals("autoDefineCSS")){
+        templateJava.setAutoDefineCSS((Boolean)value);
+      }else if (methodName.equals("renameId")){
         templateJava.setAutoDefineCSS((Boolean)value);
       }
     }    
@@ -332,6 +335,10 @@ public class TemplateCreator extends LogableSourceCreator {
 		source.println("public " + getSimpleUnitName(classType) + "(){");
     source.indent();
     source.println("super(getHTML());");
+    if (template.isRenameId())
+    	source.println("this.setRenameIdWhenAddWidget(true);");
+    else
+    	source.println("this.setRenameIdWhenAddWidget(false);");
     source.println("addElements();");
     //source.println("addEvents();");
     source.println("_BindToEditor();");
