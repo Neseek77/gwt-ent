@@ -45,6 +45,19 @@ public @interface HTMLTemplate {
   String basePath() default "";
   
   /**
+   * true if want rename all id when widget attach to a html element
+   * by default it's true, cause if you have two instance of HTMLTemplatePanel, 
+   * the id will be the same which is not suitable of HTML standard.
+   * 
+   * <P>if just one instance of HTMLTemplatePanel in you application, you can set it to false.
+   * 
+   * Please note, If here is true, the css id selector wouldn't work
+   * 
+   * @return
+   */
+  boolean renameId() default true;
+  
+  /**
    * The content of HTML File
    */
   String html() default "";
