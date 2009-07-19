@@ -10,7 +10,7 @@ import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.htmltemplate.HTMLTplMainPage;
 
-@ShowcaseHTMLPanel("MainPage.html")
+@ShowcaseHTMLPanel(value="MainPage.html")
 public class MainPageHTMLPanel extends HTMLTemplatePanel {
 
 	public MainPageHTMLPanel(String html) {
