@@ -217,3 +217,18 @@ white-space:nowrap;
 	width: 100%;
 	background-color: #fbfcfc;
 }
+
+
+.Form_Caption {
+	margin-right: 10px;
+	margin-left: 20px;
+	font-weight: bold;
+	text-align: right;
+	width:100px;
+}
+
+.Form_Editors{
+	margin-right: 10px;
+	margin-left: 10px;
+	width:300px;
+}
