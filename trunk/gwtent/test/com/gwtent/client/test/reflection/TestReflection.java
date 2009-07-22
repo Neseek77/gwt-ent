@@ -21,6 +21,7 @@ package com.gwtent.client.test.reflection;
 
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.test.annotations.*;
+import com.gwtent.client.validate.constraints.Regular;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,8 @@ import javax.validation.constraints.NotNull;
 @Table(name="Table_Test")
 public class TestReflection<T> implements Reflection {
 	private Date date;
+	
+	@Regular(regex="[0-9]\\.[0-9]")
 	private String string;
 	private boolean bool;
 	private List<String> names;
