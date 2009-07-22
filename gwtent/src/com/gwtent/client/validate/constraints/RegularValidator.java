@@ -4,7 +4,7 @@ package com.gwtent.client.validate.constraints;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class RegularValidator implements ConstraintValidator<Regular, String> {
+public class RegularValidator implements ConstraintValidator<Regular, Object> {
 
 	private String regex;
 
@@ -12,9 +12,12 @@ public class RegularValidator implements ConstraintValidator<Regular, String> {
 		regex = r.regex();
 	}
 
-	public boolean isValid(String value,
+	public boolean isValid(Object value,
 			ConstraintValidatorContext constraintValidatorContext) {
-		return isValid(value, regex);
+		if (value == null)
+			return isValid("", regex);
+		else
+  		return isValid(value.toString(), regex);
 	}
 
 	protected native boolean isValid(String s, String regex)/*-{
