@@ -1,5 +1,6 @@
 package com.gwtent.showcase.client.htmltemplate;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.gwtent.client.template.HTMLEvent;
 import com.gwtent.client.template.HTMLTemplatePanel;
@@ -25,9 +26,14 @@ public class HTMLTplMainPage extends HTMLTemplatePanel {
 	
 	@HTMLEvent(value = {"linkTplBasic"})
 	protected void doHTMLTemplateClick(){
+		if (basicPage == null){
+			basicPage = GWT.create(HTMLTplBasicPage.class);
+			subContent.add(basicPage);
+		}
 		
+		subContent.showWidget(subContent.getWidgetIndex(basicPage));
 	}
 	
 	
-	
+	private HTMLTplBasicPage basicPage;
 }

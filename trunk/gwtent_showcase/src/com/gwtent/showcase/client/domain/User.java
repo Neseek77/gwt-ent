@@ -20,6 +20,9 @@ public class User {
   @Required
   private String lastName;
   
+  @Required
+  private String email;
+  
   @NotNull(groups={Groups.Billable.class})
   private Address address;
   
@@ -57,5 +60,13 @@ public class User {
 
 	public String getLastName() {
 		return lastName;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 }
