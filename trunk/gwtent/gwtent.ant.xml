@@ -51,6 +51,7 @@
   <target name="package and copy" depends="package">
   	<copy file="gwtent.jar" tofile="../gwtent-orm/lib/gwtent.jar"></copy>
   	<copy file="gwtent.jar" tofile="../gwtent-sample/lib/gwtent.jar"></copy>
+  	<copy file="gwtent.jar" tofile="../gwtent_showcase/lib/gwtent.jar"></copy>
   </target>
 
 </project>
