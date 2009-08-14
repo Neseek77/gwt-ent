@@ -4,15 +4,9 @@ import java.lang.annotation.Annotation;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.showcase.client.aop.Phone;
 import com.gwtent.showcase.client.aop.Phone.Receiver;
-import com.gwtent.showcase.client.reflection.TestReflection;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -27,15 +21,15 @@ public class Gwtent_showcase implements EntryPoint {
   }
 
   public void testReflection(){
-    com.gwtent.showcase.client.reflection.TestReflection test = new TestReflection();
-    ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
-    
-    test.setString("set by code");
-    System.out.println("after SetByCode:" + test.getString());
-    System.out.println("after SetByCode:" + classType.invoke(test, "getString", null));
-    
-    classType.invoke(test, "setString", new Object[]{"set by invoke"});
-    System.out.println("after SetByInvoke:" + classType.invoke(test, "getString", null));
+//    com.gwtent.showcase.client.reflection.TestReflection test = new TestReflection();
+//    ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
+//    
+//    test.setString("set by code");
+//    System.out.println("after SetByCode:" + test.getString());
+//    System.out.println("after SetByCode:" + classType.invoke(test, "getString", null));
+//    
+//    classType.invoke(test, "setString", new Object[]{"set by invoke"});
+//    System.out.println("after SetByInvoke:" + classType.invoke(test, "getString", null));
   }
   
   public void addAnnotations(Annotation[] annotations){
