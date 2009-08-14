@@ -5,6 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Used for Class, to pointer out what types relation to this class need reflection informations
+ * 
+ * To got more control of Field or Method, please use @(Not Finished yet)
+ * 
+ * @author JamesLuo.au@gmail.com
+ *
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Reflectable {
