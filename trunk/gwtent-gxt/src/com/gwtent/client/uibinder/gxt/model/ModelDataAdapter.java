@@ -69,11 +69,11 @@ public class ModelDataAdapter<M> implements ModelData {
   }
 
   public <X> X get(String arg0) {
-    Field field = getField(arg0);
-    if (field == null){
+  	Method getter = ReflectionUtils.getGetter(classType, arg0);
+  	if (getter == null){
       return getAddtionalProperty(arg0);
     }else{
-      return (X) getField(arg0).getFieldValue(instance);
+    	return (X)getter.invoke(instance);
     }
   }
 
@@ -114,6 +114,8 @@ public class ModelDataAdapter<M> implements ModelData {
     //classType.invoke(instance, "set" + arg0, new Object[] {arg1});
     return get(arg0);
   }
+  
+ 
   
   private Field getField(String fieldName){
    return classType.findField(fieldName); 
