@@ -121,4 +121,11 @@ public class ModelValueImpl implements ModelValue<Object> {
 	public String getPropertyPath() {
 		return null;
 	}
+
+	public String getPropertyFullPath() {
+		if (this.rootAccessor != null)
+			return this.rootAccessor.getRootPath() + "." + this.getPropertyPath();
+		else
+			return this.getPropertyPath();
+	}
 }

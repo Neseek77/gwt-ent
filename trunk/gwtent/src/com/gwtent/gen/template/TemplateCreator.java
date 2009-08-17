@@ -435,6 +435,9 @@ public class TemplateCreator extends LogableSourceCreator {
         "          public Object getValue() {\n" +
         "            return " + rootValueName + ";\n"+
         "          }\n" +
+        "          public String getRootPath() {\n" +
+				"		         return \""+ rootValueName +"\";\n" +
+				"          }\n" + 
         "          public void setValue(Object value) {\n" +
         "            " + setCode + "\n" +           
         "          }}, "+ autoValidate +", " + sb.toString() + ");");

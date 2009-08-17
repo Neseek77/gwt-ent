@@ -97,7 +97,7 @@ public class UIBinderManager implements IValueChangedByBindingListener{
   		return true;
   	
   	for (String pathPrefix : pathPrefixs){
-  		if (value.getPropertyPath().startsWith(pathPrefix))
+  		if (value.getPropertyFullPath().startsWith(pathPrefix))
   			return true;
   	}
   	
