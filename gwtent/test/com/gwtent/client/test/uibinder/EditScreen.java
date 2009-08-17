@@ -38,7 +38,11 @@ public class EditScreen extends HTMLTemplatePanel {
 
           public void setValue(Object value) {
             varToBind = (String)value;
-          }}, false);
+          }
+
+					public String getRootPath() {
+						return "varToBind";
+					}}, false);
     
     getUIBinderManager().addBinder(txtFirstName, "firstName", false, TestModel.class,
         new ModelRootAccessor(){
@@ -49,7 +53,11 @@ public class EditScreen extends HTMLTemplatePanel {
 
           public void setValue(Object value) {
             //
-          }}, false);
+          }
+
+					public String getRootPath() {
+						return "firstName";
+					}}, false);
     //UIBinderFactory.getUIBinder(TextBox.class).binder(txtFirstName, this, testModel, "testModel.firstName");
   }
   
