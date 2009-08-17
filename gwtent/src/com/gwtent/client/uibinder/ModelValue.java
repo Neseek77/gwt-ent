@@ -51,10 +51,16 @@ public interface ModelValue<T> {
 	public Class<?> getRootClass();
 	
 	/**
-	 * The full path, how to get value from RootClass
+	 * The path, how to get value from RootClass
 	 * @return
 	 */
 	public String getPropertyPath();
+	
+	/**
+	 * The full path, getPropertyPath() + the Root path
+	 * @return
+	 */
+	public String getPropertyFullPath();
 	
 	public T getValue();
 	public boolean setValue(T value);

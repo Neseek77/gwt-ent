@@ -60,7 +60,11 @@ public class TemplateSource extends HTMLTemplatePanel {
 
           public void setValue(Object value) {
             //
-          }}, true, new Class<?>[]{Default.class});  //validate Groups
+          }
+
+					public String getRootPath() {
+						return "rootPath";
+					}}, true, new Class<?>[]{Default.class});  //validate Groups
     
     //....
     

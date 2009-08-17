@@ -12,4 +12,5 @@ package com.gwtent.client.uibinder;
 public interface ModelRootAccessor {
   public Object getValue();
   public void setValue(Object value);
+  public String getRootPath();
 }
