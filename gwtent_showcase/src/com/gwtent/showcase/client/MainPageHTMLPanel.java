@@ -21,9 +21,9 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 	protected DeckPanel content = new DeckPanel();
 	
 	
-	@HTMLEvent(value = {"linkHome"})
+	@HTMLEvent(value = {"linkHome", "linkReflection", "linkAOP", "linkValidation", "linkUIBinding"})
 	protected void doHomeClick(){
-		
+		Window.alert("Not finish yet");
 	}
 	
 	@HTMLEvent(value = {"linkEnglish"})
@@ -39,12 +39,7 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 		}
 		
 		content.showWidget(0);
-		Window.alert("English");
 	}
-	
-	protected void onSinkBrowserEvent(Event event){
-		Window.alert("Event: " + event);
-	}
-	
+
 	private HTMLTplMainPage tplMainPage;
 }

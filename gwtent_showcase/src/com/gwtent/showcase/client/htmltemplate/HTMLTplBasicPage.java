@@ -28,7 +28,7 @@ public class HTMLTplBasicPage extends HTMLTemplatePanel {
 	@HTMLWidget
 	protected TextBox edtFirstName = new TextBox();
 	
-	//you can setup the dom id you want 
+	//you can setup the dom id if you want 
 	@HTMLWidget("edtLastName")
 	protected TextBox myLastNameTextBox = new TextBox();
 	
