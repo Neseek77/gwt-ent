@@ -21,7 +21,6 @@ outline-width:medium;
 }
 
 * {
-border:0 none;
 margin:0;
 padding:0;
 }
@@ -193,7 +192,7 @@ white-space:nowrap;
 	padding-top: 35px;
 	padding-right: 0px;
 	padding-bottom: 20px;
-	padding-left: 0px;
+	padding-left: 10px;
 }
 #MainPage {
 	margin-right: 0px;
@@ -231,4 +230,8 @@ white-space:nowrap;
 	margin-right: 10px;
 	margin-left: 10px;
 	width:300px;
+}
+
+.gwt-TextBox, .gwt-DateBox, .gwt-ListBox{
+	width:90%;
 }
