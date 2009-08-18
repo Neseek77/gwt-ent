@@ -5,6 +5,9 @@ import java.lang.annotation.Annotation;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.gwtent.client.uibinder.GWTUIBinderRegister;
+import com.gwtent.client.validate.GWTValidateMessageStore;
+import com.gwtent.client.validate.message.ValidateMessages;
 import com.gwtent.showcase.client.aop.Phone;
 import com.gwtent.showcase.client.aop.Phone.Receiver;
 
@@ -47,6 +50,11 @@ public class Gwtent_showcase implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		//For UIBind
+		GWTUIBinderRegister.register();
+		//For Validate Messages
+		GWTValidateMessageStore.getInstance().addMessageObject(GWT.create(ValidateMessages.class), ValidateMessages.class);
+		
 		RootPanel.get().add((MainPageHTMLPanel)GWT.create(MainPageHTMLPanel.class));
 		//RootPanel.get().add(new MainPageHTMLPanel__Template_Test());
 	}

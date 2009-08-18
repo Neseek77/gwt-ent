@@ -1,5 +1,7 @@
 package com.gwtent.showcase.client.domain;
 
+import java.util.Date;
+
 import javax.validation.GroupSequence;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
@@ -7,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
 import com.gwtent.client.validate.Validatable;
+import com.gwtent.client.validate.constraints.Email;
+import com.gwtent.client.validate.constraints.Regular;
 import com.gwtent.client.validate.constraints.Required;
 
 @Validatable
@@ -14,13 +18,16 @@ import com.gwtent.client.validate.constraints.Required;
 public class User {
 
 	@Required
-  @Size(min=8, max=200)
+  @Size(min=2, max=30)
   private String firstName;
   
   @Required
   private String lastName;
   
   @Required
+  //@Regular(regex="^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\\.([a-zA-Z])+([a-zA-Z])+", message="Please input right email address.")
+  //Direct using Regular of Email annotation
+  @Email
   private String email;
   
   @NotNull(groups={Groups.Billable.class})
@@ -29,6 +36,8 @@ public class User {
   @NotNull(groups={Groups.BuyInOneClick.class})
   @NotEmpty(groups={Groups.BuyInOneClick.class})
   private CreditCard defaultCreditCard;
+  
+  private Date dob;
 
   public void setFirstName(String name) {
     this.firstName = name;
@@ -68,5 +77,13 @@ public class User {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public Date getDob() {
+		return dob;
 	}
 }
