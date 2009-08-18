@@ -38,7 +38,7 @@ public class ErrorMessagePanel extends PopupPanel{
 	
 	public void showPanel(final Element attachedElement){
 		this.attachedElement = attachedElement;
-		setZIndex(this, 5000);
+		//setZIndex(this, 5000);
 		
 //		int offsetWidth = box.getOffsetWidth();
 //		int offsetHeight = box.getOffsetHeight();
@@ -86,7 +86,7 @@ public class ErrorMessagePanel extends PopupPanel{
 	
 	protected void setZIndex(Widget w, int zindex){
 		Element h = w.getElement();
-		DOM.setStyleAttribute(h, "z-index", String.valueOf(zindex));
+		DOM.setStyleAttribute(h, "z-Index", String.valueOf(zindex));
 	}
 	
 	protected void setWidgetPositionImpl(Widget w, int left, int top) {

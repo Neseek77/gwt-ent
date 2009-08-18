@@ -39,4 +39,6 @@ public interface ValidateMessages extends Messages {
 	//
 	String constraint_required();
 	String constraint_regular(String regexp);
+	String constraint_email();
+	String constraint_url();
 }
