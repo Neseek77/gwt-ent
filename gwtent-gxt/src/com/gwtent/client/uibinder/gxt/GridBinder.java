@@ -1,5 +1,8 @@
 package com.gwtent.client.uibinder.gxt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.gwtent.client.common.ObjectFactory;
@@ -47,9 +50,11 @@ public class GridBinder<D extends Iterable<Object>> extends AbstractUIBinder<Gri
     widget.getStore().removeAll();
     
     if (value != null){
+    	List<ModelDataAdapter<Object>> values = new ArrayList<ModelDataAdapter<Object>>();
       for (Object object : value){
-        widget.getStore().add(new ModelDataAdapter<Object>(object));
+        values.add(new ModelDataAdapter<Object>(object));
       }
+      widget.getStore().add(values);
     }
   }
 
