@@ -251,7 +251,7 @@ public class GeneratorHelper {
 	 */
 	private static String annoValueToCode(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, Object object){
 		if (object instanceof String){
-	  	return "\"" + object.toString() + "\"";
+	  	return "\"" + object.toString().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 	  }else if (object instanceof Class){
 	    return ((Class)object).getCanonicalName() + ".class";    //inner class will got problem
 	  }else if (object.getClass().isArray()){
