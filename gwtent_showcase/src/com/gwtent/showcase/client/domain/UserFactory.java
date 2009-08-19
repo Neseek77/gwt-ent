@@ -42,11 +42,11 @@ public class UserFactory {
 		user.setEmail("JamesLuo.au@gmail.com");
 		user.setFirstName("James");
 		user.setLastName("Luo");
-		user.setDob(new Date(1980, 1, 1));
+		user.setDob(new Date(1980-1900, 1, 1));
 		
 		CreditCard card = new CreditCard();
 		card.setCreditCardNumber("111-111-111");
-		card.setExpiresOn(new Date(2012, 1, 1));
+		card.setExpiresOn(new Date(2012-1900, 1, 1));
 		card.setIssuingBank("westpac");
 		user.setDefaultCreditCard(card);
 		
@@ -66,11 +66,11 @@ public class UserFactory {
 		user.setEmail("LeiYang.au@gmail.com");
 		user.setFirstName("Lei");
 		user.setLastName("Yang");
-		user.setDob(new Date(1980, 1, 1));
+		user.setDob(new Date(1980-1900, 1, 1));
 		
 		CreditCard card = new CreditCard();
 		card.setCreditCardNumber("111-111-111");
-		card.setExpiresOn(new Date(2012, 1, 1));
+		card.setExpiresOn(new Date(2012-1900, 1, 1));
 		card.setIssuingBank("westpac");
 		user.setDefaultCreditCard(card);
 		
