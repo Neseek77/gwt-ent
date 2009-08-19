@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Paging<T> implements IsSerializable {
 
-	private long totalRecords;
+	private int totalRecords;
 	private List<T> records = new ArrayList<T>();
 
 	public Paging(){
@@ -19,11 +19,11 @@ public class Paging<T> implements IsSerializable {
 		this.records = records;
 	}
 	
-	public long getTotalRecords() {
+	public int getTotalRecords() {
 		return totalRecords;
 	}
 
-	public void setTotalRecords(long totalRecords) {
+	public void setTotalRecords(int totalRecords) {
 		this.totalRecords = totalRecords;
 	}
 

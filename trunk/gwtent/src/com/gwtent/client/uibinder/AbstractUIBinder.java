@@ -148,8 +148,8 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   	
   	if (autoValidate && isAutoValidatable()){  //auto validate and validate failed, direct return
   		if (doValidate(true, value, autoValidateGroups).size() > 0){
-  			doValueChanged();
-  			return false;
+  			//doValueChanged();  //For now, Just leave it, before submit to server, need call validate again
+  			//return false;
   			//throw new EditorToValueSetException("Validate error.");
   		}
   	}

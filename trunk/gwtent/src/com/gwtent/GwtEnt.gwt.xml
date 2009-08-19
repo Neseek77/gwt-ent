@@ -45,7 +45,7 @@
 
     <source path="client" />
     
-    <script src="pagebus.js"/>
+    <script src="gwtent/pagebus.js"/>
     
-    <stylesheet src='gwtent.css' />
+    <stylesheet src='gwtent/gwtent.css' />
 </module>
