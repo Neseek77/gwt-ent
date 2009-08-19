@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry excluding="**/.svn/**" kind="src" path="src"/>
 	<classpathentry excluding="**/.svn/**" kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="var" path="GWT_HOME/gwt-user.jar"/>
 	<classpathentry kind="var" path="GWT_HOME/gwt-dev-windows.jar"/>
@@ -11,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/aspectjrt.jar"/>
 	<classpathentry kind="lib" path="lib/aspectjweaver.jar"/>
 	<classpathentry kind="lib" path="lib/freemarker.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.5.0_17"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
