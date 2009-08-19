@@ -4,34 +4,34 @@
 = GWTENT 0.7 =
 
 1, New widgets
-   EnumListBox
-   RadioSelector
+   #  EnumListBox
+   #  RadioSelector
    
 2, Binder
-   EnumListBoxBinder
-   ListBoxBinder
-   TextBoxBinder
-   CheckBoxBinder
-   RichTextAreaBinder
-   RadioSelectorBinder
-   LabelBinder
+   #  EnumListBoxBinder
+   #  ListBoxBinder
+   #  TextBoxBinder
+   #  CheckBoxBinder
+   #  RichTextAreaBinder
+   #  RadioSelectorBinder
+   #  LabelBinder
    
-   Gxt-
-   TextFieldBinder (Support most of Field components)
-   SimpleComboBoxBinder
-   GridBinder
+   #  Gxt-
+   #  TextFieldBinder (Support most of Field components)
+   #  SimpleComboBoxBinder
+   #  GridBinder
    
 3, Validators
-   Required
-   Size
-   Min
-   NotEmpty
-   NotNull
-   Email
-   Regular
-   URL
+   #  Required
+   #  Size
+   #  Min
+   #  NotEmpty
+   #  NotNull
+   #  Email
+   #  Regular
+   #  URL
    
 4, Utils Classes
-   NotifyListener
-   WebUtils
-   PageBug integration
+   #  NotifyListener
+   #  WebUtils
+   #  PageBug integration
