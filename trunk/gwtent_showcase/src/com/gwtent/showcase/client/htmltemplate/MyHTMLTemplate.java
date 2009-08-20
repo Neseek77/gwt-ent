@@ -1,4 +1,4 @@
-package com.gwtent.showcase.client;
+package com.gwtent.showcase.client.htmltemplate;
 
 import com.gwtent.client.template.HTMLTemplate;
 
@@ -10,7 +10,7 @@ import com.gwtent.client.template.HTMLTemplate;
  *
  */
 @HTMLTemplate(basePath="/com/gwtent/showcase/client/htmls/")
-public @interface ShowcaseHTMLPanel {
+public @interface MyHTMLTemplate {
 	/**
 	 * The HTML file name based on htmls folder
 	 * @return

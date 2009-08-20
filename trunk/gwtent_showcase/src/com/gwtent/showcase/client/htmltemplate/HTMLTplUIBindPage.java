@@ -11,13 +11,13 @@ import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.client.template.UIBind;
 import com.gwtent.client.widget.EnumListBox;
-import com.gwtent.showcase.client.ShowcaseHTMLPanel;
+import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.domain.Country;
 import com.gwtent.showcase.client.domain.User;
 import com.gwtent.showcase.client.domain.UserFactory;
 
-@ShowcaseHTMLPanel(value = "HtmlTemplate_UIBind_Table.html", renameId=true)
-public class HTMLTplUIBindPage extends HTMLTemplatePanel {
+@MyHTMLTemplate(value = "HtmlTemplate_UIBind_Table.html", renameId=true)
+public class HTMLTplUIBindPage extends BaseShowCasePanel {
 	
 	protected User user;
 
@@ -87,4 +87,12 @@ public class HTMLTplUIBindPage extends HTMLTemplatePanel {
 			user = UserFactory.getInstance().getNextUser();
 			modelChanged();
 		}});
+
+	public String[] getResourceNames() {
+		return new String[]{"HTMLTplUIBindPage.java"};
+	}
+	
+	public String getCaseName() {
+		return "HTML Template Page With UIBind and Validator";
+	}
 }
