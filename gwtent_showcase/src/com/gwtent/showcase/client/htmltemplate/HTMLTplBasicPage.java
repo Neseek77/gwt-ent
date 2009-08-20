@@ -1,6 +1,7 @@
 package com.gwtent.showcase.client.htmltemplate;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
@@ -9,11 +10,11 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.gwtent.client.template.HTMLEvent;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.showcase.client.ShowcaseHTMLPanel;
+import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.domain.Country;
 
-@ShowcaseHTMLPanel(value = "HtmlTemplate_Basic.html", renameId=true)
-public class HTMLTplBasicPage extends HTMLTemplatePanel {
+@MyHTMLTemplate(value = "HtmlTemplate_Basic.html", renameId=true)
+public class HTMLTplBasicPage extends BaseShowCasePanel {
 
 	public HTMLTplBasicPage(String html) {
 		super(html);
@@ -48,5 +49,13 @@ public class HTMLTplBasicPage extends HTMLTemplatePanel {
 
 	@HTMLWidget
 	protected ListBox edtCountry = new ListBox();
+
+	public String[] getResourceNames() {
+		return new String[]{"HTMLTplBasicPage.java", "../htmls/HtmlTemplate_Basic.html"};
+	}
+
+	public String getCaseName() {
+		return "Basic HTML Template Page";
+	}
 	
 }

@@ -5,10 +5,11 @@ import com.google.gwt.user.client.ui.DeckPanel;
 import com.gwtent.client.template.HTMLEvent;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.showcase.client.ShowcaseHTMLPanel;
+import com.gwtent.showcase.client.ContentWidget;
+import com.gwtent.showcase.client.SubContent;
 import com.gwtent.showcase.client.domain.UserFactory;
 
-@ShowcaseHTMLPanel("HtmlTemplate.html")
+@MyHTMLTemplate("HtmlTemplate.html")
 public class HTMLTplMainPage extends HTMLTemplatePanel {
 
 	public HTMLTplMainPage(String html) {
@@ -16,7 +17,7 @@ public class HTMLTplMainPage extends HTMLTemplatePanel {
 	}
 
 	@HTMLWidget
-	protected DeckPanel subContent = new DeckPanel();
+	protected SubContent subContent = new SubContent();
 	
 	
 	@HTMLEvent(value = {"linkTplOverview"})
@@ -29,24 +30,24 @@ public class HTMLTplMainPage extends HTMLTemplatePanel {
 	protected void doHTMLTemplateClick(){
 		if (basicPage == null){
 			basicPage = GWT.create(HTMLTplBasicPage.class);
-			subContent.add(basicPage);
+			subContent.addShowCase(basicPage);
 		}
 		
-		subContent.showWidget(subContent.getWidgetIndex(basicPage));
+		subContent.showShowCase(basicPage);
 	}
 	
 	@HTMLEvent(value = {"linkTplUIBind"})
 	protected void doHTMLTemplateUIBindClick(){
 		if (uibindPage == null){
 			uibindPage = GWT.create(HTMLTplUIBindPage.class);
-			subContent.add(uibindPage);
+			subContent.addShowCase(uibindPage);
 		}
 		
 		//Get some object from server, and refresh the UI
 		uibindPage.setUser(UserFactory.getInstance().getJames());
 		uibindPage.modelChanged();
 		
-		subContent.showWidget(subContent.getWidgetIndex(uibindPage));
+		subContent.showShowCase(uibindPage);
 	}
 	
 	

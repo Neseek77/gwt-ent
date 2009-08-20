@@ -6,11 +6,12 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.gwtent.client.template.HTMLEvent;
+import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.htmltemplate.HTMLTplMainPage;
 
-@ShowcaseHTMLPanel(value="MainPage.html")
+@HTMLTemplate("MainPageHTMLPanel.html")
 public class MainPageHTMLPanel extends HTMLTemplatePanel {
 
 	public MainPageHTMLPanel(String html) {
