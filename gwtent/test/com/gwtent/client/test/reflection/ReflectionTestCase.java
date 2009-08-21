@@ -39,6 +39,10 @@ import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.client.test.annotations.Id;
 import com.gwtent.client.test.annotations.Table;
+import com.gwtent.client.test.reflection.ReflectionSaveSize.Anno;
+import com.gwtent.client.test.reflection.ReflectionSaveSize.ClassRefereceByAnno;
+import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldNotThere;
+import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldThere;
 
 public class ReflectionTestCase extends GWTTestCase {
 
@@ -249,6 +253,24 @@ public class ReflectionTestCase extends GWTTestCase {
 
   	Object code = classType.getField("name").getFieldValue(Sex.FEMALE);
   	assertTrue(Sex.FEMALE.getName().equals(code.toString()));
+  }
+  
+  
+  public void testSaveSize(){
+  	ClassType classType = TypeOracle.Instance.getClassType(ReflectionSaveSize.class);
+  	assertNotNull(classType.findConstructor());
+  	assertNotNull(classType.findField("string"));
+  	assertNull(classType.findField("bool"));
+  	assertNotNull(classType.findMethod("getId"));
+  	assertNull(classType.findMethod("setId"));
+  	
+  	assertNotNull(classType.findField("thisShouldThere"));
+  	assertNotNull(TypeOracle.Instance.getClassType(ThisShouldThere.class));
+  	assertNull(TypeOracle.Instance.getClassType(ThisShouldNotThere.class));
+  	assertNull(TypeOracle.Instance.getClassType(ReflectParent.class));
+  	
+  	assertNotNull(TypeOracle.Instance.getClassType(Anno.class));  	
+  	assertNotNull(TypeOracle.Instance.getClassType(ClassRefereceByAnno.class));
   }
   
 }
