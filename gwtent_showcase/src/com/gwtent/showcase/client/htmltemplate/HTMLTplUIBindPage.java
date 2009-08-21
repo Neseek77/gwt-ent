@@ -88,7 +88,7 @@ public class HTMLTplUIBindPage extends BaseShowCasePanel {
 			modelChanged();
 		}});
 
-	public String[] getResourceNames() {
+	public String[] getResourceFileNames() {
 		return new String[]{"HTMLTplUIBindPage.java"};
 	}
 	

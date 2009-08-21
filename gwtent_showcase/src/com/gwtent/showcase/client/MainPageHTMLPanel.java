@@ -10,6 +10,7 @@ import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.htmltemplate.HTMLTplMainPage;
+import com.gwtent.showcase.client.reflection.ReflectionPage;
 
 @HTMLTemplate("MainPageHTMLPanel.html")
 public class MainPageHTMLPanel extends HTMLTemplatePanel {
@@ -22,7 +23,7 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 	protected DeckPanel content = new DeckPanel();
 	
 	
-	@HTMLEvent(value = {"linkHome", "linkReflection", "linkAOP", "linkValidation", "linkUIBinding"})
+	@HTMLEvent(value = {"linkHome", "linkAOP", "linkValidation", "linkUIBinding"})
 	protected void doHomeClick(){
 		Window.alert("Not finish yet");
 	}
@@ -32,6 +33,16 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 		Window.alert("English");
 	}
 	
+	@HTMLEvent(value = {"linkReflection"})
+	protected void doReflectionClick(){
+		if (tplReflection == null){
+			tplReflection = GWT.create(ReflectionPage.class);
+			content.add(tplReflection);
+		}
+		
+		content.showWidget(content.getWidgetIndex(tplReflection));
+	}
+	
 	@HTMLEvent(value = {"linkHTMLTemplate"})
 	protected void doHTMLTemplateClick(){
 		if (tplMainPage == null){
@@ -39,8 +50,9 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 			content.add(tplMainPage);
 		}
 		
-		content.showWidget(0);
+		content.showWidget(content.getWidgetIndex(tplMainPage));
 	}
 
 	private HTMLTplMainPage tplMainPage;
+	private ReflectionPage tplReflection;
 }
