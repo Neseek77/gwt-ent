@@ -17,8 +17,8 @@ public class EnumTypeImpl extends ClassTypeImpl implements EnumType {
 				isDefaultInstantiable, declaringClass);
 	}
 	
-	public EnumTypeImpl(String qualifiedName, Class<?> declaringClass) {
-		super(qualifiedName, declaringClass);
+	public EnumTypeImpl(Class<?> declaringClass) {
+		super(declaringClass);
 	}
 
 	public EnumType isEnum() {

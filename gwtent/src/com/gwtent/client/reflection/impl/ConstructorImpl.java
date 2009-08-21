@@ -28,8 +28,8 @@ import com.gwtent.client.reflection.Method;
 public abstract class ConstructorImpl extends AbstractMethodImpl implements Constructor {
 	  private final ClassType enclosingType;
 
-	  public ConstructorImpl(ClassTypeImpl enclosingType, String name) {
-	    super(name);
+	  public ConstructorImpl(ClassTypeImpl enclosingType) {
+	    super(enclosingType.getName() + ".Constructor");
 	    this.enclosingType = enclosingType;
 	    enclosingType.addConstructor(this);
 	  }

@@ -158,6 +158,11 @@ public class TypeOracleImpl implements TypeOracle {
 		Type type = typeMap.get(name);
 		return type;
 	}
+	
+	public static Type findType(Class<?> clazz) {
+		Type type = typeMap.get(clazz.getName().replace('$', '.'));
+		return type;
+	}
 
 	public ClassType getClassType(String name) {
 		Type type = findType(name);

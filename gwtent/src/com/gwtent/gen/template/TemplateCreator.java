@@ -83,6 +83,7 @@ public class TemplateCreator extends LogableSourceCreator {
       
       while (names.containsValue(result)) {
         result = method.getName() + i.toString();
+        i++;
       }
       return result;
     }

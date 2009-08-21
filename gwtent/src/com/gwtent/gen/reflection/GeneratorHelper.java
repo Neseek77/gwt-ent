@@ -33,6 +33,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.AccessDef;
+import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
@@ -130,7 +131,7 @@ public class GeneratorHelper {
 	  String mapVarName = "values";
 	  //source.println(mapVarName + ".clear();");
 	  try {
-      JClassType classType = typeOracle.getType(annotation.annotationType().getName());
+      JClassType classType = typeOracle.getType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
       JAnnotationType annoType = classType.isAnnotation();
       JAnnotationMethod[] methods = annoType.getMethods();
       for (JAnnotationMethod method : methods) {
@@ -278,7 +279,7 @@ public class GeneratorHelper {
 	  StringBuilder sb = new StringBuilder();
 	  
 	  try {
-      JClassType classType = typeOracle.getType(annotation.annotationType().getName());
+      JClassType classType = typeOracle.getType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
       JAnnotationType annoType = classType.isAnnotation();
       String annoReflectionClassName = annoType.getQualifiedSourceName().replace(".", "_");
       sb.append(AnnotationStoreVarName).append("= new ").append(annoReflectionClassName).append(".").append(annoReflectionClassName).append("Impl");
