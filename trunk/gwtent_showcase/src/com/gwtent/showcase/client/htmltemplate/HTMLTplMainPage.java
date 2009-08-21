@@ -17,7 +17,7 @@ public class HTMLTplMainPage extends HTMLTemplatePanel {
 	}
 
 	@HTMLWidget
-	protected SubContent subContent = new SubContent();
+	protected SubContent subContentTpl = new SubContent();
 	
 	
 	@HTMLEvent(value = {"linkTplOverview"})
@@ -30,24 +30,24 @@ public class HTMLTplMainPage extends HTMLTemplatePanel {
 	protected void doHTMLTemplateClick(){
 		if (basicPage == null){
 			basicPage = GWT.create(HTMLTplBasicPage.class);
-			subContent.addShowCase(basicPage);
+			subContentTpl.addShowCase(basicPage);
 		}
 		
-		subContent.showShowCase(basicPage);
+		subContentTpl.showShowCase(basicPage);
 	}
 	
 	@HTMLEvent(value = {"linkTplUIBind"})
 	protected void doHTMLTemplateUIBindClick(){
 		if (uibindPage == null){
 			uibindPage = GWT.create(HTMLTplUIBindPage.class);
-			subContent.addShowCase(uibindPage);
+			subContentTpl.addShowCase(uibindPage);
 		}
 		
 		//Get some object from server, and refresh the UI
 		uibindPage.setUser(UserFactory.getInstance().getJames());
 		uibindPage.modelChanged();
 		
-		subContent.showShowCase(uibindPage);
+		subContentTpl.showShowCase(uibindPage);
 	}
 	
 	

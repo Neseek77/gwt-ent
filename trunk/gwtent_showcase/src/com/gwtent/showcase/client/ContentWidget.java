@@ -24,15 +24,24 @@ public class ContentWidget<T extends Widget> extends Composite {
   }
   
   protected Grid createGridTopLinks(ShowCase showCase){
-  	Grid gridTopLinks = new Grid(1, showCase.getResourceNames().length + 1);
+  	Grid gridTopLinks = new Grid(1, showCase.getResourceFileNames().length + 1);
   	gridTopLinks.getCellFormatter().setWidth(0, 0, "100%");
   	gridTopLinks.setText(0, 0, showCase.getCaseName());
   	
-  	for (int i = 0; i < showCase.getResourceNames().length; i++){
-  		gridTopLinks.setHTML(0, i + 1, "<a href=\"" + linkProvider.getLink(showCase.getClass().getName(), showCase.getResourceNames()[i]) + "\">" + showCase.getResourceNames()[i] + "</a>");
+  	for (int i = 0; i < showCase.getResourceFileNames().length; i++){
+  		
+  		gridTopLinks.setHTML(0, i + 1, "<a href=\"" + linkProvider.getLink(showCase.getClass().getName(), showCase.getResourceFileNames()[i]) + "\">" + getResourceNameFromFileName(showCase.getResourceFileNames()[i]) + "</a>");
   	}
   	
   	return gridTopLinks;
+  }
+  
+  private String getResourceNameFromFileName(String fileName){
+  	String[] names = fileName.split("/");
+  	if (names.length > 0)
+  		return names[names.length-1];
+  	else
+  		return "";
   }
   
   private Grid grid = new Grid(3, 1);
@@ -45,14 +54,14 @@ public class ContentWidget<T extends Widget> extends Composite {
   
   protected static class LinkGoogleCodeProvider implements LinkProvider{
 
-		public String getLink(String classFullName, String resourceName) {
+		public String getLink(String classFullName, String resourceFileName) {
 			String[] paths = classFullName.split("\\.");
 			String path = "/";
 			for (int i = 0; i < paths.length - 1; i++){
 				path = path + paths[i] + "/";
 			}
 
-			return "http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src" + path + resourceName;
+			return "http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src" + path + resourceFileName;
 		}
   	
   } 

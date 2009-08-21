@@ -50,7 +50,7 @@ public class HTMLTplBasicPage extends BaseShowCasePanel {
 	@HTMLWidget
 	protected ListBox edtCountry = new ListBox();
 
-	public String[] getResourceNames() {
+	public String[] getResourceFileNames() {
 		return new String[]{"HTMLTplBasicPage.java", "../htmls/HtmlTemplate_Basic.html"};
 	}
 
