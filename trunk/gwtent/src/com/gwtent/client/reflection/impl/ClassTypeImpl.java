@@ -42,6 +42,7 @@ import com.gwtent.client.reflection.MethodInvokeException;
 import com.gwtent.client.reflection.NotFoundException;
 import com.gwtent.client.reflection.Package;
 import com.gwtent.client.reflection.PrimitiveType;
+import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.uibinder.Parameter;
@@ -71,13 +72,10 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 
 	//private String lazyHash;
 
-	private String lazyQualifiedName;
 
 	private final Map methods = new HashMap<String, List>();
 
 	private int modifierBits;
-
-	private String name;
 
 	private String nestedName;
 
@@ -100,13 +98,11 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 		if (superclass != null)
 			return superclass.invoke(instance, methodName, args);
 		else
-			throw new NotFoundException(methodName + "not found or unimplement?");
+			throw new NotFoundException(methodName + " not found or unimplement?");
 	}
 
-	public ClassTypeImpl(String qualifiedName, Class<?> declaringClass) {
-		TypeOracleImpl.putType(this, qualifiedName);
-		this.name = qualifiedName; 
-		this.lazyQualifiedName = qualifiedName;
+	public ClassTypeImpl(Class<?> declaringClass) {
+		TypeOracleImpl.putType(this, ReflectionUtils.getQualifiedSourceName(declaringClass));
 		this.declaringClass = declaringClass;
 		
 //		if (! qualifiedName.equals("java.lang.Object"))
@@ -130,7 +126,6 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 		this.declaringPackage = declaringPackage;
 		this.enclosingType = enclosingType;
 		this.isLocalType = isLocalType;
-		this.name = name;
 		this.savedIsDefaultInstantiable = isDefaultInstantiable;
 		this.declaringClass = declaringClass;
 
@@ -302,7 +297,7 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 	 */
 	public String getName() {
 		//return nestedName;
-	  return name;
+	  return ReflectionUtils.getQualifiedSourceName(declaringClass);
 	}
 
 	public ClassType getNestedType(String typeName) throws NotFoundException {
@@ -368,20 +363,11 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 	}
 
 	public String getQualifiedSourceName() {
-		if (lazyQualifiedName == null) {
-			Package pkg = getPackage();
-			if (!pkg.isDefault()) {
-				lazyQualifiedName = pkg.getName() + "."
-						+ makeCompoundName(this);
-			} else {
-				lazyQualifiedName = makeCompoundName(this);
-			}
-		}
-		return lazyQualifiedName;
+		return this.getName();
 	}
 
 	public String getSimpleSourceName() {
-		return name;
+		return this.getName();
 	}
 
 	public ClassType[] getSubtypes() {
@@ -646,13 +632,6 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
 		}
 	}
 
-	private String makeCompoundName(ClassTypeImpl type) {
-		if (type.enclosingType == null) {
-			return type.name;
-		} else {
-			return makeCompoundName(type.enclosingType) + "." + type.name;
-		}
-	}
 
 	/**
 	 * Tells this type's superclasses and superinterfaces about it.

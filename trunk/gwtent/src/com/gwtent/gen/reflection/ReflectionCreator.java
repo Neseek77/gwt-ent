@@ -36,6 +36,8 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
 import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.client.reflection.HasReflect;
+import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.reflection.impl.AnnotationImpl;
@@ -67,19 +69,20 @@ public class ReflectionCreator extends LogableSourceCreator {
 		private final SourceWriter sourceWriter;
 		private final JClassType classType;
 		private final com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle;
+		private final Reflectable reflectable;
 
 		public ReflectionSourceCreator(String className, JClassType classType,
 				SourceWriter sourceWriter,
-				com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle) {
+				com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
+				Reflectable reflectable) {
 			this.className = className;
 			this.sourceWriter = sourceWriter;
 			this.classType = classType;
 			this.typeOracle = typeOracle;
+			this.reflectable = reflectable;
 		}
 
 		public void createSource() {
-			// System.out.println("ReflectionSourceCreator start :" + className);
-			
 			if (classType.isAnnotation() != null){
 				createAnnotationImpl(classType.isAnnotation());
 			}
@@ -90,36 +93,37 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// "\");");
 			// sourceWriter.println("super(" + classType.getQualifiedSourceName() +
 			// ".class);");
-			sourceWriter.println("super(\"" + classType.getQualifiedSourceName()
-					+ "\", " + classType.getQualifiedSourceName() + ".class);");
+			sourceWriter.println("super(" + classType.getQualifiedSourceName() + ".class);");
 			//sourceWriter.println("addClassMeta();");
 			sourceWriter.println("addAnnotations();");
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
-			if ((classType.isClass() != null)
-					&& GenUtils.hasPublicDefaultConstructor(classType)) {
-				if ((!classType.isAbstract()) && (classType.isDefaultInstantiable())) {
-					sourceWriter.println("new ConstructorImpl(this, \"" + className
-							+ "\"){");
-					sourceWriter.println("	public Object newInstance() {");
-					sourceWriter.println("return new "
-							+ classType.getQualifiedSourceName() + "();");
-					// sourceWriter.println("		return GWT.create(" +
-					// classType.getQualifiedSourceName() + ".class);");
-					sourceWriter.println("	}");
-					sourceWriter.println("};");
+			
+			if (this.reflectable.constructors()){
+				if ((classType.isClass() != null)
+						&& GenUtils.hasPublicDefaultConstructor(classType)) {
+					if ((!classType.isAbstract()) && (classType.isDefaultInstantiable())) {
+						sourceWriter.println("new ConstructorImpl(this){");
+						sourceWriter.println("	public Object newInstance() {");
+						sourceWriter.println("return new "
+								+ classType.getQualifiedSourceName() + "();");
+						// sourceWriter.println("		return GWT.create(" +
+						// classType.getQualifiedSourceName() + ".class);");
+						sourceWriter.println("	}");
+						sourceWriter.println("};");
+					}
 				}
 			}
 
 			sourceWriter.println("");
 			if (classType.getSuperclass() != null) {
-				sourceWriter.println("if (" + "TypeOracleImpl.findType(\""
-						+ classType.getSuperclass().getQualifiedSourceName() + "\")"
+				sourceWriter.println("if (" + "TypeOracleImpl.findType("
+						+ classType.getSuperclass().getQualifiedSourceName() + ".class)"
 						+ " != null)");
 				sourceWriter
-						.println("setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(\""
+						.println("setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("
 								+ classType.getSuperclass().getQualifiedSourceName()
-								+ "\").isClassOrInterface());");
+								+ ".class).isClassOrInterface());");
 			}
 
 			sourceWriter.println();
@@ -280,10 +284,12 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			source.println("protected void addAnnotations(){");
 			source.indent();
-
-			Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
-			GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "this", source,
-					annotations);
+			
+			if (this.reflectable.annotation()){
+				Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
+				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "this", source,
+						annotations);
+			}
 
 			source.outdent();
 			source.println("}");
@@ -295,30 +301,34 @@ public class ReflectionCreator extends LogableSourceCreator {
 			source.println("protected void addFields(){");
 			source.indent();
 
+			boolean needReflect = this.reflectable.fields();
 			source.println("FieldImpl field = null;");
 
 			JField[] fields = classType.getFields();
 
 			for (int i = 0; i < fields.length; i++) {
 				JField field = fields[i];
-				if (field.isEnumConstant() == null)
-					source.println("field = new FieldImpl(this, \"" + field.getName()	+ "\");");
-				else
-					source.println("field = new EnumConstantImpl(this, \"" + field.getName()	+ "\", " + field.isEnumConstant().getOrdinal() + ");");
 				
-				source.println("field.addModifierBits("
-						+ GeneratorHelper.AccessDefToInt(field) + "); ");
-				source.println("field.setTypeName(\""
-						+ field.getType().getQualifiedSourceName() + "\");");
+				if (needReflect || field.getAnnotation(HasReflect.class) != null){
+					if (field.isEnumConstant() == null)
+						source.println("field = new FieldImpl(this, \"" + field.getName()	+ "\");");
+					else
+						source.println("field = new EnumConstantImpl(this, \"" + field.getName()	+ "\", " + field.isEnumConstant().getOrdinal() + ");");
+					
+					source.println("field.addModifierBits("
+							+ GeneratorHelper.AccessDefToInt(field) + "); ");
+					source.println("field.setTypeName(\""
+							+ field.getType().getQualifiedSourceName() + "\");");
 
-				//GeneratorHelper.addMetaDatas("field", source, field);
+					//GeneratorHelper.addMetaDatas("field", source, field);
 
-				Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
-				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
-						annotations);
+					Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
+					GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
+							annotations);
 
-				source.println();
-
+				
+					source.println();
+				}
 			}
 			source.outdent();
 			source.println("}");
@@ -333,35 +343,38 @@ public class ReflectionCreator extends LogableSourceCreator {
 			source.println("MethodImpl method = null;");
 
 			JMethod[] methods = classType.getMethods();
+			
+			boolean needReflect = this.reflectable.methods();
 
 			for (int i = 0; i < methods.length; i++) {
 				JMethod method = methods[i];
 				if (!method.isPublic())
 					continue;
 
-				source.println("method = new MethodImpl(this, \"" + method.getName()
-						+ "\");");
-				source.println("method.addModifierBits("
-						+ GeneratorHelper.AccessDefToInt(method) + "); ");
-				source.println("method.setReturnTypeName(\""
-						+ method.getReturnType().getQualifiedSourceName() + "\");");
+				if (needReflect || method.getAnnotation(HasReflect.class) != null){
+					source.println("method = new MethodImpl(this, \"" + method.getName()
+							+ "\");");
+					source.println("method.addModifierBits("
+							+ GeneratorHelper.AccessDefToInt(method) + "); ");
+					source.println("method.setReturnTypeName(\""
+							+ method.getReturnType().getQualifiedSourceName() + "\");");
 
-				//GeneratorHelper.addMetaDatas("method", source, method);
-				JParameter[] params = method.getParameters();
-				for (int j = 0; j < params.length; j++) {
-					JParameter param = params[j];
-					source.println("new ParameterImpl(method, \""
-							+ param.getType().getQualifiedSourceName() + "\", \""
-							+ param.getName() + "\");");
-					// TODO Support annotation of Parameter
+					//GeneratorHelper.addMetaDatas("method", source, method);
+					JParameter[] params = method.getParameters();
+					for (int j = 0; j < params.length; j++) {
+						JParameter param = params[j];
+						source.println("new ParameterImpl(method, \""
+								+ param.getType().getQualifiedSourceName() + "\", \""
+								+ param.getName() + "\");");
+						// TODO Support annotation of Parameter
+					}
+
+					Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
+					GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "method", source,
+							annotations);
+
+					source.println();	
 				}
-
-				Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
-				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "method", source,
-						annotations);
-
-				source.println();
-
 			}
 
 			source.outdent();
@@ -533,7 +546,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 	protected void createSource(SourceWriter source, JClassType classType) {
 		String className = getSimpleUnitName(classType);
-		new ReflectionSourceCreator(className, classType, source, this.typeOracle)
+		new ReflectionSourceCreator(className, classType, source, this.typeOracle, ReflectableHelper.getFullSettings(this.typeOracle))
 				.createSource();
 
 		// source.println("public " + getSimpleUnitName(classType) + "(){");

@@ -44,11 +44,11 @@ public class Proxy extends ClassTypeImpl {
 	
 
 	public Proxy(){
-		super("className", Proxy.class);
+		super(Proxy.class);
 		addFields();
 		addMethods();
 		
-		new ConstructorImpl(this, "classname"){
+		new ConstructorImpl(this){
 			public Object newInstance() {
 				//return GWT.create(XXX.class);
 				return null;
@@ -147,14 +147,14 @@ public class Proxy extends ClassTypeImpl {
   	}
   	
   public org_aspectj_lang_annotation_Before(){
-    super("org.aspectj.lang.annotation.Before", org.aspectj.lang.annotation.Before.class);
+    super(org.aspectj.lang.annotation.Before.class);
     //addClassMeta();
     addAnnotations();
     addFields();
     addMethods();
     
-    if (TypeOracleImpl.findType("java.lang.Object") != null)
-    setSuperclass((ClassTypeImpl)TypeOracleImpl.findType("java.lang.Object").isClassOrInterface());
+    if (TypeOracleImpl.findType(java.lang.Object.class) != null)
+    setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(java.lang.Object.class).isClassOrInterface());
     
     addImplementedInterface(java.lang.annotation.Annotation.class);
   }

@@ -7,6 +7,41 @@ import java.util.List;
 import java.util.Map;
 
 public class ReflectionUtils {
+	
+	public static String getQualifiedSourceName(Class<?> clazz){
+		return clazz.getName().replace('$', '.');
+	}
+	
+	/**
+	 * Get the full description of a class by using reflection
+	 * @param clazz
+	 * @return
+	 */
+	public static String getDescription(Class<?> clazz){
+		ClassType type = TypeOracle.Instance.getClassType(clazz);
+		StringBuilder sb = new StringBuilder();
+		sb.append(type.getName()).append("\n");
+		sb.append("Fields:").append("\n");
+		for (Field field : type.getFields()){
+			sb.append("  ").append(field.getName()).append(" ").append(field.getTypeName()).append("\n");
+		}
+		
+		sb.append("\n");
+		if (type.findConstructor() != null){
+			sb.append("Constructor:").append("\n");
+			sb.append(type.findConstructor().toString());
+		}else{
+			sb.append("No default Contructor");
+		}
+		
+		sb.append("\n");
+		sb.append("Methods:");
+		for (Method method : type.getMethods()){
+			sb.append(method.toString());
+		}
+		
+		return sb.toString();
+	}
   
 	public static String[] getGetterNames(String name){
 		name = name.substring(0, 1).toUpperCase() + name.substring(1);

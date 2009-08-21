@@ -15,7 +15,6 @@ import com.gwtent.client.reflection.annotations.Reflect_Full;
  * @author Hardy Ferentschik
  */
 
-@Reflect_Full
 public interface ConstraintValidator<A extends Annotation, T> {
 	/**
 	 * Initialize the validator in preparation for isValid calls. The onstraint

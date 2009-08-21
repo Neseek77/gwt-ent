@@ -21,7 +21,6 @@ import com.gwtent.client.reflection.annotations.Reflect_Full;
 @Documented
 @Target({ ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Reflect_Full
 public @interface Constraint {
 	/**
 	* ConstraintValidator classes must reference distinct target types.

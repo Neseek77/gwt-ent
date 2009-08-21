@@ -25,9 +25,12 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Constraint;
@@ -40,14 +43,21 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.HasAnnotations;
+import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
+import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.client.reflection.HasReflect;
 import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.reflection.Reflectable;
+import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.impl.TypeOracleImpl;
 import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
@@ -57,8 +67,6 @@ import com.gwtent.gen.reflection.ReflectionCreator.ReflectionSourceCreator;
 public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	private List<String> allGeneratedClassNames = new ArrayList<String>();
-	private List<JClassType> allReflectionClasses = null;
-	
 	private Set<JClassType> relationClassesProcessed = new HashSet<JClassType>();
 
 	public ReflectAllInOneCreator(TreeLogger logger, GeneratorContext context,
@@ -80,10 +88,13 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	protected String getSUFFIX() {
 		return GenUtils.getReflection_SUFFIX();
 	}
+	
+	private List<JClassType> candidateList = new ArrayList<JClassType>();
+	private Map<JClassType, Reflectable> candidates = new HashMap<JClassType, Reflectable>();
 
 	@Override
 	public void createSource(SourceWriter source, JClassType classType) {
-		allGeneratedClassNames = genAllClasses(allReflectionClasses, source);
+		allGeneratedClassNames = genAllClasses(source);
 		
 		source.println("public " + getSimpleUnitName(classType) + "(){");
 		source.indent();
@@ -96,9 +107,9 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		source.println("}");
 	}
 	
-	private List<String> genAllClasses(List<JClassType> types, SourceWriter sourceWriter){
+	private List<String> genAllClasses(SourceWriter sourceWriter){
 		List<String> result = new ArrayList<String>();
-		for(JClassType type : types){
+		for(JClassType type : candidateList){
 			String className = type.getPackage().getName().replace('.', '_') + '_' + getSimpleUnitNameWithOutSuffix(type); //type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
 			sourceWriter.indent();
 			if (type.isEnum() == null)
@@ -106,7 +117,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			else
 				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.EnumTypeImpl {");
 
-			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle).createSource();
+			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle, candidates.get(type)).createSource();
 			sourceWriter.outdent();
 			sourceWriter.println("}");
 
@@ -117,49 +128,67 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	//TODO refactor by source visitor pattern
 	
-	private List<JClassType> getAllReflectionClasses() throws NotFoundException{
-		List<JClassType> types = new ArrayList<JClassType>();
+	private void getAllReflectionClasses() throws NotFoundException{
 
 		//System annotations
-		addClassIfNotExists(types, typeOracle.getType(Retention.class.getCanonicalName()));
-		addClassIfNotExists(types, typeOracle.getType(Documented.class.getCanonicalName()));
-		addClassIfNotExists(types, typeOracle.getType(Inherited.class.getCanonicalName()));
-		addClassIfNotExists(types, typeOracle.getType(Target.class.getCanonicalName()));
-		addClassIfNotExists(types, typeOracle.getType(Deprecated.class.getCanonicalName()));
+		addClassIfNotExists(typeOracle.getType(Retention.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
+		addClassIfNotExists(typeOracle.getType(Documented.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
+		addClassIfNotExists(typeOracle.getType(Inherited.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
+		addClassIfNotExists(typeOracle.getType(Target.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
+		addClassIfNotExists(typeOracle.getType(Deprecated.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
 		
-
-//			JClassType reflectionClass = typeOracle.getType(Reflection.class.getCanonicalName());
-//			JClassType constraintClass = typeOracle.getType(Constraint.class.getCanonicalName());  //For temp use, will refactor here to support full @Reflectable
-//			for (JClassType classType : typeOracle.getTypes()) {
-//			  //|| (classType.getAnnotation(Aspect.class) != null)
-//				if ((classType.isAssignableTo(reflectionClass)) || (classType.isAssignableTo(constraintClass))
-//				    || (GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectable.class) != null)
-//				    //|| classType.getQualifiedSourceName().startsWith("java.lang")
-//				    //|| classType.getQualifiedSourceName().startsWith("java.util")
-//				    ){
-//					if (! genExclusion(classType)){
-//						processRelationClasses(types, classType);
-//						processAnnotationClasses(types, classType);
-//						addClassIfNotExists(types, classType);
-//					}
-//				}
-//			}
-		
+		//=====GWT0.7
 		for (JClassType classType : typeOracle.getTypes()) {
 			Reflectable reflectable = GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectable.class);
 			if (reflectable != null){
-				if (! genExclusion(classType)){
-					processRelationClasses(types, classType, reflectable);
-				  processAnnotationClasses(types, classType, reflectable);
-			  	addClassIfNotExists(types, classType);
-				}
+				processClass(classType, reflectable);
 			}
 		}
-		
-		return types;
+		//======end of gwt0.7
+	}
+
+	private void processClass(Class<?> clazz, Reflectable reflectable) {
+		processClass(typeOracle.findType(ReflectionUtils.getQualifiedSourceName(clazz)), reflectable);
 	}
 	
-	private void processRelationClasses(List<JClassType> types, JClassType classType, Reflectable reflectable){
+	private void processClass(JClassType classType, Reflectable reflectable) {
+		if (! genExclusion(classType)){
+			processRelationClasses(classType, reflectable);
+		  processAnnotationClasses(classType, reflectable);
+			addClassIfNotExists(classType, reflectable);
+		}
+	}
+	
+	private Reflectable getNearestSetting(Class<?> clazz, Reflectable defaultSetting){
+		return getNearestSetting(typeOracle.findType(ReflectionUtils.getQualifiedSourceName(clazz)), defaultSetting);
+	}
+	
+	/**
+	 * Get nearest Reflectable, if not found, using defaultSetting
+	 * @param classType
+	 * @param defaultSetting
+	 * @return
+	 */
+	private Reflectable getNearestSetting(JClassType classType, Reflectable defaultSetting){
+		Reflectable result = GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectable.class);
+		if (result != null)
+			return result;
+		else
+			return defaultSetting;
+	}
+	
+	private void processRelationClass(JClassType classType, Reflectable reflectable){
+		Reflectable nearest = getNearestSetting(classType, reflectable);
+		processRelationClasses(classType, nearest);
+		processAnnotationClasses(classType, nearest);
+		addClassIfNotExists(classType, nearest);
+	}
+	
+	private boolean hasReflection(HasAnnotations type){
+		return type.getAnnotation(HasReflect.class) != null;
+	}
+	
+	private void processRelationClasses(JClassType classType, Reflectable reflectable){
 		if (classType == null)	
 			return;
 		
@@ -174,56 +203,80 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		
 		if (reflectable.superClasses()){
 			if (classType.getSuperclass() != null){
-				processRelationClasses(types, classType.getSuperclass(), reflectable);
-				processAnnotationClasses(types, classType.getSuperclass(), reflectable);
-				addClassIfNotExists(types, classType.getSuperclass());
+				processRelationClass(classType.getSuperclass(), reflectable);
 			}
 		}
 		
 		if (reflectable.relationTypes()){
 			for (JClassType type : classType.getImplementedInterfaces()){
-				processRelationClasses(types, type, reflectable);
-			  processAnnotationClasses(types, type, reflectable);
-			  addClassIfNotExists(types, type);
+				processRelationClass(type, reflectable);
 			}
 		}
-		
-		
+
 		relationClassesProcessed.add(classType);
 		
+		processFields(classType, reflectable);
+		
+		processMethods(classType, reflectable);
+	}
+
+	private void processFields(JClassType classType, Reflectable reflectable) {
+		boolean need = reflectable.relationTypes();
+		
 		for (JField field : classType.getFields()) {
-			processAnnotationClasses(types, field, reflectable);
-		  
-			if (reflectable.relationTypes()){
+			if (need || (hasReflection(field))){
+				processAnnotationClasses(field, reflectable);
+			  
 				JClassType type = field.getType().isClassOrInterface();
 			  if (type != null)
+			  	if (need || (hasReflection(field) && field.getAnnotation(HasReflect.class).fieldType()))
 			  	if (! type.isAssignableTo(classType))  //some times, it's itself of devided class
-	  		  	processRelationClasses(types, type, reflectable);
+	  		  	processRelationClasses(type, reflectable);
 			  
-			  addClassIfNotExists(types, type);	
+			  addClassIfNotExists(type, reflectable);
 			}
+				
 		}
-		
+	}
+
+	private void processMethods(JClassType classType, Reflectable reflectable) {
+		boolean need = reflectable.relationTypes();
 		for (JMethod method : classType.getMethods()){
-			processAnnotationClasses(types, method, reflectable);
-			
-			if (reflectable.relationTypes()){
+			if (need || hasReflection(method)){
+				processAnnotationClasses(method, reflectable);
+				
+				HasReflect hasReflect = method.getAnnotation(HasReflect.class);
 				JClassType type = null;
-				if (method.getReturnType() != null && method.getReturnType().isClassOrInterface() != null){
-					type = method.getReturnType().isClassOrInterface();
-					
-					if (! type.isAssignableTo(classType))
-						processRelationClasses(types, method.getReturnType().isClassOrInterface(), reflectable);
-					
-				  addClassIfNotExists(types, method.getReturnType().isClassOrInterface());
+				
+				if (need || hasReflect.resultType()){
+					if (method.getReturnType() != null && method.getReturnType().isClassOrInterface() != null){
+						type = method.getReturnType().isClassOrInterface();
+						
+						if (! type.isAssignableTo(classType))
+							processRelationClasses(type, reflectable);
+						
+					  addClassIfNotExists(type, reflectable);
+					}
 				}
 				
-				//TODO How about parameters?
-			}			
+				
+			  if (need || hasReflect.parameterTypes()){
+			  	for (JParameter parameter :method.getParameters()){
+						if (parameter.getType() != null && parameter.getType().isClassOrInterface() != null){
+							type = parameter.getType().isClassOrInterface();
+							
+							if (! type.isAssignableTo(classType))
+								processRelationClasses(type, reflectable);
+							
+						  addClassIfNotExists(type, reflectable);
+						}
+					}
+			  }
+			}
 		}
 	}
 	
-	private void processAnnotationClasses(List<JClassType> types, HasAnnotations annotations, Reflectable reflectable){
+	private void processAnnotationClasses(HasAnnotations annotations, Reflectable reflectable){
 		if (! reflectable.annotation())
 			return;
 		
@@ -232,26 +285,49 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	    return;
 	  
 	  for (Annotation annotation : annos){
-	    processAnnotation(types, annotation);
+	    processAnnotation(annotation);
 	  }
 	}
 	
-	private void processAnnotation(List<JClassType> types, Annotation annotation){
+	private Reflectable getFullSettings(){
+		return ReflectableHelper.getFullSettings(typeOracle);
+	}
+	
+	private void processAnnotation(Annotation annotation){
 	  if (annotation.annotationType().getName().startsWith("java.lang.annotation")){
 	     return;  //Document's parent is itself, must check here
 	   }else{
-	     JClassType classType = this.typeOracle.findType(annotation.annotationType().getCanonicalName());
-	     addClassIfNotExists(types, classType);
+	     JClassType classType = this.typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
+	     addClassIfNotExists(classType, getNearestSetting(classType, getFullSettings()));
+	     
+	     //Go through all annotation methods, if has class, add that class to reflection as well
+       JAnnotationType annoType = classType.isAnnotation();
+       JAnnotationMethod[] methods = annoType.getMethods();
+       for (JAnnotationMethod method : methods) {
+         Object value = null;
+         try {
+           value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
+           if (value instanceof Class){
+          	 processClass((Class)value, getNearestSetting((Class)value, getFullSettings()));
+           }else if (value.getClass().isArray()){
+         	    for (int i = 0; i < Array.getLength(value); i++){
+         	    	processClass((Class)Array.get(value, i), getNearestSetting((Class)Array.get(value, i), getFullSettings()));
+         	    }
+         	  }
+         } catch (Exception e){
+         	throw new CheckedExceptionWrapper(e);
+         }
+       }
 	     
 	     Class<? extends Annotation> annotationType = annotation.annotationType(); 
 	     Annotation[] metaAnnotations = annotationType.getAnnotations();
 	     for (Annotation metaAnnotation : metaAnnotations) {
-	       processAnnotation(types, metaAnnotation);
+	       processAnnotation(metaAnnotation);
 	     }
 	   }
 	}
 	
-	private void addClassIfNotExists(List<JClassType> types, JClassType classType){
+	private void addClassIfNotExists(JClassType classType, Reflectable setting){
 		//Add next line we can make sure we just append normal class type, always get from TypeOracle
 		//not JParameterizedType or JTypeParameter etc...
 		if (classType != null){
@@ -263,14 +339,15 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		if ((classType == null) || (!classType.isPublic()))
 		  return;  
 		
-		if ((types.indexOf(classType) < 0)){
-			types.add(classType);
-		}
+		if (candidateList.indexOf(classType) < 0)
+			candidateList.add(classType);
+		candidates.put(classType, setting);
 	}
 
 	protected SourceWriter doGetSourceWriter(JClassType classType) throws NotFoundException {
-		if (allReflectionClasses == null)
-			allReflectionClasses = getAllReflectionClasses();
+		if (candidates.size() <= 0){
+			getAllReflectionClasses();
+		}
 		
 		String packageName = classType.getPackage().getName();
 		String simpleName = getSimpleUnitName(classType);
