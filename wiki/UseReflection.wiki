@@ -53,13 +53,11 @@ after SetByCode:set by code
 after SetByInvoke:set by invoke
 }}}
 
+== Control you javascript size ==
+GWTENT provide you more control to how much reflection information created.
 
-== The integrity of the source code ==
-[http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/test/com/gwtent/client/test/ReflectionTestCase.java ReflectionTestCase]
-
-[http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/test/com/gwtent/client/test/TestReflection.java TestReflection]
-
-[http://code.google.com/p/gwt-ent/source/browse/#svn/trunk/gwtent-sample Sample Project]
+== The TestCase ==
+[http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/test/com/gwtent/client/test/reflection/ReflectionTestCase.java ReflectionTestCase]
 
 = Understand Reflection Classes =
 
