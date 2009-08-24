@@ -55,6 +55,10 @@ public class ReflectionSaveSize<T> extends ReflectParent{
 		
 	}
 	
+	public static @interface AnnoReflection{
+		public Class<?>[] validatedBy();
+	} 
+	
 	private Date date;
 	
 	@HasReflect
