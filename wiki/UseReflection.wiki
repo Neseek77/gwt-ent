@@ -15,8 +15,12 @@ This Framework support
 
 = How to use =
 
-# add Reflection Marker interface into your pojo class
+# add Annotation Or Reflection Marker interface into your pojo class
 {{{
+@Reflectable
+public class TestReflection{
+}
+
 public class TestReflection implements Reflection{
 }
 }}}
