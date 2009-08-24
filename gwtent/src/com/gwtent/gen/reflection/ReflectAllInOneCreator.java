@@ -188,6 +188,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		return type.getAnnotation(HasReflect.class) != null;
 	}
 	
+	private boolean hasReflectionAnnotation(HasAnnotations type){
+		return (type.getAnnotation(HasReflect.class) != null) && type.getAnnotation(HasReflect.class).annotation();
+	}
+	
 	private void processRelationClasses(JClassType classType, Reflectable reflectable){
 		if (classType == null)	
 			return;
@@ -224,7 +228,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		boolean need = reflectable.relationTypes();
 		
 		for (JField field : classType.getFields()) {
-			if (need || (hasReflection(field))){
+			if (reflectable.fieldAnnotations() || (hasReflectionAnnotation(field))){
 				processAnnotationClasses(field, reflectable);
 			  
 				JClassType type = field.getType().isClassOrInterface();
@@ -242,13 +246,13 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	private void processMethods(JClassType classType, Reflectable reflectable) {
 		boolean need = reflectable.relationTypes();
 		for (JMethod method : classType.getMethods()){
-			if (need || hasReflection(method)){
+			if (reflectable.fieldAnnotations() || (hasReflectionAnnotation(method))){
 				processAnnotationClasses(method, reflectable);
 				
 				HasReflect hasReflect = method.getAnnotation(HasReflect.class);
 				JClassType type = null;
 				
-				if (need || hasReflect.resultType()){
+				if (need || (hasReflect != null && hasReflect.resultType())){
 					if (method.getReturnType() != null && method.getReturnType().isClassOrInterface() != null){
 						type = method.getReturnType().isClassOrInterface();
 						
@@ -260,7 +264,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 				}
 				
 				
-			  if (need || hasReflect.parameterTypes()){
+			  if (need || (hasReflect != null && hasReflect.parameterTypes())){
 			  	for (JParameter parameter :method.getParameters()){
 						if (parameter.getType() != null && parameter.getType().isClassOrInterface() != null){
 							type = parameter.getType().isClassOrInterface();
@@ -277,7 +281,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	}
 	
 	private void processAnnotationClasses(HasAnnotations annotations, Reflectable reflectable){
-		if (! reflectable.annotation())
+		if (! reflectable.classAnnotations())
 			return;
 		
 	  Annotation[] annos= AnnotationsHelper.getAnnotations(annotations);
@@ -291,6 +295,12 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	private Reflectable getFullSettings(){
 		return ReflectableHelper.getFullSettings(typeOracle);
+	}
+	
+	private void processClassFromAnnotationValue(Object value){
+		if (value != null && value instanceof Class && (!((Class)value).getName().equals("void"))){
+			processClass((Class)value, getNearestSetting((Class)value, getFullSettings()));
+		}
 	}
 	
 	private void processAnnotation(Annotation annotation){
@@ -307,11 +317,14 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
          Object value = null;
          try {
            value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
+           //System.out.println(value);
+           //System.out.println(value.getClass());
            if (value instanceof Class){
-          	 processClass((Class)value, getNearestSetting((Class)value, getFullSettings()));
+          	 processClassFromAnnotationValue(value);
            }else if (value.getClass().isArray()){
          	    for (int i = 0; i < Array.getLength(value); i++){
-         	    	processClass((Class)Array.get(value, i), getNearestSetting((Class)Array.get(value, i), getFullSettings()));
+         	    	if (Array.get(value, i) instanceof Class)
+         	    		processClassFromAnnotationValue(Array.get(value, i));
          	    }
          	  }
          } catch (Exception e){
