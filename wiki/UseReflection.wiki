@@ -59,7 +59,29 @@ after SetByInvoke:set by invoke
 }}}
 
 == Control you javascript size ==
-GWTENT provide you more control to how much reflection information created.
+GWTENT provide you more power to control how much reflection information created.
+
+=== The Class Scope ===
+  You can control whether have:
+  # Class Annotation
+  # Fields
+  # Methods
+  # Constructors
+  # Field and Method Annotations
+  # Relation Types(The field type, the return type of method, the type of Parameters)
+  # Super Classes ( all the super classes of this class will generate reflection information)
+  # Assignable Classes (all assignable classes. if annotate to a class, this is mean All subClasses will generate reflection information; if annotate to a interface, then all implement classes will generate reflection information; if annotate to an annotation, then all types annotated by this annotation will generate reflection information)
+
+  [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/Reflectable.java Click Here For more Information]
+
+=== The Field/Method Scope ===
+  You can control whether have:
+  # Annotations
+  # Field Type
+  # Method Return Type
+  # Method Parameter Type
+
+  [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/client/reflection/HasReflect.java Click Here For more Information]
 
 == The TestCase ==
 [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/test/com/gwtent/client/test/reflection/ReflectionTestCase.java ReflectionTestCase]
