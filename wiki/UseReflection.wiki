@@ -23,6 +23,11 @@ public class TestReflection{
 
 public class TestReflection implements Reflection{
 }
+
+@Reflect_Domain
+public class TestReflection{
+}
+
 }}}
 
 # get ClassType. 
