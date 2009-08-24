@@ -24,7 +24,7 @@ package com.gwtent.client.reflection;
  * if implement this interface, generate will create full reflection information
  * 
  */
-@Reflectable(relationTypes=true, superClasses=true, assignableClasses=true)
+@Reflectable(fieldAnnotations = true, relationTypes=true, superClasses=true, assignableClasses=true)
 public interface Reflection {
 
 }

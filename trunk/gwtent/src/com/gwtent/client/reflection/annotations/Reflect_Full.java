@@ -9,7 +9,7 @@ import com.gwtent.client.reflection.Reflectable;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Reflectable(relationTypes=true, superClasses=true, assignableClasses=true)
+@Reflectable(classAnnotations = true, fieldAnnotations = true, relationTypes=true, superClasses=true, assignableClasses=true)
 public @interface Reflect_Full {
 
 }

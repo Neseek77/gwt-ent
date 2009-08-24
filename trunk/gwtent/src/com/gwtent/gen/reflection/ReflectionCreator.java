@@ -285,7 +285,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			source.println("protected void addAnnotations(){");
 			source.indent();
 			
-			if (this.reflectable.annotation()){
+			if (this.reflectable.classAnnotations()){
 				Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
 				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "this", source,
 						annotations);
@@ -322,10 +322,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 					//GeneratorHelper.addMetaDatas("field", source, field);
 
-					Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
-					GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
-							annotations);
-
+					if (this.reflectable.fieldAnnotations() || (field.getAnnotation(HasReflect.class) != null && field.getAnnotation(HasReflect.class).annotation())){
+						Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
+						GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
+								annotations);
+					}
 				
 					source.println();
 				}
@@ -369,9 +370,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 						// TODO Support annotation of Parameter
 					}
 
-					Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
-					GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "method", source,
-							annotations);
+					if (this.reflectable.fieldAnnotations() || (method.getAnnotation(HasReflect.class) != null && method.getAnnotation(HasReflect.class).annotation())){
+						Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
+						GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "method", source,
+								annotations);
+					}
 
 					source.println();	
 				}

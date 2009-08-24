@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
 public @interface Reflectable {
 	
   /**
-	 * True if you want generate annotation information
+	 * True if you want generate class annotations information
 	 */
-	public boolean annotation() default true;
+	public boolean classAnnotations() default true;
 	
   
   /**
@@ -43,6 +43,12 @@ public @interface Reflectable {
    * True if you want create Reflection info of Constructors
    */
   public boolean constructors() default true;
+  
+  
+  /**
+   * True if you want generate Field and Method annotation information
+   */
+  public boolean fieldAnnotations() default false;
   
   
 
