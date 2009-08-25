@@ -1,0 +1,12 @@
+#summary JPA Annotations Emulation From GWTENT
+#labels Featured
+
+= Introduction =
+
+Give you ability to share domain class between server side and client side 
+
+
+= Details =
+
+Add gwtent-orm.jar to your class path, 
+add <inherits name="javax.persistence.Persistence"/> into your module
