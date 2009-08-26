@@ -44,7 +44,17 @@ public class ReflectionPage extends HTMLTemplatePanel {
 		subContentRef.showShowCase(reflectEnumPage);
 	}
 	
+	@HTMLEvent(value = {"linkRefDomain"})
+	protected void dolinkRefDomainClick(){
+		if (reflectDomainPage == null){
+			reflectDomainPage = GWT.create(ReflectDomainPage.class);
+			subContentRef.addShowCase(reflectDomainPage);
+		}
+		
+		subContentRef.showShowCase(reflectDomainPage);
+	}
+	
 	private ReflectBasicPage reflectBasicPage;
 	private ReflectEnumPage reflectEnumPage;
-
+	private ReflectDomainPage reflectDomainPage;
 }
