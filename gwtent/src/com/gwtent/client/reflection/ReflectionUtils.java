@@ -19,26 +19,55 @@ public class ReflectionUtils {
 	 */
 	public static String getDescription(Class<?> clazz){
 		ClassType type = TypeOracle.Instance.getClassType(clazz);
+		if (type == null)
+			return clazz.getName() +  ": Not Reflection Information available.";
+		
 		StringBuilder sb = new StringBuilder();
+		printAnnotations(type, sb);
 		sb.append(type.getName()).append("\n");
 		sb.append("Fields:").append("\n");
 		for (Field field : type.getFields()){
-			sb.append("  ").append(field.getName()).append(" ").append(field.getTypeName()).append("\n");
+			printAnnotations(field, sb);
+			sb.append(field.getTypeName()).append(" ").append(field.getName()).append("\n");
 		}
 		
 		sb.append("\n");
 		if (type.findConstructor() != null){
 			sb.append("Constructor:").append("\n");
-			sb.append(type.findConstructor().toString());
+			sb.append(type.findConstructor().toString()).append("\n");
 		}else{
-			sb.append("No default Contructor");
+			sb.append("No default Contructor\n");
 		}
 		
 		sb.append("\n");
-		sb.append("Methods:");
+		sb.append("Methods:").append("\n");
 		for (Method method : type.getMethods()){
-			sb.append(method.toString());
+			printAnnotations(method, sb);
+			sb.append(method.toString()).append("\n");
 		}
+		
+		return sb.toString();
+	}
+	
+	private static void printAnnotations(HasAnnotations annotations, StringBuilder sb){
+		if (annotations.getAnnotations().length <= 0)
+			return;
+		
+		//sb.append("Annotation(s):\n");
+		for (Annotation anno : annotations.getAnnotations()){
+			sb.append(annotationToString(anno)).append("\n");
+		}
+	}
+	
+	public static String annotationToString(Annotation anno){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(anno.annotationType().getName()).append("(");
+		ClassType type = TypeOracle.Instance.getClassType(anno.annotationType());
+		for (Method method : type.getMethods()){
+			sb.append(method.getName()).append("=").append(method.invoke(anno)).append(";");
+		}
+		sb.append(")");
 		
 		return sb.toString();
 	}
