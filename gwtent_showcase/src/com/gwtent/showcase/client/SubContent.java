@@ -3,9 +3,7 @@ package com.gwtent.showcase.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.DeckPanel;
-import com.gwtent.showcase.client.htmltemplate.HTMLTplBasicPage;
 
 public class SubContent extends DeckPanel {
 	
