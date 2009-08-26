@@ -308,6 +308,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	     return;  //Document's parent is itself, must check here
 	   }else{
 	     JClassType classType = this.typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
+	     
+	     if (classType == null)
+	    	 return; //
+	     
 	     addClassIfNotExists(classType, getNearestSetting(classType, getFullSettings()));
 	     
 	     //Go through all annotation methods, if has class, add that class to reflection as well
