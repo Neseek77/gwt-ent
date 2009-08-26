@@ -14,6 +14,9 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.gwtent.GwtEntAll'/>
+  
+  <!-- From gwtent-orm.jar -->
+  <inherits name="javax.persistence.Persistence"/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.gwtent.showcase.client.Gwtent_showcase'/>

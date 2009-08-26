@@ -1,5 +1,6 @@
 package com.gwtent.showcase.client.reflection;
 
+import com.google.gwt.core.client.GWT;
 import com.gwtent.client.template.HTMLEvent;
 import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLTemplatePanel;
@@ -23,16 +24,27 @@ public class ReflectionPage extends HTMLTemplatePanel {
 //	}
 	
 	
-	@HTMLEvent(value = {"linkRefOverview"})
-	protected void doHTMLTemplateClick(){
-//		if (basicPage == null){
-//			basicPage = GWT.create(HTMLTplBasicPage.class);
-//			subContent.addShowCase(basicPage);
-//		}
-//		
-//		subContent.showShowCase(basicPage);
+	@HTMLEvent(value = {"linkRefBasic"})
+	protected void dolinkRefBasicClick(){
+		if (reflectBasicPage == null){
+			reflectBasicPage = GWT.create(ReflectBasicPage.class);
+			subContentRef.addShowCase(reflectBasicPage);
+		}
+		
+		subContentRef.showShowCase(reflectBasicPage);
 	}
 	
+	@HTMLEvent(value = {"linkRefEnum"})
+	protected void dolinkRefEnumClick(){
+		if (reflectEnumPage == null){
+			reflectEnumPage = GWT.create(ReflectEnumPage.class);
+			subContentRef.addShowCase(reflectEnumPage);
+		}
+		
+		subContentRef.showShowCase(reflectEnumPage);
+	}
 	
+	private ReflectBasicPage reflectBasicPage;
+	private ReflectEnumPage reflectEnumPage;
 
 }
