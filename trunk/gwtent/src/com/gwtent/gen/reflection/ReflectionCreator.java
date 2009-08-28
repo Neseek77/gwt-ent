@@ -38,6 +38,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.client.CheckedExceptionWrapper;
 import com.gwtent.client.reflection.HasReflect;
 import com.gwtent.client.reflection.Reflectable;
+import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.Type;
 import com.gwtent.client.reflection.TypeOracle;
 import com.gwtent.client.reflection.impl.AnnotationImpl;
@@ -116,7 +117,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			}
 
 			sourceWriter.println("");
-			if (classType.getSuperclass() != null) {
+			if (classType.getSuperclass() != null && classType.getSuperclass().isPublic()) {
 				sourceWriter.println("if (" + "TypeOracleImpl.findType("
 						+ classType.getSuperclass().getQualifiedSourceName() + ".class)"
 						+ " != null)");
