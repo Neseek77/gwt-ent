@@ -205,6 +205,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		if (relationClassesProcessed.contains(classType))
 			return;
 		
+		processAnnotationClasses(classType, reflectable);
+		
 		if (reflectable.superClasses()){
 			if (classType.getSuperclass() != null){
 				processRelationClass(classType.getSuperclass(), reflectable);
@@ -218,6 +220,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		}
 
 		relationClassesProcessed.add(classType);
+		
+		
 		
 		processFields(classType, reflectable);
 		
