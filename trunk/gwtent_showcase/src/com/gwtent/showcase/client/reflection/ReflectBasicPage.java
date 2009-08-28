@@ -19,6 +19,7 @@ import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.client.validate.constraints.Regular;
 import com.gwtent.showcase.client.BaseShowCasePanel;
+import com.gwtent.showcase.client.Utils;
 
 
 @HTMLTemplate("ReflectionBasicPage.html")
@@ -118,7 +119,7 @@ public class ReflectBasicPage extends BaseShowCasePanel {
 	protected Button btnShowReflectionInfo_Basic = new Button("Show Reflection TestReflection", new ClickHandler(){
 
 		public void onClick(ClickEvent event) {
-			memoReflectionInfo_Basic.setHTML(ReflectionUtils.getDescription(TestReflection.class).replace("\n", "<br>"));
+			memoReflectionInfo_Basic.setHTML(Utils.getClassDescription(TestReflection.class));
 		}});
 	
 	

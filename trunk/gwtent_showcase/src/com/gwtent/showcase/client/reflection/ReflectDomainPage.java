@@ -16,6 +16,7 @@ import com.gwtent.client.reflection.annotations.Reflect_Domain;
 import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.BaseShowCasePanel;
+import com.gwtent.showcase.client.Utils;
 
 
 @HTMLTemplate("ReflectionBasicPage.html")
@@ -110,11 +111,7 @@ public class ReflectDomainPage extends BaseShowCasePanel {
 	protected Button btnShowReflectionInfo_Basic = new Button("Show Reflection Information", new ClickHandler(){
 
 		public void onClick(ClickEvent event) {
-			memoReflectionInfo_Basic.setHTML(ReflectionUtils.getDescription(Class_Domain.class).replace("\n", "<br>"));
-			memoReflectionInfo_Basic.setHTML(memoReflectionInfo_Basic.getHTML() + "\n\n" + ReflectionUtils.getDescription(Class_Doamin_Ref.class).replace("\n", "<br>"));
-			memoReflectionInfo_Basic.setHTML(memoReflectionInfo_Basic.getHTML() + "\n\n" + ReflectionUtils.getDescription(ClassDomainRef.class).replace("\n", "<br>"));
-			memoReflectionInfo_Basic.setHTML(memoReflectionInfo_Basic.getHTML() + "\n\n" + ReflectionUtils.getDescription(ClassRefByAnnotation.class).replace("\n", "<br>"));
-			
+			memoReflectionInfo_Basic.setHTML(Utils.getClassDescription(Class_Domain.class, Class_Doamin_Ref.class, ClassDomainRef.class, ClassRefByAnnotation.class));
 		}});
 	
 	
