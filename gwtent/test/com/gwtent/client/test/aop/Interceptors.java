@@ -19,6 +19,10 @@
 
 package com.gwtent.client.test.aop;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -159,6 +163,41 @@ public class Interceptors {
 			invocation.proceed();
 			System.out.println("Do something in PhoneRedirectInterceptor...");
 			return new Receiver("Alberto's Pizza Place");
+		}
+	}
+	
+	
+	@Target({ElementType.METHOD, ElementType.TYPE})
+	@Retention(RetentionPolicy.RUNTIME)
+	public static @interface AOPTestAnnotation{
+		public String value();
+	}
+	
+	@Aspect
+	public static class PhoneTestAnnotation{
+		@Before("@annotation(com.gwtent.client.test.aop.Interceptors.AOPTestAnnotation)")
+		public void testPhoneAnnotation(MethodInvocation invocation) throws Throwable {
+			Number number = null;
+			for (Object obj : invocation.getArguments()){
+				if (obj instanceof Number)
+					number = (Number)obj;
+			}
+			
+			System.out.println("annotation express");
+		}
+	}
+	
+	@Aspect
+	public static class PhoneTestMatchClass{
+		@Before("matchclass(com.gwtent.test.aspectj.TestMatcher)")
+		public void testPhoneAnnotation(MethodInvocation invocation) throws Throwable {
+			Number number = null;
+			for (Object obj : invocation.getArguments()){
+				if (obj instanceof Number)
+					number = (Number)obj;
+			}
+			
+			System.out.println("Match class express");
 		}
 	}
 	

@@ -233,6 +233,7 @@ public class ReflectionTestCase extends GWTTestCase {
     t.setText("SetByCode");
     System.out.println(classType.getName());
     assertTrue(classType.getName().equals(TextBox.class.getName()));
+    //t.getText();
     assertTrue(classType.invoke(t, "getText", null).equals("SetByCode"));
   }
   
