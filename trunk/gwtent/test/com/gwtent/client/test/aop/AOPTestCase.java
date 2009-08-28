@@ -54,6 +54,12 @@ public class AOPTestCase extends GWTTestCase {
 		System.out.println("End testAOPInner");
 	}
 	
+	public void testHTMLTemplate(){
+		AOPWithHTMLTemplate template = GWT.create(AOPWithHTMLTemplate.class);
+		template.doLinkHanldByGWT();
+		System.out.println(template);
+	}
+	
 	
 	public void testAfterThrowing(){
 		Phone phone = createPhone();

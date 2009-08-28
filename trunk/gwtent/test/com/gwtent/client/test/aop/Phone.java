@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.management.RuntimeErrorException;
 
 import com.gwtent.client.aop.Aspectable;
+import com.gwtent.client.test.aop.Interceptors.AOPTestAnnotation;
 
 
 public class Phone implements Aspectable {
@@ -39,9 +40,17 @@ public class Phone implements Aspectable {
 	 * the phone number, like your home number
 	 */
 	private Number number;
+	
+	private final Number myNumber;
+	
+	public Phone(){
+		myNumber = 50000;
+	}
 
+	@AOPTestAnnotation(value="abc")
 	public Receiver call(Number number) {
 		System.out.println("The call here...");
+		System.out.println("My Number is : " + myNumber);
 		Receiver result = RECEIVERS.get(number);
 		if (result != null)
 			return result;
@@ -49,6 +58,7 @@ public class Phone implements Aspectable {
 			throw new NumberNotFoundException("Can't  found receiver, number: " + number);
 	}
 	
+	@AOPTestAnnotation(value="abc")
 	public Receiver call(String number){
 		System.out.println("The call here...");
 		return RECEIVERS.get(111111111);
