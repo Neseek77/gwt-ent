@@ -54,7 +54,20 @@ public class ReflectionPage extends HTMLTemplatePanel {
 		subContentRef.showShowCase(reflectDomainPage);
 	}
 	
+	@HTMLEvent(value = {"linkRefControlSize"})
+	protected void dolinkControlSizeClick(){
+		if (reflectControlSizePage == null){
+			reflectControlSizePage = GWT.create(ReflectControlSizePage.class);
+			subContentRef.addShowCase(reflectControlSizePage);
+		}
+		
+		subContentRef.showShowCase(reflectControlSizePage);
+	}
+	
+	
+	
 	private ReflectBasicPage reflectBasicPage;
 	private ReflectEnumPage reflectEnumPage;
 	private ReflectDomainPage reflectDomainPage;
+	private ReflectControlSizePage reflectControlSizePage;
 }

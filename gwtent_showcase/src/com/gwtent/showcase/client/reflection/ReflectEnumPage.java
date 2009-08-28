@@ -9,6 +9,7 @@ import com.gwtent.client.reflection.annotations.Reflect_Domain;
 import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.BaseShowCasePanel;
+import com.gwtent.showcase.client.Utils;
 
 
 @HTMLTemplate("ReflectionBasicPage.html")
@@ -53,7 +54,7 @@ public class ReflectEnumPage extends BaseShowCasePanel {
 	protected Button btnShowReflectionInfo_Basic = new Button("Show Reflection TestReflection", new ClickHandler(){
 
 		public void onClick(ClickEvent event) {
-			memoReflectionInfo_Basic.setHTML(ReflectionUtils.getDescription(Country.class).replace("\n", "<br>"));
+			memoReflectionInfo_Basic.setHTML(Utils.getClassDescription(Country.class));
 		}});
 	
 	
