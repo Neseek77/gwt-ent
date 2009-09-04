@@ -25,6 +25,8 @@
     <jar destfile="gwtent.jar">
       <fileset dir="bin">
         <include name="**/*.class"/>
+      	<exclude name="com/gwtent/test/**"/>
+      	<exclude name="com/gwtent/client/test/**"/>
       </fileset>
       <!-- Get everything; source, modules, html files -->
       <fileset dir="src">
@@ -50,8 +52,10 @@
 	
   <target name="package and copy" depends="package">
   	<copy file="gwtent.jar" tofile="../gwtent-orm/lib/gwtent.jar"></copy>
-  	<copy file="gwtent.jar" tofile="../gwtent-sample/lib/gwtent.jar"></copy>
   	<copy file="gwtent.jar" tofile="../gwtent_showcase/lib/gwtent.jar"></copy>
+  	<copy file="gwtent.jar" tofile="../gwtent-sample/lib/gwtent.jar"></copy>
+  	<copy file="gwtent.jar" tofile="../gwtent-gxt/lib/gwtent.jar"></copy>
+
   </target>
 
 </project>
