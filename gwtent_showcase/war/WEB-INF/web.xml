@@ -7,7 +7,7 @@
 
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>Gwtent_showcase.html</welcome-file>
+    <welcome-file>gwtent_showcase/Gwtent_showcase.html</welcome-file>
   </welcome-file-list>
   
 

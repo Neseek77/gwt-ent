@@ -9,6 +9,7 @@ import com.gwtent.client.template.HTMLEvent;
 import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.showcase.client.aop.AOPMainPage;
 import com.gwtent.showcase.client.htmltemplate.HTMLTplMainPage;
 import com.gwtent.showcase.client.reflection.ReflectionPage;
 
@@ -23,7 +24,7 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 	protected DeckPanel content = new DeckPanel();
 	
 	
-	@HTMLEvent(value = {"linkHome", "linkAOP", "linkValidation", "linkUIBinding"})
+	@HTMLEvent(value = {"linkHome", "linkValidation", "linkUIBinding"})
 	protected void doHomeClick(){
 		Window.alert("Not finish yet");
 	}
@@ -52,7 +53,18 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 		
 		content.showWidget(content.getWidgetIndex(tplMainPage));
 	}
+	
+	@HTMLEvent(value = {"linkAOP"})
+	protected void doAOPClick(){
+		if (aopMainPage == null){
+			aopMainPage = GWT.create(AOPMainPage.class);
+			content.add(aopMainPage);
+		}
+		
+		content.showWidget(content.getWidgetIndex(aopMainPage));
+	}
 
 	private HTMLTplMainPage tplMainPage;
 	private ReflectionPage tplReflection;
+	private AOPMainPage aopMainPage;
 }

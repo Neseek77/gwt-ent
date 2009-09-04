@@ -1,5 +1,9 @@
 package com.gwtent.showcase.client.aop;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +19,21 @@ import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.showcase.client.aop.Phone.Receiver;
 
 public class Interceptors {
+	
+	public static interface Log{
+		void println(String str);
+	}
+	
+	private static Log log;
+	public static void setLog(Log log){
+		Interceptors.log = log;
+	}
+	public static Log getLog(){
+		if (log == null)
+			throw new RuntimeException("Please setup log first.");
+		
+		return Interceptors.log;
+	}
 
 	@Aspect
 	public static class PhoneCallErrorLog{
@@ -22,7 +41,7 @@ public class Interceptors {
 		@AfterThrowing(pointcut="execution(* com.gwtent.showcase.client.aop.Phone.call(java.lang.Number))",
 				throwing="e")
 		public void phoneCallErrorLog(MethodInvocation invocation, Throwable e){
-			System.out.println("PhoneCallErrorLog: " + e.getMessage());
+			Interceptors.getLog().println("PhoneCallErrorLog: " + e.getMessage());
 		}
 	}
 
@@ -33,35 +52,35 @@ public class Interceptors {
 		@Before("execution(* com.gwtent.showcase.client.aop.Phone.call(java.lang.Number))")
 		public void beforeCall(MethodInvocation invocation) {
 			for (Object arg : invocation.getArguments()){
-				System.out.println("Do something in PhoneLoggerInterceptor, Before...");
+				Interceptors.getLog().println("Do something in PhoneLoggerInterceptor, Before...");
 				
 				if (arg instanceof Number)
-					System.out.println("Call to: " + arg);
+					Interceptors.getLog().println("Call to: " + arg);
 			}
 		}
 		
 		@AfterReturning(pointcut = "execution(* com.gwtent.showcase.client.aop.Phone.call(java.lang.Number))",
 			returning = "returnValue")
 		public void afterReturningCall(MethodInvocation invocation, Object returnValue) {
-			System.out.println("Do something in PhoneLoggerInterceptor, AfterReturning...");
+			Interceptors.getLog().println("Do something in PhoneLoggerInterceptor, AfterReturning...");
 			
 			if ((returnValue != null)){
 				if (returnValue instanceof Number)
-					System.out.println("Returning Number: " + returnValue.toString());
+					Interceptors.getLog().println("Returning Number: " + returnValue.toString());
 				else
-					System.out.println("Returning Object: " + returnValue.toString());
+					Interceptors.getLog().println("Returning Object: " + returnValue.toString());
 			}else{
-				System.out.println("Returning Object is NULL?");
+				Interceptors.getLog().println("Returning Object is NULL?");
 			}
 		}
 		
 		@After("execution(* com.gwtent.showcase.client.aop.Phone.call(java.lang.Number))")
 		public void afterCall(MethodInvocation invocation) {				
 			for (Object arg : invocation.getArguments()){
-				System.out.println("Do something in PhoneLoggerInterceptor, After...");
+				Interceptors.getLog().println("Do something in PhoneLoggerInterceptor, After...");
 				
 				if (arg instanceof Number)
-					System.out.println("After Call: " + arg);
+					Interceptors.getLog().println("After Call: " + arg);
 			}
 		}
 	}
@@ -90,7 +109,7 @@ public class Interceptors {
 				callTime.put(number, allTime);
 			}
 				
-			System.out.println("call time: " + callTime);
+			Interceptors.getLog().println("call time: " + callTime);
 		}
 		
 		private Number getPhoneNumber(MethodInvocation invocation){
@@ -106,10 +125,12 @@ public class Interceptors {
 		//args not full support yet
 		@Before("args(java.lang.Number,..)")
 		//@Before("execution(* com.gwtent.sample.client.aop.Phone.call(java.lang.Number))")
-		public void validateNumberNotSupportYet(Number number) throws Throwable {
-			System.out.println("Validate, you cann't dail to 0, current Number(most time it's null): " + number);
-			if ((number != null) && (number.intValue() == 0)){
-				throw new RuntimeException("You cann't dail to 0.");
+		public void validateNumberByDirectParameter(Number number) throws Throwable {
+			if (number != null){
+				Interceptors.getLog().println("Validate here, you can got the number directly, if you dail to president, direct hang, current Number: " + number);
+				if ((number != null) && (number.intValue() == 0)){
+					throw new RuntimeException("You cann't dail to 0.");
+				}
 			}
 		}
 		
@@ -122,7 +143,7 @@ public class Interceptors {
 					number = (Number)obj;
 			}
 			if (number != null){
-				System.out.println("Validate, you cann't dail to 0, current Number: " + number);
+				Interceptors.getLog().println("Validate here, if you dail to president, direct hang, current Number: " + number);
 				if ((number != null) && (number.intValue() == 0)){
 					throw new RuntimeException("You cann't dail to 0.");
 				}
@@ -135,9 +156,59 @@ public class Interceptors {
 		
 		@Around("execution(* com.gwtent.showcase.client.aop.Phone.call(java.lang.Number))")
 		public Object invoke(MethodInvocation invocation) throws Throwable {
-			invocation.proceed();
-			System.out.println("Do something in PhoneRedirectInterceptor...");
-			return new Receiver("Alberto's Pizza Place");
+			Object result = invocation.proceed();
+			Number number = null;
+			for (Object obj : invocation.getArguments()){
+				if (obj instanceof Number)
+					number = (Number)obj;
+			}
+			Interceptors.getLog().println("Do something in PhoneRedirectInterceptor...");
+			if (number != null){
+				if (number.equals(1101010)){
+					Interceptors.getLog().println("Hmm, call to brother Laden? that's not good, redirect to our fake Laden");
+					return new Receiver("Fake Laden from FBI");
+				}else if (number.equals(1111111)){
+					Interceptors.getLog().println("Hmm, call to Santa? He is sleeping, a Pizza is a good idea.");
+					return new Receiver("Alberto's Pizza Place");
+				}
+			}
+			return result;
+		}
+	}
+	
+	
+	
+	@Target({ElementType.METHOD, ElementType.TYPE})
+	@Retention(RetentionPolicy.RUNTIME)
+	public static @interface AOPTestAnnotation{
+		public String value();
+	}
+	
+	@Aspect
+	public static class PhoneTestAnnotation{
+		@Before("@annotation(com.gwtent.showcase.client.aop.Interceptors.AOPTestAnnotation)")
+		public void testPhoneAnnotation(MethodInvocation invocation) throws Throwable {
+			Number number = null;
+			for (Object obj : invocation.getArguments()){
+				if (obj instanceof Number)
+					number = (Number)obj;
+			}
+			
+			Interceptors.getLog().println("annotation match express here, you called to " + number);
+		}
+	}
+	
+	@Aspect
+	public static class PhoneTestMatchClass{
+		@Before("matchclass(com.gwtent.showcase.aop.guicematcher.TestMatcher)")
+		public void testPhoneAnnotation(MethodInvocation invocation) throws Throwable {
+			Number number = null;
+			for (Object obj : invocation.getArguments()){
+				if (obj instanceof Number)
+					number = (Number)obj;
+			}
+			
+			Interceptors.getLog().println("Guice Matcher class here: you called to " + number);
 		}
 	}
 	
