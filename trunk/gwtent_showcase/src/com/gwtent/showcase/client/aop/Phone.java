@@ -4,14 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gwtent.client.aop.Aspectable;
+import com.gwtent.showcase.client.aop.Interceptors.AOPTestAnnotation;
 
 
 public class Phone implements Aspectable {
-	private static final Map<Number, Receiver> RECEIVERS = new HashMap<Number, Receiver>();
+	public static final Map<Number, Receiver> RECEIVERS = new HashMap<Number, Receiver>();
 
 	static {
-		RECEIVERS.put(123456789, new Receiver("Aunt Jane"));
-		RECEIVERS.put(111111111, new Receiver("Santa"));
+		RECEIVERS.put(0, new Receiver("The President"));
+		RECEIVERS.put(1234567, new Receiver("Aunt Jane"));
+		RECEIVERS.put(1111111, new Receiver("Santa"));
+		RECEIVERS.put(1101010, new Receiver("Osama bin Laden"));
 	}
 	
 	/**
@@ -19,6 +22,7 @@ public class Phone implements Aspectable {
 	 */
 	private Number number;
 
+	@AOPTestAnnotation(value="abc")
 	public Receiver call(Number number) {
 		System.out.println("The call here...");
 		Receiver result = RECEIVERS.get(number);
@@ -65,6 +69,10 @@ public class Phone implements Aspectable {
 
 		public Receiver(String name) {
 			this.name = name;
+		}
+		
+		public String getName(){
+			return name;
 		}
 
 		@Override

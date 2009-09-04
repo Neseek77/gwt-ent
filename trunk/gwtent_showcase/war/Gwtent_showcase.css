@@ -235,3 +235,5 @@ white-space:nowrap;
 .gwt-TextBox, .gwt-DateBox, .gwt-ListBox{
 	width:90%;
 }
+
+.justLeft{float:left}
