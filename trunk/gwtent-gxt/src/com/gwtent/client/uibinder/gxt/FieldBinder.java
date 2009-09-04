@@ -5,6 +5,7 @@ import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
@@ -22,20 +23,20 @@ import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
  *
  * @param <D> the data type you want edit by this editor
  */
-public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
+public class FieldBinder<D> extends AbstractUIBinder<Field<D>, D> {
 
-  public static class BinderMetaData<D> implements IBinderMetaData<TextField<D>, D>{
+  public static class BinderMetaData<D> implements IBinderMetaData<Field<D>, D>{
 
     public Class<?>[] getSupportedEditors() {
       return new Class<?>[]{TextField.class, TextArea.class, 
       		NumberField.class, DateField.class, CheckBox.class};
     }
 
-    public ObjectFactory<UIBinder<TextField<D>, D>> getFactory() {
-      return new ObjectFactory<UIBinder<TextField<D>, D>>(){
+    public ObjectFactory<UIBinder<Field<D>, D>> getFactory() {
+      return new ObjectFactory<UIBinder<Field<D>, D>>(){
 
-        public UIBinder<TextField<D>, D> getObject() {
-          return new TextFieldBinder<D>();
+        public UIBinder<Field<D>, D> getObject() {
+          return new FieldBinder<D>();
         }};
     }
 
@@ -48,7 +49,7 @@ public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
   	return getWidget().isEnabled();
   }
   
-  protected void doInit(TextField<D> widget, ModelValue<D> value) {
+  protected void doInit(Field<D> widget, ModelValue<D> value) {
     widget.addListener(Events.Valid, new Listener<FieldEvent>(){
 
       public void handleEvent(FieldEvent be) {
@@ -57,7 +58,7 @@ public class TextFieldBinder<D> extends AbstractUIBinder<TextField<D>, D> {
       }});
   }
 
-  protected void setValueToEditor(D value, TextField<D> widget) {
+  protected void setValueToEditor(D value, Field<D> widget) {
     widget.setValue(value);
   }
 
