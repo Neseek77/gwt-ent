@@ -7,6 +7,7 @@ public class GxtUIBinderRegister {
     UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinderGWTRegister().register(new FieldBinder.BinderMetaData());
     UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinderGWTRegister().register(new GridBinder.BinderMetaData());
     UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinderGWTRegister().register(new EnumComboBinder.BinderMetaData());
+    UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinderGWTRegister().register(new ComboBoxBinder.BinderMetaData());
     UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinderGWTRegister().register(new SimpleComboBoxBinder.BinderMetaData());
   }
 }
