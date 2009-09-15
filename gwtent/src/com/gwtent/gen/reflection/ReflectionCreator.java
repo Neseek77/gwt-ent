@@ -71,15 +71,17 @@ public class ReflectionCreator extends LogableSourceCreator {
 		private final JClassType classType;
 		private final com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle;
 		private final Reflectable reflectable;
+		private final TreeLogger logger;
 
 		public ReflectionSourceCreator(String className, JClassType classType,
 				SourceWriter sourceWriter,
-				com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
+				com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, TreeLogger logger,
 				Reflectable reflectable) {
 			this.className = className;
 			this.sourceWriter = sourceWriter;
 			this.classType = classType;
 			this.typeOracle = typeOracle;
+			this.logger = logger;
 			this.reflectable = reflectable;
 		}
 
@@ -289,7 +291,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			if (this.reflectable.classAnnotations()){
 				Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
 				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "this", source,
-						annotations);
+						annotations, logger);
 			}
 
 			source.outdent();
@@ -326,7 +328,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 					if (this.reflectable.fieldAnnotations() || (field.getAnnotation(HasReflect.class) != null && field.getAnnotation(HasReflect.class).annotation())){
 						Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
 						GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
-								annotations);
+								annotations, logger);
 					}
 				
 					source.println();
@@ -374,7 +376,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 					if (this.reflectable.fieldAnnotations() || (method.getAnnotation(HasReflect.class) != null && method.getAnnotation(HasReflect.class).annotation())){
 						Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
 						GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "method", source,
-								annotations);
+								annotations, logger);
 					}
 
 					source.println();	
@@ -550,7 +552,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 	protected void createSource(SourceWriter source, JClassType classType) {
 		String className = getSimpleUnitName(classType);
-		new ReflectionSourceCreator(className, classType, source, this.typeOracle, ReflectableHelper.getFullSettings(this.typeOracle))
+		new ReflectionSourceCreator(className, classType, source, this.typeOracle, logger, ReflectableHelper.getFullSettings(this.typeOracle))
 				.createSource();
 
 		// source.println("public " + getSimpleUnitName(classType) + "(){");

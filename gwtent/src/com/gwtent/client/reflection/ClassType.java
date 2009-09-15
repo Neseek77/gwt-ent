@@ -110,6 +110,6 @@ public interface ClassType extends HasAnnotations {
 	
 	public EnumType isEnum();
 	
-	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException;
+	public Object invoke(Object instance, String methodName, Object... args) throws MethodInvokeException;
 
 }

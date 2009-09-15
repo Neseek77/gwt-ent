@@ -103,4 +103,7 @@ public class TestReflection<T> implements Reflection {
 		return sets;
 	}
 
+	public static TestReflection getInstance(){
+		return new TestReflection();
+	}
 }

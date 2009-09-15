@@ -117,7 +117,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			else
 				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.EnumTypeImpl {");
 
-			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle, candidates.get(type)).createSource();
+			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle, logger, candidates.get(type)).createSource();
 			sourceWriter.outdent();
 			sourceWriter.println("}");
 

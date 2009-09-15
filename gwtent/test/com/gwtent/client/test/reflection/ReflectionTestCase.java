@@ -274,4 +274,9 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertNotNull(TypeOracle.Instance.getClassType(ClassRefereceByAnno.class));
   }
   
+  public void testInvokeStaticMethod(){
+  	ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
+  	assertNotNull(classType.invoke(null, "getInstance"));
+  }
+  
 }
