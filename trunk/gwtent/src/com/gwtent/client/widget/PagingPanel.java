@@ -194,26 +194,36 @@ public class PagingPanel extends Grid{
 		return links.size() - getFirstPart();
 	}
 	
+	private void addToGrid(int row, int col, int pageLinkIndex){
+		PagingLink link = links.get(pageLinkIndex);
+		if (pageLinkIndex == this.currentPageIndex)
+			link.addStyleName("current");
+		else
+			link.removeStyleName("current");
+		
+		this.setWidget(row, col, link);
+	}
+	
 	private void displayTwoPart(int broken){
 		for (int i = 0; i < links.size(); i++){
 			links.get(i).setDiaplyAsNumber();
 			
 			if (i < broken){
-				this.setWidget(0, i, links.get(i));
+				addToGrid(0, i, i);
 			}else if (i == broken){
 				links.get(i).setDiaplyAsDot();
-				this.setWidget(0, i, links.get(i));
+				addToGrid(0, i, i);
 			}else{
 				if (i > links.size() - (displayPages - broken))
-					this.setWidget(0, displayPages - (links.size() - i), links.get(i));
+					addToGrid(0, displayPages - (links.size() - i), i);
 			}
 		}
 	}
 	
 	private void displayThreePart(int currentIndex){
 		//first one and last one always there
-		this.setWidget(0, 0, links.get(0));
-		this.setWidget(0, this.displayPages - 1, links.get(links.size() - 1));
+		addToGrid(0, 0, 0);
+		addToGrid(0, this.displayPages - 1, links.size() - 1);
 		
 		int start = currentIndex - (displayPages - 1 - 1) / 2;
 		if (start < 2)
@@ -231,7 +241,7 @@ public class PagingPanel extends Grid{
 				links.get(i).setDiaplyAsNumber();
 			
 			if (displayIndex >= 1 && displayIndex <= displayPages - 1 - 1)
-				this.setWidget(0, displayIndex, links.get(i));
+				addToGrid(0, displayIndex, i);
 			
 			displayIndex++;
 		}
@@ -241,7 +251,7 @@ public class PagingPanel extends Grid{
 		if (links.size() <= this.displayPages){
 			//display all in a straight way
 			for (int i = 0; i < links.size(); i++){
-				this.setWidget(0, i, links.get(i));
+				addToGrid(0, i, i);
 			}
 		}else{
 			//need more calculate
@@ -256,32 +266,6 @@ public class PagingPanel extends Grid{
 				displayThreePart(currentIndex);
 			}
 		}
-
-//		int pageLinkCount = getPages();
-//		if (pageLinkCount > this.displayPages){
-//			pageLinkCount = this.displayPages;
-//			
-//			int subSegement = this.displayPages / 3; //每一段有多长
-//			CurrentIndexPosition pos = CurrentIndexPosition.FirstSeg;
-//			if (currentPageIndex <= subSegement * 2)  //10 page, 1-6 just show first and last segement
-//				pos = CurrentIndexPosition.FirstSeg;
-//			if (currentPageIndex > displayPages - subSegement * 2)
-//				pos = CurrentIndexPosition.LastSeg;
-//			else
-//				pos = CurrentIndexPosition.SecSeg;
-//				
-//			
-//			if (pos == CurrentIndexPosition.FirstSeg){
-//				for (int i = 0; i < subSegement * 2; i++){
-//					createPageLink(i);
-//				}
-//			}
-//			
-//		}else{
-			
-			
-			
-//		}
 	}
 
 	/**
@@ -326,7 +310,7 @@ public class PagingPanel extends Grid{
 	public void setCurrentPageIndex(int currentPageIndex) {
 		this.currentPageIndex = currentPageIndex;
 		PagingLink link = links.get(currentPageIndex);
-		link.addStyleName("current");
+		
 		updatePageLinks(currentPageIndex);
 		doPagingClickListener(link.startIndex, link.pageSize);
 	}
