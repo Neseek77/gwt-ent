@@ -144,7 +144,7 @@
     text-decoration: none;
 }
 
-.gwtent-pagination span.current {
+.gwtent-pagination a.current {
     padding: 2px 5px 2px 5px;
     margin: 2px;
     border: 1px solid #006699;
@@ -153,7 +153,7 @@
     color: #FFF;
 }
 
-.gwtent-pagination span.disabled {
+.gwtent-pagination a.disabled {
     padding: 2px 5px 2px 5px;
     margin: 2px;
     border: 1px solid #eee;

@@ -21,21 +21,13 @@ public class PagingPanel extends Grid{
 		
 		private PagingClickListener clickListener;
 		
-		public PagingLink(int startIndex, int pageSize, int pageIndex, PagingClickListener clickListener){
+		public PagingLink(int startIndex, int pageSize, int pageIndex, ClickListener clickListener){
 			super("", "");
 			
 			this.setStartIndex(startIndex);
 			this.setPageSize(pageSize);
 			this.setPageIndex(pageIndex);
-			this.clickListener = clickListener;
-			
-			
-			
-			this.addClickListener(new ClickListener(){
-
-				public void onClick(Widget sender) {
-					doOnClick();
-				}});
+			this.addClickListener(clickListener);
 		}
 		
 		public void setStartIndex(int startIndex) {
@@ -53,6 +45,14 @@ public class PagingPanel extends Grid{
 		public void setPageIndex(int pageIndex) {
 			this.pageIndex = pageIndex;
 			
+			this.setText(String.valueOf(pageIndex + 1));
+		}
+		
+		public void setDiaplyAsDot(){
+			this.setText("...");
+		}
+		
+		public void setDiaplyAsNumber(){
 			this.setText(String.valueOf(pageIndex + 1));
 		}
 		
@@ -80,6 +80,8 @@ public class PagingPanel extends Grid{
 	private int displayPages = 10;
 	
 	private int currentPageIndex;
+	
+	private List<PagingLink> links = new ArrayList<PagingLink>();
 	
 	private List<PagingClickListener> listeners = new ArrayList<PagingClickListener>();
 	
@@ -131,7 +133,7 @@ public class PagingPanel extends Grid{
 	 */
 	public void setDisplayPages(int displayPages) {
 		if (displayPages < 5)
-			throw new RuntimeException("Display pages must more the 5 pages.");
+			throw new RuntimeException("Display pages at least 5 pages.");
 		
 		this.displayPages = displayPages;
 	}
@@ -164,11 +166,97 @@ public class PagingPanel extends Grid{
 		FirstSeg, SecSeg, LastSeg;
 		
 		//FirstSeg     XXXXXX...XXX
-		//SecSeg       XXX...XXX...XX
+		//SecSeg       XXX...XXX...XXX
 		//LastSeg      XXX...XXXXXX
 	} 
 	
-	private void updatePageLinks(){
+	private void createPageLinks(){
+		links.clear();
+		
+		for (int i = 0; i < getPages(); i++){
+			links.add(createPageLink(i));
+		}
+	}
+	
+	private int getFirstPart(){
+		return displayPages / 3;
+	}
+	
+	private int getSecPart(){
+		int mod = 0;
+		if (displayPages % 3 > 0)
+			mod = mod + 1 + 1; //first part and last part
+		
+		return links.size() - getFirstPart() - getLastPart() + mod;
+	}
+	
+	private int getLastPart(){
+		return links.size() - getFirstPart();
+	}
+	
+	private void displayTwoPart(int broken){
+		for (int i = 0; i < links.size(); i++){
+			links.get(i).setDiaplyAsNumber();
+			
+			if (i < broken){
+				this.setWidget(0, i, links.get(i));
+			}else if (i == broken){
+				links.get(i).setDiaplyAsDot();
+				this.setWidget(0, i, links.get(i));
+			}else{
+				if (i > links.size() - (displayPages - broken))
+					this.setWidget(0, displayPages - (links.size() - i), links.get(i));
+			}
+		}
+	}
+	
+	private void displayThreePart(int currentIndex){
+		//first one and last one always there
+		this.setWidget(0, 0, links.get(0));
+		this.setWidget(0, this.displayPages - 1, links.get(links.size() - 1));
+		
+		int start = currentIndex - (displayPages - 1 - 1) / 2;
+		if (start < 2)
+			start = 2;
+		
+		int end = start + displayPages - 1 - 1;  //- firstone - lastone
+		if (end > links.size() - 1)
+			end = links.size() - 1;
+		
+		int displayIndex = 1;
+		for (int i = start; i < end; i++){
+			if (displayIndex == 1 || displayIndex == displayPages - 1 - 1)
+				links.get(i).setDiaplyAsDot();
+			else
+				links.get(i).setDiaplyAsNumber();
+			
+			if (displayIndex >= 1 && displayIndex <= displayPages - 1 - 1)
+				this.setWidget(0, displayIndex, links.get(i));
+			
+			displayIndex++;
+		}
+	}
+	
+	private void updatePageLinks(int currentIndex){
+		if (links.size() <= this.displayPages){
+			//display all in a straight way
+			for (int i = 0; i < links.size(); i++){
+				this.setWidget(0, i, links.get(i));
+			}
+		}else{
+			//need more calculate
+			
+			if (currentIndex <= getFirstPart()){
+				int broken = displayPages * 2 / 3;
+				displayTwoPart(broken);
+			} else if (currentIndex >= getLastPart()){
+				int broken = displayPages / 3;
+				displayTwoPart(broken);
+			}else if (currentIndex > getFirstPart() && currentIndex < getLastPart()){
+				displayThreePart(currentIndex);
+			}
+		}
+
 //		int pageLinkCount = getPages();
 //		if (pageLinkCount > this.displayPages){
 //			pageLinkCount = this.displayPages;
@@ -190,11 +278,9 @@ public class PagingPanel extends Grid{
 //			}
 //			
 //		}else{
-			this.resize(1, getPages());
 			
-			for (int i = 0; i < getPages(); i++){
-				createPageLink(i);
-			}
+			
+			
 //		}
 	}
 
@@ -202,8 +288,16 @@ public class PagingPanel extends Grid{
 	 * 
 	 * @param index which index we are creating
 	 */
-	private void createPageLink(int index) {
-		this.setWidget(0, index, new PagingLink(pageSize * index, pageSize, index, pagingClickListenerImpl));
+	private PagingLink createPageLink(int index) {
+		PagingLink result = new PagingLink(pageSize * index, pageSize, index, new ClickListener(){
+
+			public void onClick(Widget sender) {
+				PagingLink link = (PagingLink)sender;
+				setCurrentPageIndex(link.pageIndex);
+				
+			}});
+		
+		return result;
 	}
 	
 	private void sizeChanged(){
@@ -216,19 +310,12 @@ public class PagingPanel extends Grid{
 			return;
 		
 		if (this.totalRecords > 0){
-			updatePageLinks();
+			this.resize(1, this.getDisplayPages());
+			createPageLinks();
+			updatePageLinks(0);
 		}
 	}
-	
-	private PagingClickListenerImpl pagingClickListenerImpl = new PagingClickListenerImpl();
-	class PagingClickListenerImpl implements PagingClickListener{
 
-		public void onClick(final int startIndex, final int pageSize) {
-			doPagingClickListener(startIndex, pageSize);
-		}
-		
-	}
-	
 	
 	private void doPagingClickListener(int startIndex, int pageSize){
 		for (PagingClickListener listener : this.listeners){
@@ -238,6 +325,10 @@ public class PagingPanel extends Grid{
 
 	public void setCurrentPageIndex(int currentPageIndex) {
 		this.currentPageIndex = currentPageIndex;
+		PagingLink link = links.get(currentPageIndex);
+		link.addStyleName("current");
+		updatePageLinks(currentPageIndex);
+		doPagingClickListener(link.startIndex, link.pageSize);
 	}
 
 	public int getCurrentPageIndex() {
