@@ -1,8 +1,5 @@
 <module>
     <inherits name="com.gwtent.GwtEnt"/>
-  
-    <inherits name="org.aspectj.lang.annotation.AspectJAnnotation"/>
-    <inherits name="javax.validation.Validation"/>
-    
+
     <!-- <inherits name="com.gwtext.GwtExt"/> -->
 </module>

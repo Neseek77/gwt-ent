@@ -19,8 +19,16 @@
 
 package com.gwtent.client.reflection;
 
-public interface Method extends AbstractMethod{
+public interface Method extends AbstractMethod, AccessDef{
 
+	/**
+	 * Invoke the method.
+	 * <P>if invoke a static class, instance must be null.
+	 * @param instance
+	 * @param args
+	 * @return
+	 * @throws MethodInvokeException
+	 */
 	public Object invoke(Object instance, Object... args) throws MethodInvokeException;
 
 	public Type getReturnType();

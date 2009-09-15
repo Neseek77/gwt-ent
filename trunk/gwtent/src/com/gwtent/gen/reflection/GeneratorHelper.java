@@ -23,6 +23,8 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.reflect.Array;
 
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
 import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -224,7 +226,7 @@ public class GeneratorHelper {
 	 * 
 	 */
 	public static void addAnnotations_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
-	    String dest, SourceWriter source, Annotation[] annotations){
+	    String dest, SourceWriter source, Annotation[] annotations, TreeLogger logger){
 		
 	  if (annotations.length <= 0)
 		  return;
@@ -235,8 +237,13 @@ public class GeneratorHelper {
 	  source.println("java.lang.annotation.Annotation store = null;");
 	  
 	  for (Annotation annotation : annotations) {
-	  	addAnnotation_AnnotationImpl(typeOracle, "store", source, annotation);
-	    source.println("list.add(store);");
+	  	JClassType classType = typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
+	  	if (classType != null){
+	  		addAnnotation_AnnotationImpl(typeOracle, "store", source, annotation);
+		    source.println("list.add(store);");
+	  	}else{
+	  		logger.log(Type.ERROR, "Annotation (" + ReflectionUtils.getQualifiedSourceName(annotation.annotationType()) + ") not exists in compiled client source code, please ensure this class is exists and included in your module(.gwt.xml) file. GWTENT reflection process will ignore it and continue. ");
+	  	}
     }
 	  
 	  source.println(dest + ".addAnnotations(list);");
