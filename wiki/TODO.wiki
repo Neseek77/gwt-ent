@@ -1,5 +1,5 @@
+#summary TODO List in GWTENT
 #labels Featured,Phase-Requirements
-#TODO List in GWTENT
 
 = Introduction =
 
