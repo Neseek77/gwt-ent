@@ -144,7 +144,7 @@
     text-decoration: none;
 }
 
-.gwtent-pagination a.current {
+.gwtent-pagination .current a, .gwtent-pagination .current a:link, .gwtent-pagination .current a:hover, .gwtent-pagination .current a:active, .gwtent-pagination .current a:visited {
     padding: 2px 5px 2px 5px;
     margin: 2px;
     border: 1px solid #006699;
@@ -159,5 +159,7 @@
     border: 1px solid #eee;
     color: #ddd;
 }
+
+
 
 .gwtent-pagination a.underline, .underline a { text-decoration: underline; }
