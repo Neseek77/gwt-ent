@@ -48,7 +48,7 @@ public @interface Reflectable {
   /**
    * True if you want generate Field and Method annotation information
    */
-  public boolean fieldAnnotations() default false;
+  public boolean fieldAnnotations() default true;
   
   
 
