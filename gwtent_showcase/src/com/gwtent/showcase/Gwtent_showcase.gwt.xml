@@ -13,7 +13,7 @@
   <inherits name="com.google.gwt.user.theme.standard.StandardResources"/>
 
   <!-- Other module inherits                                      -->
-  <inherits name='com.gwtent.GwtEntAll'/>
+  <inherits name='com.gwtent.GwtEnt'/>
   
   <!-- From gwtent-orm.jar -->
   <inherits name="javax.persistence.Persistence"/>
