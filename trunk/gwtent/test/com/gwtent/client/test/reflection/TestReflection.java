@@ -19,15 +19,17 @@
 
 package com.gwtent.client.test.reflection;
 
-import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.test.annotations.*;
-import com.gwtent.client.validate.constraints.Regular;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
+
+import com.gwtent.client.reflection.Reflection;
+import com.gwtent.client.test.annotations.Entity;
+import com.gwtent.client.test.annotations.Id;
+import com.gwtent.client.test.annotations.Table;
+import com.gwtent.client.validate.constraints.Regular;
 
 
 @Entity(name="TestReflection")

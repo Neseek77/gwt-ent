@@ -36,7 +36,7 @@ import com.gwtent.client.validate.constraints.Regular;
 
 @Entity(name="TestReflection")
 @Table(name="Table_Test")
-@Reflectable(fields = false, methods = false)
+@Reflectable(fields = false, methods = false, fieldAnnotations = false)
 public class ReflectionSaveSize<T> extends ReflectParent{
 	
 	public static class ThisShouldNotThere{
