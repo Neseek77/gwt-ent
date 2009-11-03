@@ -36,6 +36,8 @@ public class HTMLTemplatePanel extends HTMLPanel {
     super(html);
     
     this.addStyleName("gwtent-HTMLTemplatePanel");
+    
+
   }
   
   
@@ -46,7 +48,7 @@ public class HTMLTemplatePanel extends HTMLPanel {
   }
   
   protected void onLoad() {
-  	doSinkBrowserEvents();
+    //doSinkBrowserEvents();
   }
   
   protected void doSinkBrowserEvents(){
@@ -128,7 +130,7 @@ public class HTMLTemplatePanel extends HTMLPanel {
 	      idCount++;
       }
     }else{
-    	noSuchElement("add widget to html, id: " + id);
+    	noSuchElement("Widget is null: " + id);
     }
   }
   
