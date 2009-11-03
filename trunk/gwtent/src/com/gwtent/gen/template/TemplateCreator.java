@@ -341,7 +341,7 @@ public class TemplateCreator extends LogableSourceCreator {
     else
     	source.println("this.setRenameIdWhenAddWidget(false);");
     source.println("addElements();");
-    //source.println("addEvents();");
+    source.println("doSinkBrowserEvents();");
     source.println("_BindToEditor();");
     source.println("_CodeFromHTML();");
     source.outdent();
@@ -480,7 +480,8 @@ public class TemplateCreator extends LogableSourceCreator {
           source.println("final int " + eventTypeVarName + " = " + eventType + ";");
           
           for (String elementId : elementIds){
-            source.println("element = DOM.getElementById(\"" + elementId + "\");");
+            //source.println("element = DOM.getElementById(\"" + elementId + "\");");
+          	source.println("element = getElementById(\"" + elementId + "\");");
             source.println("if (element != null) {");
             source.println("  DOM.sinkEvents(element, Event.ONCLICK);");
             source.println("  DOM.setEventListener(element, new com.google.gwt.user.client.EventListener() {");
