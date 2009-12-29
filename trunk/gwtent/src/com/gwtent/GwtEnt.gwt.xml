@@ -39,6 +39,10 @@
     <generate-with class="com.gwtent.gen.template.TemplateGenerator">
 		<when-type-assignable class="com.gwtent.client.template.HTMLTemplatePanel"/>
 	</generate-with>
+	
+	<generate-with class="com.gwtent.gen.uibinder.UIBinderGenerator">
+		<when-type-assignable class="com.gwtent.client.uibinder.UIBinderManager"/>
+	</generate-with>
 
 
     <source path="client" />
