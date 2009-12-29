@@ -11,9 +11,6 @@ import javax.validation.ConstraintViolation;
 
 import com.google.gwt.user.client.ui.UIObject;
 import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.common.ObjectFactory;
-import com.gwtent.client.uibinder.modelvalue.ModelValueGWTImpl;
-import com.gwtent.client.uibinder.modelvalue.ModelValueImpl;
 
 public class UIBinderManager implements IValueChangedByBindingListener{
   
