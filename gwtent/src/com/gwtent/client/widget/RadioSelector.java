@@ -3,6 +3,8 @@ package com.gwtent.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -31,13 +33,17 @@ public class RadioSelector<T extends Object> extends FlexTable {
 	}
 	
 	public void setValue(T value){
+		setValue(value, false);
+	}
+	
+	public void setValue(T value, boolean fireEvents) {
 		for (Data data : values){
-			data.getRadio().setChecked(false);
+			data.getRadio().setValue(false);
 		}
 		
 		for (Data data : values){
 			if (data.getValue().equals(value))
-				data.getRadio().setChecked(true);
+				data.getRadio().setValue(true, fireEvents);
 		}
 	}
 	
@@ -91,10 +97,9 @@ public class RadioSelector<T extends Object> extends FlexTable {
 	private class Data {
 		public Data(String groupID, T value, String label){
 			radio = new RadioButton(groupID);
-			radio.addClickListener(new ClickListener(){
-
-				public void onClick(Widget sender) {
-					doValueChanged();
+			radio.addValueChangeHandler(new ValueChangeHandler<Boolean>(){
+				public void onValueChange(ValueChangeEvent<Boolean> event) {
+					doValueChanged();					
 				}});
 			this.setValue(value);
 			this.setLabel(label);
