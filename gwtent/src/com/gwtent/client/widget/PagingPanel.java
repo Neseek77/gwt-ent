@@ -254,6 +254,12 @@ public class PagingPanel extends Grid{
 	}
 	
 	private void updatePageLinks(int currentIndex){
+		if (pageSize <= 0)
+			return;
+		
+		if (totalRecords <= 0)
+			return;
+		
 		if (links.size() <= this.displayPages){
 			//display all in a straight way
 			for (int i = 0; i < links.size(); i++){
