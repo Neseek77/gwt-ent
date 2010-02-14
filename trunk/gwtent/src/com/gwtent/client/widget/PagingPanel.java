@@ -93,6 +93,9 @@ public class PagingPanel extends Grid{
 	
 	/**
 	 * How many records per page.
+	 * 
+	 * <p><strong>If changed at runtime, better to using "sizeChanged" function</p></Strong>
+	 * 
 	 * @param pageSize
 	 */
 	public void setPageSize(int pageSize) {
@@ -111,6 +114,9 @@ public class PagingPanel extends Grid{
 
 	/**
 	 * How many records database have
+	 * 
+	 * <p><strong>If changed at runtime, better to using "sizeChanged" function</p></Strong>
+	 * 
 	 * @param totalRecords
 	 */
 	public void setTotalRecords(int totalRecords) {
@@ -269,6 +275,18 @@ public class PagingPanel extends Grid{
 	}
 
 	/**
+	 * Better to using this function if size relation property changed.
+	 * @param pageSize
+	 * @param totalRecords
+	 */
+	public void sizeChanged(int pageSize, int totalRecords){
+		this.pageSize = pageSize;
+		this.totalRecords = totalRecords;
+		
+		this.sizeChanged();
+	}
+	
+	/**
 	 * 
 	 * @param index which index we are creating
 	 */
@@ -308,11 +326,16 @@ public class PagingPanel extends Grid{
 	}
 
 	public void setCurrentPageIndex(int currentPageIndex) {
+		setCurrentPageIndex(currentPageIndex, true);
+	}
+	
+	public void setCurrentPageIndex(int currentPageIndex, boolean fireEvent) {
 		this.currentPageIndex = currentPageIndex;
 		PagingLink link = links.get(currentPageIndex);
 		
 		updatePageLinks(currentPageIndex);
-		doPagingClickListener(link.startIndex, link.pageSize);
+		if (fireEvent)
+			doPagingClickListener(link.startIndex, link.pageSize);
 	}
 
 	public int getCurrentPageIndex() {
