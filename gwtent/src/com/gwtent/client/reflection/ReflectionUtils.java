@@ -128,12 +128,14 @@ public class ReflectionUtils {
 	 * @return
 	 */
 	public static Method getSetter(ClassType classType, String fieldName, Object value){
-		String typeName = value.getClass().getName();
-		for (String methodName : getSetterNames(fieldName)){
-			Method method = classType.findMethod(methodName, new String[]{typeName});
-			
-			if (method != null)
-				return method;
+		if (value != null){
+			String typeName = value.getClass().getName();
+			for (String methodName : getSetterNames(fieldName)){
+				Method method = classType.findMethod(methodName, new String[]{typeName});
+				
+				if (method != null)
+					return method;
+			}
 		}
 		
 		return getSetter(classType, fieldName);

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.UIObject;
 import com.gwtent.client.validate.ValidatorFactory;
 import com.gwtent.client.validate.ui.ErrorMessagePanel;
@@ -160,6 +161,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 				return true;
 		} catch (Exception e) {
 			doValueChanged();
+			GWT.log("Exception happended when set value to model object, the value had rolback", e);
 			return false;
 			//throw new EditorToValueSetException(e.getMessage(), e);
 		}
