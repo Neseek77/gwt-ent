@@ -334,6 +334,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
          	    	if (Array.get(value, i) instanceof Class)
          	    		processClassFromAnnotationValue(Array.get(value, i));
          	    }
+         	  }else if (value instanceof Annotation){
+         	  	processAnnotation((Annotation)value);
          	  }
          } catch (Exception e){
          	throw new CheckedExceptionWrapper(e);

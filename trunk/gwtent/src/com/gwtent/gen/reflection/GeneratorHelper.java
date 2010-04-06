@@ -276,6 +276,8 @@ public class GeneratorHelper {
 	    return sb.toString();
 	  } else if (object.getClass().isEnum()){
 	  	return object.getClass().getCanonicalName() + "." + ((Enum)object).name();
+	  }else if (object instanceof Annotation){
+	  	return newAnnotation_AnnotationImpl(typeOracle, (Annotation)object);
 	  }
 	   
 	  return object.toString();
@@ -285,29 +287,37 @@ public class GeneratorHelper {
 	    String AnnotationStoreVarName, SourceWriter source, Annotation annotation){
 	  StringBuilder sb = new StringBuilder();
 	  
-	  try {
-      JClassType classType = typeOracle.getType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
-      JAnnotationType annoType = classType.isAnnotation();
-      String annoReflectionClassName = annoType.getQualifiedSourceName().replace(".", "_");
-      sb.append(AnnotationStoreVarName).append("= new ").append(annoReflectionClassName).append(".").append(annoReflectionClassName).append("Impl");
-      sb.append("(").append(annoType.getQualifiedSourceName()).append(".class");
-      
-      JAnnotationMethod[] methods = annoType.getMethods();
-      for (JAnnotationMethod method : methods) {
-        Object value = null;
-        try {
-          value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
-          sb.append(", ").append(annoValueToCode(typeOracle, value));
-        } catch (Exception e){
-        	throw new CheckedExceptionWrapper(e);
-        }
-      }
-      sb.append(");");
-    } catch (NotFoundException e) {
-      throw new CheckedExceptionWrapper(e);
-    }
+    sb.append(AnnotationStoreVarName).append(" = ").append(newAnnotation_AnnotationImpl(typeOracle, annotation)).append(";");
     
     source.println(sb.toString());
+	}
+
+	private static String newAnnotation_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,	Annotation annotation) {
+		try {
+			JClassType classType = typeOracle.getType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
+	    JAnnotationType annoType = classType.isAnnotation();
+			String annoReflectionClassName = annoType.getQualifiedSourceName().replace(".", "_");
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(" new ").append(annoReflectionClassName).append(".").append(annoReflectionClassName).append("Impl");
+			sb.append("(").append(annoType.getQualifiedSourceName()).append(".class");
+			
+			JAnnotationMethod[] methods = annoType.getMethods();
+			for (JAnnotationMethod method : methods) {
+			  Object value = null;
+			  try {
+			    value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
+			    sb.append(", ").append(annoValueToCode(typeOracle, value));
+			  } catch (Exception e){
+			  	throw new CheckedExceptionWrapper(e);
+			  }
+			}
+			sb.append(")");
+			
+			return sb.toString();
+		} catch (NotFoundException e) {
+      throw new CheckedExceptionWrapper(e);
+    }
 	}
 	
 	
