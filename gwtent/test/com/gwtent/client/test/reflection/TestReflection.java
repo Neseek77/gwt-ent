@@ -29,6 +29,7 @@ import com.gwtent.client.reflection.Reflection;
 import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.client.test.annotations.Id;
 import com.gwtent.client.test.annotations.Table;
+import com.gwtent.client.test.reflection.TestAnnotationInAnnotation.MyMethodAnn;
 import com.gwtent.client.validate.constraints.Regular;
 
 
@@ -97,6 +98,7 @@ public class TestReflection<T> implements Reflection {
 		return t;
 	}
 
+	@MyMethodAnn(p1=0)
 	public void setSets(Set<String> sets) {
 		this.sets = sets;
 	}
