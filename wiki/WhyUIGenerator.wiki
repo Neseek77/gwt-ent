@@ -1,5 +1,5 @@
 #summary Why provide a UI generator
-#labels Featured,Phase-Design
+#labels Featured,Phase-Design,Deprecated
 
 = Why UI generator =
 
