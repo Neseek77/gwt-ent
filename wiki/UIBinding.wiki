@@ -7,6 +7,7 @@ GWT-ENT offer a easy to use UI Binding framework for GWT users.
 It's based on GWT-ENT reflection implement, and provide two way 
 to use it.
 
+  # Annotation with UIBinder in GWT 2.0
   # Annotation with HTML Template
   # Intergrate by Code
 
@@ -22,7 +23,7 @@ to use it.
 
   You can get more information about create UI Binders of your UI stuff in this document.
 
-= The easier way, Annotation with HTML Template =
+= The easier way, Annotation with UIBinder(GWT2.0) and HTML Template =
 
   HTML Template introduce a new Annotation "UIBind".
   {{{
