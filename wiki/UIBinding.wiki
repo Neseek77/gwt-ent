@@ -1,3 +1,4 @@
+#summary how to using UIBinder
 #labels Featured,UIBinding
 UIBinding framework from gwt-ent
 
