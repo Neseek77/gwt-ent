@@ -76,3 +76,7 @@ to use it.
 
   For now just support function call with out parameters
   }}}
+
+
+= Upgrade HTMLTemplate from 0.7 =
+  Normally you don't have to change any of your HTMLTemplate code, but if you have call uibinder related function in your HTMLTemplate constructor, instead, please override "doAfterBinderAllEditors()" function to do what you want to do in constructor.
