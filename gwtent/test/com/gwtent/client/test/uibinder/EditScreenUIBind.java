@@ -15,51 +15,25 @@ import com.gwtent.client.uibinder.UIBinderManager.ModelCallback;
 public class EditScreenUIBind extends HTMLTemplatePanel {
 
   //for now, models in path must can be accessed by sub class
-  protected TestModel testModel = null;
+  TestModel testModel = null;
 
   public EditScreenUIBind(String html) {
     super(html);
     
     GWTUIBinderRegister.register();
-//    uiBinderManager.addBinder(txtFirstName, "firstName", false, TestModel.class);
     
     testModel = new TestModel();
     testModel.setFirstName("first name set by code");
     
-    //This function do nothing, cause binding system has not been initialized
-    modelChanged();
-    
-//    this.getUIBinderManager().addBinder(txtBindToVariable, "", false, String.class,
-//        new ModelRootAccessor(){
-//
-//          public Object getValue() {
-//            return varToBind;
-//          }
-//
-//          public void setValue(Object value) {
-//            varToBind = (String)value;
-//          }});
-//    
-//    getUIBinderManager().addBinder(txtFirstName, "firstName", false, TestModel.class,
-//        new ModelRootAccessor(){
-//
-//          public Object getValue() {
-//            return testModel;
-//          }
-//
-//          public void setValue(Object value) {
-//            //
-//          }});
-    //UIBinderFactory.getUIBinder(TextBox.class).binder(txtFirstName, this, testModel, "testModel.firstName");
   }
   
   @HTMLWidget
   @UIBind(path="testModel.firstName")
-  protected TextBox txtFirstName = new TextBox();
+  TextBox txtFirstName = new TextBox();
   
   @HTMLWidget
   @UIBind(path="varToBind")
-  protected TextBox txtBindToVariable = new TextBox();
+  TextBox txtBindToVariable = new TextBox();
   
   public TextBox getTxtBindToVariable() {
     return txtBindToVariable;
@@ -69,7 +43,7 @@ public class EditScreenUIBind extends HTMLTemplatePanel {
     this.txtBindToVariable = txtBindToVariable;
   }
 
-  protected String varToBind = "abc";
+  String varToBind = "abc";
 
   public TextBox getTxtFirstName() {
     return txtFirstName;
