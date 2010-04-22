@@ -120,6 +120,12 @@ public class GenUtils {
 		return method.getReturnType().getSimpleSourceName().equals("void");
 	}
 	
+	/**
+	 * Find a field, if not found in current classtype, then search it in supper classs
+	 * @param classType
+	 * @param fieldName
+	 * @return
+	 */
 	public static JField findField(JClassType classType, String fieldName){
 	  JField result = null;
     JClassType parent = classType;
@@ -134,6 +140,13 @@ public class GenUtils {
     return null;
   }
 	
+	/**
+	 * Find a method, if not found in current classType, then find it in super class.
+	 * @param classType
+	 * @param name
+	 * @param paramTypes
+	 * @return
+	 */
 	public static JMethod findMethod(JClassType classType, String name, JType[] paramTypes){
 	  JMethod result = null;
     JClassType parent = classType;
@@ -290,6 +303,16 @@ public class GenUtils {
 		}
 
 		return results;
+	}
+	
+	/**
+	 * Get the full class name, for exampel:
+	 * <p> com.gwtent.test.client.UIScreen will return com_gwtent_test_client_UIScreen
+	 * @param classType
+	 * @return
+	 */
+	public static String getQualifiedFullNmae(JClassType classType){
+		return classType.getQualifiedSourceName().replace(".", "_");
 	}
 	
 }

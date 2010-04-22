@@ -2,15 +2,46 @@ package com.gwtent.gen.template;
 
 import javax.validation.groups.Default;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Button;
 import com.gwtent.client.template.HTMLTemplatePanel;
+import com.gwtent.client.uibinder.DataBinder;
 import com.gwtent.client.uibinder.ModelRootAccessor;
 
 public class TemplateSource extends HTMLTemplatePanel {
+	
+	interface TemplateDataBinder extends com.gwtent.client.uibinder.DataBinder<TemplateSource>{
+		
+	}
+	
+	 
+	
+	public class TemplateSourceDataBinderImpl extends com.gwtent.client.uibinder.UIBinderManager<TemplateSource> implements TemplateDataBinder{
 
+		public void bindAll(TemplateSource owner) {
+		//for each all @UIBind
+	    addBinder(owner.btn, "path", false, TemplateSource.class, 
+	        new ModelRootAccessor(){
+	          public Object getValue() {
+	            return "";
+	          }
+
+	          public void setValue(Object value) {
+	            //
+	          }
+
+						public String getRootPath() {
+							return "rootPath";
+						}}, true, new Class<?>[]{Default.class});  //validate Groups
+	    
+	    //....
+		}
+		
+	}
+	
   protected Button btn = new Button();
 
   private static String getHTML() {
@@ -51,24 +82,7 @@ public class TemplateSource extends HTMLTemplatePanel {
   }
   
   private void _BindToEditor(){
-    //for each all @UIBind
-    getUIBinderManager().addBinder(btn, "path", false, TemplateSource.class, 
-        new ModelRootAccessor(){
-          public Object getValue() {
-            return "";
-          }
-
-          public void setValue(Object value) {
-            //
-          }
-
-					public String getRootPath() {
-						return "rootPath";
-					}}, true, new Class<?>[]{Default.class});  //validate Groups
     
-    //....
-    
-    doAfterBinderAllEditors();
   }
   
   private void _CodeFromHTML(){
@@ -84,7 +98,11 @@ public class TemplateSource extends HTMLTemplatePanel {
     super(getHTML());
 
     addElements();
-    _BindToEditor();
+    
+    this.setUIBinderManager((com.gwtent.client.uibinder.DataBinder)GWT.create(TemplateDataBinder.class));
+    this.getUIBinderManager().bindAll(this);
+    doAfterBinderAllEditors();
+    
     _CodeFromHTML();
     _SetCSS();
   }

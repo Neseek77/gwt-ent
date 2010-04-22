@@ -491,10 +491,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 				return "((Short)" + argeName + ").shortValue()";
 			}
 			if (requestType.equals("long")) {
-				return "((Byte)" + argeName + ").byteValue()";
+				return "((Long)" + argeName + ").longValue()";
 			}
 			if (requestType.equals("float")) {
-				return "((Long)" + argeName + ").longValue()";
+				return "((Float)" + argeName + ").floatValue()";
 			}
 			if (requestType.equals("double")) {
 				return "((Double)" + argeName + ").doubleValue()";

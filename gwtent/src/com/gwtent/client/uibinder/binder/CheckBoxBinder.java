@@ -1,5 +1,7 @@
 package com.gwtent.client.uibinder.binder;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Widget;
@@ -30,9 +32,9 @@ public class CheckBoxBinder extends AbstractUIBinder<CheckBox, Boolean> {
 
 	@Override
 	protected void doInit(CheckBox widget, ModelValue<Boolean> value) {
-		widget.addClickListener(new ClickListener(){
-			public void onClick(Widget sender) {
-				setEditorToValue(getWidget().isChecked());
+		widget.addValueChangeHandler(new ValueChangeHandler<Boolean>(){
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				setEditorToValue(event.getValue());
 			}});
 	}
 
@@ -40,8 +42,8 @@ public class CheckBoxBinder extends AbstractUIBinder<CheckBox, Boolean> {
 	@Override
 	protected void setValueToEditor(Boolean value, CheckBox widget) {
 		if (value != null)
-			widget.setChecked(value);
+			widget.setValue(value);
 		else
-			widget.setChecked(false);
+			widget.setValue(false);
 	}
 }

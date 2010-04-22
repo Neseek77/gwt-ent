@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.reflection.Reflectable;
+import com.gwtent.client.uibinder.DataBinder;
 import com.gwtent.client.uibinder.IValueChangedByBindingListener;
 import com.gwtent.client.uibinder.UIBinderManager;
 
@@ -41,10 +42,17 @@ public class HTMLTemplatePanel extends HTMLPanel {
   }
   
   
-  private UIBinderManager uiBinderManager = new UIBinderManager();
+  private DataBinder uiBinderManager = null;
   
-  public UIBinderManager getUIBinderManager() {
+  public DataBinder getUIBinderManager() {
+  	if (uiBinderManager == null){
+  		throw new RuntimeException("DataBinder not init yet, please do what you want by override \"protected void doAfterBinderAllEditors()\" function.");
+  	}
     return uiBinderManager;
+  }
+  
+  protected void setUIBinderManager(DataBinder uiBinderManager){
+  	this.uiBinderManager = uiBinderManager;
   }
   
   protected void onLoad() {
@@ -62,7 +70,7 @@ public class HTMLTemplatePanel extends HTMLPanel {
    * 
    */
   public void modelChanged(String... pathPrefixs){
-    uiBinderManager.modelChanged(pathPrefixs);
+  	getUIBinderManager().modelChanged(pathPrefixs);
   }
   
   
@@ -74,7 +82,7 @@ public class HTMLTemplatePanel extends HTMLPanel {
    * @return
    */
   public Set<ConstraintViolation<Object>> validate(String[] pathPrefixs, boolean showMessagesToUI, Class<?>... validateGroups){
-  	return uiBinderManager.validate(pathPrefixs, showMessagesToUI, validateGroups);
+  	return getUIBinderManager().validate(pathPrefixs, showMessagesToUI, validateGroups);
   }
   
   /**
@@ -85,23 +93,23 @@ public class HTMLTemplatePanel extends HTMLPanel {
    * @return
    */
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
-  	return uiBinderManager.validate(showMessagesToUI, validateGroups);
+  	return getUIBinderManager().validate(showMessagesToUI, validateGroups);
   }
   
   public Set<ConstraintViolation<Object>> validate(UIObject widget, boolean showMessagesToUI, Class<?>... validateGroups){
-  	return uiBinderManager.validate(widget, showMessagesToUI, validateGroups);
+  	return getUIBinderManager().validate(widget, showMessagesToUI, validateGroups);
   }
   
   public void hideAllValidateMessages(){
-  	uiBinderManager.hideAllValidateMessages();
+  	getUIBinderManager().hideAllValidateMessages();
   }
 
   public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener){
-  	uiBinderManager.removeValueChangedByBindingListener(listener);
+  	getUIBinderManager().removeValueChangedByBindingListener(listener);
   }
   
   public void addValueChangedByBindingListener(IValueChangedByBindingListener listener){
-  	uiBinderManager.addValueChangedByBindingListener(listener);
+  	getUIBinderManager().addValueChangedByBindingListener(listener);
   }
   
   
