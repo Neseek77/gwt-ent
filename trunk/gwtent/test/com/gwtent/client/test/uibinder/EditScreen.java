@@ -26,39 +26,77 @@ public class EditScreen extends HTMLTemplatePanel {
     testModel = new TestModel();
     testModel.setFirstName("first name set by code");
     
-    //This function do nothing, cause binding system has not been initialized
-    modelChanged();
     
-    this.getUIBinderManager().addBinder(txtBindToVariable, "", false, String.class,
-        new ModelRootAccessor(){
+    setUIBinderManager(new UIBinderManager(){
 
-          public Object getValue() {
-            return varToBind;
-          }
+			public void bindAll(Object owner) {
+				addBinder(txtBindToVariable, "", false, String.class,
+		        new ModelRootAccessor(){
 
-          public void setValue(Object value) {
-            varToBind = (String)value;
-          }
+		          public Object getValue() {
+		            return varToBind;
+		          }
 
-					public String getRootPath() {
-						return "varToBind";
-					}}, false);
+		          public void setValue(Object value) {
+		            varToBind = (String)value;
+		          }
+
+							public String getRootPath() {
+								return "varToBind";
+							}}, false);
+		    
+		    addBinder(txtFirstName, "firstName", false, TestModel.class,
+		        new ModelRootAccessor(){
+
+		          public Object getValue() {
+		            return testModel;
+		          }
+
+		          public void setValue(Object value) {
+		            //
+		          }
+
+							public String getRootPath() {
+								return "firstName";
+							}}, false);
+			}});
     
-    getUIBinderManager().addBinder(txtFirstName, "firstName", false, TestModel.class,
-        new ModelRootAccessor(){
-
-          public Object getValue() {
-            return testModel;
-          }
-
-          public void setValue(Object value) {
-            //
-          }
-
-					public String getRootPath() {
-						return "firstName";
-					}}, false);
+    
     //UIBinderFactory.getUIBinder(TextBox.class).binder(txtFirstName, this, testModel, "testModel.firstName");
+  }
+  
+  protected void doAfterBinderAllEditors(){
+  	this.getUIBinderManager().addBinder(txtBindToVariable, "", false, String.class,
+		        new ModelRootAccessor(){
+
+		          public Object getValue() {
+		            return varToBind;
+		          }
+
+		          public void setValue(Object value) {
+		            varToBind = (String)value;
+		          }
+
+							public String getRootPath() {
+								return "varToBind";
+							}}, false);
+		    
+  	this.getUIBinderManager().addBinder(txtFirstName, "firstName", false, TestModel.class,
+		        new ModelRootAccessor(){
+
+		          public Object getValue() {
+		            return testModel;
+		          }
+
+		          public void setValue(Object value) {
+		            //
+		          }
+
+							public String getRootPath() {
+								return "firstName";
+							}}, false);
+
+    
   }
   
   @HTMLWidget
