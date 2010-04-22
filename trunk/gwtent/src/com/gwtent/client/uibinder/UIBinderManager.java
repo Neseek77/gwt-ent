@@ -12,7 +12,7 @@ import javax.validation.ConstraintViolation;
 import com.google.gwt.user.client.ui.UIObject;
 import com.gwtent.client.CheckedExceptionWrapper;
 
-public class UIBinderManager implements IValueChangedByBindingListener{
+public abstract class UIBinderManager<O> implements IValueChangedByBindingListener, DataBinder<O>{
   
   private Map<UIBinder, ModelValue> binders = new HashMap<UIBinder, ModelValue>();
   private List<Object> uiObjectList = new ArrayList<Object>();
@@ -42,20 +42,9 @@ public class UIBinderManager implements IValueChangedByBindingListener{
 //      }});
 //  }
   
-  /**
-   * To make the final js as small as possible
-   * I don't want the UI get involved into Reflection system
-   * That's why we need ModelValueAccessor to help us
-   * Get or Set values to model.
-   * With reflection we can do it automatically
-   * 
-   * @param <T>
-   * @param uiObject
-   * @param path
-   * @param readOnly
-   * @param modelClass
-   * @param valueAccessor
-   */
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#addBinder(T, java.lang.String, boolean, java.lang.Class, com.gwtent.client.uibinder.ModelRootAccessor, boolean, java.lang.Class)
+	 */
   public <T extends Object> void addBinder(T uiObject, String path, boolean readOnly, Class<?> modelClass,
       ModelRootAccessor valueAccessor, boolean autoValidate, Class<?>... groups){
   	try {
@@ -70,18 +59,16 @@ public class UIBinderManager implements IValueChangedByBindingListener{
 		}
   }
   
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#getAllUIObjects()
+	 */
   public Iterable<Object> getAllUIObjects(){
   	return uiObjectList;
   }
   
-  /**
-   * Notice to Binder Manager that model changed by code
-   * 
-   * @param pathPrefix..., the list of prefix of path, 
-   * if "" or null means all model changed, 
-   * "a.b" means all path start with "a.b" will be noticed.
-   * 
-   */
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#modelChanged(java.lang.String)
+	 */
   public void modelChanged(String... pathPrefixs){
     for (ModelValue value : binders.values()){
     	if (isMatchPrefix(value, pathPrefixs))
@@ -101,13 +88,9 @@ public class UIBinderManager implements IValueChangedByBindingListener{
   	return false;
   }
   
-  /**
-   * 
-   * @param pathPrefixs, the Prefix of path, if null, all path match
-   * @param showMessagesToUI
-   * @param validateGroups
-   * @return
-   */
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#validate(java.lang.String[], boolean, java.lang.Class)
+	 */
   public Set<ConstraintViolation<Object>> validate(String[] pathPrefixs, boolean showMessagesToUI, Class<?>... validateGroups){
   	Set<ConstraintViolation<Object>> result = new HashSet<ConstraintViolation<Object>>();
   	for (UIBinder binder : binders.keySet()){
@@ -122,6 +105,9 @@ public class UIBinderManager implements IValueChangedByBindingListener{
   	return result;
   }
   
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#validate(boolean, java.lang.Class)
+	 */
   public Set<ConstraintViolation<Object>> validate(boolean showMessagesToUI, Class<?>... validateGroups){
   	Set<ConstraintViolation<Object>> result = new HashSet<ConstraintViolation<Object>>();
   	for (UIBinder binder : binders.keySet()){
@@ -132,6 +118,9 @@ public class UIBinderManager implements IValueChangedByBindingListener{
   	return result;
   }
   
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#validate(com.google.gwt.user.client.ui.UIObject, boolean, java.lang.Class)
+	 */
   public Set<ConstraintViolation<Object>> validate(UIObject widget, boolean showMessagesToUI, Class<?>... validateGroups){
   	for (UIBinder binder : binders.keySet()){
   		if (binder.getWidget() == widget){
@@ -143,16 +132,25 @@ public class UIBinderManager implements IValueChangedByBindingListener{
   }
   
   
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#hideAllValidateMessages()
+	 */
   public void hideAllValidateMessages(){
   	for (UIBinder binder : binders.keySet()){
   		binder.hideValidateMessageBox();
   	}
   }
   
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#removeValueChangedByBindingListener(com.gwtent.client.uibinder.IValueChangedByBindingListener)
+	 */
   public void removeValueChangedByBindingListener(IValueChangedByBindingListener listener){
   	changedByBindingListeners.remove(listener);
   }
   
+  /* (non-Javadoc)
+	 * @see com.gwtent.client.uibinder.DataBinder#addValueChangedByBindingListener(com.gwtent.client.uibinder.IValueChangedByBindingListener)
+	 */
   public void addValueChangedByBindingListener(IValueChangedByBindingListener listener){
   	changedByBindingListeners.add(listener);
   }
@@ -167,5 +165,5 @@ public class UIBinderManager implements IValueChangedByBindingListener{
 			Object value) {
 		return changedByBindingListeners.fireBeforeValueChange(instance, property, value);
 	}
-  
+
 }

@@ -67,7 +67,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 			getMsgPanel().clearErrorMsgs();
 			getMsgPanel().hide();
 		}
-		
+  	
   	Set<ConstraintViolation<Object>> scv = ValidatorFactory.getGWTValidator().validateValue((Class<Object>)getModelValue().getRootClass(), getModelValue().getPropertyPath(), value, validateGroups);
 		if (scv.size() > 0){
 			if (showMessagesToUI && isableToShowValidateMessage){

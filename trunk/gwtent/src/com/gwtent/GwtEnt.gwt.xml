@@ -40,8 +40,8 @@
 		<when-type-assignable class="com.gwtent.client.template.HTMLTemplatePanel"/>
 	</generate-with>
 	
-	<generate-with class="com.gwtent.gen.uibinder.UIBinderGenerator">
-		<when-type-assignable class="com.gwtent.client.uibinder.UIBinderManager"/>
+	<generate-with class="com.gwtent.gen.uibind.DataBinderGenerator">
+		<when-type-assignable class="com.gwtent.client.uibinder.DataBinder"/>
 	</generate-with>
 
 

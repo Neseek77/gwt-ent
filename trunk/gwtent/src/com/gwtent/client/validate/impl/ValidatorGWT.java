@@ -103,22 +103,26 @@ public class ValidatorGWT implements Validator{
     if (type == null)
       ReflectionUtils.reflectionRequired(beanType);
     
-    //Path of propertyName support
-    type = PathResolver.getLastClassTypeByPath(beanType,	propertyName);
-    propertyName = PathResolver.getLastElementByPath(propertyName);
-    
     Set<ConstraintViolation<T>> icSet = new HashSet<ConstraintViolation<T>>();
     
-    Field field = type.getField(propertyName);
-    if (field != null){
-      doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), value, groups);
-    }else{
-      Method method = type.getMethod(propertyName, null);
-      if (method == null)
-      	method = ReflectionUtils.getGetter(type, propertyName);
+    //Path of propertyName support
+    if (propertyName != null){
+    	type = PathResolver.getLastClassTypeByPath(beanType,	propertyName);
+      propertyName = PathResolver.getLastElementByPath(propertyName);
       
-      if (method != null)
-        doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), value, groups);
+      
+      
+      Field field = type.getField(propertyName);
+      if (field != null){
+        doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(field, lstGroups), value, groups);
+      }else{
+        Method method = type.getMethod(propertyName, null);
+        if (method == null)
+        	method = ReflectionUtils.getGetter(type, propertyName);
+        
+        if (method != null)
+          doValidate(null, beanType, propertyName, type, icSet, getValidateAnnotationsAndOrder(method, lstGroups), value, groups);
+      }      
     }
     
     return icSet;
