@@ -11,11 +11,16 @@ import com.gwtent.client.validate.ui.ErrorMessagePanel;
 
 
 /**
+ * The abstract UIBinder.
+ * 
+ * <P>You can inherited from this class to create a new binder
+ * 
+ * @see com.gwtent.client.uibinder.binder.CheckBoxBinder to learn how to create a binder
  * 
  * @author JamesLuo@gmail.com
  *
- * @param <T> the editor type
- * @param <D> the data type which editor supposed
+ * @param <T> the editor type, for example "TextBox"
+ * @param <D> the data type which editor supposed, for example "String"
  */
 public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
 
@@ -114,7 +119,8 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   
   /**
    * Connect value to widget here,
-   * i.e: listening to widget for any changes
+   * for example: listening to widget for any changes
+   * The is the place you binder your widget
    * @param widget
    * @param value
    */

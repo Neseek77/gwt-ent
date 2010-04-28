@@ -38,6 +38,8 @@ public class TemplateSource extends HTMLTemplatePanel {
 						}}, true, new Class<?>[]{Default.class});  //validate Groups
 	    
 	    //....
+	    
+	    modelChanged();
 		}
 		
 	}

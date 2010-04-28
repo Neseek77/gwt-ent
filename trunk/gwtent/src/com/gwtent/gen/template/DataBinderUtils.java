@@ -114,6 +114,8 @@ public class DataBinderUtils {
       curType = curType.getSuperclass();
     }
     
+    source.println("modelChanged();");
+    
     source.outdent();
     source.println("}");
 	}
