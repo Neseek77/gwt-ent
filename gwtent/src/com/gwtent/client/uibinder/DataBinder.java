@@ -26,8 +26,17 @@ public interface DataBinder<O> {
 	/**
 	 * All fields which is annotated by "@UIBind" will be bind to it's model
 	 * <p>this is the main function you need for start up the bind system
+	 * <p>this will not assign your model data to UI editors until you call "modelChanged()",
+	 * you can call bindAll(O owner, boolean updateModelToUI);
 	 */
 	public void bindAll(final O owner);
+	
+	/**
+	 * All fields which is annotated by "@UIBind" will be bind to it's model
+	 * <p>this is the main function you need for start up the bind system
+	 * <p>this will assign your model data to UI editors;
+	 */
+	public void bindAll(final O owner, final boolean updateModelToUI);
 
 	/**
 	 * To make the final js as small as possible

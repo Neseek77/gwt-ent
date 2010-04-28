@@ -21,6 +21,15 @@ public abstract class UIBinderManager<O> implements IValueChangedByBindingListen
     public Object getModel();
   }
   
+  public void bindAll(final O owner, final boolean updateModelToUI){
+  	bindAll(owner);
+  	
+  	if (updateModelToUI){
+  		this.modelChanged();
+  	}
+  }
+  
+  
   
   /**
    * @param uiObject the widget or any object you defined, ie: TextBox
