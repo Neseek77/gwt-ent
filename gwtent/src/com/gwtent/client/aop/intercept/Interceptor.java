@@ -19,7 +19,7 @@
 
 package com.gwtent.client.aop.intercept;
 
-import com.gwtent.client.aop.Advice;
+import com.gwtent.client.test.reflection.Advice;
 
 /**
  * This interface represents a generic interceptor.

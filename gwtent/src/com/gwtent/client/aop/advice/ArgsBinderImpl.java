@@ -28,7 +28,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 
 import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.client.reflection.Method;
-import com.gwtent.client.uibinder.Parameter;
+import com.gwtent.client.reflection.Parameter;
 
 public class ArgsBinderImpl implements ArgsBinder{
 
