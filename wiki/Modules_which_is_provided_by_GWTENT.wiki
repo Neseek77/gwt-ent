@@ -57,6 +57,13 @@ GWTENT provide the following useful modules, and most of this modules are design
   <inherits name="com.gwtent.uibinder.UIBinder" />
   }}}
 
+  == GXT Binder ==
+  {{{
+  <inherits name="com.gwtent.uibinder.client.gxt.Gxt" />
+  }}}
+  Bind your objects to GXT components, include the binder of Fields, Grids.
+  You need include "*gwtent-gxt.jar*" to your class path
+
 = Validation =
   {{{
   <inherits name="com.gwtent.validate.Validate" />
@@ -84,8 +91,3 @@ GWTENT provide the following useful modules, and most of this modules are design
   <inherits name="com.gwtent.aop.AOP" />
   }}}
   The AOP implement. please feedback if you got any idea about this.
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
