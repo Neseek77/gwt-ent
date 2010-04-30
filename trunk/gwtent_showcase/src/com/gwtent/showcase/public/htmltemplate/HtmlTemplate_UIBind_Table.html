@@ -1,0 +1,64 @@
+<link href="../../../../../../war/Gwtent_showcase.css" rel="stylesheet" type="text/css">
+
+<div id="HTMLTemplate_UIBind">
+	<div><h3>User Edit Screen</h3></div>
+	<div id="pnlUserEdit">
+    	<div>
+        	<span>To using UIBind and Validate, you need register binder and validate messages first, please see Gwtent_showcase.onModuleLoad()</span>
+			
+			<table width="100%" border="0">
+			  <tr>
+				<td width="100" class="Form_Caption">First Name *</td>
+				<td width="283" id="edtFirstName"></td>
+				<td width="916">you can bind by variable, ie @UIBind(path = &quot;user.firstName&quot;) Please Note, this variable must be accessable by sub class, not &quot;private&quot; </td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Last Name *</td>
+				<td id="edtLastName"></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Email *</td>
+				<td id="edtEmail"></td>
+				<td>you can bind by invoke a function, follow with &quot;()&quot;, i.e @UIBind(path = &quot;getUser().email&quot;)</td>
+			  </tr>
+			  <tr>
+				<td nowrap="nowrap" class="Form_Caption">Date of Birth *</td>
+				<td id="edtDOB"></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Address:</td>
+				<td></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Street *:</td>
+				<td class="Form_Editors" id="edtStreet"></td>
+				<td>Support property path as well, ie @UIBind(path = &quot;user.address.street&quot;)</td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">subTown *: </td>
+				<td class="Form_Editors" id="edtSubTown"></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Country *: </td>
+				<td class="Form_Editors" id="edtCountry"></td>
+				<td></td>
+			  </tr>
+			</table>
+
+        </div>
+		<div style="float:left; margin-top:10px">
+			<div id="btnValidate" style="float:left"></div>
+			<div id="btnSubmit" style="float:left"></div>
+			<div id="btnChangeDataByCode" style="float:left"></div>
+		</div>
+    </div>
+</div>
