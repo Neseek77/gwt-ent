@@ -7,8 +7,9 @@ import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.SubContent;
+import com.gwtent.showcase.client.htmltemplate.MyHTMLTemplate;
 
-@HTMLTemplate("AOP.html")
+@MyHTMLTemplate("aop/AOP.html")
 public class AOPMainPage extends HTMLTemplatePanel {
 
 	public AOPMainPage(String html) {

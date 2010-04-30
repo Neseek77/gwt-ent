@@ -9,7 +9,7 @@ import com.gwtent.client.template.HTMLTemplate;
  * @author JamesLuo.au@gmail.com
  *
  */
-@HTMLTemplate(basePath="/com/gwtent/showcase/client/htmls/")
+@HTMLTemplate(basePath="/com/gwtent/showcase/public/")
 public @interface MyHTMLTemplate {
 	/**
 	 * The HTML file name based on htmls folder

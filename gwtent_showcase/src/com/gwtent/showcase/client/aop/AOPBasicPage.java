@@ -8,13 +8,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.TextArea;
 import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.aop.Phone.Receiver;
+import com.gwtent.showcase.client.htmltemplate.MyHTMLTemplate;
 
 
-@HTMLTemplate("AOPBasicPage.html")
+@MyHTMLTemplate("aop/AOPBasicPage.html")
 public class AOPBasicPage extends BaseShowCasePanel implements Interceptors.Log{
 
 	public AOPBasicPage(String html) {
@@ -78,18 +80,18 @@ public class AOPBasicPage extends BaseShowCasePanel implements Interceptors.Log{
 	
 	
 	@HTMLWidget
-	protected RichTextArea memoAOPInfo_Basic = new RichTextArea();
+	protected TextArea memoAOPInfo_Basic = new TextArea();
 	
 	private void showResult(Receiver r){
 		lblResult.setText("The Result " + r.getName());
 	}
 	
 	private void beforeCall(){
-		memoAOPInfo_Basic.setHTML("");
+		memoAOPInfo_Basic.setText("");
 	}
 
 
 	public void println(String str) {
-		memoAOPInfo_Basic.setHTML(memoAOPInfo_Basic.getHTML() + str + "<br>");
+		memoAOPInfo_Basic.setText(memoAOPInfo_Basic.getText() + str + "\n");
 	}
 }

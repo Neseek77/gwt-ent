@@ -1,73 +1,40 @@
 package com.gwtent.showcase.client.reflection;
 
 import com.google.gwt.core.client.GWT;
-import com.gwtent.client.template.HTMLEvent;
+import com.google.gwt.user.client.ui.Widget;
 import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.showcase.client.SubContent;
+import com.gwtent.showcase.client.comm.AbsFrameTemplatePage;
+import com.gwtent.showcase.client.comm.HTMLElementTabLazyLoadManager;
+import com.gwtent.showcase.client.comm.LazyLoadWidgetCallback;
 
-@HTMLTemplate(value = "Reflection.html", renameId = false)
-public class ReflectionPage extends HTMLTemplatePanel {
+@HTMLTemplate(value = "com/gwtent/showcase/public/reflection/Reflection.html", renameId = false)
+public class ReflectionPage extends AbsFrameTemplatePage {
 
 	public ReflectionPage(String html) {
 		super(html);
 	}
-
-	@HTMLWidget
-	protected SubContent subContentRef = new SubContent();
 	
-	
-//	@HTMLEvent(value = {"linkRefOverview"})
-//	protected void doHomeClick(){
-//		
-//	}
-	
-	
-	@HTMLEvent(value = {"linkRefBasic"})
-	protected void dolinkRefBasicClick(){
-		if (reflectBasicPage == null){
-			reflectBasicPage = GWT.create(ReflectBasicPage.class);
-			subContentRef.addShowCase(reflectBasicPage);
-		}
+	@Override
+	protected void doInitLazyLoadWidgets(
+			HTMLElementTabLazyLoadManager lazyLoadManager) {
+		lazyLoadManager.addLazyLoadWidget("linkRefBasic", new LazyLoadWidgetCallback(){
+			public Widget getWidget() {
+				return GWT.create(ReflectBasicPage.class);
+			}});
 		
-		subContentRef.showShowCase(reflectBasicPage);
-	}
-	
-	@HTMLEvent(value = {"linkRefEnum"})
-	protected void dolinkRefEnumClick(){
-		if (reflectEnumPage == null){
-			reflectEnumPage = GWT.create(ReflectEnumPage.class);
-			subContentRef.addShowCase(reflectEnumPage);
-		}
+		lazyLoadManager.addLazyLoadWidget("linkRefEnum", new LazyLoadWidgetCallback(){
+			public Widget getWidget() {
+				return GWT.create(ReflectEnumPage.class);
+			}});
 		
-		subContentRef.showShowCase(reflectEnumPage);
-	}
-	
-	@HTMLEvent(value = {"linkRefDomain"})
-	protected void dolinkRefDomainClick(){
-		if (reflectDomainPage == null){
-			reflectDomainPage = GWT.create(ReflectDomainPage.class);
-			subContentRef.addShowCase(reflectDomainPage);
-		}
+		lazyLoadManager.addLazyLoadWidget("linkRefDomain", new LazyLoadWidgetCallback(){
+			public Widget getWidget() {
+				return GWT.create(ReflectDomainPage.class);
+			}});
 		
-		subContentRef.showShowCase(reflectDomainPage);
+		lazyLoadManager.addLazyLoadWidget("linkRefControlSize", new LazyLoadWidgetCallback(){
+			public Widget getWidget() {
+				return GWT.create(ReflectControlSizePage.class);
+			}});
 	}
-	
-	@HTMLEvent(value = {"linkRefControlSize"})
-	protected void dolinkControlSizeClick(){
-		if (reflectControlSizePage == null){
-			reflectControlSizePage = GWT.create(ReflectControlSizePage.class);
-			subContentRef.addShowCase(reflectControlSizePage);
-		}
-		
-		subContentRef.showShowCase(reflectControlSizePage);
-	}
-	
-	
-	
-	private ReflectBasicPage reflectBasicPage;
-	private ReflectEnumPage reflectEnumPage;
-	private ReflectDomainPage reflectDomainPage;
-	private ReflectControlSizePage reflectControlSizePage;
 }

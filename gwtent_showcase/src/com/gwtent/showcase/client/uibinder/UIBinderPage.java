@@ -7,7 +7,7 @@ import com.gwtent.client.template.HTMLTemplatePanel;
 import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.SubContent;
 
-@HTMLTemplate(value = "UIBinder.html", renameId = false)
+@HTMLTemplate(value = "com/gwtent/showcase/public/uibinder/UIBinder.html", renameId = false)
 public class UIBinderPage extends HTMLTemplatePanel {
 
 	public UIBinderPage(String html) {

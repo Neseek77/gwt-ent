@@ -10,20 +10,16 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.annotations.Reflect_Domain;
 import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.client.validate.constraints.Regular;
-import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.Utils;
 
 
-@HTMLTemplate("ReflectionBasicPage.html")
-public class ReflectBasicPage extends BaseShowCasePanel {
+@HTMLTemplate("com/gwtent/showcase/public/reflection/ReflectionBasicPage.html")
+public class ReflectBasicPage extends AbsReflectionPage {
 
 
 	@Entity(name="TestReflection")
@@ -114,15 +110,11 @@ public class ReflectBasicPage extends BaseShowCasePanel {
 	public String getCaseName() {
 		return "Basic Reflection Page";
 	}
-	
-	@HTMLWidget
-	protected Button btnShowReflectionInfo_Basic = new Button("Show Reflection TestReflection", new ClickHandler(){
 
-		public void onClick(ClickEvent event) {
-			memoReflectionInfo_Basic.setHTML(Utils.getClassDescription(TestReflection.class));
-		}});
-	
-	
-	@HTMLWidget
-	protected RichTextArea memoReflectionInfo_Basic = new RichTextArea();
+
+	@Override
+	protected Class<?>[] getReflectionClasses() {
+		return new Class<?>[]{TestReflection.class};
+	}
+
 }

@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.TextArea;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.annotations.Reflect_Domain;
 import com.gwtent.client.template.HTMLTemplate;
@@ -12,8 +13,8 @@ import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.Utils;
 
 
-@HTMLTemplate("ReflectionBasicPage.html")
-public class ReflectEnumPage extends BaseShowCasePanel {
+@HTMLTemplate("com/gwtent/showcase/public/reflection/ReflectionBasicPage.html")
+public class ReflectEnumPage extends AbsReflectionPage {
 
 
 	@Reflect_Domain
@@ -49,15 +50,9 @@ public class ReflectEnumPage extends BaseShowCasePanel {
 	public String getCaseName() {
 		return "Basic Reflection Page";
 	}
-	
-	@HTMLWidget
-	protected Button btnShowReflectionInfo_Basic = new Button("Show Reflection TestReflection", new ClickHandler(){
 
-		public void onClick(ClickEvent event) {
-			memoReflectionInfo_Basic.setHTML(Utils.getClassDescription(Country.class));
-		}});
-	
-	
-	@HTMLWidget
-	protected RichTextArea memoReflectionInfo_Basic = new RichTextArea();
+	@Override
+	protected Class<?>[] getReflectionClasses() {
+		return new Class<?>[]{Country.class};
+	}
 }
