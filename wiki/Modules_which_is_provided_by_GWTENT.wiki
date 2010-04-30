@@ -5,6 +5,12 @@
 
 GWTENT provide the following useful modules, and most of this modules are designed for easy to extend.
 
+= All-In-One =
+  {{{
+  <inherits name="com.gwtent.GwtEnt" />
+  }}}
+  To make it easy, You can using this module to include all GWTENT main modules to your project.
+  Please note, this is not include "(JPA) Emulation" and "Gxt binders" cause those modules are in different jar files.
 
 = Basic Modules =
   == Common ==
