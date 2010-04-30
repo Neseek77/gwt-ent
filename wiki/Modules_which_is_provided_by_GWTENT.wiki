@@ -33,7 +33,7 @@ GWTENT provide the following useful modules, and most of this modules are design
   {{{
   <inherits name="javax.persistence.Persistence"/>
   }}}
-  This need you include "gwtent-orm.jar" to your classpath
+  This need you include "*gwtent-orm.jar*" to your classpath
 
   == PageBus integration ==
   {{{
