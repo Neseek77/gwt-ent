@@ -26,12 +26,12 @@ import java.util.Set;
 import javax.validation.ConstraintValidator;
 import javax.validation.constraints.NotNull;
 
-import com.gwtent.client.reflection.HasReflect;
-import com.gwtent.client.reflection.Reflectable;
-import com.gwtent.client.test.annotations.Entity;
-import com.gwtent.client.test.annotations.Id;
-import com.gwtent.client.test.annotations.Table;
-import com.gwtent.client.validate.constraints.Regular;
+import com.gwtent.client.test.common.annotations.Entity;
+import com.gwtent.client.test.common.annotations.Id;
+import com.gwtent.client.test.common.annotations.Table;
+import com.gwtent.reflection.client.HasReflect;
+import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.validate.client.constraints.Regular;
 
 
 @Entity(name="TestReflection")

@@ -16,8 +16,8 @@
 package com.gwtent.client.test.i18n;
 
 import com.google.gwt.i18n.client.Messages;
-import com.gwtent.client.reflection.annotations.Reflect_Full;
-import com.gwtent.client.reflection.annotations.Reflect_Mini;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+import com.gwtent.reflection.client.annotations.Reflect_Mini;
 
 /**
  * Internationalized messages.

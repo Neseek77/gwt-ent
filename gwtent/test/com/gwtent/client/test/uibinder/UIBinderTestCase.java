@@ -1,9 +1,14 @@
 package com.gwtent.client.test.uibinder;
 
 import com.google.gwt.core.client.GWT;
-import com.gwtent.client.test.GwtEntTestCase;
+import com.gwtent.client.test.common.GwtEntTestCase;
 
 public class UIBinderTestCase extends GwtEntTestCase{
+	
+	@Override
+  public String getModuleName() {
+    return "com.gwtent.client.test.uibinder.UIBinder";
+  }
 
   private void assertOK(EditScreen sreen){
     assertTrue(sreen.getTxtFirstName().getText().equals(sreen.getTestModel().getFirstName()));

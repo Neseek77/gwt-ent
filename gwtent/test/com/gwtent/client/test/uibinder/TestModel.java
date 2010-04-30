@@ -2,7 +2,7 @@ package com.gwtent.client.test.uibinder;
 
 import java.util.Date;
 
-import com.gwtent.client.reflection.Reflection;
+import com.gwtent.reflection.client.Reflection;
 
 public class TestModel implements Reflection {
   

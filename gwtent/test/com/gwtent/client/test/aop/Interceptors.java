@@ -26,7 +26,6 @@ import java.lang.annotation.Target;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -34,9 +33,8 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 
-import com.gwtent.client.aop.intercept.MethodInvocation;
+import com.gwtent.aop.client.intercept.MethodInvocation;
 import com.gwtent.client.test.aop.Phone.Receiver;
 
 public class Interceptors {

@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.gwtent.client.template.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

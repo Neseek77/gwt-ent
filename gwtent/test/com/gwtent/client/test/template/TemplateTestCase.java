@@ -10,10 +10,18 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtent.client.template.*;
-import com.gwtent.client.test.GwtEntTestCase;
+import com.gwtent.client.test.common.GwtEntTestCase;
+import com.gwtent.htmltemplate.client.HTMLEvent;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 
 public class TemplateTestCase extends GwtEntTestCase {
+	
+	public String getModuleName() {
+    return "com.gwtent.client.test.template.Template";
+  }
+	
 
   public interface HTMLTemplateFile{
     public String getTemplateFileName();

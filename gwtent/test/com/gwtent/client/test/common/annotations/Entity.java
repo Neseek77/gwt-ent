@@ -17,12 +17,24 @@
  *******************************************************************************/
 
 
-package com.gwtent.client.test.aop;
 
-import com.gwtent.aop.client.Aspectable;
+//
+// This source code implements specifications defined by the Java
+// Community Process. In order to remain compliant with the specification
+// DO NOT add / change / or delete method signatures!
+//
+package com.gwtent.client.test.common.annotations;
 
-public class TestAOP implements Aspectable{
-	public String sayHello(String guestName){
-		return "Hello: " + guestName;
-	}
+import java.lang.annotation.Target;
+import java.lang.annotation.Retention;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ * @version $Rev: 467742 $ $Date: 2006-10-26 05:30:38 +1000 (Thu, 26 Oct 2006) $
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Entity {
+    String name() default "";
 }

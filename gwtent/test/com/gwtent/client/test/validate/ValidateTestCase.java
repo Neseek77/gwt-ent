@@ -6,14 +6,18 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import com.google.gwt.core.client.GWT;
-import com.gwtent.client.test.GwtEntTestCase;
+import com.gwtent.client.test.common.GwtEntTestCase;
 import com.gwtent.client.test.validate.Groups.Billable;
 import com.gwtent.client.test.validate.Groups.BuyInOneClick;
-import com.gwtent.client.validate.GWTValidateMessageStore;
-import com.gwtent.client.validate.impl.ValidatorGWT;
-import com.gwtent.client.validate.message.ValidateMessages;
+import com.gwtent.validate.client.GWTValidateMessageStore;
+import com.gwtent.validate.client.impl.ValidatorGWT;
+import com.gwtent.validate.client.message.ValidateMessages;
 
 public class ValidateTestCase extends GwtEntTestCase{
+	
+	public String getModuleName() {
+    return "com.gwtent.client.test.validate.Validate";
+  }
 
   public void testValidate(){
 

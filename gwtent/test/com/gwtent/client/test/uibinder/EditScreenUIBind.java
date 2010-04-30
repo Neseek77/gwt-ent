@@ -1,15 +1,15 @@
 package com.gwtent.client.test.uibinder;
 
 import com.google.gwt.user.client.ui.TextBox;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.client.template.UIBind;
-import com.gwtent.client.uibinder.GWTUIBinderRegister;
-import com.gwtent.client.uibinder.ModelRootAccessor;
-import com.gwtent.client.uibinder.UIBinderGWTFactory;
-import com.gwtent.client.uibinder.UIBinderManager;
-import com.gwtent.client.uibinder.UIBinderManager.ModelCallback;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.uibinder.client.GWTUIBinderRegister;
+import com.gwtent.uibinder.client.ModelRootAccessor;
+import com.gwtent.uibinder.client.UIBind;
+import com.gwtent.uibinder.client.UIBinderGWTFactory;
+import com.gwtent.uibinder.client.UIBinderManager;
+import com.gwtent.uibinder.client.UIBinderManager.ModelCallback;
 
 @HTMLTemplate("testhtml.html")
 public class EditScreenUIBind extends HTMLTemplatePanel {

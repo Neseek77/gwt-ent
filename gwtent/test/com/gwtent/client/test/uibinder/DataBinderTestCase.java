@@ -1,7 +1,7 @@
 package com.gwtent.client.test.uibinder;
 
-import com.gwtent.client.test.GwtEntTestCase;
-import com.gwtent.client.uibinder.GWTUIBinderRegister;
+import com.gwtent.client.test.common.GwtEntTestCase;
+import com.gwtent.uibinder.client.GWTUIBinderRegister;
 
 /**
  * 
@@ -10,6 +10,11 @@ import com.gwtent.client.uibinder.GWTUIBinderRegister;
  * 15/04/2010 10:05:09 AM
  */
 public class DataBinderTestCase  extends GwtEntTestCase{
+	
+	@Override
+  public String getModuleName() {
+    return "com.gwtent.client.test.uibinder.UIBinder";
+  }
 	
 	protected void gwtSetUp() throws Exception {
 		GWTUIBinderRegister.register();

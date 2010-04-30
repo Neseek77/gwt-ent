@@ -10,8 +10,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtent.client.template.UIBind;
-import com.gwtent.client.uibinder.DataBinder;
+import com.gwtent.uibinder.client.DataBinder;
+import com.gwtent.uibinder.client.UIBind;
 
 /**
  * 

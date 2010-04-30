@@ -1,8 +1,7 @@
 package com.gwtent.client.test.json;
 
-import com.gwtent.client.serialization.DataContract;
-import com.gwtent.client.serialization.DataMember;
-import com.gwtent.client.serialization.DoubleConvert;
+import com.gwtent.serialization.client.DataContract;
+import com.gwtent.serialization.client.DataMember;
 
 
 @DataContract

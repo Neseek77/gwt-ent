@@ -16,13 +16,19 @@
  *  Contributors:
  *******************************************************************************/
 
+package com.gwtent.client.test.common;
 
-package com.gwtent.client.test.aop;
+import com.google.gwt.junit.client.GWTTestCase;
 
-import com.gwtent.aop.client.Aspectable;
+public class CommonTestCase extends GWTTestCase {
 
-public class TestAOP implements Aspectable{
-	public String sayHello(String guestName){
-		return "Hello: " + guestName;
-	}
+  @Override
+  public String getModuleName() {
+    return "com.gwtent.client.test.common.Common";
+  }
+  
+  public void testModuleExists(){
+  	
+  }
+  
 }

@@ -30,8 +30,13 @@
 
 package com.gwtent.test;
 
-import com.gwtent.client.test.annotations.AnnotationTestCase;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import com.gwtent.client.test.allmodules.AllModulesTestCase;
 import com.gwtent.client.test.aop.AOPTestCase;
+import com.gwtent.client.test.common.CommonTestCase;
+import com.gwtent.client.test.common.annotations.AnnotationTestCase;
 import com.gwtent.client.test.i18n.I18NTestCase;
 import com.gwtent.client.test.json.SerializationTestCase;
 import com.gwtent.client.test.reflection.ReflectionTestCase;
@@ -40,14 +45,12 @@ import com.gwtent.client.test.uibinder.DataBinderTestCase;
 import com.gwtent.client.test.uibinder.UIBinderTestCase;
 import com.gwtent.client.test.validate.ValidateTestCase;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 public class AllTests {
 
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
+    suite.addTestSuite(CommonTestCase.class);
     suite.addTestSuite(DataBinderTestCase.class);
     suite.addTestSuite(I18NTestCase.class);
     suite.addTestSuite(AnnotationTestCase.class);
@@ -58,6 +61,7 @@ public class AllTests {
     suite.addTestSuite(ReflectionTestCase.class);
     suite.addTestSuite(AOPTestCase.class);
     suite.addTestSuite(TemplateTestCase.class);
+    suite.addTestSuite(AllModulesTestCase.class);
     //$JUnit-END$
     return suite;
   }

@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 import org.aspectj.lang.annotation.Aspect;
 
-import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.gen.GenUtils;
+import com.gwtent.reflection.client.Reflectable;
 
 import junit.framework.TestCase;
 
