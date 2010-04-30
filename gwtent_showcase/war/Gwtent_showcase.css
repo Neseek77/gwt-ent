@@ -97,7 +97,7 @@ background-position:0 -117px;
 width:76px;
 }
 
-#topBar ul li a#linkHome:hover,#topBar ul li a#linkHome:focus,#topBar ul li a#linkHome:active{background-position:0 -156px;}
+#topBar ul li a#linkHome:hover,#topBar ul li a#linkHome:focus,#topBar ul li a#linkHome:active,#topBar ul li a#linkHome.keepActive{background-position:0 -156px;}
 
 #topBar ul li.selected a#linkHome{background-position:0 -195px;}
 
@@ -105,7 +105,7 @@ width:76px;
 	background-position:-76px -117px;
 	width:107px;
 }
-#topBar ul li a#linkReflection:hover,#topBar ul li a#linkReflection:focus,#topBar ul li a#linkReflection:active{
+#topBar ul li a#linkReflection:hover,#topBar ul li a#linkReflection:focus,#topBar ul li a#linkReflection:active,#topBar ul li a#linkReflection.keepActive{
 background-position:-76px -156px;
 }
 #topBar ul li.selected a#linkReflection {
@@ -116,7 +116,7 @@ background-position:-76px -195px;
 background-position:-183px -117px;
 width:66px;
 }
-#topBar ul li a#linkAOP:hover,#topBar ul li a#linkAOP:focus,#topBar ul li a#linkAOP:active{background-position:-183px -156px;}
+#topBar ul li a#linkAOP:hover,#topBar ul li a#linkAOP:focus,#topBar ul li a#linkAOP:active,#topBar ul li a#linkAOP.keepActive{background-position:-183px -156px;}
 ul#topNav li.selected a.#linkAOP{background-position:-183px -195px;}
 
 
@@ -124,21 +124,21 @@ ul#topNav li.selected a.#linkAOP{background-position:-183px -195px;}
 background-position:-249px -117px;
 width:147px;
 }
-#topBar ul li a#linkHTMLTemplate:hover,#topBar ul li a#linkHTMLTemplate:focus,#topBar ul li a#linkHTMLTemplate:active{background-position:-249px -156px;}
+#topBar ul li a#linkHTMLTemplate:hover,#topBar ul li a#linkHTMLTemplate:focus,#topBar ul li a#linkHTMLTemplate:active,#topBar ul li a#linkHTMLTemplate.keepActive{background-position:-249px -156px;}
 ul#topNav li.selected a.#linkHTMLTemplate{background-position:-249px -195px;}
 
 #topBar ul li a#linkValidation{
 background-position:-396px -117px;
 width:102px;
 }
-#topBar ul li a#linkValidation:hover,#topBar ul li a#linkValidation:active,#topBar ul li a#linkValidation:focus{background-position:-396px -156px;}
+#topBar ul li a#linkValidation:hover,#topBar ul li a#linkValidation:active,#topBar ul li a#linkValidation:focus,#topBar ul li a#linkValidation.keepActive{background-position:-396px -156px;}
 ul#topNav li.selected a.#linkValidation{background-position:-396px -195px;}
 
 #topBar ul li a#linkUIBinding{
 background-position:-498px -117px;
 width:104px;
 }
-#topBar ul li a#linkUIBinding:hover,#topBar ul li a#linkUIBinding:active,#topBar ul li a#linkUIBinding:focus{background-position:-498px -156px;}
+#topBar ul li a#linkUIBinding:hover,#topBar ul li a#linkUIBinding:active,#topBar ul li a#linkUIBinding:focus,#topBar ul li a#linkUIBinding.keepActive{background-position:-498px -156px;}
 ul#topNav li.selected a.#linkUIBinding{background-position:-498px -195px;}
 
 
@@ -153,6 +153,11 @@ ul#topNav li.selected a.#linkUIBinding{background-position:-498px -195px;}
 	padding-bottom: 5px;
 	padding-left: 10px;
 	text-align: center;
+}
+
+.frameMain{
+	background-color: #fbfcfc;
+	float: left;
 }
 
 .submenu {
@@ -177,22 +182,35 @@ font-weight:700;
 }
 
 .submenu ul li a {
-display:block;
-font-size:1.1em;
-height:43px;
-line-height:43px;
-padding:0 20px;
-white-space:nowrap;
+	display:block;
+	font-size:1.1em;
+	height:43px;
+	line-height:43px;
+	padding:0 20px;
+	white-space:nowrap;
+	
+}
+
+.submenu ul li a:hover,
+.submenu ul li a:focus,
+.submenu ul li a:active,
+.submenu ul li a.keepActive {
+	background:#FFFFFF none repeat scroll 0 0;
+	border-color:#EEEEEE #FFFFFF #EEEEEE #DDDDDD;
+	border-style:solid;
+	border-width:1px;
+	color:#333333;
+	font-weight: bold;
 }
 
 .subContent {
 	float:left;
-	width:780px;
+	width:760px;
 	background:#FFFFFF none repeat scroll 0 0;
 	padding-top: 10px;
-	padding-right: 0px;
+	padding-right: 10px;
 	padding-bottom: 10px;
-	padding-left: 0px;
+	padding-left: 10px;
 }
 #MainPage {
 	margin-right: 0px;
