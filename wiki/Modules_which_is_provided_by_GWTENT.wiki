@@ -5,9 +5,30 @@
 GWTENT provide the following useful modules, and most of this modules are designed for easy to extend.
 
 
+= Basic Modules =
+  == Common ==
+  {{{<inherits name="com.gwtent.common.Common" />}}}
+  The common codes in gwtent, nearly all gwtent modules are inherited from this modules.
+  It defines common utilities and common interfaces such as:
+  {{{
+  public interface ObjectFactory<T extends Object> {
+    public T getObject();
+  }
+  }}} 
+  {{{
+  public interface NotifyListener<T extends Object> {
+	public void onNotify(T sender);
+  }
+  }}}
+
+  == Validation ==
+  {{{<inherits name="javax.validation.Validation"/>}}}
+
 = Reflection =
 
 {{{<inherits name="com.gwtent.reflection.Reflection" />}}}
+
+Provide the reflection implement
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
