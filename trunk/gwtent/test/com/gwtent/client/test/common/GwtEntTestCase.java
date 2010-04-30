@@ -1,4 +1,4 @@
-package com.gwtent.client.test;
+package com.gwtent.client.test.common;
 
 import com.google.gwt.junit.client.GWTTestCase;
 

@@ -1,6 +1,6 @@
 package com.gwtent.client.test.reflection;
 
-import com.gwtent.client.reflection.Reflectable;
+import com.gwtent.reflection.client.Reflectable;
 
 @Reflectable
 public enum Sex {

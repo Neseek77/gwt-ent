@@ -25,30 +25,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.constraints.NotNull;
 
 import com.google.gwt.junit.client.GWTTestCase;
-import com.gwtent.client.reflection.AnnotationStoreImpl;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Constructor;
-import com.gwtent.client.reflection.Field;
-import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.test.annotations.Entity;
-import com.gwtent.client.test.annotations.Id;
-import com.gwtent.client.test.annotations.Table;
+import com.gwtent.client.test.common.annotations.Entity;
+import com.gwtent.client.test.common.annotations.Id;
+import com.gwtent.client.test.common.annotations.Table;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.Anno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ClassRefereceByAnno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldNotThere;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldThere;
+import com.gwtent.reflection.client.AnnotationStoreImpl;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.Constructor;
+import com.gwtent.reflection.client.Field;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.Reflection;
+import com.gwtent.reflection.client.TypeOracle;
 
 public class ReflectionTestCase extends GWTTestCase {
 
   @Override
   public String getModuleName() {
-    return "com.gwtent.GwtEntTest";
+    return "com.gwtent.client.test.reflection.Reflection";
   }
   
   public void testCreateTypeOracle(){

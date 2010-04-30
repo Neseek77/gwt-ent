@@ -1,14 +1,10 @@
 package com.gwtent.client.test.json;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.junit.client.GWTTestCase;
+import com.gwtent.client.test.common.GwtEntTestCase;
+import com.gwtent.serialization.client.json.JsonSerializer;
 
-
-import com.gwtent.client.common.ObjectFactory;
-import com.gwtent.client.serialization.json.JsonSerializer;
-import com.gwtent.client.test.GwtEntTestCase;
-
-public class SerializationTestCase extends GwtEntTestCase{
+public class SerializationTestCase extends GWTTestCase{
 	public void testJson(){
 		//Person to JSON string
 		Person p = new Person();
@@ -42,5 +38,10 @@ public class SerializationTestCase extends GwtEntTestCase{
 		assertTrue(p2.size() == 1);
 		assertTrue(p2.get(0).getName().equals(p.getName()));
 		assertTrue(p2.get(0).getAge() == p.getAge());
+	}
+
+	@Override
+	public String getModuleName() {
+		return "com.gwtent.client.test.json.Serialization";
 	}
 }

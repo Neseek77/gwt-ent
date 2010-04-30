@@ -22,9 +22,7 @@ package com.gwtent.client.test.aop;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
-import com.gwtent.client.aop.Aspectable;
+import com.gwtent.aop.client.Aspectable;
 import com.gwtent.client.test.aop.Interceptors.AOPTestAnnotation;
 
 

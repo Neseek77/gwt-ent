@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
-import com.gwtent.client.validate.Validatable;
+import com.gwtent.validate.client.Validatable;
 
 @Validatable
 @GroupSequence({Groups.Billable.class, Groups.BuyInOneClick.class})

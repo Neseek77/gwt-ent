@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import com.gwtent.client.aop.intercept.MethodInvocation;
+import com.gwtent.aop.client.intercept.MethodInvocation;
 
 public class LogInterceptors {
 	

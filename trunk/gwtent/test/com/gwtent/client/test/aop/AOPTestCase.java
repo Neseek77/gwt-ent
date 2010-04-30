@@ -23,8 +23,8 @@ package com.gwtent.client.test.aop;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.gwtent.client.aop.AspectException;
-import com.gwtent.client.aop.Aspectable;
+import com.gwtent.aop.client.AspectException;
+import com.gwtent.aop.client.Aspectable;
 import com.gwtent.client.test.aop.Phone.NumberNotFoundException;
 import com.gwtent.client.test.aop.Phone.Receiver;
 
@@ -32,7 +32,7 @@ public class AOPTestCase extends GWTTestCase {
 
 	@Override
 	public String getModuleName() {
-		return "com.gwtent.GwtEntTest";
+		return "com.gwtent.client.test.aop.AOP";
 	}
 
 	protected void gwtSetUp() throws Exception {

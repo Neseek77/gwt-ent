@@ -9,12 +9,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtent.client.aop.Aspectable;
-import com.gwtent.client.template.HTMLEvent;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.aop.client.Aspectable;
 import com.gwtent.client.test.aop.LogInterceptors.LogForAccountClick;
+import com.gwtent.htmltemplate.client.HTMLEvent;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 
 @HTMLTemplate("/com/gwtent/client/test/template/testhtml.html")
 public class AOPWithHTMLTemplate extends HTMLTemplatePanel implements Aspectable{

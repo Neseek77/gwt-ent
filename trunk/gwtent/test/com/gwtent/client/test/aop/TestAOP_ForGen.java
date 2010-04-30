@@ -24,16 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gwtent.client.aop.AdviceInstanceProvider;
-import com.gwtent.client.aop.AspectException;
-import com.gwtent.client.aop.intercept.MethodInterceptor;
-import com.gwtent.client.aop.intercept.impl.MethodInterceptorFinalAdapter;
-import com.gwtent.client.aop.intercept.impl.MethodInvocationLinkedAdapter;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.aop.client.AdviceInstanceProvider;
+import com.gwtent.aop.client.AspectException;
+import com.gwtent.aop.client.intercept.MethodInterceptor;
+import com.gwtent.aop.client.intercept.impl.MethodInterceptorFinalAdapter;
+import com.gwtent.aop.client.intercept.impl.MethodInvocationLinkedAdapter;
 import com.gwtent.client.test.aop.Interceptors.PhoneLoggerInterceptor;
 import com.gwtent.client.test.aop.Interceptors.PhoneRedirectInterceptor;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.TypeOracle;
 
 public class TestAOP_ForGen extends Phone {
 	private static class InterceptorMap{

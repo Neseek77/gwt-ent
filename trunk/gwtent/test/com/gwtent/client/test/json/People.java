@@ -2,8 +2,8 @@ package com.gwtent.client.test.json;
 
 import java.util.ArrayList;
 
-import com.gwtent.client.serialization.DataContract;
-import com.gwtent.client.serialization.DataMember;
+import com.gwtent.serialization.client.DataContract;
+import com.gwtent.serialization.client.DataMember;
 
 @DataContract(type=Person.class)
 public class People extends ArrayList<Person> {
