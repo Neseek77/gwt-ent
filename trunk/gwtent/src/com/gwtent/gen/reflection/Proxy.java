@@ -22,15 +22,15 @@ package com.gwtent.gen.reflection;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 
-import com.gwtent.client.reflection.AnnotationStoreImpl;
-import com.gwtent.client.reflection.MethodInvokeException;
-import com.gwtent.client.reflection.impl.AnnotationImpl;
-import com.gwtent.client.reflection.impl.ClassTypeImpl;
-import com.gwtent.client.reflection.impl.ConstructorImpl;
-import com.gwtent.client.reflection.impl.FieldImpl;
-import com.gwtent.client.reflection.impl.MethodImpl;
-import com.gwtent.client.reflection.impl.ParameterImpl;
-import com.gwtent.client.reflection.impl.TypeOracleImpl;
+import com.gwtent.reflection.client.AnnotationStoreImpl;
+import com.gwtent.reflection.client.MethodInvokeException;
+import com.gwtent.reflection.client.impl.AnnotationImpl;
+import com.gwtent.reflection.client.impl.ClassTypeImpl;
+import com.gwtent.reflection.client.impl.ConstructorImpl;
+import com.gwtent.reflection.client.impl.FieldImpl;
+import com.gwtent.reflection.client.impl.MethodImpl;
+import com.gwtent.reflection.client.impl.ParameterImpl;
+import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.RetentionPolicy;
@@ -123,7 +123,7 @@ public class Proxy extends ClassTypeImpl {
 	  //AnnotationStoreImpl store = new AnnotationStoreImpl(com.gwtent.test.TestAnnotation.class, values);
 	}
 	
-	private static class org_aspectj_lang_annotation_Before extends com.gwtent.client.reflection.impl.ClassTypeImpl {
+	private static class org_aspectj_lang_annotation_Before extends com.gwtent.reflection.client.impl.ClassTypeImpl {
   	
   	private static class org_aspectj_lang_annotation_BeforeImpl extends AnnotationImpl implements org.aspectj.lang.annotation.Before{
 

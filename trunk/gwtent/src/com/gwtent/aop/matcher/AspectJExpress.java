@@ -39,7 +39,7 @@ import org.aspectj.weaver.tools.ShadowMatch;
 
 import com.gwtent.aop.ClassFilter;
 import com.gwtent.aop.Pointcut;
-import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 
 
 public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.MethodMatcher {

@@ -29,16 +29,13 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JParameter;
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.reflection.impl.TypeOracleImpl;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
+import com.gwtent.reflection.client.Reflection;
+import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
 public class SourceVisitor extends LogableSourceCreator {
 
@@ -54,7 +51,7 @@ public class SourceVisitor extends LogableSourceCreator {
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass(TypeOracleImpl.class.getCanonicalName());
-		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 

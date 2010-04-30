@@ -9,17 +9,15 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.GenUtils;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 public class HTMLPreProcessorFreeMarkerImpl implements HTMLPreProcessor {
 

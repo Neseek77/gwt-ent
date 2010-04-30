@@ -7,19 +7,19 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Button;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.uibinder.DataBinder;
-import com.gwtent.client.uibinder.ModelRootAccessor;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.uibinder.client.DataBinder;
+import com.gwtent.uibinder.client.ModelRootAccessor;
 
 public class TemplateSource extends HTMLTemplatePanel {
 	
-	interface TemplateDataBinder extends com.gwtent.client.uibinder.DataBinder<TemplateSource>{
+	interface TemplateDataBinder extends com.gwtent.uibinder.client.DataBinder<TemplateSource>{
 		
 	}
 	
 	 
 	
-	public class TemplateSourceDataBinderImpl extends com.gwtent.client.uibinder.UIBinderManager<TemplateSource> implements TemplateDataBinder{
+	public class TemplateSourceDataBinderImpl extends com.gwtent.uibinder.client.UIBinderManager<TemplateSource> implements TemplateDataBinder{
 
 		public void bindAll(TemplateSource owner) {
 		//for each all @UIBind
@@ -100,7 +100,7 @@ public class TemplateSource extends HTMLTemplatePanel {
 
     addElements();
     
-    this.setUIBinderManager((com.gwtent.client.uibinder.DataBinder)GWT.create(TemplateDataBinder.class));
+    this.setUIBinderManager((com.gwtent.uibinder.client.DataBinder)GWT.create(TemplateDataBinder.class));
     this.getUIBinderManager().bindAll(this);
     doAfterBinderAllEditors();
     

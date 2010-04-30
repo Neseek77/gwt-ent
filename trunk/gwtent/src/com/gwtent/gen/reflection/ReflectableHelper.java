@@ -3,8 +3,8 @@ package com.gwtent.gen.reflection;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
-import com.gwtent.client.reflection.Reflectable;
-import com.gwtent.client.reflection.annotations.Reflect_Full;
+import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
 
 public class ReflectableHelper {
 	

@@ -2,7 +2,7 @@ package com.gwtent.gen.template;
 
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 
 public class TemplateUtils {
 	

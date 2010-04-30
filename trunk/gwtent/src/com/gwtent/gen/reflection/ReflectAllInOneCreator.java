@@ -33,14 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.validation.Constraint;
-
-import org.aspectj.lang.annotation.Aspect;
-
-import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.HasAnnotations;
 import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
@@ -50,19 +44,17 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.reflection.HasReflect;
-import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.reflection.Reflectable;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.impl.TypeOracleImpl;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 import com.gwtent.gen.reflection.ReflectionCreator.ReflectionSourceCreator;
+import com.gwtent.reflection.client.HasReflect;
+import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
 public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
@@ -113,9 +105,9 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			String className = type.getPackage().getName().replace('.', '_') + '_' + getSimpleUnitNameWithOutSuffix(type); //type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
 			sourceWriter.indent();
 			if (type.isEnum() == null)
-				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.ClassTypeImpl {");
+				sourceWriter.println("private static class " + className + " extends com.gwtent.reflection.client.impl.ClassTypeImpl {");
 			else
-				sourceWriter.println("private static class " + className + " extends com.gwtent.client.reflection.impl.EnumTypeImpl {");
+				sourceWriter.println("private static class " + className + " extends com.gwtent.reflection.client.impl.EnumTypeImpl {");
 
 			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle, logger, candidates.get(type)).createSource();
 			sourceWriter.outdent();
@@ -378,10 +370,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 				packageName, simpleName);
 		composer.setSuperclass(TypeOracleImpl.class.getCanonicalName());
 		composer.addImport("com.gwtent.client.*");
-		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 		
-		composer.addImport("com.gwtent.client.reflection.impl.*");
+		composer.addImport("com.gwtent.reflection.client.impl.*");
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("java.util.*");
 

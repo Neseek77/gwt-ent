@@ -7,10 +7,10 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.reflection.pathResolver.PathResolver;
-import com.gwtent.client.template.UIBind;
-import com.gwtent.client.uibinder.DataBinder;
 import com.gwtent.gen.GenUtils;
+import com.gwtent.reflection.client.pathResolver.PathResolver;
+import com.gwtent.uibinder.client.DataBinder;
+import com.gwtent.uibinder.client.UIBind;
 
 /**
  * 
@@ -83,7 +83,7 @@ public class DataBinderUtils {
 	public void buildDataBinderClass(TypeOracle oracle){
 		JClassType ownerClassType = getOwnerClassType(oracle, classType);
 		source.println("public class " + getDataBinderClassName(classType) + 
-				" extends com.gwtent.client.uibinder.UIBinderManager<" + ownerClassType.getQualifiedSourceName() + ">" +
+				" extends com.gwtent.uibinder.client.UIBinderManager<" + ownerClassType.getQualifiedSourceName() + ">" +
 				" implements " + classType.getQualifiedSourceName() + "{");
 		source.indent();
 		
@@ -167,7 +167,7 @@ public class DataBinderUtils {
       
       source.println("addBinder(" + widgetSource +", \"" + PathResolver.getResetElementByPath(path) + "\", "
           + readonly.toString() + ", " + findClassTypeByPath(classType, path) + ".class,\n" + 
-        "        new com.gwtent.client.uibinder.ModelRootAccessor(){\n"+
+        "        new com.gwtent.uibinder.client.ModelRootAccessor(){\n"+
         "          public Object getValue() {\n" +
         "            return " + rootValueName + ";\n"+
         "          }\n" +

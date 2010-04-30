@@ -20,7 +20,7 @@
 package com.gwtent.gen.reflection.accessadapter;
 
 import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.gwtent.client.reflection.AccessDef;
+import com.gwtent.reflection.client.AccessDef;
 
 public class JMethodAdapter implements AccessDef{
 

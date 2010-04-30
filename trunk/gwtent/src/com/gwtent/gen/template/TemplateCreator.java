@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
@@ -43,15 +42,13 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.template.HTMLEvent;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.client.uibinder.DataBinder;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
-import com.gwtent.gen.template.TemplateSource.TemplateDataBinder;
+import com.gwtent.htmltemplate.client.HTMLEvent;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 
 public class TemplateCreator extends LogableSourceCreator {
 	
@@ -216,7 +213,7 @@ public class TemplateCreator extends LogableSourceCreator {
 //	    throw new RuntimeException("You have to add @HTMLTemplate or annotations that the annotation type is annotated with @HTMLTemplate to your HTMLTemplate class.");
 //	  }
 	  
-	  source.println("interface TemplateDataBinder extends com.gwtent.client.uibinder.DataBinder<" + classType.getQualifiedSourceName() + ">{");
+	  source.println("interface TemplateDataBinder extends com.gwtent.uibinder.client.DataBinder<" + classType.getQualifiedSourceName() + ">{");
 	  source.println("	");
 	  source.println("}");
 	  
@@ -335,7 +332,7 @@ public class TemplateCreator extends LogableSourceCreator {
     source.println("addElements();");
     source.println("doSinkBrowserEvents();");
     
-    source.println("this.setUIBinderManager((com.gwtent.client.uibinder.DataBinder)GWT.create(TemplateDataBinder.class));");
+    source.println("this.setUIBinderManager((com.gwtent.uibinder.client.DataBinder)GWT.create(TemplateDataBinder.class));");
     source.println("this.getUIBinderManager().bindAll(this);");
     source.println("doAfterBinderAllEditors();");
     
@@ -457,13 +454,11 @@ public class TemplateCreator extends LogableSourceCreator {
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass(classType.getQualifiedSourceName());
-		// composer.addImplementedInterface(
-		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport(classType.getQualifiedSourceName());
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("com.google.gwt.user.client.*");
 		composer.addImport("com.gwtent.client.*");
-		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 
