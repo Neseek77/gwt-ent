@@ -20,7 +20,7 @@
 package com.gwtent.gen.reflection.accessadapter;
 
 import com.google.gwt.core.ext.typeinfo.JField;
-import com.gwtent.client.reflection.AccessDef;
+import com.gwtent.reflection.client.AccessDef;
 
 public class JFeildAdapter implements AccessDef {
 

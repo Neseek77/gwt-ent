@@ -1,53 +1,20 @@
 <module>
-    <inherits name="com.google.gwt.user.User"/>
-    <inherits name="com.google.gwt.json.JSON"/>
-	<inherits name="com.google.gwt.http.HTTP"/>
-    <inherits name="com.google.gwt.xml.XML"/>
-    
-    <inherits name="org.aspectj.lang.annotation.AspectJAnnotation"/>
-    <inherits name="javax.validation.Validation"/>
-    
-    <!-- <inherits name="com.gwtext.GwtExt"/> -->
-    
-    <!-- 
-    <generate-with class="com.gwtent.gen.reflection.ReflectionAllProxyGenerator">
-		<when-type-assignable class="com.gwtent.client.reflection.TypeOracle"/>
-	</generate-with>	
-	-->
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.http.HTTP" />
 	
-	<!-- com.gwtent.gen.GenExclusion 
-	<define-property name="gen_exclusion" values="A"/>
-	<set-property name="gen_exclusion" value="Test?"/>
+
+	<inherits name="com.gwtent.pagebus.PageBus" />
+
+	<inherits name="com.gwtent.common.Common" />
+	<inherits name="com.gwtent.widget.Widget" />
 	
-	<extend-property name="locale______" values="cn"/>
-	-->
-
- 	<generate-with class="com.gwtent.gen.reflection.Reflection__ProxyGenerator">
-		<when-type-assignable class="com.gwtent.client.reflection.TypeOracle"/>
-	</generate-with>
- 	<!--  	 	
- 	<generate-with class="com.gwtent.gen.aop.AOPProxyGenerator">
-		<when-type-assignable class="java.lang.Object"/>
-	</generate-with> 	
- 	 -->	 	
-
-	<generate-with class="com.gwtent.gen.aop.AOPProxyGenerator">
-		<when-type-assignable class="com.gwtent.client.aop.Aspectable"/>
-	</generate-with>
-
-
-    <generate-with class="com.gwtent.gen.template.TemplateGenerator">
-		<when-type-assignable class="com.gwtent.client.template.HTMLTemplatePanel"/>
-	</generate-with>
+	<inherits name="com.gwtent.reflection.Reflection" />
+	<inherits name="com.gwtent.uibinder.UIBinder" />
+	<inherits name="com.gwtent.validate.Validate" />
+	<inherits name="com.gwtent.serialization.Serialization" />
 	
-	<generate-with class="com.gwtent.gen.uibind.DataBinderGenerator">
-		<when-type-assignable class="com.gwtent.client.uibinder.DataBinder"/>
-	</generate-with>
-
-
-    <source path="client" />
-    
-    <script src="gwtent/pagebus.js"/>
-    
-    <stylesheet src='gwtent/gwtent.css' />
+	<inherits name="com.gwtent.htmltemplate.HTMLTemplate" />
+	
+	<inherits name="com.gwtent.aop.AOP" />
+	
 </module>

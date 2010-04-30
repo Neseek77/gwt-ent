@@ -34,7 +34,7 @@ import com.gwtent.aop.ClassFilter;
 import com.gwtent.aop.MethodMatcher;
 import com.gwtent.aop.Pointcut;
 import com.gwtent.aop.matcher.AspectJExpress;
-import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.GenUtils;
 
 /**

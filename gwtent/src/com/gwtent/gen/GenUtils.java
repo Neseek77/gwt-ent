@@ -31,8 +31,7 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JType;
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.template.HTMLTemplate;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 
 public class GenUtils {
 	

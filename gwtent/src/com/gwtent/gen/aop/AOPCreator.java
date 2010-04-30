@@ -183,15 +183,14 @@ public class AOPCreator extends LogableSourceCreator {
 				packageName, simpleName);
 		composer.setSuperclass(classType.getQualifiedSourceName());
 		// composer.addImplementedInterface(
-		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport(classType.getQualifiedSourceName());
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("com.gwtent.client.*");
-		composer.addImport("com.gwtent.client.reflection.*");
+		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("java.util.*");
-		composer.addImport("com.gwtent.client.aop.*");
-		composer.addImport("com.gwtent.client.aop.intercept.*");
-		composer.addImport("com.gwtent.client.aop.intercept.impl.*");
+		composer.addImport("com.gwtent.aop.client.*");
+		composer.addImport("com.gwtent.aop.client.intercept.*");
+		composer.addImport("com.gwtent.aop.client.intercept.impl.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 
 		PrintWriter printWriter = context.tryCreate(logger, packageName,

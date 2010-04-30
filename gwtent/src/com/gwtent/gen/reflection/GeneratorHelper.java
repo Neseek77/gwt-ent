@@ -20,7 +20,6 @@
 package com.gwtent.gen.reflection;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Array;
 
 import com.google.gwt.core.ext.TreeLogger;
@@ -31,14 +30,13 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.reflection.AccessDef;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.impl.TypeOracleImpl;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
+import com.gwtent.reflection.client.AccessDef;
+import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
 public class GeneratorHelper {
 	public static int AccessDefToInt(AccessDef accessDef){

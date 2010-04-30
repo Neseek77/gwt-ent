@@ -18,6 +18,9 @@
 
 package com.gwtent.gen.reflection;
 
+import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
@@ -29,30 +32,15 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JRealClassType;
 import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-
-import com.gwtent.client.CheckedExceptionWrapper;
-import com.gwtent.client.reflection.HasReflect;
-import com.gwtent.client.reflection.Reflectable;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.Type;
-import com.gwtent.client.reflection.TypeOracle;
-import com.gwtent.client.reflection.impl.AnnotationImpl;
-import com.gwtent.client.reflection.impl.ClassTypeImpl;
-import com.gwtent.client.reflection.impl.ConstructorImpl;
-import com.gwtent.client.reflection.impl.PrimitiveTypeImpl;
-import com.gwtent.client.reflection.impl.TypeOracleImpl;
-import com.gwtent.client.test.annotations.Entity;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
-
-import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
+import com.gwtent.reflection.client.HasReflect;
+import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.reflection.client.Type;
+import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
 
 public class ReflectionCreator extends LogableSourceCreator {
 
@@ -689,16 +677,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		if (classType.isEnum() == null)
-			composer.setSuperclass("com.gwtent.client.reflection.impl.ClassTypeImpl");
+			composer.setSuperclass("com.gwtent.reflection.client.impl.ClassTypeImpl");
 		else
-			composer.setSuperclass("com.gwtent.client.reflection.impl.EnumTypeImpl");
-		
+			composer.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeImpl");
 			
-		// composer.addImplementedInterface(
-		// "com.coceler.gwt.client.reflection.Class");
-		composer.addImport("com.gwtent.client.*");
-		composer.addImport("com.gwtent.client.reflection.*");
-		composer.addImport("com.gwtent.client.reflection.impl.*");
+		composer.addImport("com.gwtent.common.client.*");
+		composer.addImport("com.gwtent.reflection.client.*");
+		composer.addImport("com.gwtent.reflection.client.impl.*");
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
@@ -714,7 +699,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 	}
 
 	protected String getPackageName(JClassType classType) {
-		return "com.gwtent.client.reflection.gen."
+		return "com.gwtent.reflection.client.gen."
 				+ classType.getPackage().getName();
 	}
 
