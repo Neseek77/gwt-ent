@@ -1,5 +1,5 @@
 #summary A overview of the module list which provided by GWTENT
-#labels Featured
+#labels Featured,GWTENTModules
 
 = Introduction =
 
@@ -40,12 +40,17 @@ GWTENT provide the following useful modules, and most of this modules are design
   <inherits name="com.gwtent.pagebus.PageBus" />
   }}}
 
+  == AspectJ Annotations Emulation ==
+  {{{
+  <inherits name="org.aspectj.lang.annotation.AspectJAnnotation" />
+  }}}
+
 = Reflection =
 
   {{{
   <inherits name="com.gwtent.reflection.Reflection" />
   }}}
-  Provide the reflection implement, please see this [http://a link] for more information
+  Provide the reflection implement, please see this [http://code.google.com/p/gwt-ent/wiki/UseReflection link] for more information
 
 = UIBinder =
   {{{
