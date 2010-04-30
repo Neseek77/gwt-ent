@@ -16,10 +16,10 @@ import com.gwtent.showcase.client.domain.Country;
 import com.gwtent.showcase.client.domain.User;
 import com.gwtent.showcase.client.domain.UserFactory;
 
-@MyHTMLTemplate(value = "HtmlTemplate_UIBind_Table.html", renameId=true)
+@MyHTMLTemplate(value = "/htmltemplate/HtmlTemplate_UIBind_Table.html", renameId=true)
 public class HTMLTplUIBindPage extends BaseShowCasePanel {
 	
-	protected User user;
+	User user;
 
 	public HTMLTplUIBindPage(String html) {
 		super(html);

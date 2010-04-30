@@ -1,6 +1,5 @@
 package com.gwtent.showcase.client.uibinder;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.TextBox;
 import com.gwtent.client.reflection.annotations.Reflect_Domain;
 import com.gwtent.client.template.HTMLTemplate;
@@ -11,7 +10,7 @@ import com.gwtent.client.widget.PagingPanel.PagingClickListener;
 import com.gwtent.showcase.client.BaseShowCasePanel;
 
 
-@HTMLTemplate("UIBinderSmallExample.html")
+@HTMLTemplate("com/gwtent/showcase/public/uibinder/UIBinderSmallExample.html")
 public class UIBinderSmallExample extends BaseShowCasePanel {
 
 
@@ -107,5 +106,5 @@ public class UIBinderSmallExample extends BaseShowCasePanel {
 	protected PagingPanel pnlPaging = new PagingPanel();
 	
 	
-	protected PagingPanelParams params = new PagingPanelParams(pnlPaging);
+	PagingPanelParams params = new PagingPanelParams(pnlPaging);
 }

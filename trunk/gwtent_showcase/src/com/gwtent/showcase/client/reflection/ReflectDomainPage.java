@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.TextArea;
 import com.gwtent.client.reflection.Reflectable;
 import com.gwtent.client.reflection.ReflectionUtils;
 import com.gwtent.client.reflection.annotations.Reflect_Domain;
@@ -19,8 +20,8 @@ import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.Utils;
 
 
-@HTMLTemplate("ReflectionBasicPage.html")
-public class ReflectDomainPage extends BaseShowCasePanel {
+@HTMLTemplate("com/gwtent/showcase/public/reflection/ReflectionBasicPage.html")
+public class ReflectDomainPage extends AbsReflectionPage {
 
 	/**
 	 * This class will be generated reflection information automatically
@@ -106,15 +107,10 @@ public class ReflectDomainPage extends BaseShowCasePanel {
 	public String getCaseName() {
 		return "Reflection Domain";
 	}
-	
-	@HTMLWidget
-	protected Button btnShowReflectionInfo_Basic = new Button("Show Reflection Information", new ClickHandler(){
 
-		public void onClick(ClickEvent event) {
-			memoReflectionInfo_Basic.setHTML(Utils.getClassDescription(Class_Domain.class, Class_Doamin_Ref.class, ClassDomainRef.class, ClassRefByAnnotation.class));
-		}});
-	
-	
-	@HTMLWidget
-	protected RichTextArea memoReflectionInfo_Basic = new RichTextArea();
+
+	@Override
+	protected Class<?>[] getReflectionClasses() {
+		return new Class<?>[]{Class_Domain.class, Class_Doamin_Ref.class, ClassDomainRef.class, ClassRefByAnnotation.class};
+	}
 }

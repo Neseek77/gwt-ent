@@ -13,6 +13,6 @@ public class Utils {
 			sb.append("end----------<<<<<<<<<<\n");
 		}
 		
-		return sb.toString().replace("\n", "<br>");
+		return sb.toString();//.replace("\n", "<br>");
 	}
 }
