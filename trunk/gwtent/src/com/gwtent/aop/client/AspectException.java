@@ -17,29 +17,23 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
+package com.gwtent.aop.client;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.gwtent.common.client.CheckedExceptionWrapper;
 
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+public class AspectException extends CheckedExceptionWrapper {
 
-/**
- * Aspect declaration
- *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
+	/**
+	 * Constructor for AspectException.
+	 * @param e
+	 */
+	public AspectException(Throwable e) {
+		super(e);
+	}
+
 }

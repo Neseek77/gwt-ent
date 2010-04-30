@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.gwtent.client.reflection.annotations.Reflect_Full;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
 
 /**
 * Link between a constraint annotation and its constraint validation implementations.

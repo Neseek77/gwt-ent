@@ -17,29 +17,17 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
+package com.gwtent.aop.client;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.gwtent.aop.client.intercept.MethodInterceptor;
+import com.gwtent.reflection.client.Method;
 
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+public class AdviceInstanceFactory implements AdviceInstanceProvider {
 
-/**
- * Aspect declaration
- *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+	
+	public MethodInterceptor getInstance(Method method) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
 }

@@ -17,29 +17,27 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
+package com.gwtent.aop.client.intercept;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+import com.gwtent.reflection.client.Constructor;
 
 /**
- * Aspect declaration
+ * Description of an invocation to a constuctor, given to an
+ * interceptor upon construtor-call.
  *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+ * <p>A constructor invocation is a joinpoint and can be intercepted
+ * by a constructor interceptor.
+ *
+ * @see ConstructorInterceptor */
+public interface ConstructorInvocation extends Invocation {
 
     /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
+     * Gets the constructor being called.
+     *
+     * <p>This method is a frienly implementation of the {@link
+     * Joinpoint#getStaticPart()} method (same result).
+     *
+     * @return the constructor being called. */
+    Constructor getConstructor();
+
 }

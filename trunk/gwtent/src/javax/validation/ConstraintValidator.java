@@ -2,7 +2,7 @@ package javax.validation;
 
 import java.lang.annotation.Annotation;
 
-import com.gwtent.client.reflection.annotations.Reflect_Full;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
 
 /**
  * Defines the logic to validate a given constraint A for a given object type T.
