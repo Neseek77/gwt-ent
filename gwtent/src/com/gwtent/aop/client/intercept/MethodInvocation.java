@@ -17,29 +17,29 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
+package com.gwtent.aop.client.intercept;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+import com.gwtent.reflection.client.Method;
 
 /**
- * Aspect declaration
+ * Description of an invocation to a method, given to an interceptor
+ * upon method-call.
  *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+ * <p>A method invocation is a joinpoint and can be intercepted by a method
+ * interceptor.
+ *
+ * @see MethodInterceptor */
+public interface MethodInvocation extends Invocation
+{
 
     /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
+     * Gets the method being called.
+     *
+     * <p>This method is a frienly implementation of the {@link
+     * Joinpoint#getStaticPart()} method (same result).
+     *
+     * @return the method being called.
      */
-    public String value() default "";
+    Method getMethod();
+
 }

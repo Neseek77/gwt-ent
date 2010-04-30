@@ -17,29 +17,27 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
+package com.gwtent.aop.client.intercept.impl;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+import com.gwtent.aop.client.intercept.MethodInterceptor;
+import com.gwtent.aop.client.intercept.MethodInvocation;
 
 /**
- * Aspect declaration
+ * This class is the default implement of last call in AOP invoke chain.
+ * 
+ * Please don't use this for other purpose,
+ * when a call arrive to AOP Generated class, method will check 
+ * Interceptor's type, if the type assignable of this class,
+ * Generated class will direct call super class's implement.
+ * 
+ * @author JLuo
  *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+public class MethodInterceptorFinalAdapter implements MethodInterceptor {
 
-    /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
+
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		return invocation.getMethod().invoke(invocation.getThis(), invocation.getArguments());
+	}
+	
 }

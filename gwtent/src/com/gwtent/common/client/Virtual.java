@@ -17,29 +17,20 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
+package com.gwtent.common.client;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.gwtent.reflection.client.annotations.Reflect_Full;
-
 /**
- * Aspect declaration
+ * Indicates that a method declaration is intended for override by
+ * subclass.
  *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Virtual {
 
-    /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
 }

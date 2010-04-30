@@ -17,29 +17,25 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+package com.gwtent.aop.client.intercept;
 
 /**
- * Aspect declaration
+ * This interface represents an invocation in the program.
  *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+ * <p>An invocation is a joinpoint and can be intercepted by an
+ * interceptor.
+ *
+ * @author Rod Johnson */
 
-    /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
+public interface Invocation extends Joinpoint {
+
+   /**
+    * Get the arguments as an array object.
+    * It is possible to change element values within this
+    * array to change the arguments.
+    *
+    * @return the argument of the invocation */
+   Object[] getArguments();
+
 }
+

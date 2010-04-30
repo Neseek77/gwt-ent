@@ -17,29 +17,15 @@
  *******************************************************************************/
 
 
-package org.aspectj.lang.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import com.gwtent.reflection.client.annotations.Reflect_Full;
+package com.gwtent.aop.client;
 
 /**
- * Aspect declaration
- *
- * @author <a href="mailto:alex AT gnilux DOT com">Alexandre Vasseur</a>
+ * Tag interface for Advice. Implementations can be any type
+ * of advice, such as Interceptors.
+ * @author Rod Johnson
+ * @version $Id: Advice.java,v 1.1 2004/03/19 17:02:16 johnsonr Exp $
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Reflect_Full
-public @interface Aspect {
+public interface Advice {
 
-    /**
-     * Per clause expression, defaults to singleton aspect
-     * <p/>
-     * Valid values are "" (singleton), "perthis(...)", etc
-     */
-    public String value() default "";
 }
+
