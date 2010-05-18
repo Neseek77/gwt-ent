@@ -97,9 +97,10 @@ public class ModelDataAdapter<M> implements ModelData {
       for (Method method : classType.getMethods()) {
         if ((method.getName().startsWith("get"))
             && (method.getParameters().length <= 0)) {
-          result.add(method.getName().substring(4));
+          result.add(method.getName().substring(3));
         }
       }
+      propertyNames = result;
     }
     return propertyNames;
   }
