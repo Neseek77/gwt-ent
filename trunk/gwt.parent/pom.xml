@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gwtent</groupId>
+    <artifactId>gwtent.parent</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT</name>
+    <url>http://code.google.com/p/gwt-ent/</url>
+    
+	<properties>
+		<!-- Plugins -->
+		<maven-eclipse-plugin.version>2.7</maven-eclipse-plugin.version>
+		<maven-resources-plugin.version>2.4.1</maven-resources-plugin.version>
+		
+		<!-- Dependencies Version -->
+		<freemarker.version>2.3.1</freemarker.version>
+		<org.aspectj.version>1.6.2</org.aspectj.version>
+		<aspectjrt.version>1.6.2</aspectjrt.version>
+		<aspectjweaver.version>1.6.2</aspectjweaver.version>
+		<gwt.version>2.0.3</gwt.version>
+	</properties>
+
+    <!--
+	<modules>
+		<module>iw-flex</module>
+		<module>iw-java</module>
+		<module>iw-web</module>
+		<module>iw-style-editor</module>
+	</modules>
+    -->
+</project>
