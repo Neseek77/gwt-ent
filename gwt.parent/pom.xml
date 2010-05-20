@@ -12,6 +12,7 @@
 		<!-- Plugins -->
 		<maven-eclipse-plugin.version>2.7</maven-eclipse-plugin.version>
 		<maven-resources-plugin.version>2.4.1</maven-resources-plugin.version>
+		<maven-war-plugin.version>2.1-beta-1</maven-war-plugin.version>
 		
 		<!-- Dependencies Version -->
 		<freemarker.version>2.3.1</freemarker.version>
@@ -19,6 +20,11 @@
 		<aspectjrt.version>1.6.2</aspectjrt.version>
 		<aspectjweaver.version>1.6.2</aspectjweaver.version>
 		<gwt.version>2.0.3</gwt.version>
+		<appengine-api.version>1.2.0</appengine-api.version>
+		<datanucleus-appengine.version>1.0.0</datanucleus-appengine.version>
+		<datanucleus-core.version>1.1.0</datanucleus-core.version>
+		<datanucleus-jpa.version>1.1.0</datanucleus-jpa.version>
+		<jdo2-api.version>2.0</jdo2-api.version>
 	</properties>
 	
 	<build>
