@@ -9,10 +9,15 @@
     <url>http://code.google.com/p/gwt-ent/</url>
     
 	<properties>
+		<!-- GWT Config -->
+        <gwt.output.directory>${basedir}/war/WEB-INF/classes</gwt.output.directory>	
+        
 		<!-- Plugins -->
 		<maven-eclipse-plugin.version>2.7</maven-eclipse-plugin.version>
 		<maven-resources-plugin.version>2.4.1</maven-resources-plugin.version>
 		<maven-war-plugin.version>2.1-beta-1</maven-war-plugin.version>
+		<gwt-maven-plugin.version>1.2</gwt-maven-plugin.version>
+		<maven-clean-plugin.version>2.4</maven-clean-plugin.version>
 		
 		<!-- Dependencies Version -->
 		<freemarker.version>2.3.1</freemarker.version>
@@ -81,6 +86,27 @@ version=1
 				    </additionalConfig>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven-clean-plugin.version}</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>war</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+							<!-- 
+						<fileset>
+							<directory>src/main/webapp/com.teracode.gwtseam.Application</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+							 -->
+					</filesets>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 
