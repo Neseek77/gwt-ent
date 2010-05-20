@@ -4,21 +4,22 @@ import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.TextBox;
-import com.gwtent.client.reflection.Reflection;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.client.template.UIBind;
-import com.gwtent.client.test.uibinder.Sex;
-import com.gwtent.client.uibinder.GWTUIBinderRegister;
-import com.gwtent.client.uibinder.ModelRootAccessor;
-import com.gwtent.client.uibinder.UIBinderGWTFactory;
-import com.gwtent.client.uibinder.UIBinderManager;
-import com.gwtent.client.uibinder.UIBinderManager.ModelCallback;
+import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.reflection.client.Reflection;
+import com.gwtent.ui.client.transition.example.Sex;
+import com.gwtent.uibinder.client.GWTUIBinderRegister;
+import com.gwtent.uibinder.client.ModelRootAccessor;
+import com.gwtent.uibinder.client.UIBinderManager;
 
 public class TemplateSource {
 
-	class MyUiBinderManager extends UIBinderManager{}
+	class MyUiBinderManager extends UIBinderManager{
+
+		@Override
+		public void bindAll(Object owner) {
+			// TODO Auto-generated method stub
+			
+		}}
   private static MyUiBinderManager uiBinder = GWT.create(MyUiBinderManager.class);
 
 
