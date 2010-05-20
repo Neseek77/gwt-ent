@@ -80,5 +80,6 @@ version=1
 
 	<modules>
 		<module>gwtent</module>
+		<module>gwtent_app</module>
 	</modules>
 </project>
