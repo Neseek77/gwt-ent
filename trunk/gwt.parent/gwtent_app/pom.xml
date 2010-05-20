@@ -17,6 +17,7 @@
 
     <build>
         <finalName>gwtent_app</finalName>
+        <outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -37,6 +38,29 @@
 					<encoding>utf-8</encoding>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>generateAsync</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<inplace>true</inplace>
+					<!-- 
+					SEE THIS
+					<runTarget>com.teracode.gwtseam.Application/Application.html</runTarget>
+					 -->
+				</configuration>
+			</plugin>
+			
 		</plugins>
 		
 		<resources>
