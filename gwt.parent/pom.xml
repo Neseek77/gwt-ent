@@ -15,7 +15,7 @@
 		<!-- Plugins -->
 		<maven-eclipse-plugin.version>2.7</maven-eclipse-plugin.version>
 		<maven-resources-plugin.version>2.4.1</maven-resources-plugin.version>
-		<maven-war-plugin.version>2.1-beta-1</maven-war-plugin.version>
+		<maven-war-plugin.version>2.0.2</maven-war-plugin.version>
 		<gwt-maven-plugin.version>1.2</gwt-maven-plugin.version>
 		<maven-clean-plugin.version>2.4</maven-clean-plugin.version>
 		
