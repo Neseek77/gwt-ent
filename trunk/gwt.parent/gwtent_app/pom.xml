@@ -20,26 +20,6 @@
         <outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<inherited>true</inherited>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>utf-8</encoding>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>${maven-resources-plugin.version}</version>
-				<configuration>
-					<encoding>utf-8</encoding>
-				</configuration>
-			</plugin>
-			
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt-maven-plugin.version}</version>
@@ -54,10 +34,6 @@
 				</executions>
 				<configuration>
 					<inplace>true</inplace>
-					<!-- 
-					SEE THIS
-					<runTarget>com.teracode.gwtseam.Application/Application.html</runTarget>
-					 -->
 				</configuration>
 			</plugin>
 			
