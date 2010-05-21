@@ -1,11 +1,10 @@
 package com.gwtent.uibinder.client.gxt.widget;
 
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.EnumConstant;
-import com.gwtent.client.reflection.EnumType;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.EnumType;
+import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.TypeOracle;
 
 public class EnumCombo<T extends Enum<T>> extends SimpleComboBox<T> {
 	

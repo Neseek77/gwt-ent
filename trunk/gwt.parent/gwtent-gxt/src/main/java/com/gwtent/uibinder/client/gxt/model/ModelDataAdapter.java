@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Field;
-import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.Field;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.TypeOracle;
 
 /**
  * This class adapter all POJO class to ModelData interface
