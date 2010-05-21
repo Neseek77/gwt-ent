@@ -1,6 +1,6 @@
 package com.gwtent.orm.client.test.domain;
 
-import com.gwtent.client.reflection.Reflection;
+import com.gwtent.reflection.client.Reflection;
 
 import java.io.Serializable;
 

@@ -1,5 +1,7 @@
 package com.gwtent.orm.client;
 
+import com.gwtent.reflection.client.ClassType;
+
 import java.util.List;
 import java.util.Properties;
 
