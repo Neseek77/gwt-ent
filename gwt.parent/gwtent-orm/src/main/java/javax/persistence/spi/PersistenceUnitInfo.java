@@ -24,7 +24,7 @@
 //
 package javax.persistence.spi;
 
-import com.gwtent.client.reflection.ClassType;
+import com.gwtent.reflection.client.ClassType;
 
 import java.util.List;
 import java.util.Properties;
