@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.spi.PersistenceUnitInfo;
 
 import com.google.gwt.core.client.GWT;
-import com.gwtent.client.reflection.ClassType;
+import com.gwtent.reflection.client.ClassType;
 import com.gwtent.orm.client.test.domain.Account;
 
 public class TestUnitInfo implements PersistenceUnitInfo {
