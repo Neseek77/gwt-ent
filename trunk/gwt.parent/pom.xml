@@ -25,6 +25,7 @@
 		<aspectjrt.version>1.6.2</aspectjrt.version>
 		<aspectjweaver.version>1.6.2</aspectjweaver.version>
 		<gwt.version>2.0.3</gwt.version>
+		<gwt-gears.version>1.2.1</gwt-gears.version>
 		<appengine-api.version>1.2.0</appengine-api.version>
 		<datanucleus-appengine.version>1.0.0</datanucleus-appengine.version>
 		<datanucleus-core.version>1.1.0</datanucleus-core.version>
@@ -86,32 +87,12 @@ version=1
 				    </additionalConfig>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>${maven-clean-plugin.version}</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>war</directory>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-							<!-- 
-						<fileset>
-							<directory>src/main/webapp/com.teracode.gwtseam.Application</directory>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-							 -->
-					</filesets>
-				</configuration>
-			</plugin>
-			
 		</plugins>
 	</build>
 
 	<modules>
 		<module>gwtent</module>
 		<module>gwtent_app</module>
+		<module>gwtent-orm</module>
 	</modules>
 </project>
