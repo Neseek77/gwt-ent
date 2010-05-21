@@ -1,9 +1,0 @@
-<module>
-	<inherits name="com.google.gwt.user.User" />
-
-	<inherits name="com.gwtent.common.Common" />
-	<inherits name="com.gwtent.reflection.Reflection" />
-
-	<source path="client" />
-
-</module>
