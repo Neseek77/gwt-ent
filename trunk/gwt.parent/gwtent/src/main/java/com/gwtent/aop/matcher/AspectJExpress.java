@@ -279,11 +279,11 @@ public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.Met
 		}
 
 		public boolean couldMatchJoinPointsInType(Class someClass) {
-			return classMatcher.matches(someClass);
+			return true;
 		}
 
 		public boolean couldMatchJoinPointsInType(Class someClass, MatchingContext context) {
-			return classMatcher.matches(someClass);
+			return true;
 			//return contextMatch() == FuzzyBoolean.YES ? true : false;
 		}
 
