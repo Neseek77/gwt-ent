@@ -2,6 +2,7 @@ package com.gwtent.uibinder.client.gxt;
 
 import com.gwtent.uibinder.client.UIBinderGWTFactory;
 
+ 
 public class GxtUIBinderRegister {
   public static void register(){
     UIBinderGWTFactory.getUIBinderGWTFactory().getUIBinderGWTRegister().register(new FieldBinder.BinderMetaData());
