@@ -90,8 +90,6 @@
 			<version>${log4j.version}</version>
 		</dependency>
 
-		
-		<!-- 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
@@ -117,6 +115,5 @@
 			<artifactId>jdo2-api</artifactId>
 			<version>${jdo2-api.version}</version>
 		</dependency>
-		 -->
 	</dependencies>
 </project>
