@@ -16,7 +16,6 @@
 	</parent>
 
     <build>
-        <finalName>gwtent_app</finalName>
         <outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
@@ -34,6 +33,7 @@
 				</executions>
 				<configuration>
 					<inplace>true</inplace>
+					<runTarget>com.gwtent.app.Gwtent_app/Gwtent_app.html</runTarget>				
 				</configuration>
 			</plugin>
 			
@@ -49,7 +49,7 @@
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							<directory>src/main/webapp/${project.build.finalName}</directory>
+							<directory>src/main/webapp/gwtent_app</directory>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>
@@ -83,6 +83,16 @@
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
+		
+		<!-- Log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		
+		<!-- 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
@@ -108,5 +118,6 @@
 			<artifactId>jdo2-api</artifactId>
 			<version>${jdo2-api.version}</version>
 		</dependency>
+		 -->
 	</dependencies>
 </project>
