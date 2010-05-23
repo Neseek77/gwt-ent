@@ -1,0 +1,41 @@
+<link href="../../../../../../war/Gwtent_showcase.css" rel="stylesheet" type="text/css">
+
+<div id="HTMLTemplate_Basic">
+	<div><h2>User Edit Screen</h2></div>
+	<div id="pnlUserEdit">Normally you can using DIV to layout your UI. When ever you want replace some element as your Widget, give the element a "id", then in your java classes, using @HTMLWidget annotation your widget field, that's all.
+    	<div>
+        	<div><span class="Form_Caption">First Name *: </span><div id="edtFirstName" class="Form_Editors"></div>Can be any character</div>
+    		<div><span class="Form_Caption">Last Name *: </span><div id="edtLastName" class="Form_Editors"></div>Some description here</div>
+			<div><span class="Form_Caption">Email *: </span><div id="edtLastName" class="Form_Editors"></div><a href="#" id="linkCheckEmail">Check Email</a></div>
+			<div><span class="Form_Caption">Date of Birth *: </span><div id="edtDOB" class="Form_Editors"></div></div>
+        </div>
+		<hr />
+    	<div>
+        	<span>You can select table layout your UI as well</span>
+			
+			<table width="100%" border="0">
+			  <tr>
+				<td class="Form_Caption">Address:</td>
+				<td></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Street *:</td>
+				<td class="Form_Editors" id="edtStreet"></td>
+				<td>This field required </td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">subTown *: </td>
+				<td class="Form_Editors" id="edtSubTown"></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Country *: </td>
+				<td class="Form_Editors" id="edtCountry"></td>
+				<td></td>
+			  </tr>
+			</table>
+
+        </div>
+    </div>
+</div>
