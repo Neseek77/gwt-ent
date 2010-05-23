@@ -320,7 +320,7 @@ public class PagingPanel extends Grid{
 		if (this.totalRecords > 0){
 			this.resize(1, this.getDisplayPages());
 			createPageLinks();
-			updatePageLinks(0);
+			setCurrentPageIndex(currentPageIndex, false);
 		}
 	}
 
@@ -337,11 +337,11 @@ public class PagingPanel extends Grid{
 	
 	public void setCurrentPageIndex(int currentPageIndex, boolean fireEvent) {
 		this.currentPageIndex = currentPageIndex;
-		PagingLink link = links.get(currentPageIndex);
-		
 		updatePageLinks(currentPageIndex);
-		if (fireEvent)
+		if (fireEvent){
+			PagingLink link = links.get(currentPageIndex);
 			doPagingClickListener(link.startIndex, link.pageSize);
+		}
 	}
 
 	public int getCurrentPageIndex() {
