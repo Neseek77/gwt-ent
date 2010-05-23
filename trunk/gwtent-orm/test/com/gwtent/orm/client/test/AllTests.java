@@ -13,7 +13,7 @@ package com.gwtent.orm.client.test;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import com.gwtent.client.test.*;
+
 
 public class AllTests {
 
