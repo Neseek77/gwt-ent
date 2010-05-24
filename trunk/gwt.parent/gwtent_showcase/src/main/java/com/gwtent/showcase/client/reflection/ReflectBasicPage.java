@@ -28,7 +28,8 @@ public class ReflectBasicPage extends AbsReflectionPage {
 	public static class TestReflection<T> {
 		private Date date;
 		
-		@Regular(regex="[0-9]\\.[0-9]")
+		// TODO: Max touch this line !!
+		@Regular(regex="[0-9].[0-9]")
 		private String string;
 		private boolean bool;
 		private List<String> names;

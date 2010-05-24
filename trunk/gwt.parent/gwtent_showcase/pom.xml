@@ -5,7 +5,7 @@
     <artifactId>gwtent_showcase</artifactId>
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Showcase App</name>
+    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Showcase Module</name>
     <url>http://code.google.com/p/gwt-ent/</url>
 
 	<parent>
@@ -33,7 +33,7 @@
 				</executions>
 				<configuration>
 					<inplace>true</inplace>
-					<runTarget>com.gwtent.showcase.Gwtent_showcase/Gwtent_showcase.html</runTarget>				
+					<runTarget>com.gwtent.showcase.app.Showcase/Showcase.html</runTarget>				
 				</configuration>
 			</plugin>
 			
@@ -48,7 +48,7 @@
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							<directory>src/main/webapp/com.gwtent.showcase.Gwtent_showcase</directory>
+							<directory>src/main/webapp/com.gwtent.app.Gwtent_app</directory>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>
@@ -82,18 +82,6 @@
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
-
-		<!-- GWT-ENT -->		
-		<dependency>
-		    <groupId>com.gwtent</groupId>
-		    <artifactId>gwtent</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-		</dependency>		
-		<dependency>
-		    <groupId>com.gwtent</groupId>
-		    <artifactId>gwtent-orm</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-		</dependency>		
 		
 		<!-- Log4j -->
 		<dependency>
@@ -101,22 +89,31 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-		
-		<!-- AspectJ -->
+
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjlib</artifactId>
-			<version>${org.aspectj.version}</version>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<version>${appengine-api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectjrt.version}</version>
+			<groupId>com.google.appengine.orm</groupId>
+			<artifactId>datanucleus-appengine</artifactId>
+			<version>${datanucleus-appengine.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectjweaver.version}</version>
+			<groupId>org.datanucleus</groupId>
+			<artifactId>datanucleus-core</artifactId>
+			<version>${datanucleus-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.datanucleus</groupId>
+			<artifactId>datanucleus-jpa</artifactId>
+			<version>${datanucleus-jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.jdo</groupId>
+			<artifactId>jdo2-api</artifactId>
+			<version>${jdo2-api.version}</version>
 		</dependency>
 	</dependencies>
 </project>
