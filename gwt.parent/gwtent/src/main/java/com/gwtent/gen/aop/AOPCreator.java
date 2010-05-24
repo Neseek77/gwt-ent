@@ -1,5 +1,6 @@
 /*******************************************************************************
  *  Copyright 2001, 2007 JamesLuo(JamesLuo.au@gmail.com)
+
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not
  *  use this file except in compliance with the License. You may obtain a copy of
@@ -16,8 +17,9 @@
  *  Contributors:
  *******************************************************************************/
 
-
 package com.gwtent.gen.aop;
+
+//TODO: Max commented this class !!
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
