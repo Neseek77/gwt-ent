@@ -5,7 +5,7 @@
     <artifactId>gwtent-ext</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT</name>
+    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Ext module</name>
     <url>http://code.google.com/p/gwt-ent/</url>
 
 	<parent>
