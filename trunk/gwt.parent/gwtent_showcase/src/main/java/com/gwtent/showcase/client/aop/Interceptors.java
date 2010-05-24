@@ -15,7 +15,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import com.gwtent.aop.client.intercept.MethodInvocation;
+import com.gwtent.client.aop.intercept.MethodInvocation;
 import com.gwtent.showcase.client.aop.Phone.Receiver;
 
 public class Interceptors {

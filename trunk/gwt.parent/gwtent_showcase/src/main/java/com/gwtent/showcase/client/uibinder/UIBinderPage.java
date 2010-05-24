@@ -1,10 +1,10 @@
 package com.gwtent.showcase.client.uibinder;
 
 import com.google.gwt.core.client.GWT;
-import com.gwtent.htmltemplate.client.HTMLEvent;
-import com.gwtent.htmltemplate.client.HTMLTemplate;
-import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
-import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.client.template.HTMLEvent;
+import com.gwtent.client.template.HTMLTemplate;
+import com.gwtent.client.template.HTMLTemplatePanel;
+import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.SubContent;
 
 @HTMLTemplate(value = "com/gwtent/showcase/public/uibinder/UIBinder.html", renameId = false)

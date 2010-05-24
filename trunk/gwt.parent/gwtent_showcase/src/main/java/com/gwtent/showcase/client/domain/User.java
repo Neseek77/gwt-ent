@@ -3,13 +3,15 @@ package com.gwtent.showcase.client.domain;
 import java.util.Date;
 
 import javax.validation.GroupSequence;
+import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
-import com.gwtent.validate.client.Validatable;
-import com.gwtent.validate.client.constraints.Email;
-import com.gwtent.validate.client.constraints.Required;
+import com.gwtent.client.validate.Validatable;
+import com.gwtent.client.validate.constraints.Email;
+import com.gwtent.client.validate.constraints.Regular;
+import com.gwtent.client.validate.constraints.Required;
 
 @Validatable
 @GroupSequence({Groups.Billable.class, Groups.BuyInOneClick.class})

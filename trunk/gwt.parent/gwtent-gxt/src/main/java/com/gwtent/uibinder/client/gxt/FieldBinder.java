@@ -3,16 +3,19 @@ package com.gwtent.uibinder.client.gxt;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.gwtent.common.client.ObjectFactory;
-import com.gwtent.uibinder.client.AbstractUIBinder;
-import com.gwtent.uibinder.client.IBinderMetaData;
-import com.gwtent.uibinder.client.ModelValue;
-import com.gwtent.uibinder.client.UIBinder;
+import com.gwtent.client.common.ObjectFactory;
+import com.gwtent.client.uibinder.AbstractUIBinder;
+import com.gwtent.client.uibinder.IBinderMetaData;
+import com.gwtent.client.uibinder.ModelValue;
+import com.gwtent.client.uibinder.UIBinder;
+import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
 
 /**
  * 

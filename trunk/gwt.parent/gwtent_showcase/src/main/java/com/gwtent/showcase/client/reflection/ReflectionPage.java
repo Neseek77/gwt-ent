@@ -2,7 +2,7 @@ package com.gwtent.showcase.client.reflection;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.client.template.HTMLTemplate;
 import com.gwtent.showcase.client.comm.AbsFrameTemplatePage;
 import com.gwtent.showcase.client.comm.HTMLElementTabLazyLoadManager;
 import com.gwtent.showcase.client.comm.LazyLoadWidgetCallback;

@@ -1,7 +1,7 @@
 package com.gwtent.showcase.client.comm;
 
-import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
-import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.client.template.HTMLTemplatePanel;
+import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.SubContent;
 
 /**

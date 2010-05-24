@@ -3,9 +3,9 @@ package com.gwtent.showcase.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.gwtent.uibinder.client.GWTUIBinderRegister;
-import com.gwtent.validate.client.GWTValidateMessageStore;
-import com.gwtent.validate.client.message.ValidateMessages;
+import com.gwtent.client.uibinder.GWTUIBinderRegister;
+import com.gwtent.client.validate.GWTValidateMessageStore;
+import com.gwtent.client.validate.message.ValidateMessages;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

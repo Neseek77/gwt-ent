@@ -1,7 +1,7 @@
 package com.gwtent.showcase.client;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.client.template.HTMLTemplatePanel;
 
 public abstract class BaseShowCasePanel extends HTMLTemplatePanel implements ShowCase{
 

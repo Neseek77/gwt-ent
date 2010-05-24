@@ -10,9 +10,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextArea;
-import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.Utils;
+import com.gwtent.showcase.client.reflection.ReflectBasicPage.TestReflection;
 
 public abstract class AbsReflectionPage extends BaseShowCasePanel {
 
