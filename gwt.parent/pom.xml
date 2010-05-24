@@ -126,6 +126,7 @@ version=1
 		<module>gwtent</module>
 		<module>gwtent_app</module>
 		<module>gwtent-orm</module>
+		<module>gwtent-ext</module>
 		<module>gwtent-gxt</module>
 		<module>gwtent_showcase</module>
 	</modules>

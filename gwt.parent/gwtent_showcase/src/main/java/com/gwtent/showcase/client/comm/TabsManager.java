@@ -9,6 +9,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwtent.client.utils.NotifyListener;
 
 /**
  * The {@link TabWrapper} TabWrapper management.

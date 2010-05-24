@@ -19,27 +19,51 @@
 
 package com.gwtent.gen.uibinder;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.validation.groups.Default;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
+import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
+import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.CheckedExceptionWrapper;
+import com.gwtent.client.reflection.pathResolver.PathResolver;
+import com.gwtent.client.template.HTMLEvent;
+import com.gwtent.client.template.HTMLTemplate;
+import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.client.template.UIBind;
+import com.gwtent.client.ui.Utils;
+import com.gwtent.client.uibinder.ModelRootAccessor;
 import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
-import com.gwtent.htmltemplate.client.HTMLTemplate;
-import com.gwtent.reflection.client.pathResolver.PathResolver;
-import com.gwtent.uibinder.client.UIBind;
 
 public class UIBinderCreator extends LogableSourceCreator {
 	

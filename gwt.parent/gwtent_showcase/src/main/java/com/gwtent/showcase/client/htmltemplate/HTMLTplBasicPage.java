@@ -6,8 +6,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.gwtent.htmltemplate.client.HTMLEvent;
-import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.client.template.HTMLEvent;
+import com.gwtent.client.template.HTMLWidget;
 import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.domain.Country;
 
