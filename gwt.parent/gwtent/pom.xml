@@ -25,6 +25,15 @@
 				</includes>
 			</resource>
 		</resources>
+		
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</testResource>
+		</testResources>
     </build>
     
 	<!-- Project dependencies -->
