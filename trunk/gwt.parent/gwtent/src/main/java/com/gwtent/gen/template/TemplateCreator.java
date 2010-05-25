@@ -455,11 +455,17 @@ public class TemplateCreator extends LogableSourceCreator {
 				packageName, simpleName);
 		composer.setSuperclass(classType.getQualifiedSourceName());
 		composer.addImport(classType.getQualifiedSourceName());
-		composer.addImport("com.google.gwt.core.client.*");
-		composer.addImport("com.google.gwt.user.client.*");
-		composer.addImport("com.gwtent.client.*");
-		composer.addImport("com.gwtent.reflection.client.*");
-		composer.addImport("java.util.*");
+		
+		composer.addImport("com.google.gwt.core.client.GWT");
+		composer.addImport("com.google.gwt.user.client.DOM");
+		composer.addImport("com.google.gwt.user.client.Event");
+
+		// TODO: Max touch this
+//		composer.addImport("com.google.gwt.core.client.*");
+//		composer.addImport("com.google.gwt.user.client.*");
+//		composer.addImport("com.gwtent.client.*");
+//		composer.addImport("com.gwtent.reflection.client.*");
+//		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 
 		PrintWriter printWriter = context.tryCreate(logger, packageName,

@@ -186,8 +186,9 @@ public class AOPCreator extends LogableSourceCreator {
 		composer.setSuperclass(classType.getQualifiedSourceName());
 		// composer.addImplementedInterface(
 		composer.addImport(classType.getQualifiedSourceName());
-		composer.addImport("com.google.gwt.core.client.*");
-		composer.addImport("com.gwtent.client.*");
+		
+		// TODO: Max touch this
+//		composer.addImport("com.gwtent.client.*");
 		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport("com.gwtent.aop.client.*");
