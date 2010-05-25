@@ -29,6 +29,18 @@
     
 	<!-- Project dependencies -->
 	<dependencies>
-	
+		<dependency>
+			<groupId>com.gwtext</groupId>
+			<artifactId>gwtext</artifactId>
+			<version>${gwtext.version}</version>
+		</dependency>
+		
+		<!-- GWT-ENT -->
+		<dependency>
+		    <groupId>com.gwtent</groupId>
+		    <artifactId>gwtent</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>		
+		
 	</dependencies>
 </project>
