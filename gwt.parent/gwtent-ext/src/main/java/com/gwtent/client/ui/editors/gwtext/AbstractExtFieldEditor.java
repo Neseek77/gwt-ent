@@ -20,10 +20,9 @@
 package com.gwtent.client.ui.editors.gwtext;
 
 import com.google.gwt.user.client.ui.Widget;
-
-import com.gwtent.client.ui.editor.AbstractEditor;
-import com.gwtent.client.ui.editor.EditorEventAware;
-import com.gwtent.client.ui.model.Value;
+import com.gwtent.ui.client.editor.AbstractEditor;
+import com.gwtent.ui.client.editor.EditorEventAware;
+import com.gwtent.ui.client.model.Value;
 import com.gwtext.client.core.EventObject;
 import com.gwtext.client.widgets.form.Field;
 
