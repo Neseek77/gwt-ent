@@ -1,13 +1,13 @@
 package com.gwtent.showcase.client.uibinder;
 
 import com.google.gwt.user.client.ui.TextBox;
-import com.gwtent.client.reflection.annotations.Reflect_Domain;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.client.template.UIBind;
-import com.gwtent.client.widget.PagingPanel;
-import com.gwtent.client.widget.PagingPanel.PagingClickListener;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 import com.gwtent.showcase.client.BaseShowCasePanel;
+import com.gwtent.uibinder.client.UIBind;
+import com.gwtent.widget.client.PagingPanel;
+import com.gwtent.widget.client.PagingPanel.PagingClickListener;
 
 
 @HTMLTemplate("com/gwtent/showcase/public/uibinder/UIBinderSmallExample.html")

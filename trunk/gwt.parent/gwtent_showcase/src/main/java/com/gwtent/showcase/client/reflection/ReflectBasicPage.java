@@ -9,13 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.ui.RichTextArea;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.annotations.Reflect_Domain;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.validate.constraints.Regular;
-import com.gwtent.showcase.client.Utils;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+import com.gwtent.validate.client.constraints.Regular;
 
 
 @HTMLTemplate("com/gwtent/showcase/public/reflection/ReflectionBasicPage.html")

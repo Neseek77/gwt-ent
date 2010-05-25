@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.gwtent.client.reflection.ClassType;
-import com.gwtent.client.reflection.Field;
-import com.gwtent.client.reflection.Method;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.TypeOracle;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.Field;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.TypeOracle;
 
 /**
  * This class adapter all POJO class to ModelData interface
@@ -71,7 +71,7 @@ public class ModelDataAdapter<M> implements ModelData {
   public <X> X get(String arg0) {
   	Method getter = ReflectionUtils.getGetter(classType, arg0);
   	if (getter == null){
-      return getAddtionalProperty(arg0);
+      return (X)getAddtionalProperty(arg0);
     }else{
     	return (X)getter.invoke(instance);
     }
@@ -113,7 +113,7 @@ public class ModelDataAdapter<M> implements ModelData {
   public <X> X set(String arg0, X arg1) {
     getField(arg0).setFieldValue(instance, arg1);
     //classType.invoke(instance, "set" + arg0, new Object[] {arg1});
-    return get(arg0);
+    return (X)get(arg0);
   }
   
  

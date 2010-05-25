@@ -4,12 +4,12 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
-import com.gwtent.client.common.ObjectFactory;
-import com.gwtent.client.uibinder.AbstractUIBinder;
-import com.gwtent.client.uibinder.IBinderMetaData;
-import com.gwtent.client.uibinder.ModelValue;
-import com.gwtent.client.uibinder.UIBinder;
-import com.gwtent.client.uibinder.AbstractUIBinder.EditorToValueSetException;
+import com.gwtent.common.client.ObjectFactory;
+import com.gwtent.uibinder.client.AbstractUIBinder;
+import com.gwtent.uibinder.client.IBinderMetaData;
+import com.gwtent.uibinder.client.ModelValue;
+import com.gwtent.uibinder.client.UIBinder;
+import com.gwtent.uibinder.client.AbstractUIBinder.EditorToValueSetException;
 
 public class SimpleComboBoxBinder<D> extends AbstractUIBinder<SimpleComboBox<D>, D> {
 	public static class BinderMetaData<D> implements IBinderMetaData<SimpleComboBox<D>, D>{

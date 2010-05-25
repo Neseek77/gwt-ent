@@ -1,6 +1,6 @@
 package com.gwtent.showcase.client.htmltemplate;
 
-import com.gwtent.client.template.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
 
 /**
  * You can create your annotation based on @HTMLTemplate

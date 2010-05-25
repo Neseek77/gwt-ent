@@ -1,14 +1,13 @@
 package com.gwtent.showcase.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DeckPanel;
-import com.gwtent.client.template.HTMLEvent;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.htmltemplate.client.HTMLEvent;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 import com.gwtent.showcase.client.aop.AOPMainPage;
 import com.gwtent.showcase.client.comm.TabsManager;
 import com.gwtent.showcase.client.htmltemplate.HTMLTplMainPage;
