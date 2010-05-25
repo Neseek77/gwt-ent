@@ -131,4 +131,40 @@ version=1
 		<module>gwtent-gxt</module>
 		<module>gwtent_showcase</module>
 	</modules>
+	
+	
+	<repositories>
+		<repository>
+			<id>releases</id>
+			<url>http://build.teracode.com:8081/artifactory/repo</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>snapshots</id>
+			<url>http://build.teracode.com:8081/artifactory/repo</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Maven Repository Group</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>gwt-ext</id>
+			<url>http://www.gwt-ext.com/maven2/</url>
+		</repository>
+	</repositories>
 </project>
