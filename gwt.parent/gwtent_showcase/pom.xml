@@ -33,7 +33,7 @@
 				</executions>
 				<configuration>
 					<inplace>true</inplace>
-					<runTarget>com.gwtent.showcase.app.Showcase/Showcase.html</runTarget>				
+					<runTarget>com.gwtent.showcase.Gwtent_showcase/Gwtent_showcase.html</runTarget>				
 				</configuration>
 			</plugin>
 			
@@ -48,7 +48,7 @@
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							<directory>src/main/webapp/com.gwtent.app.Gwtent_app</directory>
+							<directory>src/main/webapp/com.gwtent.showcase.Gwtent_showcase</directory>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 					</filesets>

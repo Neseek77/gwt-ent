@@ -252,6 +252,7 @@ public class UIBinderCreator extends LogableSourceCreator {
 		// composer.addImplementedInterface(
 		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport(classType.getQualifiedSourceName());
+		
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("com.google.gwt.user.client.*");
 		composer.addImport("com.gwtent.client.*");

@@ -369,7 +369,9 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass(TypeOracleImpl.class.getCanonicalName());
-		composer.addImport("com.gwtent.client.*");
+		
+		// TODO: Max touch this
+//		composer.addImport("com.gwtent.client.*");
 		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
 		
