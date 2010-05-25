@@ -2,7 +2,7 @@ package com.gwtent.showcase.client.domain;
 
 import javax.validation.constraints.NotNull;
 
-import com.gwtent.client.reflection.annotations.Reflect_Domain;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 @Reflect_Domain
 public class Address {

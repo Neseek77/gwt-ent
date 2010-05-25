@@ -1,6 +1,6 @@
 package com.gwtent.showcase.client;
 
-import com.gwtent.client.template.HTMLTemplatePanel;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
 import com.gwtent.showcase.client.htmltemplate.MyHTMLTemplate;
 
 /**

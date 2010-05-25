@@ -3,7 +3,7 @@ package com.gwtent.showcase.client.aop;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gwtent.client.aop.Aspectable;
+import com.gwtent.aop.client.Aspectable;
 import com.gwtent.showcase.client.aop.Interceptors.AOPTestAnnotation;
 
 

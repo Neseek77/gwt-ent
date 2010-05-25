@@ -5,30 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.TextArea;
-import com.gwtent.client.reflection.HasReflect;
-import com.gwtent.client.reflection.Reflectable;
-import com.gwtent.client.reflection.ReflectionUtils;
-import com.gwtent.client.reflection.annotations.Reflect_Domain;
-import com.gwtent.client.reflection.annotations.Reflect_Full;
-import com.gwtent.client.reflection.annotations.Reflect_Mini;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.client.validate.constraints.Regular;
-import com.gwtent.showcase.client.BaseShowCasePanel;
-import com.gwtent.showcase.client.Utils;
+import com.gwtent.htmltemplate.client.HTMLTemplate;
+import com.gwtent.reflection.client.HasReflect;
+import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+import com.gwtent.reflection.client.annotations.Reflect_Mini;
 
 
 @HTMLTemplate("com/gwtent/showcase/public/reflection/ReflectionBasicPage.html")

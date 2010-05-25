@@ -2,19 +2,16 @@ package com.gwtent.showcase.client.htmltemplate;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.gwtent.client.template.HTMLEvent;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
-import com.gwtent.client.template.UIBind;
-import com.gwtent.client.widget.EnumListBox;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 import com.gwtent.showcase.client.BaseShowCasePanel;
 import com.gwtent.showcase.client.domain.Country;
 import com.gwtent.showcase.client.domain.User;
 import com.gwtent.showcase.client.domain.UserFactory;
+import com.gwtent.uibinder.client.UIBind;
+import com.gwtent.widget.client.EnumListBox;
 
 @MyHTMLTemplate(value = "/htmltemplate/HtmlTemplate_UIBind_Table.html", renameId=true)
 public class HTMLTplUIBindPage extends BaseShowCasePanel {

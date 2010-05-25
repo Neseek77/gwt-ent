@@ -1,6 +1,6 @@
 package com.gwtent.showcase.client;
 
-import com.gwtent.client.reflection.ReflectionUtils;
+import com.gwtent.reflection.client.ReflectionUtils;
 
 public class Utils {
 	public static String getClassDescription(Class<?>... classes){

@@ -2,10 +2,9 @@ package com.gwtent.showcase.client.aop;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
-import com.gwtent.client.template.HTMLEvent;
-import com.gwtent.client.template.HTMLTemplate;
-import com.gwtent.client.template.HTMLTemplatePanel;
-import com.gwtent.client.template.HTMLWidget;
+import com.gwtent.htmltemplate.client.HTMLEvent;
+import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
+import com.gwtent.htmltemplate.client.HTMLWidget;
 import com.gwtent.showcase.client.SubContent;
 import com.gwtent.showcase.client.htmltemplate.MyHTMLTemplate;
 
