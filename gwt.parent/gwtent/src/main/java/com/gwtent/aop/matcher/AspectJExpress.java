@@ -17,8 +17,6 @@
  *******************************************************************************/
 package com.gwtent.aop.matcher;
 
-// TODO: Max touch this class !!
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -279,15 +277,12 @@ public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.Met
 		}
 
 		public boolean couldMatchJoinPointsInType(Class someClass) {
-			// TODO: Max commented this line !!
-			// Original Line: return classMatcher.matches(someClass);
-			return true;
+			return classMatcher.matches(someClass);
+			//return true;
 		}
 
 		public boolean couldMatchJoinPointsInType(Class someClass, MatchingContext context) {
-			// TODO: Max commented this line !!			
-			// Original Line: return classMatcher.matches(someClass);
-			return true;
+			return classMatcher.matches(someClass);
 		}
 
 		public boolean matchesDynamically(MatchingContext context) {

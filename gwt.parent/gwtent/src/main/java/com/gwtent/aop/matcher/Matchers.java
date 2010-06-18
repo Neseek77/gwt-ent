@@ -18,8 +18,6 @@
  *******************************************************************************/
 package com.gwtent.aop.matcher;
 
-// TODO: Max commented this class !!
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
