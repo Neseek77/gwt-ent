@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gwtent</groupId>
+    <artifactId>gwtent-orm</artifactId>
+    <packaging>jar</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. ORM module</name>
+    <url>http://code.google.com/p/gwt-ent/</url>
+
+	<parent>
+		<groupId>com.gwtent</groupId>
+		<artifactId>gwtent.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+	</parent>
+
+    <build>
+        <finalName>gwtent-orm</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+    </build>
+    
+	<!-- Project dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>com.google.gwt.google-apis</groupId>
+			<artifactId>gwt-gears</artifactId>
+			<version>${gwt-gears.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.gwt</groupId>
+					<artifactId>gwt-user</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- GWT-ENT -->
+		<dependency>
+		    <groupId>com.gwtent</groupId>
+		    <artifactId>gwtent</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>		
+		
+	</dependencies>
+</project>

@@ -1,0 +1,257 @@
+body {
+	-x-system-font:none;
+	background:#F3F4F4;
+	color:#666666;
+	font-family:Arial,FreeSans,Helvetica,Verdana,sans-serif;
+	font-size:11px;
+	font-size-adjust:none;
+	font-stretch:normal;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:normal;
+	margin:0;
+	padding:0;
+}
+
+* {
+outline-color:-moz-use-text-color;
+outline-style:none;
+outline-width:medium;
+}
+
+* {
+margin:0;
+padding:0;
+}
+
+
+a:hover,a:active,a:focus{
+  text-decoration:underline;
+}
+
+a{
+  color:#009fd0;text-decoration:none;
+}
+
+p{
+	line-height:1.5em;
+	margin:0.5em 0 1em;
+}
+
+#header, #content, #footer, #topBar {
+	min-width:960px;
+	width:960px;
+	background-color: #FFFFFF;
+	float: left;
+	margin-top: 0;
+	margin-right: 0;
+	margin-bottom: 5px;
+	margin-left: 0;
+}
+
+#header {
+	margin-bottom:5px;
+	height: 25px;
+}
+
+#MainPage #header #links {
+	float: right;
+}
+
+#topBar ul {
+	float:left;
+	list-style-type:none;
+	margin-top:5px;
+	padding:0;
+	width:960px;
+	background-attachment: scroll;
+	background-color: transparent;
+	background-image: url(imgs/topbar.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+	margin-bottom: 5px;
+}
+
+
+#topBar ul li {
+	float:left;
+	text-indent:-9999px;
+	list-style-type:none;
+	overflow:hidden;
+}
+
+#topBar ul li a {
+	display:block;
+	height:38px;
+	background-attachment: scroll;
+	background-color: transparent;
+	background-image: url(imgs/topbar.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
+
+#topBar ul li a#linkHome {
+background-position:0 -117px;
+width:76px;
+}
+
+#topBar ul li a#linkHome:hover,#topBar ul li a#linkHome:focus,#topBar ul li a#linkHome:active,#topBar ul li a#linkHome.keepActive{background-position:0 -156px;}
+
+#topBar ul li.selected a#linkHome{background-position:0 -195px;}
+
+#topBar ul li a#linkReflection {
+	background-position:-76px -117px;
+	width:107px;
+}
+#topBar ul li a#linkReflection:hover,#topBar ul li a#linkReflection:focus,#topBar ul li a#linkReflection:active,#topBar ul li a#linkReflection.keepActive{
+background-position:-76px -156px;
+}
+#topBar ul li.selected a#linkReflection {
+background-position:-76px -195px;
+}
+
+#topBar ul li a#linkAOP{
+background-position:-183px -117px;
+width:66px;
+}
+#topBar ul li a#linkAOP:hover,#topBar ul li a#linkAOP:focus,#topBar ul li a#linkAOP:active,#topBar ul li a#linkAOP.keepActive{background-position:-183px -156px;}
+ul#topNav li.selected a.#linkAOP{background-position:-183px -195px;}
+
+
+#topBar ul li a#linkHTMLTemplate{
+background-position:-249px -117px;
+width:147px;
+}
+#topBar ul li a#linkHTMLTemplate:hover,#topBar ul li a#linkHTMLTemplate:focus,#topBar ul li a#linkHTMLTemplate:active,#topBar ul li a#linkHTMLTemplate.keepActive{background-position:-249px -156px;}
+ul#topNav li.selected a.#linkHTMLTemplate{background-position:-249px -195px;}
+
+#topBar ul li a#linkValidation{
+background-position:-396px -117px;
+width:102px;
+}
+#topBar ul li a#linkValidation:hover,#topBar ul li a#linkValidation:active,#topBar ul li a#linkValidation:focus,#topBar ul li a#linkValidation.keepActive{background-position:-396px -156px;}
+ul#topNav li.selected a.#linkValidation{background-position:-396px -195px;}
+
+#topBar ul li a#linkUIBinding{
+background-position:-498px -117px;
+width:104px;
+}
+#topBar ul li a#linkUIBinding:hover,#topBar ul li a#linkUIBinding:active,#topBar ul li a#linkUIBinding:focus,#topBar ul li a#linkUIBinding.keepActive{background-position:-498px -156px;}
+ul#topNav li.selected a.#linkUIBinding{background-position:-498px -195px;}
+
+
+#footer p{
+	line-height:1.5em;
+	margin-top: 0.5em;
+	margin-right: 0;
+	margin-bottom: 1em;
+	margin-left: 0;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	text-align: center;
+}
+
+.frameMain{
+	background-color: #fbfcfc;
+	float: left;
+}
+
+.submenu {
+	float:left;
+	width:180px;
+	background-color: #fbfcfc;
+}
+
+.submenu li.selected a {
+background:#FFFFFF none repeat scroll 0 0;
+border-color:#EEEEEE #FFFFFF #EEEEEE #DDDDDD;
+border-style:solid;
+border-width:1px;
+color:#333333;
+font-weight:700;
+}
+
+.submenu ul{
+	list-style-type:none;
+	margin-top:30px;
+	width:180px;
+}
+
+.submenu ul li a {
+	display:block;
+	font-size:1.1em;
+	height:43px;
+	line-height:43px;
+	padding:0 20px;
+	white-space:nowrap;
+	
+}
+
+.submenu ul li a:hover,
+.submenu ul li a:focus,
+.submenu ul li a:active,
+.submenu ul li a.keepActive {
+	background:#FFFFFF none repeat scroll 0 0;
+	border-color:#EEEEEE #FFFFFF #EEEEEE #DDDDDD;
+	border-style:solid;
+	border-width:1px;
+	color:#333333;
+	font-weight: bold;
+}
+
+.subContent {
+	float:left;
+	width:760px;
+	background:#FFFFFF none repeat scroll 0 0;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+#MainPage {
+	margin-right: 0px;
+	margin-left: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+#MainPage #header #logo {
+	visibility: hidden;
+	float: left;
+}
+#MainPage {
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	width: 960px;
+}
+#HTMLTemplate {
+	float: left;
+	width: 100%;
+	background-color: #fbfcfc;
+}
+
+
+.Form_Caption {
+	margin-right: 10px;
+	margin-left: 20px;
+	font-weight: bold;
+	text-align: right;
+	width:100px;
+}
+
+.Form_Editors{
+	margin-right: 10px;
+	margin-left: 10px;
+	width:300px;
+}
+
+.gwt-TextBox, .gwt-DateBox, .gwt-ListBox{
+	width:90%;
+}
+
+.justLeft{float:left}

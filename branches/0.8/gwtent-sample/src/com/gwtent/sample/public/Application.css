@@ -1,0 +1,74 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:83%
+	padding: 20px;
+	padding-top: 32px;
+     #background-color: #6993c3 !important;
+     background-color: white
+     color: black;
+	margin: 20px 20px 20px 20px;
+ }
+ 
+a {
+color:#009FD0;
+text-decoration:none;
+} 
+ 
+ 
+#MainPage {
+	width: 960px;
+}
+
+#MainPage  #header {
+	text-align: right;
+	
+}
+
+#MainPage  #header  a {
+	clear: both;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+
+#MainPage  #footer  p {
+	clear: both;
+	padding-right: 5px;
+	padding-left: 5px;
+	text-indent: 5px;
+}
+
+#topBar ul {
+	float:left;
+	list-style-type:none;
+	margin-top:20px;
+	padding:0;
+	width:960px;
+	background-attachment: scroll;
+	background-color: transparent;
+	background-image: url(imgs/topbar.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
+#topBar ul li {
+float:left;
+overflow:hidden;
+text-indent:-9999px;
+}
+
+#topBar ul a.home {
+background-position:0 -117px;
+display:block;
+width:76px;
+}
+#topBar ul li a {
+	display:block;
+	height:38px;
+	background-attachment: scroll;
+	background-color: transparent;
+	background-image: url(imgs/topbar.png);
+	background-repeat: repeat;
+	background-position: 0 0;
+}
+
