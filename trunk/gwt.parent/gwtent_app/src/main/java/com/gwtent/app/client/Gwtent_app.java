@@ -115,14 +115,14 @@ public class Gwtent_app implements EntryPoint {
             serverResponseLabel.setHTML(SERVER_ERROR);
             dialogBox.center();
             closeButton.setFocus(true);
-          }
-
+          } 
+ 
           public void onSuccess(String result) {
             dialogBox.setText("Remote Procedure Call");
             serverResponseLabel.removeStyleName("serverResponseLabelError");
             serverResponseLabel.setHTML(result);
             dialogBox.center();
-            closeButton.setFocus(true);
+            closeButton.setFocus(true); 
           }
         });
       }
