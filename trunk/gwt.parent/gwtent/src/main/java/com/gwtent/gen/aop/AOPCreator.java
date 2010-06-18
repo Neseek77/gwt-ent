@@ -19,8 +19,6 @@
 
 package com.gwtent.gen.aop;
 
-//TODO: Max commented this class !!
-
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -187,8 +185,6 @@ public class AOPCreator extends LogableSourceCreator {
 		// composer.addImplementedInterface(
 		composer.addImport(classType.getQualifiedSourceName());
 		
-		// TODO: Max touch this
-//		composer.addImport("com.gwtent.client.*");
 		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport("com.gwtent.aop.client.*");

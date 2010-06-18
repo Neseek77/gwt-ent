@@ -17,8 +17,6 @@
  *******************************************************************************/
 package com.gwtent.gen.aop;
 
-//TODO: Max touch this class !!
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -69,10 +69,8 @@ public class DataBinderCreator extends LogableSourceCreator {
 		composer.addImport(classType.getQualifiedSourceName());
 		
 
-		// TODO: Max touch this
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("com.google.gwt.user.client.*");
-//		composer.addImport("com.gwtent.client.*");
 		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");

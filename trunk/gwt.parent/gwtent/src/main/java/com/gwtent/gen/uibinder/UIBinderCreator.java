@@ -19,8 +19,6 @@
 //
 package com.gwtent.gen.uibinder;
 
-// TODO: Max touch this class !!
-
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -249,8 +247,6 @@ public class UIBinderCreator extends LogableSourceCreator {
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		composer.setSuperclass(classType.getQualifiedSourceName());
-		// composer.addImplementedInterface(
-		// "com.coceler.gwt.client.reflection.Class");
 		composer.addImport(classType.getQualifiedSourceName());
 		
 		composer.addImport("com.google.gwt.core.client.*");

@@ -1,7 +1,5 @@
 package com.gwtent.gen.uibinder;
 
-// TODO: Max touch this Class
-
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
