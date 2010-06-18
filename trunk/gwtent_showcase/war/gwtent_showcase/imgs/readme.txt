@@ -1,1 +1,0 @@
-Sorry, this file here cause of IE6.
