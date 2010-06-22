@@ -4,14 +4,14 @@
     <groupId>com.gwtent</groupId>
     <artifactId>gwtent-gxt</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${gwtent.version}</version>
     <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. GXT module</name>
     <url>http://code.google.com/p/gwt-ent/</url>
 
 	<parent>
 		<groupId>com.gwtent</groupId>
 		<artifactId>gwtent.parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -29,7 +29,7 @@
 		<dependency>
 		    <groupId>com.gwtent</groupId>
 		    <artifactId>gwtent</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
+		    <version>${gwtent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.extjs</groupId>
