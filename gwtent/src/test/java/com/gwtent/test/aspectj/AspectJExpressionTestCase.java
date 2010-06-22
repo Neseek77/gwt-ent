@@ -29,7 +29,7 @@ import com.gwtent.aop.matcher.AspectJExpress;
 import com.gwtent.aop.matcher.Matchers;
 import com.gwtent.client.test.aop.Phone;
 
-public class AspectJExpressionTest extends TestCase {
+public class AspectJExpressionTestCase extends TestCase {
 	
 	private Method methodCall = null;
 	private Method methodCallFromString = null;
