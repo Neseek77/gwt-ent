@@ -128,6 +128,8 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 				field.setFieldValue(instance, doubleValue.shortValue());
 			}else if (field.getTypeName().equals(java.lang.Long.class.getName()) || field.getTypeName().equals("long")){
 				field.setFieldValue(instance, doubleValue.longValue());
+			}else if (field.getTypeName().equals(java.lang.Double.class.getName()) || field.getTypeName().equals("double")){
+			  field.setFieldValue(instance, doubleValue);
 			}
 		}
 	}
