@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.gwtent</groupId>
-    <artifactId>gwtent_showcase</artifactId>
-    <packaging>war</packaging>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Showcase Module</name>
-    <url>http://code.google.com/p/gwt-ent/</url>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.gwtent</groupId>
+	<artifactId>gwtent_showcase</artifactId>
+	<packaging>war</packaging>
+	<version>${gwtent.version}</version>
+	<name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Showcase Module</name>
+	<url>http://code.google.com/p/gwt-ent/</url>
 
 	<parent>
 		<groupId>com.gwtent</groupId>
 		<artifactId>gwtent.parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-    <build>
-        <outputDirectory>war/WEB-INF/classes</outputDirectory>
+	<build>
+		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -33,10 +34,10 @@
 				</executions>
 				<configuration>
 					<inplace>true</inplace>
-					<runTarget>com.gwtent.showcase.Gwtent_showcase/Gwtent_showcase.html</runTarget>				
+					<runTarget>com.gwtent.showcase.Gwtent_showcase/Gwtent_showcase.html</runTarget>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -54,9 +55,109 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>**/appengine-web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<!--
+				Maven GWT plugin (ex.
+				http://gwt-maven.googlecode.com/svn/docs/maven-googlewebtoolkit2-plugin/index.html)
+				http://mojo.codehaus.org/gwt-maven-plugin
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<logLevel>INFO</logLevel>
+
+					<!-- match -Dgae.port -->
+					<port>${gae.port}</port>
+
+					<!-- This must point to your GWT modules! -->
+					<compileTargets>
+						<value>com.gwtent.showcase.client.Gwtent_showcase</value>
+					</compileTargets>
+
+					<!-- This is for generating Asynch interfaces -->
+					<!-- <servicePattern>**/client/*Service.java</servicePattern> -->
+
+					<extraJvmArgs>-Xmx512m</extraJvmArgs>
+					<!--<jvm>${JAVA_HOME}</jvm>-->
+					<!--<noServer>false</noServer>-->
+
+					<!--
+						TODO This should help running GAE stuff in hosted mode (when
+						gwt-maven-plugin-1.2 is released, see
+						http://jira.codehaus.org/browse/MGWT-112)
+					-->
+					<server>com.google.appengine.tools.development.gwt.AppEngineLauncher
+                    </server>
+
+					<runTarget>/showcase.html</runTarget>
+					<style>DETAILED</style>
+					<webXml>war/WEB-INF/web.xml</webXml>
+					<!--
+						this parameter is VERY important with automatic mode - has to
+						match the version in your declared deps
+					-->
+					<!--
+						if this is set incorrect (not a match), or left out (default is
+						1.5.2 for 2.0-beta23) you will have mysterious errors
+					-->
+					<gwtVersion>${gwt.version}</gwtVersion>
+				</configuration>
+				<executions>
+					<!--
+						<execution> <id>generateAsynch</id>
+						<phase>generate-sources</phase> <goals> <goal>generateAsync</goal>
+						</goals> </execution>
+					-->
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!--
+				The actual maven-gae-plugin. Type "mvn gae:run" to run project, "mvn
+				gae:deploy" to upload to GAE.
+			-->
+			<plugin>
+				<groupId>net.kindleit</groupId>
+				<artifactId>maven-gae-plugin</artifactId>
+				<version>0.5.9</version>
+			</plugin>
+
+			<!--
+				Upload application to the appspot automatically, during
+				release:perform
+			-->
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<goals>gae:deploy</goals>
+				</configuration>
+			</plugin>
+
+
 		</plugins>
-		
+
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
@@ -66,11 +167,32 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-    </build>
-    
+	</build>
+
+	<repositories>
+		<repository>
+			<id>maven-gae-plugin-repo</id>
+			<name>maven-gae-plugin repository</name>
+			<url>
+                http://maven-gae-plugin.googlecode.com/svn/repository
+            </url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-gae-plugin-repo</id>
+			<name>maven-gae-plugin repository</name>
+			<url>
+                http://maven-gae-plugin.googlecode.com/svn/repository
+            </url>
+		</pluginRepository>
+	</pluginRepositories>
+
+
 	<!-- Project dependencies -->
 	<dependencies>
-	
+
 		<!--  GWT dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -84,31 +206,11 @@
 		</dependency>
 		<!-- GWT-ENT -->
 		<dependency>
-		    <groupId>com.gwtent</groupId>
-		    <artifactId>gwtent-orm</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
-		</dependency>		
-		
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-1.0-sdk</artifactId>
-			<version>${appengine-api.version}</version>
+			<groupId>com.gwtent</groupId>
+			<artifactId>gwtent-orm</artifactId>
+			<version>${gwtent.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.appengine.orm</groupId>
-			<artifactId>datanucleus-appengine</artifactId>
-			<version>${datanucleus-appengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.datanucleus</groupId>
-			<artifactId>datanucleus-core</artifactId>
-			<version>${datanucleus-core.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.datanucleus</groupId>
-			<artifactId>datanucleus-jpa</artifactId>
-			<version>${datanucleus-jpa.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>javax.jdo</groupId>
 			<artifactId>jdo2-api</artifactId>
