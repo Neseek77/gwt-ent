@@ -1,22 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.gwtent</groupId>
-    <artifactId>gwtent</artifactId>
-    <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Main Module</name>
-    <url>http://code.google.com/p/gwt-ent/</url>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.gwtent</groupId>
+	<artifactId>gwtent</artifactId>
+	<packaging>jar</packaging>
+	<version>${gwtent.version}</version>
+	<name>A Reflection, AOP, HTML template, UI Binding, Validate(JSR303) framework and JPA annotation Emulation for GWT. Main Module</name>
+	<url>http://code.google.com/p/gwt-ent/</url>
 
 	<parent>
 		<groupId>com.gwtent</groupId>
 		<artifactId>gwtent.parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-    <build>
-        <finalName>gwtent</finalName>
+	<build>
+		<finalName>gwtent</finalName>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<includes>
+						<include>com/gwtent/test/*TestCase.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<includes>**/*GWTTestSuite.java</includes>
+				</configuration>
+				<!-- 
+				<executions>
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+				 -->
+			</plugin>
+			
+		</plugins>
+		
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
@@ -34,18 +68,18 @@
 				</includes>
 			</testResource>
 		</testResources>
-    </build>
-    
+	</build>
+
 	<!-- Project dependencies -->
 	<dependencies>
-	
+
 		<!-- Freemarker -->
 		<dependency>
 			<groupId>freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker.version}</version>
 		</dependency>
-		
+
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -62,7 +96,7 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectjweaver.version}</version>
 		</dependency>
-		
+
 		<!--  GWT dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -79,7 +113,7 @@
 			<artifactId>gwt-dev</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
-		
+
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -87,6 +121,6 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 </project>
