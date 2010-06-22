@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 
 import com.gwtent.client.test.aop.Phone;
 
-public class AspectJSpringTest extends TestCase {
+public class AspectJSpringTestCase extends TestCase {
 //	public void testMatchExplicit() throws SecurityException, NoSuchMethodException {
 //		String expression = "execution(* com.gwtent.client.test.aop.Phone.call(java.lang.Number))";
 //
