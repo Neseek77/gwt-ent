@@ -278,4 +278,39 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertNotNull(classType.invoke(null, "getInstance"));
   }
   
+  /**
+   * Private class never generate reflection information
+   *
+   */
+  private class TestReflectionInnerClass extends TestReflection{
+  	
+  } 
+  
+  public void testAnonymousClass(){
+  	assertNull(TypeOracle.Instance.getClassType(TestReflectionInnerClass.class));
+  	
+  	TestReflection r = new TestReflection(){
+  		private String abc = "Anonymous Field";
+
+  		public String toString(){
+  			return "abc: " + abc + super.toString();
+  		}
+  		
+			public void setAbc(String abc) {
+				this.abc = abc;
+			}
+
+			public String getAbc() {
+				return abc;
+			}
+  		
+  	};
+  	
+  	System.out.println(r.getClass().getName());
+  	System.out.println(TestReflectionInnerClass.class.getName());
+  	ClassType ct = TypeOracle.Instance.getClassType(r.getClass());
+  	assertNull(ct);
+  	//assertNull(ct.getField("abc"));
+  }
+  
 }
