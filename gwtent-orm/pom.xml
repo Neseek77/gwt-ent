@@ -23,6 +23,9 @@
 				<includes>
 					<include>**/*</include>
 				</includes>
+				<excludes>
+					<exclude>**/com/gwtent/orm/**</exclude>
+				</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
