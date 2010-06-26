@@ -252,6 +252,9 @@ public class GeneratorHelper {
 	/**
 	 * value type: primitive, String, Class, enumerated, annotation, array of
 	 * 
+	 * primitive need take care. 
+	 * For example float 2.0, it need changed to 2.0F, otherwise it's becomes a Double
+	 * 
 	 * @param object
 	 * @return
 	 */
@@ -276,8 +279,14 @@ public class GeneratorHelper {
 	  	return object.getClass().getCanonicalName() + "." + ((Enum)object).name();
 	  }else if (object instanceof Annotation){
 	  	return newAnnotation_AnnotationImpl(typeOracle, (Annotation)object);
-	  }
-	   
+	  }else if (object instanceof Float){
+	  	return object.toString() + "F";
+	  }else if (object instanceof Double){
+	  	return object.toString() + "D";
+	  } else if (object instanceof Long){
+	  	return object.toString() + "L";
+	  } 
+		
 	  return object.toString();
 	}
 	

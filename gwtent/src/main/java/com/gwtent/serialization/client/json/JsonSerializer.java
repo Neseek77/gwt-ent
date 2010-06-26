@@ -56,7 +56,7 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		}
 	}
 	
-	protected String serializeObject(Object object, ClassType type){
+	public String serializeObject(Object object, ClassType type){
 		StringBuilder sb = new StringBuilder();
 		
   	sb.append(serialize(object, type).toString());
