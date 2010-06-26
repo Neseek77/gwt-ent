@@ -43,6 +43,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
+import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
@@ -134,6 +135,12 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			Reflectable reflectable = GenUtils.getClassTypeAnnotationWithMataAnnotation(classType, Reflectable.class);
 			if (reflectable != null){
 				processClass(classType, reflectable);
+				
+				if (reflectable.assignableClasses()){
+					for (JClassType type : classType.getSubtypes()){
+						processClass(type, reflectable);
+					}
+				}
 			}
 		}
 		//======end of gwt0.7
@@ -332,6 +339,12 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
          } catch (Exception e){
          	throw new CheckedExceptionWrapper(e);
          }
+         
+         if (method.getReturnType() != null){
+        	 JType type = method.getReturnType();
+        	 processJType(type);
+        	 
+         }
        }
 	     
 	     Class<? extends Annotation> annotationType = annotation.annotationType(); 
@@ -340,6 +353,20 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	       processAnnotation(metaAnnotation);
 	     }
 	   }
+	}
+	
+	private void processJType(JType type){
+		JClassType classType = null;
+		if (type.isClassOrInterface() != null){
+			classType = type.isClassOrInterface();
+		} else if (type.isArray() != null){
+			processJType(type.isArray().getComponentType());
+ 	  } else if (type.isAnnotation() != null){
+ 	  	classType = type.isAnnotation();
+ 	  }
+		
+		if (classType != null)
+			processClass(classType, getNearestSetting(classType, getFullSettings()));
 	}
 	
 	private void addClassIfNotExists(JClassType classType, Reflectable setting){

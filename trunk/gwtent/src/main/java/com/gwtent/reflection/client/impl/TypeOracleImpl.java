@@ -127,6 +127,22 @@ public class TypeOracleImpl implements TypeOracle {
 	}
 
 	
+	private static String removeAnonymousNumber(String name){
+		if (name == null || name.length() <= 0)
+			return name;
+		
+		int lastIndex = name.lastIndexOf(".");
+		try {
+			Integer.parseInt(name.substring(lastIndex + 1));
+			
+			name = name.substring(0, lastIndex);
+			removeAnonymousNumber(name);
+			return name;
+		} catch (NumberFormatException e) {
+			return name;
+		}
+	}
+	
 	
 	public Type getType(String name) {
 		Type type = findType(name);
