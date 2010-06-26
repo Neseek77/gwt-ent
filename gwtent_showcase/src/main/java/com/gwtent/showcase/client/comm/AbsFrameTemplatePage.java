@@ -25,6 +25,16 @@ public abstract class AbsFrameTemplatePage extends HTMLTemplatePanel implements 
 		doInitLazyLoadWidgets(this);
 	}
 
+	/**
+	 * In this class, add lazy widget by call something like this:
+	 * 
+	 * <p>lazyLoadManager.addLazyLoadWidget(HTMLElementID, new LazyLoadWidgetCallback(){
+	 * <p>			public ShowCase getWidget() {
+	 * <p>				return A widget;
+	 * <p>			}});
+	 * 
+	 * @param lazyLoadManager
+	 */
 	protected abstract void doInitLazyLoadWidgets(HTMLElementTabLazyLoadManager lazyLoadManager);
 	
 	public void addLazyLoadWidget(String id, LazyLoadWidgetCallback callback) {

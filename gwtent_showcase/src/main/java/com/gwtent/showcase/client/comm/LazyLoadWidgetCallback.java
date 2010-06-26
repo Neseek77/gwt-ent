@@ -1,6 +1,6 @@
 package com.gwtent.showcase.client.comm;
 
-import com.google.gwt.user.client.ui.Widget;
+import com.gwtent.showcase.client.ShowCase;
 
 /**
  * 
@@ -9,5 +9,5 @@ import com.google.gwt.user.client.ui.Widget;
  * 30/04/2010 3:50:10 PM
  */
 public interface LazyLoadWidgetCallback {
-	Widget getWidget();
+	ShowCase getWidget();
 }
