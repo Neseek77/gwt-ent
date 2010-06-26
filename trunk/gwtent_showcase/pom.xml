@@ -19,24 +19,6 @@
 	<build>
 		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<version>${gwt-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>generateAsync</goal>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<inplace>true</inplace>
-					<runTarget>com.gwtent.showcase.Gwtent_showcase/Gwtent_showcase.html</runTarget>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -196,12 +178,19 @@
 		<!--  GWT dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
+			<artifactId>gwt-dev</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
 		<!-- GWT-ENT -->
@@ -216,5 +205,6 @@
 			<artifactId>jdo2-api</artifactId>
 			<version>${jdo2-api.version}</version>
 		</dependency>
+		
 	</dependencies>
 </project>
