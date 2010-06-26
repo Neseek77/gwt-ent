@@ -10,7 +10,7 @@ public abstract class BaseShowCasePanel extends HTMLTemplatePanel implements Sho
 	}
 
 
-	public Widget getWidget() {
+	public Widget getShowCaseWidget() {
 		return this;
 	}
 	

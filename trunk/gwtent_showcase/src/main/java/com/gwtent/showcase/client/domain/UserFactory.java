@@ -39,9 +39,9 @@ public class UserFactory {
 	public User createJames(){
 		User user = getEmptyUser();
 		
-		user.setEmail("JamesLuo.au@gmail.com");
+		user.setEmail("JamesLuo.au_gmail.com");
 		user.setFirstName("James");
-		user.setLastName("Luo");
+		user.setLastName("");
 		user.setDob(new Date(1980-1900, 1, 1));
 		
 		CreditCard card = new CreditCard();

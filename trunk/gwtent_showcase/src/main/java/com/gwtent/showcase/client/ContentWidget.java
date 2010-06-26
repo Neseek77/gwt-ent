@@ -2,8 +2,6 @@ package com.gwtent.showcase.client;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ContentWidget<T extends Widget> extends Composite {
@@ -13,13 +11,13 @@ public class ContentWidget<T extends Widget> extends Composite {
   	//grid.getCellFormatter().setAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT, HasVerticalAlignment.ALIGN_TOP);
   	grid.setWidget(0, 0, createGridTopLinks(showCase));
   	grid.setHTML(1, 0, "<hr>");
-  	grid.setWidget(2, 0, showCase.getWidget());
-  	caseWidget = (T)showCase.getWidget();
+  	grid.setWidget(2, 0, showCase.getShowCaseWidget());
+  	caseWidget = (T)showCase.getShowCaseWidget();
   	this.initWidget(grid);
   }
   
   private T caseWidget;
-  public T getWidget(){
+  public T getShowCaseWidget(){
   	return caseWidget;
   }
   
@@ -61,7 +59,7 @@ public class ContentWidget<T extends Widget> extends Composite {
 				path = path + paths[i] + "/";
 			}
 
-			return "http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src" + path + resourceFileName;
+			return "http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src/main/java/" + path + resourceFileName;
 		}
   	
   } 

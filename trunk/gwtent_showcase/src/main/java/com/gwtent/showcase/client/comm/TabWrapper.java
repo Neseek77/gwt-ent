@@ -2,6 +2,8 @@ package com.gwtent.showcase.client.comm;
 
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwtent.showcase.client.ContentWidget;
+import com.gwtent.showcase.client.ShowCase;
 
 /**
  * 
@@ -44,8 +46,11 @@ public class TabWrapper {
 	}
 
 	public Widget getWidget() {
-		if (widget == null)
-			widget = lazyWidgetCreateListener.getWidget();
+		if (widget == null){
+			ShowCase show = lazyWidgetCreateListener.getWidget();
+			ContentWidget content = new ContentWidget(show);
+			widget = content;
+		}
 		
 		return widget;
 	}
