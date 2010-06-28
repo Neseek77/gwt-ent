@@ -232,7 +232,7 @@ public class ValidatorGWT implements Validator{
         			if (property == null || property.length() <= 0)
         				property = propertyName;
       				ConstraintViolationImpl<T> ic = new ConstraintViolationImpl<T>(beanType, 
-            			message, messageTemplate, msg.getProperty(), object, valueToValidate);
+            			message, messageTemplate, property, object, valueToValidate);
               icSet.add(ic);
         		}
           }
