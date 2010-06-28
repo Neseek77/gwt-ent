@@ -93,3 +93,7 @@ lastName get error because it's "Required".
 email:Email required. Value: not a good email address
 lastName:This field is required. Value: null
 }}}
+
+= More Info =
+
+See the demo source file in SVN: [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src/main/java//com/gwtent/showcase/client/validate/ValidateByCode.java http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src/main/java//com/gwtent/showcase/client/validate/ValidateByCode.java]
