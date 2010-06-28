@@ -22,13 +22,18 @@ public class ContentWidget<T extends Widget> extends Composite {
   }
   
   protected Grid createGridTopLinks(ShowCase showCase){
-  	Grid gridTopLinks = new Grid(1, showCase.getResourceFileNames().length + 1);
+  	int count = 1;
+  	if (showCase.getResourceFileNames() != null)
+  		count = count + showCase.getResourceFileNames().length;
+  	
+  	Grid gridTopLinks = new Grid(1, count);
   	gridTopLinks.getCellFormatter().setWidth(0, 0, "100%");
   	gridTopLinks.setText(0, 0, showCase.getCaseName());
   	
-  	for (int i = 0; i < showCase.getResourceFileNames().length; i++){
-  		
-  		gridTopLinks.setHTML(0, i + 1, "<a href=\"" + linkProvider.getLink(showCase.getClass().getName(), showCase.getResourceFileNames()[i]) + "\">" + getResourceNameFromFileName(showCase.getResourceFileNames()[i]) + "</a>");
+  	if (showCase.getResourceFileNames() != null){
+    	for (int i = 0; i < showCase.getResourceFileNames().length; i++){
+    		gridTopLinks.setHTML(0, i + 1, "<a target=\"_blank\" href=\"" + linkProvider.getLink(showCase.getClass().getName(), showCase.getResourceFileNames()[i]) + "\">" + getResourceNameFromFileName(showCase.getResourceFileNames()[i]) + "</a>");
+    	}  		
   	}
   	
   	return gridTopLinks;
