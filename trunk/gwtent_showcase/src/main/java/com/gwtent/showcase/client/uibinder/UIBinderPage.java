@@ -5,35 +5,26 @@ import com.gwtent.htmltemplate.client.HTMLEvent;
 import com.gwtent.htmltemplate.client.HTMLTemplate;
 import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
 import com.gwtent.htmltemplate.client.HTMLWidget;
+import com.gwtent.showcase.client.ShowCase;
 import com.gwtent.showcase.client.SubContent;
+import com.gwtent.showcase.client.comm.AbsFrameTemplatePage;
+import com.gwtent.showcase.client.comm.HTMLElementTabLazyLoadManager;
+import com.gwtent.showcase.client.comm.LazyLoadWidgetCallback;
 
 @HTMLTemplate(value = "com/gwtent/showcase/public/uibinder/UIBinder.html", renameId = false)
-public class UIBinderPage extends HTMLTemplatePanel {
+public class UIBinderPage extends AbsFrameTemplatePage {
 
 	public UIBinderPage(String html) {
 		super(html);
 	}
 
-	@HTMLWidget
-	protected SubContent subContentUIB = new SubContent();
-	
-	
-//	@HTMLEvent(value = {"linkRefOverview"})
-//	protected void doHomeClick(){
-//		
-//	}
-	
-	
-	@HTMLEvent(value = {"linkUIBSmall"})
-	protected void dolinkRefBasicClick(){
-		if (uibinderSmallExample == null){
-			uibinderSmallExample = GWT.create(UIBinderSmallExample.class);
-			subContentUIB.addShowCase(uibinderSmallExample);
-		}
-		
-		subContentUIB.showShowCase(uibinderSmallExample);
+	@Override
+	protected void doInitLazyLoadWidgets(
+			HTMLElementTabLazyLoadManager lazyLoadManager) {
+		lazyLoadManager.addLazyLoadWidget("linkUIBSmall", new LazyLoadWidgetCallback(){
+
+			public ShowCase getWidget() {
+				return GWT.create(UIBinderSmallExample.class);
+			}});
 	}
-	
-	
-	private UIBinderSmallExample uibinderSmallExample;
 }

@@ -13,6 +13,8 @@ import com.gwtent.showcase.client.ShowCase;
 public class OverviewPage extends Frame implements ShowCase{
 
 	public OverviewPage(String pageName){
+		this.setWidth("100%");
+		this.setHeight("500px");
 		this.setOverviewPageName(pageName);
 	}
 	
@@ -21,7 +23,7 @@ public class OverviewPage extends Frame implements ShowCase{
 	public void setOverviewPageName(String overviewPageName) {
 		this.overviewPageName = overviewPageName;
 		
-		this.setUrl("./overview/" + overviewPageName + "html");
+		this.setUrl("./overview/" + overviewPageName + ".html");
 	}
 
 	public String getOverviewPageName() {

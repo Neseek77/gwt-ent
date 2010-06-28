@@ -35,6 +35,12 @@ public class ValidateMainPanel extends AbsFrameTemplatePage{
 			public ShowCase getWidget() {
 				return new ValidateByCode();
 			}});
+		
+		lazyLoadManager.addLazyLoadWidget("linkValCreateYourValidate", new LazyLoadWidgetCallback(){
+
+			public ShowCase getWidget() {
+				return new CreateYourValidator();
+			}});
 
 	}
 
