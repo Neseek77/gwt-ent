@@ -1,6 +1,19 @@
 #summary The validate support by GWTENT
+#labels Featured
 
 = Using Validate =
+
+== Add module inherited ==
+
+Add Validate module if you only using Validation functions in GWTENT
+{{{
+<inherits name="com.gwtent.validate.Validate" />
+}}}
+
+Or add GwtEnt to add all modules
+{{{
+<inherits name="com.gwtent.GwtEnt" />
+}}}
 
 == Create you domain object for validation ==
   # Your class can inherited from any class
@@ -53,6 +66,7 @@ For example:
 = Validate it =
 
 {{{
+		void onClick(ClickEvent e) {
 		//Create domain object and setup the values
 		ClassToValidate obj = new ClassToValidate();
 		obj.setFirstName("First Name");
@@ -68,9 +82,14 @@ For example:
 			errorMsg += violation.getPropertyPath() + ":" + violation.getMessage() + " Value: " + violation.getInvalidValue() + "\n";
 		}
 		Window.alert(errorMsg);
+	}
 }}}
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= The results =
+{{{
+email not right because it doesn't not follow the rules of a emal
+lastName get error because it's "Required".
+
+email:Email required. Value: not a good email address
+lastName:This field is required. Value: null
+}}}
