@@ -52,6 +52,23 @@ For example:
 
 = Validate it =
 
+{{{
+		//Create domain object and setup the values
+		ClassToValidate obj = new ClassToValidate();
+		obj.setFirstName("First Name");
+		obj.setLastName(null); //
+		obj.setEmail("not a good email address");
+		
+		//Validate it by GWT validator
+		Set<ConstraintViolation<ClassToValidate>> validateResult = ValidatorFactory.getGWTValidator().validate(obj);
+		
+		//Display the result
+		String errorMsg = "";
+		for (ConstraintViolation<ClassToValidate> violation : validateResult){
+			errorMsg += violation.getPropertyPath() + ":" + violation.getMessage() + " Value: " + violation.getInvalidValue() + "\n";
+		}
+		Window.alert(errorMsg);
+}}}
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
