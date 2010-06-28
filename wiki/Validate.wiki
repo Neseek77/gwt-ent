@@ -3,9 +3,9 @@
 = Using Validate =
 
 == Create you domain object for validation ==
-# Your class can inherited from any class
-# Need reflection support for this class, you can simply add "@Reflectable" or "@Reflect_Domain" to your class
-# Add any JSR303 validate annotation to your class
+  # Your class can inherited from any class
+  # Need reflection support for this class, you can simply add "@Reflectable" or  "@Reflect_Domain" to your class
+  # Add any JSR303 validate annotation to your class
 
 For example:
 {{{
