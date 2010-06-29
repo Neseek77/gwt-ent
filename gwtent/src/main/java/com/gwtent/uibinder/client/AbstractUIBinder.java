@@ -120,7 +120,7 @@ public abstract class AbstractUIBinder<T, D> implements UIBinder<T, D> {
   /**
    * Connect value to widget here,
    * for example: listening to widget for any changes
-   * The is the place you binder your widget
+   * <p>The is the place you binder your widget
    * @param widget
    * @param value
    */
