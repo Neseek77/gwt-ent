@@ -75,7 +75,7 @@ public class CreateYourValidator extends Composite implements ShowCase {
 
 	@Override
 	public String[] getResourceFileNames() {
-		return new String[] {"CreateYourValidator.java", "CreateYourValidator.ui.xml"};
+		return new String[] {"CreateYourValidator.java", "CreateYourValidator.ui.xml", "MyDOB.java", "MyDOBValidator.java"};
 	}
 
 	@Override

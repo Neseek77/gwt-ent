@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:u="urn:import:com.gwtent.showcase.client.uibinder">
+	
+	<g:HTMLPanel>
+	  <p>if you created a new Editor from existing one, and this one has binder, you can simply register this editor.</p>
+	  <table>
+	  	<tr>
+	  		<td>DOB in My Date Box: </td>
+	  		<td><u:MyDateBox ui:field="myDateBox"></u:MyDateBox></td>
+	  	</tr>
+	  </table>
+		
+		<hr></hr>
+		<p>if you some third party editor, you can write your own binder.</p>
+	  <table>
+	  	<tr>
+	  		<td>Email in ASmartClientEdit: </td>
+	  		<td><u:ASmartClientEditBox ui:field="smartClientEditBox"></u:ASmartClientEditBox> </td>
+	  	</tr>
+	  </table>
+		<hr></hr>
+		
+		
+		<g:Button ui:field="button" text="Validate"/>
+	</g:HTMLPanel>
+</ui:UiBinder> 

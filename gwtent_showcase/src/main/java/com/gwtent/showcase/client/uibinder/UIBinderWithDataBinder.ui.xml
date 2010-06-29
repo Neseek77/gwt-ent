@@ -1,0 +1,94 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:gwtent="urn:import:com.gwtent.widget.client">
+	<g:HTMLPanel>
+		<div>
+			<h3>User Edit Screen</h3>
+		</div>
+		<div id="pnlUserEdit">
+			<div>
+				<span>
+					To using UIBind with DataBinder and Validate, you need register
+					binder and validate
+					messages first, please see
+					<strong>Gwtent_showcase.onModuleLoad()</strong>
+				</span>
+
+				<span>
+					<p><h4>How to make DataBinder and Validate worked with GWT UIBinder</h4></p>
+					<p>
+						<ul style = "padding-left:40px;">
+							<li>Create your DataBinder interface, it's looks like how
+								UIBinder does. Please see "DataBinder" in this class</li>
+							<li>Create the instance of your DataBinder. Please note,
+								this is NOT static, this is the difference between GWT UIBinder
+								and GWTENT DataBinder</li>
+							<li>In your constructor, invoke dataBinder.bindAll(this);</li>
+							<li>When you module changed by code, invoke
+								dataBinder.modelChanged();</li>
+							<li>When you need validate, invoke dataBinder.validate();</li>
+						</ul>
+					</p>
+				</span>
+				<p></p>
+				<table width="100%" border="0">
+					<tr>
+						<td width="100" class="Form_Caption">First Name *</td>
+						<td width="283">
+							<g:TextBox ui:field="edtFirstName"></g:TextBox>
+						</td>
+						<td width="916">you can bind by variable, ie @UIBind(path = &quot;user.firstName&quot;) Please Note, this variable must be accessable by sub class, not &quot;private&quot; </td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Last Name *</td>
+				<td ><g:TextBox ui:field="edtLastName"></g:TextBox> </td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Email *</td>
+				<td><g:TextBox ui:field="edtEmail"></g:TextBox></td>
+				<td>you can bind by invoke a function, follow with &quot;()&quot;, i.e @UIBind(path = &quot;getUser().email&quot;)</td>
+			  </tr>
+			  <tr>
+				<td nowrap="nowrap" class="Form_Caption">Date of Birth *</td>
+				<td><d:DateBox ui:field="edtDOB"></d:DateBox></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td>&nbsp;</td>
+				<td></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Address:</td>
+				<td></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Street *:</td>
+				<td class="Form_Editors"><g:TextBox ui:field="edtStreet"></g:TextBox></td>
+				<td>Support property path as well, ie @UIBind(path = &quot;user.address.street&quot;)</td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">subTown *: </td>
+				<td class="Form_Editors"><g:TextBox ui:field="edtSubTown"></g:TextBox></td>
+				<td></td>
+			  </tr>
+			  <tr>
+				<td class="Form_Caption">Country *: </td>
+				<td class="Form_Editors"> <gwtent:EnumListBox ui:field="edtCountry"></gwtent:EnumListBox></td>
+				<td></td>
+			  </tr>
+			</table>
+
+        </div>
+        
+		<div style="float:left; margin-top:10px">
+			<div style="float:left"><g:Button ui:field="btnValidate" text="Validate"></g:Button> </div>
+			<div style="float:left"><g:Button ui:field="btnSubmit" text = "Submit"></g:Button></div>
+			<div style="float:left"><g:Button ui:field="btnChangeDataByCode" text = "Change domain by Code"></g:Button></div>
+		</div>
+    </div>
+	</g:HTMLPanel>
+</ui:UiBinder> 
