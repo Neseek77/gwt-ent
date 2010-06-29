@@ -24,17 +24,24 @@ public class UserFactory {
 		return lei;
 	}
 	
+	public User getEmpty(){
+		return empty;
+	}
+	
 	private int userIndex = 0;
 	public User getNextUser(){
 		userIndex ++;
-		if (userIndex % 2 == 1)
+		if (userIndex % 3 == 1)
 			return lei;
-		else
+		else if (userIndex % 3 == 2)
 			return james;
+		else 
+			return empty;
 	}
 	
 	private User james = createJames();
 	private User lei = createLei();
+	private User empty = createEmpty();
 	
 	public User createJames(){
 		User user = getEmptyUser();
@@ -79,6 +86,18 @@ public class UserFactory {
 		address.setPostCode("1234");
 		address.setStreet("More time st");
 		address.setSubTown("VIC");
+		user.setAddress(address);
+		
+		return user;
+	}
+	
+	public User createEmpty(){
+		User user = getEmptyUser();
+
+		CreditCard card = new CreditCard();
+		user.setDefaultCreditCard(card);
+		
+		Address address = new Address();
 		user.setAddress(address);
 		
 		return user;

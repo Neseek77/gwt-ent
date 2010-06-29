@@ -34,6 +34,9 @@ public class ValidateByCode extends Composite implements ShowCase {
 	interface ValidateByCodeUiBinder extends UiBinder<Widget, ValidateByCode> {
 	}
 
+	/**
+	 * This is your domain class, the only thing you need do is to make it Reflectable.
+	 */
 	@Reflectable
 	public static class ClassToValidate{	
 		

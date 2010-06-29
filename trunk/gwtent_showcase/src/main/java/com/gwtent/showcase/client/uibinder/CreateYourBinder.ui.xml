@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:u="urn:import:com.gwtent.showcase.client.uibinder">
+	<g:HTMLPanel>
+		<p>We create three instances of our UserNameEditor, and bind it to
+			different object</p>
+
+		<p>
+			<h4>How to create your own data binder</h4>
+		</p>
+		<p>
+			<ul style="padding-left:40px;">
+				<li>Create your editor, normally is a widget and can get some
+					input from user</li>
+				<li>Create your Binder class. Simply inherited from	AbstractUIBinder&lt;T, D&gt;, @param T is the editor type, for example "TextBox" param D is the data type which editor supposed, for example "String"</li>
+				<li>Register your binder. Please see <strong>com.gwtent.showcase.client.Gwtent_showcase.onModuleLoad()</strong></li>
+				<li>Enjoy, it's support data binder and validation</li>
+  		</ul>
+	  </p>
+	  <p></p>
+		<hr></hr>
+		<u:UserNameEditor ui:field="edtJames"></u:UserNameEditor>
+		<hr></hr>
+		<u:UserNameEditor ui:field="edtLei"></u:UserNameEditor>
+		<hr></hr>
+		<u:UserNameEditor ui:field="edtEmpty"></u:UserNameEditor>
+		<hr></hr>
+		<p></p>
+		<g:Button ui:field="button" text="Validate"/>
+	</g:HTMLPanel>
+</ui:UiBinder> 

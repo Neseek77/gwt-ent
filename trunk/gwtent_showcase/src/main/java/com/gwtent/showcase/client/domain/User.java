@@ -13,7 +13,7 @@ import com.gwtent.validate.client.constraints.Required;
 
 @Validatable
 @GroupSequence({Groups.Billable.class, Groups.BuyInOneClick.class})
-public class User {
+public class User implements com.gwtent.showcase.client.uibinder.UserNameEditor.IUserName {
 
 	@Required
   @Size(min=2, max=30)

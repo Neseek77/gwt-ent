@@ -1,12 +1,16 @@
 package com.gwtent.showcase.client.validate;
 
+import com.google.gwt.core.client.GWT;
 import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
 import com.gwtent.showcase.client.ShowCase;
 import com.gwtent.showcase.client.comm.AbsFrameTemplatePage;
 import com.gwtent.showcase.client.comm.HTMLElementTabLazyLoadManager;
 import com.gwtent.showcase.client.comm.LazyLoadWidgetCallback;
 import com.gwtent.showcase.client.comm.OverviewPage;
+import com.gwtent.showcase.client.domain.UserFactory;
+import com.gwtent.showcase.client.htmltemplate.HTMLTplUIBindPage;
 import com.gwtent.showcase.client.htmltemplate.MyHTMLTemplate;
+import com.gwtent.showcase.client.uibinder.UIBinderWithDataBinder;
 
 /**
  * 
@@ -34,6 +38,26 @@ public class ValidateMainPanel extends AbsFrameTemplatePage{
 
 			public ShowCase getWidget() {
 				return new ValidateByCode();
+			}});
+		
+		lazyLoadManager.addLazyLoadWidget("linkValUIBind", new LazyLoadWidgetCallback(){
+
+			public ShowCase getWidget() {
+				UIBinderWithDataBinder result = new UIBinderWithDataBinder();
+				result.setUser(UserFactory.getInstance().getNextUser());
+				return result;
+			}});
+		
+		lazyLoadManager.addLazyLoadWidget("linkValUIBindHTML", new LazyLoadWidgetCallback(){
+
+			public ShowCase getWidget() {
+				HTMLTplUIBindPage uibindPage = GWT.create(HTMLTplUIBindPage.class);
+				
+				//Get some object from server, and refresh the UI
+				uibindPage.setUser(UserFactory.getInstance().getJames());
+				uibindPage.modelChanged();
+				
+				return uibindPage;
 			}});
 		
 		lazyLoadManager.addLazyLoadWidget("linkValCreateYourValidate", new LazyLoadWidgetCallback(){
