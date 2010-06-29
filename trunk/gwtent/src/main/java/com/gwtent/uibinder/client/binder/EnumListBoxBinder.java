@@ -44,12 +44,15 @@ public class EnumListBoxBinder<T extends Enum<T>> extends AbstractUIBinder<EnumL
 
 	@Override
 	protected void setValueToEditor(T value, EnumListBox<T> widget) {
-		for (int i = 0; i < widget.getItemCount(); i++){
-			if (widget.getValue(i).equals(value.name())){
-				widget.setSelectedIndex(i);
-				return;
+		if (value != null){
+			for (int i = 0; i < widget.getItemCount(); i++){
+				if (widget.getValue(i).equals(value.name())){
+					widget.setSelectedIndex(i);
+					return;
+				}
 			}
 		}
+		
 		widget.setSelectedIndex(-1);
 	}
 }
