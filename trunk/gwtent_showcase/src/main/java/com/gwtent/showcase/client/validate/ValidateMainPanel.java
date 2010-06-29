@@ -60,6 +60,13 @@ public class ValidateMainPanel extends AbsFrameTemplatePage{
 				return uibindPage;
 			}});
 		
+		
+		lazyLoadManager.addLazyLoadWidget("linkValI18N", new LazyLoadWidgetCallback(){
+
+			public ShowCase getWidget() {
+				return new I18NSupport();
+			}});
+		
 		lazyLoadManager.addLazyLoadWidget("linkValCreateYourValidate", new LazyLoadWidgetCallback(){
 
 			public ShowCase getWidget() {

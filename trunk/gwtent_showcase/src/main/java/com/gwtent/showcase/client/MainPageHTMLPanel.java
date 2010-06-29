@@ -28,7 +28,12 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 	
 	@HTMLEvent(value = {"linkEnglish"})
 	protected void dolinkEnglishClick(){
-		Window.alert("English");
+		openLocal("en");
+	}
+	
+	@HTMLEvent(value = {"linkChinese"})
+	protected void dolinkChineseClick(){
+		openLocal("zh");
 	}
 	
 
@@ -62,4 +67,28 @@ public class MainPageHTMLPanel extends HTMLTemplatePanel {
 	private AOPMainPage aopMainPage = GWT.create(AOPMainPage.class);
 	private HomePanel tplHome = GWT.create(HomePanel.class);
 	private ValidateMainPanel tplValidate = GWT.create(ValidateMainPanel.class);
+	
+	private void openLocal(String localeName){
+		Window.open(getHostPageLocation() + "?locale=" + localeName, "_self",
+    "");
+	}
+	//private HTMLTplMainPage tplMainPage;
+	
+	private static native String getHostPageLocation()
+  /*-{
+    var s = $doc.location.href;
+
+    // Pull off any hash.
+    var i = s.indexOf('#');
+    if (i != -1)
+      s = s.substring(0, i);
+
+    // Pull off any query string.
+    i = s.indexOf('?');
+    if (i != -1)
+      s = s.substring(0, i);
+
+    // Ensure a final slash if non-empty.
+    return s;
+  }-*/;
 }
