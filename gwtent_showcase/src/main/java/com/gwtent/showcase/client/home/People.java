@@ -13,6 +13,7 @@ public class People extends ArrayList<Person> {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	//TODO Support member under an array element?
 	@DataMember
 	private String desc;
 
