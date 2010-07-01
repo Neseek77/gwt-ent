@@ -52,5 +52,20 @@ public class ConstraintViolationImpl<T> implements ConstraintViolation<T> {
 	public String getMessageTemplate() {
 		return messageTemplate;
 	}
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(message).append(":");
+		
+		if (beanClass != null)
+			sb.append(beanClass.getName());
+		
+		sb.append(" - ").append(propertyPath);
+		
+		sb.append(" Value:").append(value);
+		
+		return sb.toString();
+	}
 
 }

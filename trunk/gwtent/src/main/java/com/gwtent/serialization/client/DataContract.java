@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.gwtent.reflection.client.Reflectable;
 import com.gwtent.reflection.client.annotations.Reflect_Full;
 
 @Retention(RetentionPolicy.RUNTIME)
