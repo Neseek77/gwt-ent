@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<p>GWTENT has defined a structure for serialize POJO. For now it's only support JSON.</p>
+		<p>It current has much limit but it's a start, we appreciate any help your provider here.</p>
+		<table>
+	  	<tr>
+	  	  <td>Description Of Those People: </td>
+	  	  <td><g:TextBox ui:field="edtDesc" width = "400px"></g:TextBox></td>
+	  	</tr>
+	  	<tr>
+	  	  <td>Person1 Name: </td>
+	  	  <td><g:TextBox ui:field="edtName" width = "400px"></g:TextBox></td>
+	  	</tr>
+	  </table>		
+	  <hr></hr>
+	  <g:Button ui:field="btnConvertToJSON" text="Convert To JSON"/>
+	  <g:Button ui:field="btnConvertFromJSON" text="Convert From JSON" />
+	  <hr></hr>
+		<g:TextArea ui:field="edtJson" width = "400px" height = "400px"></g:TextArea>
+		
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 
