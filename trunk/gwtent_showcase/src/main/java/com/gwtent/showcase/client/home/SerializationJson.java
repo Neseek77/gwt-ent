@@ -97,8 +97,8 @@ public class SerializationJson extends Composite implements ShowCase{
 	}
 	
 	@UiField
-	@UIBind(path = "people.desc")
-	TextBox edtDesc;
+	@UIBind(path = "getSecPerson().name")
+	TextBox edtName2;
 	
 	@UiField
 	@UIBind(path = "getFirstPerson().name")
@@ -113,6 +113,10 @@ public class SerializationJson extends Composite implements ShowCase{
 		return people.get(0);
 	}
 	
+	Person getSecPerson(){
+		return people.get(1);
+	}
+	
 
 	
 	//----------ShowCase-----------------
@@ -123,7 +127,7 @@ public class SerializationJson extends Composite implements ShowCase{
 
 	@Override
 	public String[] getResourceFileNames() {
-		return new String[]{"SerializationJson.java"};
+		return new String[]{"SerializationJson.java", "People.java", "Person.java"};
 	}
 
 	@Override

@@ -11,12 +11,12 @@
 		<p>It current has much limit but it's a start, we appreciate any help your provider here.</p>
 		<table>
 	  	<tr>
-	  	  <td>Description Of Those People: </td>
-	  	  <td><g:TextBox ui:field="edtDesc" width = "400px"></g:TextBox></td>
+	  	  <td>Person1 Name: </td>
+	  	  <td><g:TextBox ui:field="edtName" width = "200px"></g:TextBox></td>
 	  	</tr>
 	  	<tr>
-	  	  <td>Person1 Name: </td>
-	  	  <td><g:TextBox ui:field="edtName" width = "400px"></g:TextBox></td>
+	  	  <td>Person2 Name: </td>
+	  	  <td><g:TextBox ui:field="edtName2" width = "200px"></g:TextBox></td>
 	  	</tr>
 	  </table>		
 	  <hr></hr>
