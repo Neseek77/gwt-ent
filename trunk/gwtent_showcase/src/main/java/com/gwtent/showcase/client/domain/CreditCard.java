@@ -2,9 +2,15 @@ package com.gwtent.showcase.client.domain;
 
 import java.util.Date;
 
+import com.gwtent.serialization.client.DataContract;
+import com.gwtent.serialization.client.DataMember;
+
+@DataContract
 public class CreditCard {
+	@DataMember
 	private String issuingBank;
 	 private String creditCardNumber;
+	 @DataMember
 	 private Date expiresOn;
 	 
 	public void setIssuingBank(String issuingBank) {

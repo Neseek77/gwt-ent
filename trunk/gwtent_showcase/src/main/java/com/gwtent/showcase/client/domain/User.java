@@ -7,25 +7,31 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.gwtent.serialization.client.DataContract;
+import com.gwtent.serialization.client.DataMember;
 import com.gwtent.validate.client.Validatable;
 import com.gwtent.validate.client.constraints.Email;
 import com.gwtent.validate.client.constraints.Required;
 
 @Validatable
 @GroupSequence({Groups.Billable.class, Groups.BuyInOneClick.class})
+@DataContract
 public class User implements com.gwtent.showcase.client.uibinder.UserNameEditor.IUserName {
 
 	@Required
   @Size(min=2, max=30)
+  @DataMember
   private String firstName;
   
   @Required
+  @DataMember
   private String lastName;
   
   @Required
   //@Regular(regex="^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\\.([a-zA-Z])+([a-zA-Z])+", message="Please input right email address.")
   //Direct using Regular of Email annotation
   @Email
+  @DataMember
   private String email;
   
   @NotNull(groups={Groups.Billable.class})
@@ -33,6 +39,7 @@ public class User implements com.gwtent.showcase.client.uibinder.UserNameEditor.
   
   @NotNull(groups={Groups.BuyInOneClick.class})
   @NotEmpty(groups={Groups.BuyInOneClick.class})
+  @DataMember(type=CreditCard.class)
   private CreditCard defaultCreditCard;
   
   private Date dob;

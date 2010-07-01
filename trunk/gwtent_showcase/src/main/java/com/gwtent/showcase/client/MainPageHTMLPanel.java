@@ -10,6 +10,7 @@ import com.gwtent.htmltemplate.client.HTMLTemplatePanel;
 import com.gwtent.htmltemplate.client.HTMLWidget;
 import com.gwtent.showcase.client.aop.AOPMainPage;
 import com.gwtent.showcase.client.comm.TabsManager;
+import com.gwtent.showcase.client.home.HomePanel;
 import com.gwtent.showcase.client.htmltemplate.HTMLTplMainPage;
 import com.gwtent.showcase.client.reflection.ReflectionPage;
 import com.gwtent.showcase.client.uibinder.UIBinderPage;
