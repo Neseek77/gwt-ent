@@ -276,13 +276,17 @@ public class AspectJExpress implements Pointcut, ClassFilter, com.gwtent.aop.Met
 			AspectJExpress.this.addMethodMatcher(matcher);
 		}
 
+		@SuppressWarnings("unchecked")
 		public boolean couldMatchJoinPointsInType(Class someClass) {
-			return classMatcher.matches(someClass);
+			Class<?> clazz = someClass;
+			return classMatcher.matches(clazz);
 			//return true;
 		}
 
+		@SuppressWarnings("unchecked")
 		public boolean couldMatchJoinPointsInType(Class someClass, MatchingContext context) {
-			return classMatcher.matches(someClass);
+			Class<?> clazz = someClass;
+			return classMatcher.matches(clazz);
 		}
 
 		public boolean matchesDynamically(MatchingContext context) {
