@@ -19,6 +19,13 @@ Or add GwtEnt to add all modules
 <inherits name="com.gwtent.GwtEnt" />
 }}}
 
+To make validation message worked or support I18N to your messages, you need to add the codeline to your EntryPoint method
+{{{
+GWTValidateMessageStore.getInstance().addMessageObject(GWT.create(ValidateMessages?.class), ValidateMessages?.class);
+}}}
+
+or implement your own ValidationMessages. 
+
 == Create you domain object for validation ==
   # Your class can inherited from any class
   # Need reflection support for this class, you can simply add "@Reflectable" or  "@Reflect_Domain" to your class
