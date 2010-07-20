@@ -21,7 +21,7 @@ Or add GwtEnt to add all modules
 
 To make validation message worked or support I18N to your messages, you need to add the codeline to your EntryPoint method
 {{{
-GWTValidateMessageStore.getInstance().addMessageObject(GWT.create(ValidateMessages?.class), ValidateMessages?.class);
+GWTValidateMessageStore.getInstance().addMessageObject(GWT.create(ValidateMessages.class), ValidateMessages.class);
 }}}
 
 or implement your own ValidationMessages. 
