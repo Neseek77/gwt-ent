@@ -109,4 +109,8 @@ lastName:This field is required. Value: null
 
 See the demo source file in SVN: [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src/main/java//com/gwtent/showcase/client/validate/ValidateByCode.java http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent_showcase/src/main/java//com/gwtent/showcase/client/validate/ValidateByCode.java]
 
+= For developer who want implement JSR303 =
+Please send us a email, we can discuss how to build a way to share JSR303 emulation.
+For simple, in Validation class, I just direct created GWT validation implement.
+
 GWTENT ShowCase: [http://gwtent-showcase.appspot.com/ http://gwtent-showcase.appspot.com/]
