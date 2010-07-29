@@ -119,3 +119,14 @@ For simple, in Validation class, I just direct created GWT validation implement.
 = Emul =
 java.util.regex.Pattern
 A very simple version of Pattern, it is only defined the flags used by "javax.validation.constraints.Pattern", so if you guys got some error here, please log a issue about this.
+
+== InputStream ==
+There is no InputStream in GWT, we commented it in "javax.validation.Configuration<T>"
+function:T addMapping(InputStream stream);
+
+javax.validation.spi.ConfigurationState
+Set<InputStream> getMappingStreams();
+
+== java.util.Locale ==
+Class: javax.validation.MessageInterpolator
+Function: String interpolate(String messageTemplate, Context context,  Locale locale);
