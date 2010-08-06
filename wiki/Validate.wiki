@@ -111,6 +111,65 @@ See the demo source file in SVN: [http://code.google.com/p/gwt-ent/source/browse
 
 GWTENT ShowCase: [http://gwtent-showcase.appspot.com/ http://gwtent-showcase.appspot.com/]
 
+= Builtin Constraints =
+
+ * AssertFalse
+   # AssertFalseValidator
+		
+ * AssertTrue
+   # AssertTrueValidator
+		
+ * DecimalMax
+   # DecimalMaxValidatorForString
+   # DecimalMaxValidatorForNumber
+
+ * DecimalMin
+   # DecimalMinValidatorForNumber
+   # DecimalMinValidatorForString
+		
+ * Digits
+   # DigitsValidatorForString
+   # DigitsValidatorForNumber
+		
+ * Future
+   # FutureValidatorForCalendar
+   # FutureValidatorForDate
+		
+ * Max
+   # MaxValidatorForNumber
+   # MaxValidatorForString
+		
+ * Min
+   # MinValidatorForNumber
+   # MinValidatorForString
+		
+ * NotNull
+   # NotNullValidator
+		
+ * Null
+   # NullValidator
+		
+ * Past
+   # PastValidatorForCalendar
+   # PastValidatorForDate
+		
+ * Pattern
+   # PatternValidator
+	
+ * Size
+   # SizeValidatorForString
+   # SizeValidatorForCollection
+   # SizeValidatorForArray
+   # SizeValidatorForMap
+   # SizeValidatorForArraysOfBoolean
+   # SizeValidatorForArraysOfByte
+   # SizeValidatorForArraysOfChar
+   # SizeValidatorForArraysOfDouble
+   # SizeValidatorForArraysOfFloat
+   # SizeValidatorForArraysOfInt
+   # SizeValidatorForArraysOfLong
+		
+
 = For developer who want implement JSR303 =
 Please send us a email, we can discuss how to build a way to share JSR303 emulation.
 For simple, in Validation class, I just direct created GWT validation implement.
@@ -133,3 +192,6 @@ Set<InputStream> getMappingStreams();
 Class: javax.validation.MessageInterpolator
 Function: String interpolate(String messageTemplate, Context context,  Locale locale);
 }}}
+
+== Pattern ==
+Pattern.flags not support in GWT side.
