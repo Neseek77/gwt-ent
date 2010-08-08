@@ -6,12 +6,12 @@
 For maximum efficiency, GWT compiles your Java source into a monolithic script. Now gwt-ent provide a reflection implement by gwt code generator mechanism.
 
 This Framework support
-  #  Class [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/ClassType.java]
-  #  Field [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/Field.java]
-  # Method [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/Method.java]
-  # Constructor [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/Constructor.java]
-  # Metedata [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/HasMetaData.java]
-  # Annotation [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/HasAnnotations.java]
+  #  Class [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/ClassType.java]
+  #  Field [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/Field.java]
+  # Method [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/Method.java]
+  # Constructor [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/Constructor.java]
+  # Metedata [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/HasMetaData.java]
+  # Annotation [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/HasAnnotations.java]
 
 = How to use =
 
@@ -72,7 +72,7 @@ GWTENT provide you more power to control how much reflection information created
   # Super Classes ( all the super classes of this class will generate reflection information)
   # Assignable Classes (all assignable classes. if annotate to a class, this is mean All subClasses will generate reflection information; if annotate to a interface, then all implement classes will generate reflection information; if annotate to an annotation, then all types annotated by this annotation will generate reflection information)
 
-  [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/Reflectable.java Click Here For more Information]
+  [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/Reflectable.java Click Here For more Information]
 
 === The Field/Method Scope ===
   You can control whether have:
@@ -81,14 +81,14 @@ GWTENT provide you more power to control how much reflection information created
   # Method Return Type
   # Method Parameter Type
 
-  [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/com/gwtent/reflection/client/HasReflect.java Click Here For more Information]
+  [http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/HasReflect.java Click Here For more Information]
 
 == The TestCase ==
-[http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/test/com/gwtent/client/test/reflection/ReflectionTestCase.java ReflectionTestCase]
+[http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/test/java/com/gwtent/client/test/reflection/ReflectionTestCase.java ReflectionTestCase]
 
 = Understand Reflection Classes =
 
-[http://gwt-ent.googlecode.com/svn/trunk/gwtent/src/com/gwtent/reflection/client/]
+[http://code.google.com/p/gwt-ent/source/browse/trunk/gwtent/src/main/java/com/gwtent/reflection/client/]
 
 [http://gwt-ent.googlecode.com/svn/images/ReflectionInherited.jpg]
 
