@@ -3,6 +3,9 @@
 
 = 1, Introduction =
 
+  Showcase available at: [http://gwtent-showcase.appspot.com/ Gwtent_Showcase]
+  And a local runnable showcase included in download page.
+
   Now Aspect-Oriented Programming is available in GWT.
 
   The following advice type supported by GWTENT(Compatible with AspectJ annotation).
@@ -20,7 +23,7 @@
     
   And for pointcut, we support both Google Guice matcher classes and AspectJ expression(a subset of AspectJ expression)
 
-  Please see [http://gwt-ent.googlecode.com/svn/trunk/gwtent-sample/src/com/gwtent/sample/client/Interceptors.java here] for all interceptors in sample project.
+  Please see [http://gwt-ent.googlecode.com/svn/trunk/gwtent_showcase/src/main/java/com/gwtent/showcase/client/aop/Interceptors.java here] for all interceptors in showcase project.
   Please download the sample project[http://code.google.com/p/gwt-ent/downloads/list here]
 
 
