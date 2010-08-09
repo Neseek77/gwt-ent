@@ -1,3 +1,4 @@
 #sidebar TableOfContents
-* [UseReflection Reflection]
-* [Validate Validation JSR303 Implements]
+
+ * [UseReflection Reflection]
+ * [Validate Validation JSR303 Implements]
