@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Add your content here.
+http://people.redhat.com/~ebernard/validation/#bootstrapping
 
 
 = Details =
