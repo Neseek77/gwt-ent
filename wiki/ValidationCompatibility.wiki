@@ -4,10 +4,24 @@
 
 Add your content here.
 
+= Stuff no supported =
 
-= Details =
+== InputStream ==
+There is no InputStream in GWT, we commented it in class:
+{{{
+javax.validation.Configuration<T>
+}}}
+{{{
+function:T addMapping(InputStream stream);
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+javax.validation.spi.ConfigurationState
+Set<InputStream> getMappingStreams();
+}}}
+== java.util.Locale ==
+{{{
+Class: javax.validation.MessageInterpolator
+Function: String interpolate(String messageTemplate, Context context,  Locale locale);
+}}}
+
+== Pattern ==
+Pattern.flags not support in GWT side.
