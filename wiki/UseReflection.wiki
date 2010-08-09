@@ -1,5 +1,6 @@
 #summary How to use reflection provided by gwt-ent
 #labels Featured,Phase-Design,Reflection,GWT
+<wiki:toc max_depth="1" />
 
 = Introduction =
 
