@@ -1,6 +1,6 @@
 #sidebar TableOfContents
 
- * [Overview Overview]
+ * [Overview]
    * [Modules_which_is_provided_by_GWTENT Modules which is provided by GWTENT]
 
  * [UseReflection Reflection]
