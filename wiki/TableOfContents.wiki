@@ -5,4 +5,5 @@
 
  * [UseReflection Reflection]
  * [Validate Validation/JSR303 Implementation]
+   * [ValidationBootstrapping Create or Configure Validator]
  * [UIBinding Data Binding]
