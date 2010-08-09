@@ -6,4 +6,5 @@
  * [Validate]
    * [Validate Validation/JSR303 Implementation]
    * [ValidationBootstrapping Create or Configure Validator]
+   * [ValidationCompatibility Compatibility between Java and GWTENT implement]
  * [UIBinding Data Binding]
