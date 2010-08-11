@@ -49,14 +49,60 @@
 				 -->
 			</plugin>
 			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+          <excludes>
+            <exclude>com/gwtent/validate/emul/**/*.*</exclude>
+          	<exclude>com/gwtent/validate/jsr303/**/*.*</exclude>
+          	<exclude>javax/validation/**/*.*</exclude>
+          </excludes>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <inherited>true</inherited>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+		          <includes>
+		            <include>**/*.*</include>
+		          </includes>
+		          
+		          <excludes>
+		          	<exclude>com/gwtent/validate/jsr303/**/*.*</exclude>
+		          	<exclude>javax/validation/**/*.*</exclude>
+		          </excludes>
+		        </configuration>
+          </execution>
+        </executions>
+        
+      </plugin>
+      
 		</plugins>
 		
 		<resources>
 			<resource>
-				<directory>src/main/java</directory>
+				<directory>src/main/java</directory>				
+				<!-- 
 				<includes>
 					<include>**/*</include>
 				</includes>
+				 -->
+				<excludes>
+					<exclude>com/gwtent/validate/jsr303/**/*.java</exclude>
+					<exclude>com/gwtent/validate/jsr303/**/*.class</exclude>
+					<exclude>com/gwtent/validate/jsr303/**/*.*</exclude>
+					<exclude>javax/validation/**/*.*</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		
@@ -96,18 +142,23 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectjweaver.version}</version>
 		</dependency>
+		
+		<!-- JSR303 Validation -->
+		
 
 		<!--  GWT dependencies -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
@@ -122,5 +173,52 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.0.0.GA</version>
+			<type>jar</type>
+			<scope>test</scope>
+			<exclusions>
+				<!--  
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				 -->
+				<exclusion>
+					<artifactId>hibernate-commons-annotations</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+				<!-- 
+				<exclusion>
+					<artifactId>jaxb-impl</artifactId>
+					<groupId>com.sun.xml.bind</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jaxb-api</artifactId>
+					<groupId>javax.xml</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jaxb-api</artifactId>
+					<groupId>javax.xml.bind</groupId>
+				</exclusion>
+				 -->
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.6</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>
