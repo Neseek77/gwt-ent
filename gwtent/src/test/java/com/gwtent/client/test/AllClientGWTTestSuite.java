@@ -53,13 +53,16 @@ public class AllClientGWTTestSuite extends TestCase{
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
     suite.addTestSuite(BootstrappingTestCase.class);
+    suite.addTestSuite(ValidateTestCase.class);
+    
+    
     suite.addTestSuite(CommonTestCase.class);
     suite.addTestSuite(DataBinderTestCase.class);
     suite.addTestSuite(I18NTestCase.class);
     suite.addTestSuite(AnnotationTestCase.class);
     suite.addTestSuite(UIBinderTestCase.class);
     suite.addTestSuite(SerializationTestCase.class);
-    suite.addTestSuite(ValidateTestCase.class);
+    
     suite.addTestSuite(ReflectionTestCase.class);
     suite.addTestSuite(AOPTestCase.class);
     suite.addTestSuite(TemplateTestCase.class);
