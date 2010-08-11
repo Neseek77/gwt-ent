@@ -1,8 +1,7 @@
 package com.gwtent.validate.client;
 
+import javax.validation.Validation;
 import javax.validation.Validator;
-
-import com.gwtent.validate.client.impl.ValidatorGWT;
 
 public class ValidatorFactory {
 
@@ -12,9 +11,13 @@ public class ValidatorFactory {
 		
 	}
 	
-	private static ValidatorGWT validatorGWT = new ValidatorGWT();
+	private static javax.validation.ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
   public static Validator getGWTValidator() {
-  	return validatorGWT;
+  
+		//cache the factory somewhere
+		Validator validator = factory.getValidator();
+		
+		return validator;
   }
 
 }

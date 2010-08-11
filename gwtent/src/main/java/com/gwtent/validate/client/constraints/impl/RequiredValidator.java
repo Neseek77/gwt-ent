@@ -1,4 +1,4 @@
-package com.gwtent.validate.client.constraints;
+package com.gwtent.validate.client.constraints.impl;
 
 //import java.lang.reflect.Array;
 import java.util.Collection;
@@ -6,22 +6,13 @@ import java.util.Map;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import javax.validation.StandardConstraint;
-import javax.validation.StandardConstraintDescriptor;
+
+import com.gwtent.validate.client.constraints.Required;
 
 public class RequiredValidator implements
-		ConstraintValidator<Required, Object>, StandardConstraint {
+		ConstraintValidator<Required, Object> {
 	public void initialize(Required constraintAnnotation) {
 		// do nothing
-	}
-
-	public StandardConstraintDescriptor getStandardConstraintDescriptor() {
-		return new StandardConstraintDescriptor() {
-			@Override
-			public Boolean getNullability() {
-				return false;
-			}
-		};
 	}
 
 	public boolean isValid(Object value,

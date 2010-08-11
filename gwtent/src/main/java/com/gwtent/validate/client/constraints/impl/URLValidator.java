@@ -1,6 +1,9 @@
-package com.gwtent.validate.client.constraints;
+package com.gwtent.validate.client.constraints.impl;
 
 import javax.validation.ConstraintValidator;
+
+import com.gwtent.validate.client.constraints.RegularBasedValidator;
+import com.gwtent.validate.client.constraints.URL;
 
 public class URLValidator extends RegularBasedValidator<URL, Object> implements ConstraintValidator<URL, Object> {
 

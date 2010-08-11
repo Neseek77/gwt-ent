@@ -7,11 +7,18 @@ import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Constructor;
 import com.gwtent.reflection.client.TypeOracle;
 
-public class ConstraintFactoryImpl implements ConstraintValidatorFactory {
+/**
+ * 
+ * @author James Luo
+ *
+ * 29/07/2010 5:18:21 PM
+ */
+public class ConstraintValidatorFactoryImpl implements
+		ConstraintValidatorFactory {
 
-  private static ConstraintFactoryImpl instance = new ConstraintFactoryImpl();
+  private static ConstraintValidatorFactory instance = new ConstraintValidatorFactoryImpl();
   
-  public static ConstraintFactoryImpl getInstance(){
+  public static ConstraintValidatorFactory getInstance(){
     return instance;
   }
   
@@ -22,5 +29,4 @@ public class ConstraintFactoryImpl implements ConstraintValidatorFactory {
     Constructor constructor = type.findConstructor(new String[]{});
     return (T) constructor.newInstance();
 	}
-
 }
