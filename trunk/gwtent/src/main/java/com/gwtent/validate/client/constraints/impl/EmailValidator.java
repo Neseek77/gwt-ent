@@ -1,6 +1,9 @@
-package com.gwtent.validate.client.constraints;
+package com.gwtent.validate.client.constraints.impl;
 
 import javax.validation.ConstraintValidator;
+
+import com.gwtent.validate.client.constraints.Email;
+import com.gwtent.validate.client.constraints.RegularBasedValidator;
 
 public class EmailValidator extends RegularBasedValidator<Email, Object> implements ConstraintValidator<Email, Object> {
 

@@ -18,7 +18,7 @@ public class ConstraintFactoryCacheImpl implements ConstraintValidatorFactory {
 	public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
 		T result = (T) map.get(key);
     if (result == null){
-      result = ConstraintFactoryImpl.getInstance().getInstance(key);
+      result = ConstraintValidatorFactoryImpl.getInstance().getInstance(key);
       map.put(key, result);
     }
     

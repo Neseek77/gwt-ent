@@ -1,11 +1,13 @@
 <module>
+	<!-- payload did not start yet -->
+
 	<inherits name="com.google.gwt.user.User" />
 
 	<inherits name="com.gwtent.common.Common" />
 	<inherits name="com.gwtent.reflection.Reflection" />
 	
-	<inherits name="javax.validation.Validation"/>
-
+	<inherits name="com.gwtent.validate.emul.Emulation" />
+	
 	<source path="client" />
 
 	<stylesheet src='gwtent/widget.css' />
