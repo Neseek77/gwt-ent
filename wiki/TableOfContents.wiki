@@ -3,7 +3,7 @@
  * [Overview]
    * [Modules_which_is_provided_by_GWTENT Modules which is provided by GWTENT]
  * [UseReflection Reflection]
-   * [Using ClassHelper]
+   * [EmulateJavaLangClass Emulate java.lang.Class functions by ClassHelper]
  * [Validate]
    * [get started]
    * [Validate Validation/JSR303 Implementation]
