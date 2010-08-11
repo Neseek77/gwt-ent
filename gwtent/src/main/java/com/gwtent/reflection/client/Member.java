@@ -1,7 +1,5 @@
 package com.gwtent.reflection.client;
 
-import java.lang.reflect.Modifier;
-
 /**
  * Member is an interface that reflects identifying information about
  * a single member (a field or a method) or a constructor.

@@ -239,6 +239,25 @@ public class ReflectionUtils {
   	return result;
   }
   
+  /**
+   * Get Annotation.
+   * <p>@Entity
+   * <p>public class Abc{}
+   * 
+   *  <p> getAnnotation(Abc.class, Entity.class) will return Entity annotation
+   * @param <T>
+   * @param clazz 
+   * @param annotationClass
+   * @return
+   */
+  public static <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> annotationClass){
+  	ClassType type = TypeOracle.Instance.getClassType(clazz);
+  	if (type == null)
+  		reflectionRequired(clazz);
+  	
+  	return type.getAnnotation(annotationClass);
+  }
+  
   
 	/**
 	 * Find annotation from array of annotations

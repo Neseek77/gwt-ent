@@ -21,7 +21,7 @@ package com.gwtent.reflection.client;
 
 
 
-public interface ClassType extends HasAnnotations {
+public interface ClassType extends HasAnnotations, Type {
 
 	/**
 	 * Find Field
