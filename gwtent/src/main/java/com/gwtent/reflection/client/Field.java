@@ -20,7 +20,7 @@
 package com.gwtent.reflection.client;
 
 
-public interface Field extends AccessDef, HasAnnotations {
+public interface Field extends AccessDef, HasAnnotations, Member {
 
 	public ClassType getEnclosingType();
 

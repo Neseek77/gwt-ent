@@ -149,4 +149,12 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 		this.returnTypeName = returnTypeName;
 	}
 
+	public Class getDeclaringClass() {
+		return this.getEnclosingType().getDeclaringClass();
+	}
+
+	public int getModifiers() {
+		return this.getModifierBits();
+	}
+
 }

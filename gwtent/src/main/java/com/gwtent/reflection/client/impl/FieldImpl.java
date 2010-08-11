@@ -182,4 +182,12 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations{
 	public EnumConstant isEnumConstant() {
 		return null;
 	}
+
+	public Class getDeclaringClass() {
+		return this.getEnclosingType().getDeclaringClass();
+	}
+
+	public int getModifiers() {
+		return this.modifierBits;
+	}
 }

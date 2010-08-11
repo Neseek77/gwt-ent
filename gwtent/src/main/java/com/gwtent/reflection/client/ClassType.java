@@ -19,9 +19,6 @@
 
 package com.gwtent.reflection.client;
 
-import java.util.List;
-
-import com.google.gwt.core.ext.typeinfo.JEnumType;
 
 
 public interface ClassType extends HasAnnotations {

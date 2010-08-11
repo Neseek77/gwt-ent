@@ -21,7 +21,7 @@ package com.gwtent.reflection.client;
 
 
 
-public interface AbstractMethod extends HasAnnotations  {
+public interface AbstractMethod extends HasAnnotations, Member  {
 
 	public Parameter findParameter(String name);
 

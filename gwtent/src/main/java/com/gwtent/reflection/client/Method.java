@@ -19,7 +19,7 @@
 
 package com.gwtent.reflection.client;
 
-public interface Method extends AbstractMethod, AccessDef{
+public interface Method extends AbstractMethod, AccessDef, Member{
 
 	/**
 	 * Invoke the method.
