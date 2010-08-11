@@ -148,7 +148,7 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations{
   /**
    * NOTE: This method is for testing purposes only.
    */
-  Annotation[] getDeclaredAnnotations() {
+  public Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
 

@@ -673,7 +673,7 @@ public class ClassTypeImpl extends TypeImpl implements AccessDef, HasAnnotations
     return annotations.getAnnotations();
   }
 
-  Annotation[] getDeclaredAnnotations() {
+  public Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
 

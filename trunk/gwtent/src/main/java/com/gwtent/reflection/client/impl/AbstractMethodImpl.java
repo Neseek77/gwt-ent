@@ -266,7 +266,7 @@ public abstract class AbstractMethodImpl implements HasAnnotations, AbstractMeth
   /**
    * NOTE: This method is for testing purposes only.
    */
-  Annotation[] getDeclaredAnnotations() {
+  public Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
   

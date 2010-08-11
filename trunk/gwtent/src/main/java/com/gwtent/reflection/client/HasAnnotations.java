@@ -21,7 +21,6 @@ package com.gwtent.reflection.client;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Map;
 
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
@@ -32,30 +31,9 @@ import com.gwtent.reflection.client.impl.TypeOracleImpl;
  * typeinfo package. This reflects a compromise between a pure
  * {@link TypeOracleImpl} model and one that is more useful to developers.
  */
-public interface HasAnnotations {
-  /**
-   * Returns an instance of the specified annotation type if it is present on
-   * this element or <code>null</code> if it is not.
-   * 
-   * @param annotationClass annotation type to search for
-   * @return instance of the specified annotation type if it is present on this
-   *         element or <code>null</code> if it is not
-   */
-  <T extends Annotation> T getAnnotation(Class<T> annotationClass);
-
-  /**
-   * Returns <code>true</code> if this item has an annotation of the specified
-   * type.
-   * 
-   * @param annotationClass
-   * 
-   * @return <code>true</code> if this item has an annotation of the specified
-   *         type
-   */
-  boolean isAnnotationPresent(Class<? extends Annotation> annotationClass);
-  
-  
+public interface HasAnnotations extends AnnotatedElement{
+	
+	
   void addAnnotations(List<Annotation> annotations);
-  
-  Annotation[] getAnnotations();
+
 }

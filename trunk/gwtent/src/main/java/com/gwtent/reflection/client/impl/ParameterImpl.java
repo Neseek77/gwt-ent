@@ -128,7 +128,7 @@ public class ParameterImpl implements HasAnnotations, Parameter {
     return annotations.getAnnotations();
   }
 
-  Annotation[] getDeclaredAnnotations() {
+  public Annotation[] getDeclaredAnnotations() {
     return annotations.getDeclaredAnnotations();
   }
   
