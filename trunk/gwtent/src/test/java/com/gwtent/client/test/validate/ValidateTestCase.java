@@ -10,6 +10,7 @@ import com.gwtent.client.test.common.GwtEntTestCase;
 import com.gwtent.client.test.validate.Groups.Billable;
 import com.gwtent.client.test.validate.Groups.BuyInOneClick;
 import com.gwtent.validate.client.GWTValidateMessageStore;
+import com.gwtent.validate.client.ValidatorFactory;
 import com.gwtent.validate.client.impl.ValidatorGWT;
 import com.gwtent.validate.client.message.ValidateMessages;
 
@@ -40,7 +41,7 @@ public class ValidateTestCase extends GwtEntTestCase{
   	ValidateMessages message = GWT.create(ValidateMessages.class);
   	GWTValidateMessageStore.getInstance().addMessageObject(message, ValidateMessages.class);
   	
-    Validator validator = new ValidatorGWT();
+    Validator validator = ValidatorFactory.getGWTValidator();
     User user = new User();
     Set<ConstraintViolation<User>> ics = validator.validateProperty(user, "name");
     assertTrue(ics.size() == 3);
@@ -55,7 +56,7 @@ public class ValidateTestCase extends GwtEntTestCase{
   public void testValidateGWTGroup(){
   	GWTValidateMessageStore.getInstance().addMessageObject(GWT.create(ValidateMessages.class), ValidateMessages.class);
   	
-    Validator validator = new ValidatorGWT();
+    Validator validator = ValidatorFactory.getGWTValidator();
     User user = new User();
     
     Set<ConstraintViolation<User>> ics = validator.validateProperty(user, "name");
@@ -70,7 +71,7 @@ public class ValidateTestCase extends GwtEntTestCase{
   }
   
   public void testValidatePropertyPath(){
-  	Validator validator = new ValidatorGWT();
+  	Validator validator = ValidatorFactory.getGWTValidator();
     User user = new User();
     
     try {

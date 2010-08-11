@@ -1,12 +1,11 @@
 package com.gwtent.client.test.validate;
 
 import javax.validation.GroupSequence;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
+import javax.validation.constraints.Size;
 
 import com.gwtent.validate.client.Validatable;
+import com.gwtent.validate.client.constraints.NotEmpty;
 
 @Validatable
 @GroupSequence({Groups.Billable.class, Groups.BuyInOneClick.class})
