@@ -99,8 +99,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<inherited>true</inherited>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.5</source>
+					<target>1.5</target>
 					<encoding>utf-8</encoding>
 				</configuration>
 			</plugin>
@@ -169,6 +169,18 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
+
+		<repository>
+        <id>jboss</id>
+        <url>http://repository.jboss.com/maven2</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+
 
 		<repository>
 			<id>gwt-ext</id>
