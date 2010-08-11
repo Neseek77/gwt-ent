@@ -135,7 +135,7 @@ public class PackageImpl implements HasAnnotations, Package {
 	  /**
 	   * NOTE: This method is for testing purposes only.
 	   */
-	  Annotation[] getDeclaredAnnotations() {
+	  public Annotation[] getDeclaredAnnotations() {
 	    return annotations.getDeclaredAnnotations();
 	  }
 }
