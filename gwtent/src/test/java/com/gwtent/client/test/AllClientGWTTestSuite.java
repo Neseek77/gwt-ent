@@ -44,6 +44,7 @@ import com.gwtent.client.test.reflection.ReflectionTestCase;
 import com.gwtent.client.test.template.TemplateTestCase;
 import com.gwtent.client.test.uibinder.DataBinderTestCase;
 import com.gwtent.client.test.uibinder.UIBinderTestCase;
+import com.gwtent.client.test.validate.BootstrappingTestCase;
 import com.gwtent.client.test.validate.ValidateTestCase;
 
 public class AllClientGWTTestSuite extends TestCase{
@@ -51,6 +52,7 @@ public class AllClientGWTTestSuite extends TestCase{
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
+    suite.addTestSuite(BootstrappingTestCase.class);
     suite.addTestSuite(CommonTestCase.class);
     suite.addTestSuite(DataBinderTestCase.class);
     suite.addTestSuite(I18NTestCase.class);
