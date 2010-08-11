@@ -65,4 +65,12 @@ public abstract class ConstructorImpl extends AbstractMethodImpl implements Cons
 	  public String toString() {
 	    return getReadableDeclaration();
 	  }
+
+		public Class getDeclaringClass() {
+			return this.getEnclosingType().getDeclaringClass();
+		}
+
+		public int getModifiers() {
+			return this.getModifierBits();
+		}
 	}
