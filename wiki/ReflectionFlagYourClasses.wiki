@@ -1,0 +1,17 @@
+#summary How to ensure your class will generate reflection information
+
+= By Annotation=
+
+ # @Reflectable
+ # @Reflect_Domain
+ # @Reflect_Full
+ # @Reflect_Mini
+ # @Validtable
+ # @DataContract
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
