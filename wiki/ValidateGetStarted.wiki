@@ -1,13 +1,25 @@
 #summary Get Started with Validation
 
 = Introduction =
+== Useful Links ==
+  http://jcp.org/en/jsr/detail?id=303
 
-Add your content here.
+  http://people.redhat.com/~ebernard/validation/
+
+== Credits ==
+  This implement is basically a adapter from Hibernate Validation Reference Implement.
+
+  Link: http://www.hibernate.org/subprojects/validator.html
 
 
-= Details =
+== Add module inherited ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Add Validate module if you only using Validation functions in GWTENT
+{{{
+<inherits name="com.gwtent.validate.Validate" />
+}}}
+
+Or add GwtEnt to add all modules
+{{{
+<inherits name="com.gwtent.GwtEnt" />
+}}}
