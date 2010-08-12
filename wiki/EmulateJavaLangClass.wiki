@@ -12,3 +12,14 @@ We provide ClassHelper to emulate the most of functions in java.lang.Class
 {{{
   ClassHelper.AsClass(Class<?> clazz);
 }}}
+
+= Usage =
+Your code:
+{{{
+Object.class.getAnnotation(Constraint.class);
+}}}
+
+Just needs changed to :
+{{{
+ClassHelper.AsClass(Object.class).getAnnotation(Constraint.class);
+}}}
