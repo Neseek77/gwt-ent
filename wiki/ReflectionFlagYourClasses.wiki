@@ -9,9 +9,4 @@
  # @Validtable
  # @DataContract
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+=== Please Note: No Public Class never generate reflection information ===
