@@ -1,3 +1,30 @@
 #summary Know Issues on GWTENT Reflection Implement
 
 === Public Function request no-public parameters ===
+
+A public class has a function which accessed to a no public class, please have a look the following codes, this will stop create reflection information and all project will be failed to compile.
+
+You will see a compile error in your console like this:
+{{{
+The type KnowIssues.ClassPackageVisable is not visible
+}}}
+{{{
+public class KnowIssues {
+	
+	static class ClassPackageVisable{
+		
+	}
+	
+	@Reflect_Full
+	public static class KnowIssueFunctionWithNoPublicParameters{
+		
+		public void setClass(ClassPackageVisable clazz){
+			
+		}
+		
+		public ClassPackageVisable getClassA(){
+			return null;
+		}
+	}
+}
+}}}
