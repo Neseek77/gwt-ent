@@ -18,6 +18,8 @@ public class KnowIssues {
 	@Reflect_Full
 	public static class KnowIssueFunctionWithNoPublicParameters{
 		
+		private String name;
+		
 		public void setClass(ClassPackageVisable clazz){
 			
 		}
@@ -25,6 +27,53 @@ public class KnowIssues {
 		public ClassPackageVisable getClassA(){
 			return null;
 		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+	}
+	
+	@Reflectable(methods=false)
+	public static class KnowIssueFunctionWithNoPublicParameters_HowFix{
+		
+		private String name;
+		
+		public void setClass(ClassPackageVisable clazz){
+			
+		}
+		
+		public ClassPackageVisable getClassA(){
+			return null;
+		}
+
+		@HasReflect
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		@HasReflect
+		public String getName() {
+			return name;
+		}
 	}
 }
+}}}
+
+But with class "KnowIssueFunctionWithNoPublicParameters_HowFix", your compile will be all good, and following the assert list below
+{{{
+public void testNoPublicParameterIssue(){
+  	ClassType type = TypeOracle.Instance.getClassType(KnowIssues.KnowIssueFunctionWithNoPublicParameters_HowFix.class);
+  	assertTrue(type != null);
+  	
+  	assertTrue(type.findMethod("getClassA") == null);
+  	assertTrue(type.findMethod("setClass") == null);
+  	
+  	assertTrue(type.findMethod("setName") != null);
+  	assertTrue(type.findMethod("getName") != null);
+  	assertTrue(type.findField("name") != null);
+  }
 }}}
