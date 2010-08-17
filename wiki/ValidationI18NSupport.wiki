@@ -1,19 +1,13 @@
 #summary The I18N support
 
-= GWT way to support I18N =
+=== GWT way to support I18N ===
 
-== Configure Validation Framework for I18N support ==
+==== Configure Validation Framework for I18N support ====
 {{{
 ValidatorFactory factory = Validation.byProvider(GWTEntValidatorProvider.class).configure()
-	.addI18NMessages((Messages) GWT.create(ValidationMessages.class))
+	.addI18NMessages(GWT.create(ValidationMessages.class))
 	.buildValidatorFactory();
 
 Validator validator = factory.getValidator();
 }}}
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
