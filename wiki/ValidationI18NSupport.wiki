@@ -1,9 +1,15 @@
-#summary One-sentence summary of this page.
+#summary The I18N support
 
-= Introduction =
+= GWT way to support I18N =
 
-Add your content here.
+== Configure Validation Framework for I18N support ==
+{{{
+ValidatorFactory factory = Validation.byProvider(GWTEntValidatorProvider.class).configure()
+	.addI18NMessages((Messages) GWT.create(ValidationMessages.class))
+	.buildValidatorFactory();
 
+Validator validator = factory.getValidator();
+}}}
 
 = Details =
 
