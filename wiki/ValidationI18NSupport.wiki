@@ -16,10 +16,10 @@ Validator validator = factory.getValidator();
 
   In JSR303, it expected a message format like this:
 {{{
-javax.validation.constraints.Max.message=must be less than or equal to {value}
+javax.validation.constraints.Size.message=size must be between {min} and {max}
 }}}
 
-  But in GWT, there are two difference, A)The key of message must be a method in a Java interface, so it can't contain "."; B)The parameter in message only support number, for example {0} but not {value}, so we have to change it to following:
+  But in GWT, there are two difference, A)The key of message must be a method in a Java interface, so it can't contain "."; B)The parameter in message only support number, for example {0} but not {min}, so we have to change it to following:
 {{{
-javax_validation_constraints_Max_message=must be less than or equal to {0}
+javax_validation_constraints_Size_message=size must be between {0} and {1}
 }}}
