@@ -1,6 +1,6 @@
 #summary The I18N support
 
-=== GWT way to support I18N ===
+===  #  GWT way to support I18N ===
 
 ==== Configure Validation Framework for I18N support ====
 {{{
@@ -10,4 +10,3 @@ ValidatorFactory factory = Validation.byProvider(GWTEntValidatorProvider.class).
 
 Validator validator = factory.getValidator();
 }}}
-
