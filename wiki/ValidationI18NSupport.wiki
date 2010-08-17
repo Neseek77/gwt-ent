@@ -19,4 +19,7 @@ Validator validator = factory.getValidator();
 javax.validation.constraints.Max.message=must be less than or equal to {value}
 }}}
 
-  But in GWT, there are two difference, A)The key of message must be a method in a Java interface, so it can't contain "."; B)The parameter in message only support number, for example {0} but not {value}
+  But in GWT, there are two difference, A)The key of message must be a method in a Java interface, so it can't contain "."; B)The parameter in message only support number, for example {0} but not {value}, so we have to change it to following:
+{{{
+javax_validation_constraints_Max_message=must be less than or equal to {0}
+}}}
