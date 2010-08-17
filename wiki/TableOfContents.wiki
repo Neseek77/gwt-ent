@@ -10,6 +10,7 @@
    * [ValidateGetStarted Get Started With Validation]
    * [Validate Validation/JSR303 Implementation]
    * [ValidationBootstrapping Create or Configure Validator]
-   * [server side validation ]
+   * [ValidationI18NSupport I18N support in GWT]
+   * [ValidationServerSideValdiation server side validation ]
    * [ValidationCompatibility Compatibility between Java and GWTENT implement]
  * [UIBinding Data Binding]
