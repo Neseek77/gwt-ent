@@ -1,6 +1,6 @@
 #summary The I18N support
 
-===  #  GWT way to support I18N ===
+=== GWT way to support I18N ===
 
 ==== Configure Validation Framework for I18N support ====
 {{{
@@ -10,3 +10,13 @@ ValidatorFactory factory = Validation.byProvider(GWTEntValidatorProvider.class).
 
 Validator validator = factory.getValidator();
 }}}
+
+
+=== Message Format ===
+
+  In JSR303, it expected a message format like this:
+{{{
+javax.validation.constraints.Max.message=must be less than or equal to {value}
+}}}
+
+  But in GWT, there are two difference, A)The key of message must be a method in a Java interface, so it can't contain "."; B)The parameter in message only support number, for example {0} but not {value}
