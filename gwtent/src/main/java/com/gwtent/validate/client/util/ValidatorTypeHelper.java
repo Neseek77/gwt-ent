@@ -25,6 +25,9 @@ import java.util.Map;
 import javax.validation.ConstraintValidator;
 import javax.validation.ValidationException;
 
+import com.gwtent.reflection.client.ClassHelper;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.ParameterizedType;
 import com.gwtent.reflection.client.Type;
 
 
@@ -43,8 +46,7 @@ public class ValidatorTypeHelper {
 	 * @return Return a Map&lt;Class, Class&lt;? extends ConstraintValidator&gt;&gt; where the map
 	 *         key is the type the validator accepts and value the validator class itself.
 	 */
-	public static <T extends Annotation> Map<Type, Class<? extends ConstraintValidator<?, ?>>> getValidatorsTypes(
-			List<Class<? extends ConstraintValidator<T, ?>>> validators) {
+	public static <T extends Annotation> Map<Type, Class<? extends ConstraintValidator<?, ?>>> getValidatorsTypes(List<Class<? extends ConstraintValidator<T, ?>>> validators) {
 		if ( validators == null || validators.size() == 0 ) {
 			throw new ValidationException( "No ConstraintValidators associated to @Constraint" );
 		}
@@ -59,78 +61,86 @@ public class ValidatorTypeHelper {
 	}
 
 	private static Type extractType(Class<? extends ConstraintValidator<?, ?>> validator) {
-//		Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
-//		Type constraintValidatorType = resolveTypes( resolvedTypes, validator );
-//
-//		//we now have all bind from a type to its resolution at one level
-//		Type validatorType = ( ( ParameterizedType ) constraintValidatorType ).getActualTypeArguments()[VALIDATOR_TYPE_INDEX];
-//		if ( validatorType == null ) {
-//			throw new ValidationException( "null is an invalid type for a constraint validator." );
-//		}
+		Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
+		Type constraintValidatorType = resolveTypes( resolvedTypes, ClassHelper.AsClass(validator).getType() );
+
+		//we now have all bind from a type to its resolution at one level
+		Type validatorType = ( ( ParameterizedType ) constraintValidatorType ).getActualTypeArguments()[VALIDATOR_TYPE_INDEX];
+		if ( validatorType == null ) {
+			throw new ValidationException( "null is an invalid type for a constraint validator." );
+		}
+		//TODO support GenericArrayType
 //		else if ( validatorType instanceof GenericArrayType ) {
 //			validatorType = TypeUtils.getArrayType( TypeUtils.getComponentType( validatorType ) );
 //		}
-//
+
 //		while ( resolvedTypes.containsKey( validatorType ) ) {
 //			validatorType = resolvedTypes.get( validatorType );
 //		}
-//		//FIXME raise an exception if validatorType is not a class
-//		return validatorType;
-		return null;
+		if ( resolvedTypes.containsKey( validatorType ) ) {
+			validatorType = resolvedTypes.get( validatorType );
+		}
+		//FIXME raise an exception if validatorType is not a class
+		return validatorType;
 	}
 
 	private static Type resolveTypes(Map<Type, Type> resolvedTypes, Type type) {
 		if ( type == null ) {
 			return null;
-		}
-		else if ( type.isClassOrInterface() != null) {
+		}	else if ( type.isParameterized() != null ) {
+			ParameterizedType paramType = type.isParameterized();
+			if ( paramType.getRawType().isClassOrInterface() == null ) {
+				return null; //don't know what to do here
+			}
+			ClassType rawType = paramType.getRawType().isClassOrInterface();
+			//Class<?> rawType = ( Class<?> ) paramType.getRawType();
+
+			//TypeVariable<?>[] originalTypes = rawType.getTypeParameters();
+			Type[] partiallyResolvedTypes = paramType.getActualTypeArguments();
+			int nbrOfParams = partiallyResolvedTypes.length;
+			for ( int i = 0; i < nbrOfParams; i++ ) {
+				resolvedTypes.put( partiallyResolvedTypes[i], partiallyResolvedTypes[i] );
+			}
+
+			if ( rawType.getDeclaringClass().equals( ConstraintValidator.class ) ) {
+				//we found our baby
+				return type;
+			}
+			else {
+				Type returnedType = resolveTypeForClassAndHierarchy( resolvedTypes, rawType.getDeclaringClass() );
+				if ( returnedType != null ) {
+					return returnedType;
+				}
+			}
+		}	else if ( type.isClassOrInterface() != null) {
 			Class clazz = type.isClassOrInterface().getDeclaringClass();
 			final Type returnedType = resolveTypeForClassAndHierarchy( resolvedTypes, clazz );
 			if ( returnedType != null ) {
 				return returnedType;
 			}
-		}
-		//TODO Parameterized Type
-//		else if ( type instanceof ParameterizedType ) {
-//			ParameterizedType paramType = ( ParameterizedType ) type;
-//			if ( !( paramType.getRawType() instanceof Class ) ) {
-//				return null; //don't know what to do here
-//			}
-//			Class<?> rawType = ( Class<?> ) paramType.getRawType();
-//
-//			TypeVariable<?>[] originalTypes = rawType.getTypeParameters();
-//			Type[] partiallyResolvedTypes = paramType.getActualTypeArguments();
-//			int nbrOfParams = originalTypes.length;
-//			for ( int i = 0; i < nbrOfParams; i++ ) {
-//				resolvedTypes.put( originalTypes[i], partiallyResolvedTypes[i] );
-//			}
-//
-//			if ( rawType.equals( ConstraintValidator.class ) ) {
-//				//we found our baby
-//				return type;
-//			}
-//			else {
-//				Type returnedType = resolveTypeForClassAndHierarchy( resolvedTypes, rawType );
-//				if ( returnedType != null ) {
-//					return returnedType;
-//				}
-//			}
-//		}
+		}	
 		//else we don't care I think
 		return null;
 	}
 
 	private static Type resolveTypeForClassAndHierarchy(Map<Type, Type> resolvedTypes, Class<?> clazz) {
-//		Type returnedType = resolveTypes( resolvedTypes, clazz.getGenericSuperclass() );
-//		if ( returnedType != null ) {
-//			return returnedType;
-//		}
+		ClassHelper<?> helper = ClassHelper.AsClass(clazz);
+		Type returnedType = resolveTypes( resolvedTypes, helper.getGenericSuperclass() );
+		if ( returnedType != null ) {
+			return returnedType;
+		}
 //		for ( Type genericInterface : clazz.getGenericInterfaces() ) {
 //			returnedType = resolveTypes( resolvedTypes, genericInterface );
 //			if ( returnedType != null ) {
 //				return returnedType;
 //			}
 //		}
+		for ( Type genericInterface : helper.getType().isClassOrInterface().getImplementedInterfaces() ) {
+			returnedType = resolveTypes( resolvedTypes, genericInterface );
+			if ( returnedType != null ) {
+				return returnedType;
+			}
+		}
 		return null;
 	}
 }

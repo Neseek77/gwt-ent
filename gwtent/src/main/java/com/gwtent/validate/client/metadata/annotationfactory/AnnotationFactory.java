@@ -18,14 +18,6 @@
 package com.gwtent.validate.client.metadata.annotationfactory;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Proxy;
-import java.security.AccessController;
-
-import org.hibernate.validator.util.GetConstructor;
-import org.hibernate.validator.util.GetClassLoader;
 
 
 /**
@@ -39,34 +31,35 @@ public class AnnotationFactory {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> T create(AnnotationDescriptor<T> descriptor) {
-		boolean isSecured = System.getSecurityManager() != null;
-		GetClassLoader action = GetClassLoader.fromContext();
-		ClassLoader classLoader = isSecured ? AccessController.doPrivileged( action ) : action.run();
-        //TODO round 34ms to generate the proxy, hug! is Javassist Faster?
-        Class<T> proxyClass = (Class<T>) Proxy.getProxyClass( classLoader, descriptor.type() );
-		InvocationHandler handler = new AnnotationProxy( descriptor );
-		try {
-			return getProxyInstance( proxyClass, handler );
-		}
-		catch (RuntimeException e) {
-			throw e;
-		}
-		catch (Exception e) {
-			throw new RuntimeException( e );
-		}
+//		boolean isSecured = System.getSecurityManager() != null;
+//		GetClassLoader action = GetClassLoader.fromContext();
+//		ClassLoader classLoader = isSecured ? AccessController.doPrivileged( action ) : action.run();
+//        //TODO round 34ms to generate the proxy, hug! is Javassist Faster?
+//        Class<T> proxyClass = (Class<T>) Proxy.getProxyClass( classLoader, descriptor.type() );
+//		InvocationHandler handler = new AnnotationProxy( descriptor );
+//		try {
+//			return getProxyInstance( proxyClass, handler );
+//		}
+//		catch (RuntimeException e) {
+//			throw e;
+//		}
+//		catch (Exception e) {
+//			throw new RuntimeException( e );
+//		}
+		return null;
 	}
-
-	private static <T extends Annotation> T getProxyInstance(Class<T> proxyClass, InvocationHandler handler) throws
-			SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException,
-			IllegalAccessException, InvocationTargetException {
-		GetConstructor<T> action = GetConstructor.action( proxyClass, InvocationHandler.class );
-		final Constructor<T> constructor;
-		if ( System.getSecurityManager() != null ) {
-			constructor = AccessController.doPrivileged( action );
-		}
-		else {
-			constructor = action.run();
-		}
-		return constructor.newInstance( handler );
-	}
+//
+//	private static <T extends Annotation> T getProxyInstance(Class<T> proxyClass, InvocationHandler handler) throws
+//			SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException,
+//			IllegalAccessException, InvocationTargetException {
+//		GetConstructor<T> action = GetConstructor.action( proxyClass, InvocationHandler.class );
+//		final Constructor<T> constructor;
+//		if ( System.getSecurityManager() != null ) {
+//			constructor = AccessController.doPrivileged( action );
+//		}
+//		else {
+//			constructor = action.run();
+//		}
+//		return constructor.newInstance( handler );
+//	}
 }

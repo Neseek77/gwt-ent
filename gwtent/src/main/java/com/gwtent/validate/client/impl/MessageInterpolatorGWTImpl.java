@@ -29,9 +29,11 @@ public class MessageInterpolatorGWTImpl implements MessageInterpolator {
 //	}
 	
 	private Map<ClassType, Object> messageTypes = null;
+	private List<ClassType> messagesClasses = null;
 	
 	private void updateMessageTypes(){
 		messageTypes = GWTValidateMessageStore.getInstance().getMessageStores();
+		messagesClasses = GWTValidateMessageStore.getInstance().getMessagesClasses();
 	}
 	
 	private String doInterpolate(String messageTemplate, Context context) {
@@ -39,10 +41,13 @@ public class MessageInterpolatorGWTImpl implements MessageInterpolator {
 		if (messageTemplate.startsWith("{") && messageTemplate.endsWith("}")){
 			updateMessageTypes();
 			
-			messageTemplate = messageTemplate.substring(1, messageTemplate.length() - 1).trim();
+			String methodName = messageTemplate.substring(1, messageTemplate.length() - 1).trim();
+			methodName = methodName.replace(".", "_");
 			
-			for (ClassType type : messageTypes.keySet()){
-				Method method = ReflectionUtils.findMethodByName(type, messageTemplate);
+			for (int i = messagesClasses.size() - 1; i >= 0; i--){
+				ClassType type = messagesClasses.get(i);
+			
+				Method method = ReflectionUtils.findMethodByName(type, methodName);
 				if (method != null){
 					Object instance = messageTypes.get(type);
 					

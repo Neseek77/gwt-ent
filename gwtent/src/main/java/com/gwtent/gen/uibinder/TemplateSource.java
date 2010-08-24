@@ -15,11 +15,12 @@ public class TemplateSource {
 
 	class MyUiBinderManager extends UIBinderManager{
 
-		@Override
 		public void bindAll(Object owner) {
 			// TODO Auto-generated method stub
 			
-		}}
+		}
+
+	}
   private static MyUiBinderManager uiBinder = GWT.create(MyUiBinderManager.class);
 
 

@@ -24,6 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.map.AbstractReferenceMap;
+import org.apache.commons.collections.map.ReferenceIdentityMap;
+
+import com.google.gwt.core.ext.typeinfo.BadTypeArgsException;
+import com.google.gwt.core.ext.typeinfo.JArrayType;
+import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
+import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.ParseException;
+import com.gwtent.reflection.client.ArrayType;
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Parameter;
 import com.gwtent.reflection.client.PrimitiveType;
@@ -57,7 +68,7 @@ public class TypeOracleImpl implements TypeOracle {
 
 	public static final int MOD_VOLATILE = 0x00000100;
 
-	static final ClassTypeImpl[] NO_JCLASSES = new ClassTypeImpl[0];
+	static final ClassType[] NO_JCLASSES = new ClassType[0];
 
 	// static final JConstructor[] NO_JCTORS = new JConstructor[0];
 	static final FieldImpl[] NO_JFIELDS = new FieldImpl[0];
@@ -83,48 +94,48 @@ public class TypeOracleImpl implements TypeOracle {
 	}
 
 	static String[] modifierBitsToNames(int bits) {
-		List strings = new ArrayList();
+    List<String> strings = new ArrayList<String>();
 
-		// The order is based on the order in which we want them to appear.
-		//
-		if (0 != (bits & MOD_PUBLIC)) {
-			strings.add("public");
-		}
+    // The order is based on the order in which we want them to appear.
+    //
+    if (0 != (bits & MOD_PUBLIC)) {
+      strings.add("public");
+    }
 
-		if (0 != (bits & MOD_PRIVATE)) {
-			strings.add("private");
-		}
+    if (0 != (bits & MOD_PRIVATE)) {
+      strings.add("private");
+    }
 
-		if (0 != (bits & MOD_PROTECTED)) {
-			strings.add("protected");
-		}
+    if (0 != (bits & MOD_PROTECTED)) {
+      strings.add("protected");
+    }
 
-		if (0 != (bits & MOD_STATIC)) {
-			strings.add("static");
-		}
+    if (0 != (bits & MOD_STATIC)) {
+      strings.add("static");
+    }
 
-		if (0 != (bits & MOD_ABSTRACT)) {
-			strings.add("abstract");
-		}
+    if (0 != (bits & MOD_ABSTRACT)) {
+      strings.add("abstract");
+    }
 
-		if (0 != (bits & MOD_FINAL)) {
-			strings.add("final");
-		}
+    if (0 != (bits & MOD_FINAL)) {
+      strings.add("final");
+    }
 
-		if (0 != (bits & MOD_NATIVE)) {
-			strings.add("native");
-		}
+    if (0 != (bits & MOD_NATIVE)) {
+      strings.add("native");
+    }
 
-		if (0 != (bits & MOD_TRANSIENT)) {
-			strings.add("transient");
-		}
+    if (0 != (bits & MOD_TRANSIENT)) {
+      strings.add("transient");
+    }
 
-		if (0 != (bits & MOD_VOLATILE)) {
-			strings.add("volatile");
-		}
+    if (0 != (bits & MOD_VOLATILE)) {
+      strings.add("volatile");
+    }
 
-		return (String[]) strings.toArray(NO_STRINGS);
-	}
+    return strings.toArray(NO_STRINGS);
+  }
 
 	
 	private static String removeAnonymousNumber(String name){
@@ -145,28 +156,12 @@ public class TypeOracleImpl implements TypeOracle {
 	
 	
 	public Type getType(String name) {
-		Type type = findType(name);
-		if (type == null) {
-			if (PrimitiveType.BOOLEAN.getSimpleSourceName().equals(name))
-				return PrimitiveType.BOOLEAN;
-			else if (PrimitiveType.BYTE.getSimpleSourceName().equals(name))
-				return PrimitiveType.BYTE;
-			else if (PrimitiveType.CHAR.getSimpleSourceName().equals(name))
-				return PrimitiveType.CHAR;
-			else if (PrimitiveType.DOUBLE.getSimpleSourceName().equals(name))
-				return PrimitiveType.DOUBLE;
-			else if (PrimitiveType.FLOAT.getSimpleSourceName().equals(name))
-				return PrimitiveType.FLOAT;
-			else if (PrimitiveType.INT.getSimpleSourceName().equals(name))
-				return PrimitiveType.INT;
-			else if (PrimitiveType.LONG.getSimpleSourceName().equals(name))
-				return PrimitiveType.LONG;
-			else if (PrimitiveType.SHORT.getSimpleSourceName().equals(name))
-				return PrimitiveType.SHORT;
-			else if (PrimitiveType.VOID.getSimpleSourceName().equals(name))
-				return PrimitiveType.VOID;
-		}
-		return type;
+	// Remove all internal and external whitespace.
+    //
+		name = name.replaceAll("\\\\s", "");
+    
+    
+		return parseImpl(name);
 	}
 	
 	public static Type findType(String name) {
@@ -180,12 +175,43 @@ public class TypeOracleImpl implements TypeOracle {
 	}
 
 	public ClassType getClassType(String name) {
-		Type type = findType(name);
-		if (type != null)
-			return type.isClass();
+		Type type = this.getType(name);
+		if (type != null && type instanceof ClassType)
+			//return type.isClassOrInterface();
+			return (ClassType)type;
 		else
 			return null;
 	}
+	
+	private final Map<Type, ArrayType> arrayTypes = new HashMap<Type, ArrayType>();
+	/**
+   * Gets the type object that represents an array of the specified type. 
+   * 
+   * @param componentType the component type of the array, which can itself be
+   *          an array type
+   * @return a type object representing an array of the component type
+   */
+  public ArrayType getArrayType(Type componentType) {
+    ArrayType arrayType = arrayTypes.get(componentType);
+    if (arrayType == null) {
+      arrayType = new ArrayTypeImpl(componentType);
+      arrayTypes.put(componentType, arrayType);
+    }
+    return arrayType;
+  }
+
+  private ClassType javaLangObject;
+  /**
+   * Gets a reference to the type object representing
+   * <code>java.lang.Object</code>.
+   */
+  public ClassType getJavaLangObject() {
+    if (javaLangObject == null) {
+      javaLangObject = this.getClassType("java.lang.Object");
+      assert javaLangObject != null;
+    }
+    return javaLangObject;
+  }
 
 	public static void putType(Type type) {
 		putType(type, type.getQualifiedSourceName());
@@ -197,7 +223,74 @@ public class TypeOracleImpl implements TypeOracle {
 
 	private static Map<String, Type> typeMap = new HashMap<String, Type>();
 
-	public ClassType getClassType(Class<?> classz) {
+	public <T> ClassType<T> getClassType(Class<T> classz) {
+		if (classz.isArray()){
+			return this.getArrayType(getClassType(classz.getComponentType()));
+		}
+		
 		return getClassType(classz.getName().replace('$', '.'));
+	}
+	
+	
+	private Type parseImpl(String type) {
+		if (type.endsWith("[]")) {
+		  String remainder = type.substring(0, type.length() - 2);
+		  Type componentType = this.getType(remainder);
+		  return getArrayType(componentType);
+		}
+		
+		if (type.endsWith(">")) {
+      int bracket = type.indexOf('<');
+      if (bracket == -1) {
+        throw new RuntimeException(
+            "Mismatched brackets; expected '<' to match subsequent '>'");
+      }
+
+      // Resolve the raw type.
+      //
+      String rawTypeName = type.substring(0, bracket);
+      Type rawType = getType(rawTypeName);
+      
+      //For parameterised type, we just erase it.
+      
+      if (rawType != null)
+      	return rawType;
+    }
+
+    Type result = findPrimitiveType(type);
+    if (result != null) {
+      return result;
+    }
+
+    result = findType(type);
+    if (result != null) {
+      return result;
+    }
+
+    return null;
+    //throw new RuntimeException("Unable to recognize '" + type + "' as a type name (is it fully qualified?)");
+	}
+	
+	private PrimitiveType findPrimitiveType(String name){
+		if (PrimitiveType.BOOLEAN.getSimpleSourceName().equals(name))
+			return PrimitiveType.BOOLEAN;
+		else if (PrimitiveType.BYTE.getSimpleSourceName().equals(name))
+			return PrimitiveType.BYTE;
+		else if (PrimitiveType.CHAR.getSimpleSourceName().equals(name))
+			return PrimitiveType.CHAR;
+		else if (PrimitiveType.DOUBLE.getSimpleSourceName().equals(name))
+			return PrimitiveType.DOUBLE;
+		else if (PrimitiveType.FLOAT.getSimpleSourceName().equals(name))
+			return PrimitiveType.FLOAT;
+		else if (PrimitiveType.INT.getSimpleSourceName().equals(name))
+			return PrimitiveType.INT;
+		else if (PrimitiveType.LONG.getSimpleSourceName().equals(name))
+			return PrimitiveType.LONG;
+		else if (PrimitiveType.SHORT.getSimpleSourceName().equals(name))
+			return PrimitiveType.SHORT;
+		else if (PrimitiveType.VOID.getSimpleSourceName().equals(name))
+			return PrimitiveType.VOID;
+		else 
+			return null;
 	}
 }

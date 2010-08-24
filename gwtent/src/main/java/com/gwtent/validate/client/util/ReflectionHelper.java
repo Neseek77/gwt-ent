@@ -1,8 +1,6 @@
 package com.gwtent.validate.client.util;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -56,9 +54,9 @@ public class ReflectionHelper {
 	@SuppressWarnings("unchecked")
 	static <T> T getAnnotationParameter(Annotation annotation,
 			String parameterName, Class<T> type) {
-		ReflectionUtils.checkReflection(annotation.getClass());
+		ReflectionUtils.checkReflection(annotation.annotationType());
 
-		Method m = TypeOracle.Instance.getClassType(annotation.getClass())
+		Method m = TypeOracle.Instance.getClassType(annotation.annotationType())
 				.findMethod(parameterName);
 
 		Object o = m.invoke(annotation);

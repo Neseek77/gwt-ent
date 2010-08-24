@@ -16,7 +16,7 @@ public interface Member {
    * @return an object representing the declaring class of the
    * underlying member
    */
-  public Class getDeclaringClass();
+  public Class<?> getDeclaringClass();
 
   /**
    * Returns the simple name of the underlying member or constructor

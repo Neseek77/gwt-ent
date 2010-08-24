@@ -22,17 +22,38 @@ package com.gwtent.reflection.client;
 
 public interface Field extends AccessDef, HasAnnotations, Member {
 
+	/**
+	 * please using getDeclaringClass() instead
+	 * @return
+	 */
+	@Deprecated
 	public ClassType getEnclosingType();
+	
 
 	public String getName();
 
+	 /**
+   * Returns a <code>ClassType</code> object that identifies the
+   * declared type for the field represented by this
+   * <code>Field</code> object.
+   *
+   * @return a <code>ClassType</code> object identifying the declared
+   * type of the field represented by this object
+   */
 	public Type getType();
 	
+	/**
+	 * please using getType() instead
+	 * @return
+	 */
+	@Deprecated
 	public String getTypeName();
+	
+	
 	
 	/**
 	 * Get field value from instance
-	 * This function suppose the Getter exists and can be accessed be subclass
+	 * This function supposed the Getter exists and can be accessed be subclass
 	 * 
 	 * @param instance
 	 * @return the field value of instance

@@ -55,6 +55,7 @@ import com.gwtent.gen.reflection.ReflectionCreator.ReflectionSourceCreator;
 import com.gwtent.reflection.client.HasReflect;
 import com.gwtent.reflection.client.Reflectable;
 import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
 public class ReflectAllInOneCreator extends LogableSourceCreator {
@@ -87,36 +88,87 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 
 	@Override
 	public void createSource(SourceWriter source, JClassType classType) {
-		allGeneratedClassNames = genAllClasses(source);
+		//ClassType -->> the interface name created automatically
+		Map<JClassType, String> typeNameMap = new HashMap<JClassType, String>();
+				
 		
-		source.println("public " + getSimpleUnitName(classType) + "(){");
+		genAllClasses(source, typeNameMap);
+		
+//		source.println("public " + getSimpleUnitName(classType) + "(){");
+//		source.indent();
+//		
+//		for (String classname : allGeneratedClassNames){
+//			source.println("new " + classname + "();");
+//		}
+//		source.outdent();
+//		source.println("}");
+		
+		source.println("public com.gwtent.reflection.client.Type getType(String name) {");
 		source.indent();
+		source.println("com.gwtent.reflection.client.Type resultType = super.getType(name);");
+		source.println("if (resultType != null) {return resultType;}");
 		
-		for (String classname : allGeneratedClassNames){
-			source.println("new " + classname + "();");
+		for (JClassType type : typeNameMap.keySet()){
+			source.println("if (name.equals( \"" + type.getQualifiedSourceName() + "\")){return GWT.create(" + typeNameMap.get(type) + ".class);}");
 		}
+		source.println();
+		source.println("return null;");
 		
 		source.outdent();
-		source.println("}");
+		source.print("}");
+		
 	}
 	
-	private List<String> genAllClasses(SourceWriter sourceWriter){
-		List<String> result = new ArrayList<String>();
+	private void genAllClasses(SourceWriter sourceWriter, Map<JClassType, String> typeNameMap){
 		for(JClassType type : candidateList){
-			String className = type.getPackage().getName().replace('.', '_') + '_' + getSimpleUnitNameWithOutSuffix(type); //type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
-			sourceWriter.indent();
-			if (type.isEnum() == null)
-				sourceWriter.println("private static class " + className + " extends com.gwtent.reflection.client.impl.ClassTypeImpl {");
-			else
-				sourceWriter.println("private static class " + className + " extends com.gwtent.reflection.client.impl.EnumTypeImpl {");
-
-			new ReflectionSourceCreator(className, type, sourceWriter, this.typeOracle, logger, candidates.get(type)).createSource();
-			sourceWriter.outdent();
-			sourceWriter.println("}");
-
-			result.add(className);
+			String className = type.getPackage().getName().replace('.', '_') + '_' + getSimpleUnitNameWithOutSuffix(type) + "_GWTENTAUTO_ClassType"; //type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
+			
+			sourceWriter.println("public static interface " + className + " extends com.gwtent.reflection.client.ClassType<" + type.getQualifiedSourceName() + "> {}");
+			
+			if (type.isAnnotation() != null)
+				createAnnotationImpl(sourceWriter, type.isAnnotation());
+			
+			typeNameMap.put(type, className);
 		}
-		return result;
+	}
+	
+	
+	private void createAnnotationImpl(SourceWriter sourceWriter, JAnnotationType annotation) {
+		sourceWriter.println();
+		String className = annotation.getQualifiedSourceName();
+		String implClassName = className.replace('.', '_') + "Impl";
+		sourceWriter.println("public static class " + implClassName + " extends AnnotationImpl implements " + annotation.getQualifiedSourceName() + "{");
+		sourceWriter.indent();
+		JAnnotationMethod[] methods = annotation.getMethods();
+		//declare variable
+    for (JAnnotationMethod method : methods) {
+    	sourceWriter.println("private final " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + ";");
+    }
+    
+    //Constructor
+    StringBuilder sb = new StringBuilder();
+    sb.append("public ").append(implClassName).append("(Class<? extends java.lang.annotation.Annotation> clazz");
+    for (JAnnotationMethod method : methods){
+    	sb.append(", ").append(method.getReturnType().getQualifiedSourceName()).append(" ").append(method.getName());
+    }
+    sb.append("){");
+    sourceWriter.println(sb.toString());
+    sourceWriter.println("  super(clazz);");
+    for (JAnnotationMethod method : methods){
+    	sourceWriter.println("  this." + method.getName() + " = "+ method.getName() +";");
+    }
+    sourceWriter.println("}");
+    
+    //Methods
+    for (JAnnotationMethod method : methods){
+    	sourceWriter.println("public " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + "() {");
+    	sourceWriter.println("  return " + method.getName() + ";");
+    	sourceWriter.println("}");
+    }
+    
+    sourceWriter.outdent();
+    sourceWriter.println("}");
+    sourceWriter.println();
 	}
 	
 	//TODO refactor by source visitor pattern
@@ -129,6 +181,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		addClassIfNotExists(typeOracle.getType(Inherited.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
 		addClassIfNotExists(typeOracle.getType(Target.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
 		addClassIfNotExists(typeOracle.getType(Deprecated.class.getCanonicalName()), ReflectableHelper.getDefaultSettings(typeOracle));
+		//typeOracle.getType("com.gwtent.client.test.reflection.TestReflectionGenerics.TestReflection1");
 		
 		//=====GWT0.7
 		for (JClassType classType : typeOracle.getTypes()) {
@@ -372,18 +425,24 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	private void addClassIfNotExists(JClassType classType, Reflectable setting){
 		//Add next line we can make sure we just append normal class type, always get from TypeOracle
 		//not JParameterizedType or JTypeParameter etc...
-		if (classType != null){
+		//RC2 we support ParameterizedType now.
+		if (classType != null && classType.isParameterized() == null){
 //			System.out.println("addClassIfNotExists: " + classType.getQualifiedSourceName());
 			classType = this.typeOracle.findType(classType.getQualifiedSourceName());
+			
 		}
 		
 		//we just process public classes
 		if ((classType == null) || (!classType.isPublic()))
-		  return;  
+		  return;
 		
-		if (candidateList.indexOf(classType) < 0)
-			candidateList.add(classType);
-		candidates.put(classType, setting);
+		//no need java.lang.class
+		if (classType.getQualifiedSourceName().equals("java.lang.Class"))
+			return;
+		
+		if (candidateList.indexOf(classType.getErasedType()) < 0)
+			candidateList.add(classType.getErasedType());
+		candidates.put(classType.getErasedType(), setting);
 	}
 
 	protected SourceWriter doGetSourceWriter(JClassType classType) throws NotFoundException {

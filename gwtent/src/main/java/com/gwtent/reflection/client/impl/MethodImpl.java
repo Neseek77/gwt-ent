@@ -51,8 +51,6 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 		return enclosingType.invoke(instance, this.getName(), args);
 	}
 
-
-	//TODO not support yet
 	private TypeImpl returnType;
 	private String returnTypeName;
 
@@ -61,7 +59,7 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 	 */
 	public Type getReturnType() {
 		if (returnType == null)
-			returnType = (TypeImpl)TypeOracle.Instance.getClassType(returnTypeName);
+			returnType = (TypeImpl)TypeOracle.Instance.getType(returnTypeName);
 		
 		return returnType;
 	}

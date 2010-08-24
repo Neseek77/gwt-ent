@@ -19,6 +19,8 @@
 
 package com.gwtent.reflection.client;
 
+
+
 public interface Type {
 
 	public String getQualifiedSourceName();
@@ -32,8 +34,14 @@ public interface Type {
 
 	public ClassType isInterface();
 	
+	public AnnotationType isAnnotation();
+	
 	public ArrayType isArray();
 
 	public PrimitiveType isPrimitive();
+	
+	public ParameterizedType isParameterized();
+	
+	public EnumType isEnum();
 
 }

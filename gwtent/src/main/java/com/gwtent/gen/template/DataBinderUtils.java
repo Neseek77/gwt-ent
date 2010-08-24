@@ -16,7 +16,6 @@ import com.gwtent.uibinder.client.UIBind;
  * 
  * @author James Luo
  *
- * 15/04/2010 10:22:32 AM
  */
 public class DataBinderUtils {
 

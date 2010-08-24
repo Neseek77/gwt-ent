@@ -5,6 +5,7 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 
 import com.gwtent.validate.client.constraints.impl.RequiredValidator;
 
@@ -19,5 +20,7 @@ import static java.lang.annotation.ElementType.METHOD;
 public @interface Required {
 	Class<?>[] groups() default {};
 
-	String message() default "{constraint_required}";
+	String message() default "{com.gwtent.validate.client.constraints.Required.message}";
+	
+	Class<? extends Payload>[] payload() default { };
 }

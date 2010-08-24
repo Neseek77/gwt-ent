@@ -21,6 +21,9 @@ public class TypeUtils {
 	}
 	
 	public static Type getComponentType(Type type){
+		if (type.isArray() != null)
+			return type.isArray().getComponentType();
+			
 		return null;
 	}
 	

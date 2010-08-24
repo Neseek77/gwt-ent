@@ -22,8 +22,8 @@ package com.gwtent.reflection.client.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gwtent.reflection.client.ArrayType;
 import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.EnumType;
 import com.gwtent.reflection.client.PrimitiveType;
 import com.gwtent.reflection.client.Type;
 
@@ -79,7 +79,7 @@ public class PrimitiveTypeImpl extends TypeImpl implements Type, PrimitiveType {
 	  }
 
 	  
-	  public ArrayType isArray() {
+	  public ArrayTypeImpl isArray() {
 	    // intentional null
 	    return null;
 	  }
@@ -91,9 +91,9 @@ public class PrimitiveTypeImpl extends TypeImpl implements Type, PrimitiveType {
 	  }
 
 	  
-//	  public JEnumType isEnum() {
-//	    return null;
-//	  }
+	  public EnumType isEnum() {
+	    return null;
+	  }
 
 	  
 //	  public JGenericType isGenericType() {
