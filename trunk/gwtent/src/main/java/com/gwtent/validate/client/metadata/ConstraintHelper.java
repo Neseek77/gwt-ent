@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.validation.Constraint;
+import javax.validation.ConstraintDefinitionException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ValidationException;
 import javax.validation.constraints.AssertFalse;
@@ -22,6 +23,9 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.ClassHelper;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.Type;
 import com.gwtent.validate.client.constraints.impl.AssertFalseValidator;
 import com.gwtent.validate.client.constraints.impl.AssertTrueValidator;
 import com.gwtent.validate.client.constraints.impl.DecimalMaxValidatorForNumber;
@@ -50,6 +54,9 @@ import com.gwtent.validate.client.constraints.impl.SizeValidatorForArraysOfLong;
 import com.gwtent.validate.client.constraints.impl.SizeValidatorForCollection;
 import com.gwtent.validate.client.constraints.impl.SizeValidatorForMap;
 import com.gwtent.validate.client.constraints.impl.SizeValidatorForString;
+import com.gwtent.validate.client.util.GetAnnotationParameter;
+import com.gwtent.validate.client.util.GetMethod;
+import com.gwtent.validate.client.util.GetMethods;
 
 
 /**
@@ -220,18 +227,15 @@ public class ConstraintHelper {
 	 */
 	public <A extends Annotation> List<Annotation> getMultiValueConstraints(A annotation) {
 		List<Annotation> annotationList = new ArrayList<Annotation>();
+		//TODO Finish here
 //		try {
 //			final GetMethod getMethod = GetMethod.action( annotation.getClass(), "value" );
 //			final Method method;
-//			if ( System.getSecurityManager() != null ) {
-//				method = AccessController.doPrivileged( getMethod );
-//			}
-//			else {
-//				method = getMethod.run();
-//			}
+//			method = getMethod.run();
+//			
 //			if (method != null) {
-//				Class returnType = method.getReturnType();
-//				if ( returnType.isArray() && returnType.getComponentType().isAnnotation() ) {
+//				Type returnType = method.getReturnType();
+//				if ( returnType.isArray() != null && returnType.getComponentType().isAnnotation() ) {
 //					Annotation[] annotations = ( Annotation[] ) method.invoke( annotation );
 //					for ( Annotation a : annotations ) {
 //						if ( isConstraintAnnotation( a ) || isBuiltinConstraint( a.annotationType() ) ) {
@@ -266,115 +270,100 @@ public class ConstraintHelper {
 	 */
 	public boolean isConstraintAnnotation(Annotation annotation) {
 
-		//TODO implements this
-//		Constraint constraint = annotation.annotationType()
-//				.getAnnotation( Constraint.class );
-//		if ( constraint == null ) {
-//			return false;
-//		}
-//
-//		assertMessageParameterExists( annotation );
-//		assertGroupsParameterExists( annotation );
-//		assertPayloadParameterExists( annotation );
-//
-//		assertNoParameterStartsWithValid( annotation );
+		Constraint constraint = ClassHelper.AsClass(annotation.annotationType())
+				.getAnnotation( Constraint.class );
+		if ( constraint == null ) {
+			return false;
+		}
+
+		assertMessageParameterExists( annotation );
+		assertGroupsParameterExists( annotation );
+		assertPayloadParameterExists( annotation );
+
+		assertNoParameterStartsWithValid( annotation );
 
 		return true;
 	}
 
 	private void assertNoParameterStartsWithValid(Annotation annotation) {
-//		final Method[] methods;
-//		final GetMethods getMethods = GetMethods.action( annotation.annotationType() );
-//		if ( System.getSecurityManager() != null ) {
-//			methods = AccessController.doPrivileged( getMethods );
-//		}
-//		else {
-//			methods = getMethods.run();
-//		}
-//		for ( Method m : methods ) {
-//			if ( m.getName().startsWith( "valid" ) ) {
-//				String msg = "Parameters starting with 'valid' are not allowed in a constraint.";
-//				throw new ConstraintDefinitionException( msg );
-//			}
-//		}
+		final Method[] methods;
+		final GetMethods getMethods = GetMethods.action( annotation.annotationType() );
+		methods = getMethods.run();
+
+		for ( Method m : methods ) {
+			if ( m.getName().startsWith( "valid" ) ) {
+				String msg = "Parameters starting with 'valid' are not allowed in a constraint.";
+				throw new ConstraintDefinitionException( msg );
+			}
+		}
 	}
 
 	private void assertPayloadParameterExists(Annotation annotation) {
-//		try {
-//			final GetMethod getMethod = GetMethod.action( annotation.annotationType(), "payload" );
-//			final Method method;
-//			if ( System.getSecurityManager() != null ) {
-//				method = AccessController.doPrivileged( getMethod );
-//			}
-//			else {
-//				method = getMethod.run();
-//			}
-//			if (method == null) {
-//				String msg = annotation.annotationType().getName() + " contains Constraint annotation, but does " +
-//					"not contain a payload parameter.";
-//				throw new ConstraintDefinitionException( msg );
-//			}
-//			Class<?>[] defaultPayload = ( Class<?>[] ) method.getDefaultValue();
-//			if ( defaultPayload.length != 0 ) {
-//				String msg = annotation.annotationType()
-//						.getName() + " contains Constraint annotation, but the payload " +
-//						"paramter default value is not the empty array.";
-//				throw new ConstraintDefinitionException( msg );
-//			}
-//		}
-//		catch ( ClassCastException e ) {
-//			String msg = annotation.annotationType().getName() + " contains Constraint annotation, but the " +
-//					"payload parameter is of wrong type.";
-//			throw new ConstraintDefinitionException( msg );
-//		}
+		try {
+			final GetMethod getMethod = GetMethod.action( annotation.annotationType(), "payload" );
+			final Method method;
+			method = getMethod.run();
+
+			if (method == null) {
+				String msg = annotation.annotationType().getName() + " contains Constraint annotation, but does " +
+					"not contain a payload parameter.";
+				throw new ConstraintDefinitionException( msg );
+			}
+			//Class<?>[] defaultPayload = ( Class<?>[] ) method.getDefaultValue();
+			Class<?>[] defaultPayload = ( Class<?>[] ) method.invoke(annotation);
+			if ( defaultPayload.length != 0 ) {
+				String msg = annotation.annotationType()
+						.getName() + " contains Constraint annotation, but the payload " +
+						"paramter default value is not the empty array.";
+				throw new ConstraintDefinitionException( msg );
+			}
+		}
+		catch ( ClassCastException e ) {
+			String msg = annotation.annotationType().getName() + " contains Constraint annotation, but the " +
+					"payload parameter is of wrong type.";
+			throw new ConstraintDefinitionException( msg );
+		}
 	}
 
 	private void assertGroupsParameterExists(Annotation annotation) {
-//		try {
-//			//final GetMethod getMethod = GetMethod.action( annotation.annotationType(), "groups" );
-//			final GetMethod getMethod = GetMethod.action( annotation.annotationType(), "groups" );
-//			final Method method;
-//			if ( System.getSecurityManager() != null ) {
-//				method = AccessController.doPrivileged( getMethod );
-//			}
-//			else {
-//				method = getMethod.run();
-//			}
-//			if (method == null) {
-//				String msg = annotation.annotationType().getName() + " contains Constraint annotation, but does " +
-//					"not contain a groups parameter.";
-//				throw new ConstraintDefinitionException( msg );
-//			}
-//			Class<?>[] defaultGroups = ( Class<?>[] ) method.getDefaultValue();
-//			if ( defaultGroups.length != 0 ) {
-//				String msg = annotation.annotationType()
-//						.getName() + " contains Constraint annotation, but the groups " +
-//						"paramter default value is not the empty array.";
-//				throw new ConstraintDefinitionException( msg );
-//			}
-//		}
-//		catch ( ClassCastException e ) {
-//			String msg = annotation.annotationType().getName() + " contains Constraint annotation, but the " +
-//					"groups parameter is of wrong type.";
-//			throw new ConstraintDefinitionException( msg );
-//		}
+		try {
+			//final GetMethod getMethod = GetMethod.action( annotation.annotationType(), "groups" );
+			final GetMethod getMethod = GetMethod.action( annotation.annotationType(), "groups" );
+			final Method method;
+			method = getMethod.run();
+
+			if (method == null) {
+				String msg = annotation.annotationType().getName() + " contains Constraint annotation, but does " +
+					"not contain a groups parameter.";
+				throw new ConstraintDefinitionException( msg );
+			}
+			
+			//Class<?>[] defaultGroups = ( Class<?>[] ) method.getDefaultValue();
+			Class<?>[] defaultGroups = ( Class<?>[] ) method.invoke(annotation);
+			if ( defaultGroups.length != 0 ) {
+				String msg = annotation.annotationType()
+						.getName() + " contains Constraint annotation, but the groups " +
+						"paramter default value is not the empty array.";
+				throw new ConstraintDefinitionException( msg );
+			}
+		}
+		catch ( ClassCastException e ) {
+			String msg = annotation.annotationType().getName() + " contains Constraint annotation, but the " +
+					"groups parameter is of wrong type.";
+			throw new ConstraintDefinitionException( msg );
+		}
 	}
 
 	private void assertMessageParameterExists(Annotation annotation) {
-//		try {
-//			GetAnnotationParameter<?> action = GetAnnotationParameter.action( annotation, "message", String.class );
-//			if (System.getSecurityManager() != null) {
-//				AccessController.doPrivileged( action );
-//			}
-//			else {
-//				action.run();
-//			}
-//		}
-//		catch ( Exception e ) {
-//			String msg = annotation.annotationType().getName() + " contains Constraint annotation, but does " +
-//					"not contain a message parameter.";
-//			throw new ConstraintDefinitionException( msg );
-//		}
+		try {
+			GetAnnotationParameter<?> action = GetAnnotationParameter.action( annotation, "message", String.class );
+			action.run();
+		}
+		catch ( Exception e ) {
+			String msg = annotation.annotationType().getName() + " contains Constraint annotation, but does " +
+					"not contain a message parameter.";
+			throw new ConstraintDefinitionException( msg , e);
+		}
 	}
 
 	public <T extends Annotation> List<Class<? extends ConstraintValidator<T, ?>>> getConstraintValidatorDefinition(Class<T> annotationClass) {

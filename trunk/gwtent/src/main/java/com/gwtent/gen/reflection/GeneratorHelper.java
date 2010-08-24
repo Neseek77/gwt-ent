@@ -30,15 +30,53 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.client.test.reflection.ClassTypeGenTestCase.ClassA;
 import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
 import com.gwtent.reflection.client.AccessDef;
+import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
+import com.gwtent.uibinder.client.DataBinder;
 
 public class GeneratorHelper {
+	
+	/**
+	 * private interface ClassTypeOfA extends ClassType<ClassA>{
+	 * <p>
+	 * <p>	}
+	 * 
+	 * <p> find a Parameterized class/interface in super classs/interfaces,
+	 * this class should a sub class of ClassType class and will point out what's the class need generate reflection information
+	 * 
+	 * <p> if can NOT found, give a error, user should correct this before final compile
+	 * @param classType
+	 * @return
+	 */
+	public static JClassType getReflectionClassType(TypeOracle oracle, JClassType classType){
+		JClassType classClassType;
+		try {
+			classClassType = oracle.getType(ClassType.class.getCanonicalName());
+		} catch (NotFoundException e) {
+			throw new RuntimeException("Can not found DataBinder class, forgot include module xml file?" + e.getMessage());
+		}
+		for (JClassType supClass : classType.getFlattenedSupertypeHierarchy()){
+			if (supClass.isParameterized() != null && supClass.isAssignableTo(classClassType)){
+				if (supClass.isParameterized().getTypeArgs().length == 1){
+					return supClass.isParameterized().getTypeArgs()[0];
+				}else{
+					throw new RuntimeException("ClassType should have only one Parameterized type, please see document of ClassType interface. Current processing type: " + classType.getQualifiedSourceName() + ", Current parameterized type count:" + classType.isParameterized().getTypeArgs().length);
+				}
+			}
+		}
+		
+		throw new RuntimeException("ClassType should have at least one Parameterized type, please see document of ClassType interface. Current processing type: " + classType.getQualifiedSourceName());
+	}
+	
+	
 	public static int AccessDefToInt(AccessDef accessDef){
 		int result = 0;
 		
@@ -61,6 +99,20 @@ public class GeneratorHelper {
 		return AccessDefToInt(adapter);
 	}
 	
+	
+	/**
+	 * Give a array of JClassTypes, return the array of qualified source name of it. 
+	 * @param types
+	 * @return
+	 */
+	public static String[] convertJClassTypeToStringArray(JClassType[] types){
+		String[] result = new String[types.length];
+		
+		for (int i = 0; i < types.length; i++)
+			result[i] = types[i].getQualifiedSourceName();
+			
+		return result;
+	}
 	
 	
 	public static String stringArrayToCode(String[] strs){
@@ -225,6 +277,7 @@ public class GeneratorHelper {
 	 */
 	public static void addAnnotations_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
 	    String dest, SourceWriter source, Annotation[] annotations, TreeLogger logger){
+//		return;
 		
 	  if (annotations.length <= 0)
 		  return;
@@ -306,7 +359,9 @@ public class GeneratorHelper {
 			String annoReflectionClassName = annoType.getQualifiedSourceName().replace(".", "_");
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append(" new ").append(annoReflectionClassName).append(".").append(annoReflectionClassName).append("Impl");
+			//sb.append(" new ").append(annoReflectionClassName).append(".").append(annoReflectionClassName).append("Impl");
+			sb.append(" new ").append("com.gwtent.reflection.client.TypeOracle_Visitor").append(".").append(annoReflectionClassName).append("Impl");
+			
 			sb.append("(").append(annoType.getQualifiedSourceName()).append(".class");
 			
 			JAnnotationMethod[] methods = annoType.getMethods();

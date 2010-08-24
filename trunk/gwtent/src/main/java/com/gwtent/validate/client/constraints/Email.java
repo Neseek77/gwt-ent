@@ -5,6 +5,7 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 
 import com.gwtent.validate.client.constraints.impl.EmailValidator;
 
@@ -27,5 +28,7 @@ import static java.lang.annotation.ElementType.METHOD;
 public @interface Email {
 	Class<?>[] groups() default {};
 
-	String message() default "{constraint_email}";
+	String message() default "{com.gwtent.validate.client.constraints.Email.message}";
+	
+	Class<? extends Payload>[] payload() default { };
 }

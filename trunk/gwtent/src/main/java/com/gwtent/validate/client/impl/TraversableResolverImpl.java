@@ -7,23 +7,23 @@ import javax.validation.TraversableResolver;
 import javax.validation.Path.Node;
 
 /**
+ * For now this class do nothing
  * 
  * @author James Luo
- *
- * 29/07/2010 5:15:29 PM
+ * 
  */
 public class TraversableResolverImpl implements TraversableResolver {
 
 	public boolean isCascadable(Object traversableObject,
 			Node traversableProperty, Class<?> rootBeanType,
 			Path pathToTraversableObject, ElementType elementType) {
-		return false;
+		return true;
 	}
 
 	public boolean isReachable(Object traversableObject,
 			Node traversableProperty, Class<?> rootBeanType,
 			Path pathToTraversableObject, ElementType elementType) {
-		return false;
+		return true;
 	}
 
 }

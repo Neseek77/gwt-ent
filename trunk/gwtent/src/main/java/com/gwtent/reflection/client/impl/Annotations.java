@@ -20,12 +20,14 @@
 package com.gwtent.reflection.client.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.gwtent.reflection.client.ClassHelper;
 import com.gwtent.reflection.client.HasAnnotations;
 
 /**
@@ -46,7 +48,7 @@ class Annotations implements HasAnnotations {
   /**
    * If not <code>null</code> the parent to inherit annotations from.
    */
-  private Annotations parent;
+  private HasAnnotations parent;
 
   Annotations() {
   }
@@ -105,7 +107,7 @@ class Annotations implements HasAnnotations {
     declaredAnnotations.put(annotationClass, annotationInstance);
   }
 
-  void setParent(Annotations parent) {
+  void setParent(HasAnnotations parent) {
     this.parent = parent;
   }
 
@@ -116,12 +118,17 @@ class Annotations implements HasAnnotations {
 
     if (parent != null) {
       lazyAnnotations = new HashMap<Class<?>, Annotation>();
-      parent.initializeAnnotations();
-      for (Entry<Class<?>, Annotation> entry : parent.lazyAnnotations.entrySet()) {
-//        if (entry.getValue().annotationType().isAnnotationPresent(
-//            Inherited.class)) {
+//      ((Annotations)parent).initializeAnnotations();
+//      for (Entry<Class<?>, Annotation> entry : ((Annotations)parent).lazyAnnotations.entrySet()) {
+//        if (entry.getValue().annotationType().isAnnotationPresent(Inherited.class)) {
 //          lazyAnnotations.put(entry.getKey(), entry.getValue());
 //        }
+//      }
+      
+      for (Annotation a : parent.getAnnotations()){
+      	if (ClassHelper.AsClass(a.annotationType()).isAnnotationPresent(Inherited.class)){
+      		lazyAnnotations.put(a.annotationType(), a);
+      	}
       }
 
       lazyAnnotations.putAll(declaredAnnotations);

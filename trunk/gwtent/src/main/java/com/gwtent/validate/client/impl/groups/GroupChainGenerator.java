@@ -53,7 +53,7 @@ public class GroupChainGenerator {
 
 		GroupChain chain = new GroupChain();
 		for ( Class<?> clazz : groups ) {
-			if (ReflectionUtils.getAnnotation(clazz, GroupSequence.class) == null){ //if ( clazz.getAnnotation( GroupSequence.class ) == null ) {
+			if (ClassHelper.AsClass(clazz).getAnnotation(GroupSequence.class) == null){ //if ( clazz.getAnnotation( GroupSequence.class ) == null ) {
 				Group group = new Group( clazz );
 				chain.insertGroup( group );
 				insertInheritedGroups( clazz, chain );

@@ -20,7 +20,6 @@ package com.gwtent.validate.client.metadata;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.validation.Constraint;
 import javax.validation.ConstraintDefinitionException;
 import javax.validation.ConstraintValidator;
@@ -38,8 +38,6 @@ import javax.validation.ReportAsSingleViolation;
 import javax.validation.ValidationException;
 import javax.validation.groups.Default;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.slf4j.Logger;
 
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Method;

@@ -29,6 +29,7 @@ import javax.validation.ValidationException;
 import com.gwtent.reflection.client.Member;
 import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.Type;
+import com.gwtent.reflection.client.TypeOracle;
 import com.gwtent.validate.client.impl.ConstraintTree;
 import com.gwtent.validate.client.impl.GlobalExecutionContext;
 import com.gwtent.validate.client.impl.LocalExecutionContext;
@@ -150,18 +151,21 @@ public class MetaConstraint<T, A extends Annotation> {
 
 	private Type typeOfAnnotatedElement() {
 		Type t = null;
-//		switch ( getElementType() ) {
-//			case TYPE: {
-//				t = beanClass;
-//				break;
-//			}
-//			default: {
-//				t = ReflectionHelper.typeOf( member );
+		switch ( getElementType() ) {
+			case TYPE: {
+				t =  TypeOracle.Instance.getClassType(beanClass);
+				break;
+			}
+			default: {
+				t = ReflectionHelper.typeOf( member );
 //				if ( t instanceof Class && ( ( Class ) t ).isPrimitive() ) {
 //					t = ReflectionHelper.boxedType( t );
 //				}
-//			}
-//		}
+				if (t.isPrimitive() != null) {
+					t = TypeOracle.Instance.getClassType(ReflectionHelper.boxedType( t ));
+				}
+			}
+		}
 		return t;
 	}
 

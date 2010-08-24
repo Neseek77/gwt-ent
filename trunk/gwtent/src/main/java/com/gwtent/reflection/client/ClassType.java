@@ -20,8 +20,19 @@
 package com.gwtent.reflection.client;
 
 
-
-public interface ClassType extends HasAnnotations, Type {
+/**
+ * 
+ * {@code private interface ClassTypeOfA extends ClassType<ClassA>{}
+ * }
+ * <p>
+ * All reflection settings will be search from ClassA until find a {@link Reflectable} annotation.
+ * This {@link Reflectable} will be the settings, if no {@link Reflectable} found, will using the default one which equals "@Reflectable()".
+ * 
+ * @author JamesLuo.au@gmail.com
+ *
+ * @param <T> T is the class you want generate reflection information
+ */
+public interface ClassType<T> extends HasAnnotations, Type {
 
 	/**
 	 * Find Field
@@ -41,6 +52,17 @@ public interface ClassType extends HasAnnotations, Type {
 	 * @param paramTypes
 	 * @return
 	 */
+	public Method findMethod(String name, Class<?>... paramTypes);
+	
+	/**
+	 * Find method
+	 * If not found in current class
+	 * will try to find it in parent class
+	 * 
+	 * @param name
+	 * @param paramTypes
+	 * @return
+	 */
 	public Method findMethod(String name, Type[] paramTypes);
 
 	//public Method findMethod(String name, String[] paramTypes);
@@ -50,7 +72,7 @@ public interface ClassType extends HasAnnotations, Type {
 	 * If not found in current class
 	 * will try to find it in parent class
 	 */
-	public Method findMethod(String name, String... paramTypes);
+	public Method findMethod(String name, String[] paramTypes);
 	
 	/**
 	 * For now this function just return if the class can be constructed using a simple <code>new</code>
@@ -79,7 +101,7 @@ public interface ClassType extends HasAnnotations, Type {
 	 */
 	public Field[] getFields();
 
-	public ClassType[] getImplementedInterfaces();
+	public ClassType<?>[] getImplementedInterfaces();
 
 	/**
 	 * get method
@@ -102,10 +124,8 @@ public interface ClassType extends HasAnnotations, Type {
 	//For now not support packagej
 //	public Package getPackage();
 
-	public ClassType getSuperclass();
-	public Class<?> getDeclaringClass();
-	
-	public EnumType isEnum();
+	public ClassType<? super T> getSuperclass();
+	public Class<T> getDeclaringClass();
 	
 	public Object invoke(Object instance, String methodName, Object... args) throws MethodInvokeException;
 

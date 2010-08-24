@@ -2,21 +2,24 @@ package com.gwtent.reflection.client.impl;
 
 import java.lang.annotation.Annotation;
 
+import com.google.gwt.core.client.GWT;
+
 /**
  * 
  * @author JamesLuo.au@gmail.com
  *
  */
-public class AnnotationImpl implements java.lang.annotation.Annotation {
+public class AnnotationImpl<T extends Annotation> implements java.lang.annotation.Annotation {
 	
-	private final Class<? extends Annotation> clazz;
+	private final Class<T> clazz;
 	
-	public AnnotationImpl(Class<? extends Annotation> clazz){
+	public AnnotationImpl(Class<T> clazz){
 		this.clazz = clazz;
 	}
 
-	public Class<? extends Annotation> annotationType() {
+	public Class<T> annotationType() {
 		return clazz;
+		
 	}
 
 }

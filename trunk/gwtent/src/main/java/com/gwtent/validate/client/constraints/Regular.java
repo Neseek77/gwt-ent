@@ -5,6 +5,7 @@ import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.lang.annotation.ElementType.FIELD;
@@ -28,5 +29,7 @@ public @interface Regular {
 	
 	Class<?>[] groups() default {};
 
-	String message() default "{constraint_regular}";
+	String message() default "{com.gwtent.validate.client.constraints.Regular.message}";
+	
+	Class<? extends Payload>[] payload() default { };
 }

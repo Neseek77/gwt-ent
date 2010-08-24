@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Proxy extends ClassTypeImpl {
+public class Proxy extends ClassTypeImpl<Proxy> {
 	
 
 	public Proxy(){

@@ -16,7 +16,9 @@ import javax.validation.spi.ValidationProvider;
 
 import org.hibernate.validator.xml.ValidationBootstrapParameters;
 
+import com.google.gwt.i18n.client.Messages;
 import com.gwtent.validate.client.GWTEntValidatorConfiguration;
+import com.gwtent.validate.client.GWTValidateMessageStore;
 
 /**
  * 
@@ -192,6 +194,11 @@ public class ConfigurationImpl implements GWTEntValidatorConfiguration,
 //			ValidationBootstrapParameters xmlParameters = new ValidationXmlParser().parseValidationXml();
 //			applyXmlSettings( xmlParameters );
 //		}
+	}
+
+	public GWTEntValidatorConfiguration addI18NMessages(Object msg, Class<?> messageClass) {
+		GWTValidateMessageStore.getInstance().addMessageObject(msg, messageClass);
+		return this;
 	}
 
 }

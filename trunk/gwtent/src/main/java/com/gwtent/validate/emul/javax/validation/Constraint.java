@@ -17,15 +17,19 @@
 */
 package javax.validation;
 
-import java.lang.annotation.Documented;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.lang.annotation.Annotation;
+
+import com.gwtent.reflection.client.annotations.Reflect_Full;
 
 
 /**
+ * Added @Reflect_Full to this interface. All constraint need generate reflection information
+ * 
  * Link between a constraint annotation and its constraint validation implementations.
  * <p/>
  * A given constraint annotation should be annotated by a <code>@Constraint</code>
@@ -38,6 +42,7 @@ import java.lang.annotation.Annotation;
 @Documented
 @Target({ ANNOTATION_TYPE })
 @Retention(RUNTIME)
+@Reflect_Full
 public @interface Constraint {
 	/**
 	 * <code>ConstraintValidator</code> classes must reference distinct target types.

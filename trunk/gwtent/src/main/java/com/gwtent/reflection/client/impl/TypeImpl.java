@@ -16,68 +16,67 @@
  *  Contributors:
  *******************************************************************************/
 
-
 package com.gwtent.reflection.client.impl;
 
+import com.gwtent.reflection.client.AnnotationType;
 import com.gwtent.reflection.client.ArrayType;
 import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.EnumType;
+import com.gwtent.reflection.client.ParameterizedType;
 import com.gwtent.reflection.client.PrimitiveType;
 import com.gwtent.reflection.client.Type;
 
-
-
 public abstract class TypeImpl implements Type {
-	public TypeImpl(){
-		
+	public TypeImpl() {
+
 	}
-	
-	  public abstract String getJNISignature();
 
-	  public Type getLeafType() {
-	    return this;
-	  }
+	public abstract String getJNISignature();
 
-	  public String getParameterizedQualifiedSourceName() {
-	    return getQualifiedSourceName();
-	  }
+	public Type getLeafType() {
+		return this;
+	}
 
-	  /* (non-Javadoc)
-	 * @see com.gwtent.client.reflection.Type#getQualifiedSourceName()
-	 */
-	public abstract String getQualifiedSourceName();
+	public String getParameterizedQualifiedSourceName() {
+		return getQualifiedSourceName();
+	}
 
-	  /* (non-Javadoc)
-	 * @see com.gwtent.client.reflection.Type#getSimpleSourceName()
-	 */
-	public abstract String getSimpleSourceName();
+	public ArrayType isArray() {
+		return null;
+	}
 
-	public abstract ArrayType isArray();
-
-	  /* (non-Javadoc)
-	 * @see com.gwtent.client.reflection.Type#isClass()
-	 */
 	public abstract ClassType isClass();
 
-	  /* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.gwtent.client.reflection.Type#isClassOrInterface()
 	 */
 	public ClassType isClassOrInterface() {
-	    ClassType type = isClass();
-	    if (type != null) {
-	      return type;
-	    }
-	    return isInterface();
-	  }
+		ClassType type = isClass();
+		if (type != null) {
+			return type;
+		}
+		return isInterface();
+	}
 
-	  /* (non-Javadoc)
-	 * @see com.gwtent.client.reflection.Type#isInterface()
-	 */
+	public AnnotationType isAnnotation(){
+		return null;
+	}
+	
 	public abstract ClassType isInterface();
 
-	  //public abstract ParameterizedType isParameterized();
+	// public abstract ParameterizedType isParameterized();
 
-	  /* (non-Javadoc)
-	 * @see com.gwtent.client.reflection.Type#isPrimitive()
-	 */
 	public abstract PrimitiveType isPrimitive();
+	
+	public ParameterizedType isParameterized(){
+		return null;
+	}
+	
+
+	public EnumType isEnum() {
+		return null;
+	}
+
 }
