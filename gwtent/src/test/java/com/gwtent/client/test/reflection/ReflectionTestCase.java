@@ -35,6 +35,7 @@ import com.gwtent.client.test.reflection.ReflectionSaveSize.Anno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ClassRefereceByAnno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldNotThere;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldThere;
+import com.gwtent.client.test.reflection.TestReflectionGenerics.TestReflection1;
 import com.gwtent.reflection.client.AnnotationStoreImpl;
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Constructor;
@@ -62,7 +63,7 @@ public class ReflectionTestCase extends GWTTestCase {
   }
   
   public void testSuperClass(){
-  	ClassType ctTestReflection = TypeOracle.Instance.getClassType(TestReflection.class);
+  	ClassType<TestReflection> ctTestReflection = TypeOracle.Instance.getClassType(TestReflection.class);
   	ClassType ctObject = TypeOracle.Instance.getClassType(Object.class);
   	assertTrue(ctTestReflection.getSuperclass() == ctObject);
   }
@@ -140,6 +141,38 @@ public class ReflectionTestCase extends GWTTestCase {
         
   }
   
+  public void testPrimitive(){
+  	ClassType classType = TypeOracle.Instance.getClassType(TestReflection.class);
+  	
+  	Field field = classType.findField("bool");
+  	assertTrue(field.getType().isPrimitive() != null);
+  	
+  	field = classType.findField("ints");
+  	assertTrue(int[].class != null);
+  	assertTrue(int.class != null);
+  	assertTrue(field != null);
+  	assertTrue(field.getType() != null);
+  	assertTrue(field.getType().isArray() != null);
+  	assertTrue(field.getType().isArray().getComponentType().isPrimitive() != null);
+  	assertTrue(field.getType().isArray().getComponentType().isPrimitive().getSimpleSourceName().equals("int"));
+  	assertTrue(field.getType().isArray().getRank() == 1);
+  	
+  	
+  	field = classType.findField("boxedInts");
+  	assertTrue(field != null);
+  	assertTrue(field.getType() != null);
+  	assertTrue(field.getType().isArray() != null);
+  	assertTrue(field.getType().isArray().getComponentType().isClass() != null);
+  	assertTrue(field.getType().isArray().getComponentType().isClass().getDeclaringClass() == Integer.class);
+  	
+
+  	Method method = classType.findMethod("setBoxedInts", Integer[].class);
+  	assertTrue(method != null);
+  	
+  	method = classType.findMethod("setInts", int[].class);
+  	assertTrue(method != null);
+  }
+  
   private Annotation getAnnotation(Annotation[] annos, Class<? extends Annotation>clazz){
     ClassType classType = TypeOracle.Instance.getClassType(clazz);
     for (Annotation anno : annos){
@@ -172,7 +205,7 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertTrue(hasMethod("getNames", methods));
   	
   	//Test find method with autobox
-  	Method method = classType.findMethod("setBool", "boolean");
+  	Method method = classType.findMethod("setBool", new String[]{"boolean"});
   	assertTrue(method != null);
   	//Not finished yet
   	//method = classType.findMethod("setBool", "java.lang.Boolean");
@@ -188,6 +221,8 @@ public class ReflectionTestCase extends GWTTestCase {
     assertTrue(classType.invoke(account, "getString", null).equals("username"));
     classType.invoke(account, "setString", new String[]{"username set by reflection"});
     assertTrue(account.getString().equals("username set by reflection"));
+    Object theString = classType.invoke(account, "getString");
+    assertTrue(theString.equals("username set by reflection"));
     
     //Invoke generic functions 
     List<String> names = new ArrayList<String>();
@@ -234,6 +269,21 @@ public class ReflectionTestCase extends GWTTestCase {
     assertTrue(classType.getName().equals(TextBox.class.getName()));
     //t.getText();
     assertTrue(classType.invoke(t, "getText", null).equals("SetByCode"));
+    
+//    classType = TypeOracle.Instance.getClassType(SmartGWTComponents1.class);
+//    assertTrue(classType != null);
+//    
+//    classType = TypeOracle.Instance.getClassType(SmartGWTComponents2.class);
+//    assertTrue(classType != null);
+    
+//    classType = TypeOracle.Instance.getClassType(SmartGWTComponents3.class);
+//    assertTrue(classType != null);
+//    
+//    
+//    classType = TypeOracle.Instance.getClassType(SmartGWTComponents4.class);
+//    assertTrue(classType != null);
+//    
+    
   }
   
   public void testGWTClass(){
@@ -311,6 +361,36 @@ public class ReflectionTestCase extends GWTTestCase {
   	ClassType ct = TypeOracle.Instance.getClassType(r.getClass());
   	assertNull(ct);
   	//assertNull(ct.getField("abc"));
+  }
+  
+  public void testKnowIssues(){
+  	
+  }
+  
+  public void testNoPublicParameterIssue(){
+  	ClassType type = TypeOracle.Instance.getClassType(KnowIssues.KnowIssueFunctionWithNoPublicParameters_HowFix.class);
+  	assertTrue(type != null);
+  	
+  	assertTrue(type.findMethod("getClassA") == null);
+  	assertTrue(type.findMethod("setClass") == null);
+  	
+  	assertTrue(type.findMethod("setName", String.class) != null);
+  	assertTrue(type.findMethod("getName") != null);
+  	assertTrue(type.findField("name") != null);
+  }
+  
+  public void testGenerics(){
+  	ClassType type = TypeOracle.Instance.getClassType(TestReflection1.class);
+  	assertTrue(type != null);
+  	
+  	assertTrue(type.isParameterized() == null);
+  	
+  	ClassType superType = type.getSuperclass();
+  	
+  	assertTrue(superType.isParameterized() != null);
+  	
+  	assertTrue(superType.isParameterized().getActualTypeArguments().length == 1);
+  	assertTrue(superType.isParameterized().getActualTypeArguments()[0].isClassOrInterface().getName().equals("java.lang.String"));
   }
   
 }

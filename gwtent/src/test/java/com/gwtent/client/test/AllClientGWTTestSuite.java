@@ -40,20 +40,23 @@ import com.gwtent.client.test.common.CommonTestCase;
 import com.gwtent.client.test.common.annotations.AnnotationTestCase;
 import com.gwtent.client.test.i18n.I18NTestCase;
 import com.gwtent.client.test.json.SerializationTestCase;
+import com.gwtent.client.test.reflection.ClassTypeGenTestCase;
 import com.gwtent.client.test.reflection.ReflectionTestCase;
 import com.gwtent.client.test.template.TemplateTestCase;
 import com.gwtent.client.test.uibinder.DataBinderTestCase;
 import com.gwtent.client.test.uibinder.UIBinderTestCase;
-import com.gwtent.client.test.validate.BootstrappingTestCase;
-import com.gwtent.client.test.validate.ValidateTestCase;
+import com.gwtent.client.test.validate.ValidationTestSuite;
 
 public class AllClientGWTTestSuite extends TestCase{
 
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
-    suite.addTestSuite(BootstrappingTestCase.class);
-    suite.addTestSuite(ValidateTestCase.class);
+    
+    suite.addTestSuite(ReflectionTestCase.class);
+    suite.addTestSuite(ClassTypeGenTestCase.class);
+    suite.addTest(ValidationTestSuite.suite());    
+    
     
     
     suite.addTestSuite(CommonTestCase.class);
@@ -63,7 +66,7 @@ public class AllClientGWTTestSuite extends TestCase{
     suite.addTestSuite(UIBinderTestCase.class);
     suite.addTestSuite(SerializationTestCase.class);
     
-    suite.addTestSuite(ReflectionTestCase.class);
+    
     suite.addTestSuite(AOPTestCase.class);
     suite.addTestSuite(TemplateTestCase.class);
     suite.addTestSuite(AllModulesTestCase.class);

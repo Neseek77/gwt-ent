@@ -9,5 +9,9 @@
 	
 	<inherits name="com.gwtent.client.test.common.Common" />
 
+	<!-- 
+ 	<inherits name="com.smartgwt.SmartGwt"/>
+ 	 -->
+ 	
 	<source path="" />
 </module>
