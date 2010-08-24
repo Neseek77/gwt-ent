@@ -1,8 +1,17 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+== TypeOracle classes ==
 
-Add your content here.
+  * Generated class "com.gwtent.reflection.client.TypeOracle_Visitor" 
+    # All class declares will created reflection information in your project
+    # All annotation implement classes(not the annotation reflection)
+
+  * Under package "com.gwtent.reflection.client"
+    # All annotation and class comes from java.* and javax.* are put under this package to avoid 
+
+  All reflection of individual class are created under the same package of it, the generated class are end with "__Reflection"
+  
+  For example "com.gwtent.client.test.reflection.TestReflection"
 
 
 = Details =
