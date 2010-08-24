@@ -45,6 +45,9 @@ public class TestReflection<T> implements Reflection {
 	private Set<String>	sets;
 	private T t;
 	
+	private Integer[]	boxedInts;
+	private int[] ints;
+	
 	@Id
 	@NotNull
   private String id;
@@ -109,5 +112,21 @@ public class TestReflection<T> implements Reflection {
 
 	public static TestReflection getInstance(){
 		return new TestReflection();
+	}
+
+	public void setBoxedInts(Integer[] boxedInts) {
+		this.boxedInts = boxedInts;
+	}
+
+	public Integer[] getBoxedInts() {
+		return boxedInts;
+	}
+
+	public void setInts(int[] ints) {
+		this.ints = ints;
+	}
+
+	public int[] getInts() {
+		return ints;
 	}
 }

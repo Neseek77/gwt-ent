@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.constraints.NotNull;
 
 import com.gwtent.client.test.common.annotations.Entity;
