@@ -19,6 +19,8 @@ package javax.validation;
 
 import java.lang.annotation.Annotation;
 
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+
 /**
  * Defines the logic to validate a given constraint A
  * for a given object type T.
@@ -32,6 +34,8 @@ import java.lang.annotation.Annotation;
  * @author Emmanuel Bernard
  * @author Hardy Ferentschik
  */
+
+@Reflect_Full
 public interface ConstraintValidator<A extends Annotation, T> {
 	/**
 	 * Initialize the validator in preparation for isValid calls.

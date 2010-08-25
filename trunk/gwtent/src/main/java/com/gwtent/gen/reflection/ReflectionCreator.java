@@ -98,7 +98,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 						&& GenUtils.hasPublicDefaultConstructor(classType)) {
 					if ((!classType.isAbstract()) && (classType.isDefaultInstantiable())) {
 						sourceWriter.println("new ConstructorImpl(this){");
-						sourceWriter.println("	public Object newInstance() {");
+						sourceWriter.println("	public java.lang.Object newInstance() {");
 						sourceWriter.println("return new "
 								+ classType.getQualifiedSourceName() + "();");
 						// sourceWriter.println("		return GWT.create(" +
@@ -154,7 +154,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			JMethod[] methods = classType.getMethods();
 
 			sourceWriter
-					.println("public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {");
+					.println("public java.lang.Object invoke(java.lang.Object instance, String methodName, Object[] args) throws MethodInvokeException {");
 			sourceWriter.indent();
 
 			sourceWriter.println(classType.getQualifiedSourceName() + " content = ("
@@ -524,7 +524,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String className = getSimpleUnitName(classType);
 		Reflectable reflectable = GenUtils.getClassTypeAnnotationWithMataAnnotation(getReflectionType(classType), Reflectable.class);
 		if (reflectable == null)
-			reflectable = ReflectableHelper.getDefaultSettings(typeOracle);
+			reflectable = ReflectableHelper.getFullSettings(typeOracle);
 		
 		new ReflectionSourceCreator(className, getReflectionType(classType), source, this.typeOracle, logger, reflectable)
 				.createSource();
@@ -546,6 +546,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			composer.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeImpl<" + getReflectionType(classType).getQualifiedSourceName() + ">");
 		
 		composer.addImplementedInterface(classType.getQualifiedSourceName());
+		composer.addImport("java.lang.Object");    //Some times user has there own Object class
 		composer.addImport(classType.getQualifiedSourceName());
 			
 		composer.addImport("com.gwtent.common.client.*");

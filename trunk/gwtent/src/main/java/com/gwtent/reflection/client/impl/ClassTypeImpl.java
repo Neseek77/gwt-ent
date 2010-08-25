@@ -228,8 +228,8 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef, HasAnnotati
 			}
 			
 			for (Type type : this.interfacesParameterized){
-				if (type.isClassOrInterface() != null)
-					lasyinterfaces.add(type.isClassOrInterface());
+				//if (type.isClassOrInterface() != null)
+					lasyinterfaces.add((ClassType<?>)type);
 			}
 		}
 		return lasyinterfaces.toArray(TypeOracleImpl.NO_JCLASSES);

@@ -127,9 +127,9 @@ public class ClassHelper<T> implements AnnotatedElement {
 	 * @return an array of interfaces implemented by this class.
 	 */
 	public Class<?>[] getInterfaces() {
-		ClassType[] types = new ClassType[0];
+		ClassType<?>[] types = new ClassType<?>[0];
 		if (type instanceof ClassType) {
-			types = ((ClassType) type).getImplementedInterfaces();
+			types = ((ClassType<?>) type).getImplementedInterfaces();
 		}
 
 		Class<?>[] result = new Class<?>[types.length];
@@ -336,4 +336,52 @@ public class ClassHelper<T> implements AnnotatedElement {
 		} else
 			return classType == null ? null : classType.getSuperclass();
 	}
+	
+	/**
+   * Returns the <tt>Type</tt>s representing the interfaces 
+   * directly implemented by the class or interface represented by
+   * this object.
+   *
+   * <p>If a superinterface is a parameterized type, the
+   * <tt>Type</tt> object returned for it must accurately reflect
+   * the actual type parameters used in the source code. The
+   * parameterized type representing each superinterface is created
+   * if it had not been created before. See the declaration of
+   * {@link java.lang.reflect.ParameterizedType ParameterizedType}
+   * for the semantics of the creation process for parameterized
+   * types.
+   *
+   * <p> If this object represents a class, the return value is an
+   * array containing objects representing all interfaces
+   * implemented by the class. The order of the interface objects in
+   * the array corresponds to the order of the interface names in
+   * the <tt>implements</tt> clause of the declaration of the class
+   * represented by this object.  In the case of an array class, the
+   * interfaces <tt>Cloneable</tt> and <tt>Serializable</tt> are
+   * returned in that order.
+   *
+   * <p>If this object represents an interface, the array contains
+   * objects representing all interfaces directly extended by the
+   * interface.  The order of the interface objects in the array
+   * corresponds to the order of the interface names in the
+   * <tt>extends</tt> clause of the declaration of the interface
+   * represented by this object.
+   *
+   * <p>If this object represents a class or interface that
+   * implements no interfaces, the method returns an array of length
+   * 0.
+   *
+   * <p>If this object represents a primitive type or void, the
+   * method returns an array of length 0.
+   * 
+   * @return an array of interfaces implemented by this class
+   * @since RC2
+   */
+  public Type[] getGenericInterfaces() {
+  	ClassType<?>[] types = new ClassType<?>[0];
+		if (type instanceof ClassType) {
+			types = ((ClassType<?>) type).getImplementedInterfaces();
+		}
+		return types;
+  }
 }
