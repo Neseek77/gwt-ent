@@ -55,6 +55,7 @@
 				<inherited>true</inherited>
 				<configuration>
           <excludes>
+          	<exclude>com/gwtent/reflection/emul/**/*.*</exclude>
             <exclude>com/gwtent/validate/emul/**/*.*</exclude>
           	<exclude>com/gwtent/validate/jsr303/**/*.*</exclude>
           	<exclude>javax/validation/**/*.*</exclude>
@@ -219,6 +220,13 @@
 			<version>1.0.0.GA</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.12.1</version>
+			<type>jar</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
