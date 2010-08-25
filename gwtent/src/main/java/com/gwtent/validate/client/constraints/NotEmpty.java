@@ -28,7 +28,7 @@ import static java.lang.annotation.ElementType.METHOD;
 public @interface NotEmpty {
 	Class<?>[] groups() default {};
 
-	String message() default "{com_gwtent_validate_client_constraints_NotEmpty_message}";
+	String message() default "{com.gwtent.validate.client.constraints.NotEmpty.message}";
 	
 	Class<? extends Payload>[] payload() default { };
 }

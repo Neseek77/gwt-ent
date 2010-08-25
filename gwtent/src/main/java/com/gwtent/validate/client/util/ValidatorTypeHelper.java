@@ -129,18 +129,18 @@ public class ValidatorTypeHelper {
 		if ( returnedType != null ) {
 			return returnedType;
 		}
-//		for ( Type genericInterface : clazz.getGenericInterfaces() ) {
-//			returnedType = resolveTypes( resolvedTypes, genericInterface );
-//			if ( returnedType != null ) {
-//				return returnedType;
-//			}
-//		}
-		for ( Type genericInterface : helper.getType().isClassOrInterface().getImplementedInterfaces() ) {
+		for ( Type genericInterface : helper.getGenericInterfaces() ) {
 			returnedType = resolveTypes( resolvedTypes, genericInterface );
 			if ( returnedType != null ) {
 				return returnedType;
 			}
 		}
+//		for ( Type genericInterface : helper.getType().isClassOrInterface().getImplementedInterfaces() ) {
+//			returnedType = resolveTypes( resolvedTypes, genericInterface );
+//			if ( returnedType != null ) {
+//				return returnedType;
+//			}
+//		}
 		return null;
 	}
 }

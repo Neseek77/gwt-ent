@@ -248,11 +248,13 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		if (classType == null)	
 			return;
 		
-		if (classType.isParameterized() != null || 
-				classType.isRawType() != null || 
+		if (classType.isParameterized() != null)
+			classType = classType.isParameterized().getBaseType();
+		
+		if (classType.isRawType() != null || 
 				classType.isWildcard() != null || 
 				classType.isTypeParameter() != null)
-			return;
+			classType = classType.getErasedType();
 		
 		if (relationClassesProcessed.contains(classType))
 			return;
