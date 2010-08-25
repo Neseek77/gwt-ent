@@ -17,11 +17,13 @@
 */
 package com.gwtent.client.test.validate.constraints;
 
-import org.hibernate.validator.constraints.Range;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+import com.gwtent.validate.client.constraints.Range;
 
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Full
 public class Elevator {
 
 	@Range(min = -2, max = 50, message = "Invalid floor")

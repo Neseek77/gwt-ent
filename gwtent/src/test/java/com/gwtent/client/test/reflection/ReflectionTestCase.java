@@ -169,6 +169,10 @@ public class ReflectionTestCase extends GWTTestCase {
   	Method method = classType.findMethod("setBoxedInts", Integer[].class);
   	assertTrue(method != null);
   	
+  	TestReflection test = new TestReflection();
+  	method.invoke(test, new Object[]{new Integer[]{0, 1, 2, 3}});
+  	assert test.getBoxedInts().length == 4;
+  	
   	method = classType.findMethod("setInts", int[].class);
   	assertTrue(method != null);
   }

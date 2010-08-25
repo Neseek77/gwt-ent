@@ -21,8 +21,9 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
+import com.gwtent.client.test.validate.VTestCase;
 import com.gwtent.client.test.validate.util.TestUtil;
 
 
@@ -32,7 +33,7 @@ import static com.gwtent.client.test.validate.util.TestUtil.assertNumberOfViolat
 /**
  * @author Hardy Ferentschik
  */
-public class ConstraintTest {
+public class ConstraintTest extends VTestCase{
 
 	@Test
 	public void testRangeConstraint() {
