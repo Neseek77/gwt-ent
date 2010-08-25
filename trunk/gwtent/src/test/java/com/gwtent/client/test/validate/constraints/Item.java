@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.constraints;
 
 import javax.validation.Valid;
 
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Full
 class Item {
 	@Valid
 	Interval interval;

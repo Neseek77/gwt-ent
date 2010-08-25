@@ -1,6 +1,7 @@
 package com.gwtent.client.test.validate;
 
 import com.gwtent.client.test.validate.bootstrap.BootstrappingTestCase;
+import com.gwtent.client.test.validate.constraints.ConstraintTest;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -19,7 +20,10 @@ public class ValidationTestSuite extends TestCase{
     //$JUnit-BEGIN$
     suite.addTestSuite(com.gwtent.client.test.validate.bootstrap.ValidationTest.class);
     suite.addTestSuite(BootstrappingTestCase.class);
-    suite.addTestSuite(ValidateTestCase.class);
+    
+    suite.addTestSuite(ConstraintTest.class);
+    
+    //suite.addTestSuite(ValidateTestCase.class);
     
     
     //$JUnit-END$
