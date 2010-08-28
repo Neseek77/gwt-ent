@@ -81,17 +81,15 @@ public class ReflectionHelper {
 	 */
 	public static Type getIndexedType(Type type) {
 		Type indexedType = null;
-//		if ( isIterable( type ) && type instanceof ParameterizedType ) {
-//			ParameterizedType paramType = ( ParameterizedType ) type;
-//			indexedType = paramType.getActualTypeArguments()[0];
-//		}
-//		else if ( isMap( type ) && type instanceof ParameterizedType ) {
-//			ParameterizedType paramType = ( ParameterizedType ) type;
-//			indexedType = paramType.getActualTypeArguments()[1];
-//		}
-//		else if ( TypeUtils.isArray( type ) ) {
-//			indexedType = TypeUtils.getComponentType( type );
-//		}
+		
+		if (isIterable(type) && type.isParameterized() != null) {
+			indexedType = type.isParameterized().getActualTypeArguments()[0];
+		} else if (isMap(type) && type.isParameterized() != null) {
+			indexedType = type.isParameterized().getActualTypeArguments()[1];
+		} else if (TypeUtils.isArray(type)) {
+			indexedType = TypeUtils.getComponentType(type);
+		}
+		
 		return indexedType;
 	}
 
@@ -103,6 +101,8 @@ public class ReflectionHelper {
 	public static boolean isIterable(Type type) {
 		if ( type instanceof ClassType && extendsOrImplements( (( ClassType ) type).getDeclaringClass(), Iterable.class ) ) {
 			return true;
+		}if ( type.isParameterized() != null ) {
+			return isIterable( type.isParameterized().getRawType());
 		}
 		
 //		if ( type instanceof Class && extendsOrImplements( ( Class ) type, Iterable.class ) ) {
@@ -124,9 +124,13 @@ public class ReflectionHelper {
 	 * @return Returns <code>true</code> if <code>type</code> is implementing <code>Map</code>, <code>false</code> otherwise.
 	 */
 	public static boolean isMap(Type type) {
-		if ( type instanceof ClassType && extendsOrImplements( (( ClassType ) type).getDeclaringClass(), Map.class ) ) {
+		//if ( type instanceof ClassType && extendsOrImplements( (( ClassType ) type).getDeclaringClass(), Map.class ) ) {
+		if ( type.isClassOrInterface() != null && extendsOrImplements( type.isClassOrInterface().getDeclaringClass(), Map.class ) ) {
 			return true;
 		}
+		if (type.isParameterized() != null)
+			return isMap(type.isParameterized().getRawType());
+		
 //		if ( type instanceof ParameterizedType ) {
 //			return isMap( ( ( ParameterizedType ) type ).getRawType() );
 //		}
@@ -146,6 +150,9 @@ public class ReflectionHelper {
 		if ( type instanceof ClassType && extendsOrImplements( (( ClassType ) type).getDeclaringClass(), List.class ) ) {
 			return true;
 		}
+		if (type.isParameterized() != null)
+			return isList(type.isParameterized().getRawType());
+		
 //		if ( type instanceof ParameterizedType ) {
 //			return isList( ( ( ParameterizedType ) type ).getRawType() );
 //		}
@@ -380,7 +387,7 @@ public class ReflectionHelper {
 	 *
 	 * @return {@code true} if {@code clazz} extends or implements {@code superClassOrInterface}, {@code false} otherwise.
 	 */
-	private static boolean extendsOrImplements(Class<?> clazz, Class<?> superClassOrInterface) {
+	public static boolean extendsOrImplements(Class<?> clazz, Class<?> superClassOrInterface) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		computeClassHierarchy( clazz, classes );
 		return classes.contains( superClassOrInterface );

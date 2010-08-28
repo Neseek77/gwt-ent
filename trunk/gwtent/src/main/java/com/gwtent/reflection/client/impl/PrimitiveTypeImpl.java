@@ -19,121 +19,120 @@
 
 package com.gwtent.reflection.client.impl;
 
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_BOOLEAN;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_BYTE;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_CHAR;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_DOUBLE;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_FLOAT;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_INT;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_LONG;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_SHORT;
+import static com.google.gwt.core.ext.typeinfo.JniConstants.DESC_VOID;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gwtent.reflection.client.ArrayType;
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.EnumType;
+import com.gwtent.reflection.client.ParameterizedType;
 import com.gwtent.reflection.client.PrimitiveType;
 import com.gwtent.reflection.client.Type;
 
 
 public class PrimitiveTypeImpl extends TypeImpl implements Type, PrimitiveType {
 
-	  private static Map map;
 
-	  public static PrimitiveTypeImpl valueOf(String typeName) {
-	    return (PrimitiveTypeImpl)getMap().get(typeName);
-	  }
+  private static Map<String, PrimitiveType> map;
 
-	  public static PrimitiveType create(String name, String jni) {
-	    PrimitiveType type = new PrimitiveTypeImpl(name, jni);
-	    Object existing = getMap().put(name, type);
-	    assert (existing == null);
-	    return type;
-	  }
+  public static PrimitiveType valueOf(String typeName) {
+    return getMap().get(typeName);
+  }
 
-	  private static Map getMap() {
-	    if (map == null) {
-	      map = new HashMap();
-	    }
-	    return map;
-	  }
+  public static PrimitiveTypeImpl create(String name, String boxedName, char jni) {
+  	PrimitiveTypeImpl type = new PrimitiveTypeImpl(name, boxedName,
+        String.valueOf(jni));
+    Object existing = getMap().put(name, type);
+    assert (existing == null);
+    return type;
+  }
 
-	  private final String jni;
+  private static Map<String, PrimitiveType> getMap() {
+    if (map == null) {
+      map = new HashMap<String, PrimitiveType>();
+    }
+    return map;
+  }
 
-	  private final String name;
+  private final String boxedName;
 
-	  private PrimitiveTypeImpl(String name, String jni) {
-	    this.name = name;
-	    this.jni = jni;
-	  }
+  private final String jni;
 
-	  public Type getErasedType() {
-	    return this;
-	  }
+  private final String name;
 
-	  
-	  public String getJNISignature() {
-	    return jni;
-	  }
+  private PrimitiveTypeImpl(String name, String boxedName, String jni) {
+    this.name = name;
+    this.boxedName = boxedName;
+    this.jni = jni;
+  }
 
-	  
-	  public String getQualifiedSourceName() {
-	    return name;
-	  }
 
-	  
-	  public String getSimpleSourceName() {
-	    return name;
-	  }
+  @Override
+  public String getJNISignature() {
+    return jni;
+  }
 
-	  
-	  public ArrayTypeImpl isArray() {
-	    // intentional null
-	    return null;
-	  }
+  public String getQualifiedBoxedSourceName() {
+    return "java.lang." + boxedName;
+  }
 
-	  
-	  public ClassType isClass() {
-	    // intentional null
-	    return null;
-	  }
 
-	  
-	  public EnumType isEnum() {
-	    return null;
-	  }
+  @Override
+  public ArrayType isArray() {
+    // intentional null
+    return null;
+  }
 
-	  
-//	  public JGenericType isGenericType() {
-//	    return null;
-//	  }
+  @Override
+  public ClassType isClass() {
+    // intentional null
+    return null;
+  }
 
-	  
-	  public ClassType isInterface() {
-	    // intentional null
-	    return null;
-	  }
+  @Override
+  public EnumType isEnum() {
+    return null;
+  }
 
-	  
-//	  public JParameterizedType isParameterized() {
-//	    // intentional null
-//	    return null;
-//	  }
 
-	  
-	  public PrimitiveType isPrimitive() {
-	    return this;
-	  }
+  @Override
+  public ClassType isInterface() {
+    // intentional null
+    return null;
+  }
 
-	  
-//	  public JRawType isRawType() {
-//	    // intentional null
-//	    return null;
-//	  }
+  @Override
+  public ParameterizedType isParameterized() {
+    // intentional null
+    return null;
+  }
 
-	  
-//	  public JWildcardType isWildcard() {
-//	    return null;
-//	  }
+  @Override
+  public PrimitiveType isPrimitive() {
+    return this;
+  }
 
-	  
-//	  PrimitiveType getSubstitutedType(JParameterizedType parameterizedType) {
-//	    return this;
-//	  }
-	  
-	  public String toString() {
-	    return name;
-	  }
+  @Override
+  public String toString() {
+    return name;
+  }
+
+	public String getQualifiedSourceName() {
+		return name;
+	}
+
+	public String getSimpleSourceName() {
+		return name;
+	}
+
 }

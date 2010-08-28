@@ -73,7 +73,7 @@ public class ValidatorTypeHelper {
 //		else if ( validatorType instanceof GenericArrayType ) {
 //			validatorType = TypeUtils.getArrayType( TypeUtils.getComponentType( validatorType ) );
 //		}
-
+//Why here using (while)? changed i
 //		while ( resolvedTypes.containsKey( validatorType ) ) {
 //			validatorType = resolvedTypes.get( validatorType );
 //		}
@@ -88,11 +88,11 @@ public class ValidatorTypeHelper {
 		if ( type == null ) {
 			return null;
 		}	else if ( type.isParameterized() != null ) {
-			ParameterizedType paramType = type.isParameterized();
+			ParameterizedType<?> paramType = type.isParameterized();
 			if ( paramType.getRawType().isClassOrInterface() == null ) {
 				return null; //don't know what to do here
 			}
-			ClassType rawType = paramType.getRawType().isClassOrInterface();
+			ClassType<?> rawType = paramType.getRawType().isClassOrInterface();
 			//Class<?> rawType = ( Class<?> ) paramType.getRawType();
 
 			//TypeVariable<?>[] originalTypes = rawType.getTypeParameters();
@@ -113,7 +113,7 @@ public class ValidatorTypeHelper {
 				}
 			}
 		}	else if ( type.isClassOrInterface() != null) {
-			Class clazz = type.isClassOrInterface().getDeclaringClass();
+			Class<?> clazz = type.isClassOrInterface().getDeclaringClass();
 			final Type returnedType = resolveTypeForClassAndHierarchy( resolvedTypes, clazz );
 			if ( returnedType != null ) {
 				return returnedType;

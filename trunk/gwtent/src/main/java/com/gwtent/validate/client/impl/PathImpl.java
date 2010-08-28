@@ -184,9 +184,40 @@ public class PathImpl implements Path, Serializable {
 	}
 
 	private static PathImpl parseProperty(String property) {
+		//"(\\w+)(\\[(\\w+)\\])?(\\.(.*))*"
 		PathImpl path = new PathImpl();
 		String tmp = property;
 		do {
+			int indexOfDot = tmp.indexOf('.');
+			String strBeforeDot = tmp;
+			if (indexOfDot > 0)
+			 strBeforeDot = tmp.substring(0, indexOfDot);
+			String index = null;
+			String value = null;
+			if (strBeforeDot.indexOf('[') > 0 && strBeforeDot.indexOf(']') > strBeforeDot.indexOf('[')){
+				index = strBeforeDot.substring(strBeforeDot.indexOf('[') + 1, strBeforeDot.indexOf(']'));
+				value = strBeforeDot.substring(0, strBeforeDot.indexOf('['));
+			}else
+				value = strBeforeDot;
+				
+			NodeImpl node = new NodeImpl( value );
+			if ( index != null ) {
+				node.setInIterable( true );
+				try {
+					Integer i = Integer.parseInt( index );
+					node.setIndex( i );
+				}
+				catch ( NumberFormatException e ) {
+					node.setKey( index );
+				}
+			}
+			path.addNode( node );
+			
+			if (tmp.length() > strBeforeDot.length() + 1)
+				tmp = tmp.substring(strBeforeDot.length() + 1);
+			else
+				tmp = null;
+			
 //			Matcher matcher = pathPattern.matcher( tmp );
 //			if ( matcher.matches() ) {
 //				String value = matcher.group( 1 );

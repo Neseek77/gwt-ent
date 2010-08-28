@@ -205,9 +205,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	
 	private void processClass(JClassType classType, Reflectable reflectable) {
 		if (! genExclusion(classType)){
-			processRelationClasses(classType, reflectable);
-		  processAnnotationClasses(classType, reflectable);
-			addClassIfNotExists(classType, reflectable);
+			if (addClassIfNotExists(classType, reflectable)) { 
+				processRelationClasses(classType, reflectable);
+				processAnnotationClasses(classType, reflectable);
+			}
 		}
 	}
 	
@@ -424,7 +425,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			processClass(classType, getNearestSetting(classType, getFullSettings()));
 	}
 	
-	private void addClassIfNotExists(JClassType classType, Reflectable setting){
+	private boolean addClassIfNotExists(JClassType classType, Reflectable setting){
 		//Add next line we can make sure we just append normal class type, always get from TypeOracle
 		//not JParameterizedType or JTypeParameter etc...
 		//RC2 we support ParameterizedType now.
@@ -436,15 +437,19 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		
 		//we just process public classes
 		if ((classType == null) || (!classType.isPublic()))
-		  return;
+		  return false;
 		
 		//no need java.lang.class
 		if (classType.getQualifiedSourceName().equals("java.lang.Class"))
-			return;
+			return false;
 		
-		if (candidateList.indexOf(classType.getErasedType()) < 0)
+		if (candidateList.indexOf(classType.getErasedType()) < 0){
 			candidateList.add(classType.getErasedType());
-		candidates.put(classType.getErasedType(), setting);
+			candidates.put(classType.getErasedType(), setting);
+			return true;
+		}
+		
+		return false;
 	}
 
 	protected SourceWriter doGetSourceWriter(JClassType classType) throws NotFoundException {

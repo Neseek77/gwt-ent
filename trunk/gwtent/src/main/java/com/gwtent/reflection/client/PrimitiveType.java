@@ -19,18 +19,30 @@
 
 package com.gwtent.reflection.client;
 
+import static com.gwtent.reflection.client.JniConstants.DESC_BOOLEAN;
+import static com.gwtent.reflection.client.JniConstants.DESC_BYTE;
+import static com.gwtent.reflection.client.JniConstants.DESC_CHAR;
+import static com.gwtent.reflection.client.JniConstants.DESC_DOUBLE;
+import static com.gwtent.reflection.client.JniConstants.DESC_FLOAT;
+import static com.gwtent.reflection.client.JniConstants.DESC_INT;
+import static com.gwtent.reflection.client.JniConstants.DESC_LONG;
+import static com.gwtent.reflection.client.JniConstants.DESC_SHORT;
+import static com.gwtent.reflection.client.JniConstants.DESC_VOID;
+
 import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
 
 public interface PrimitiveType extends Type {
 
-	public static final PrimitiveType BOOLEAN = PrimitiveTypeImpl.create("boolean", "Z");
-	public static final PrimitiveType BYTE = PrimitiveTypeImpl.create("byte", "B");
-	public static final PrimitiveType CHAR = PrimitiveTypeImpl.create("char", "C");
-	public static final PrimitiveType DOUBLE = PrimitiveTypeImpl.create("double", "D");
-	public static final PrimitiveType FLOAT = PrimitiveTypeImpl.create("float", "F");
-	public static final PrimitiveType INT = PrimitiveTypeImpl.create("int", "I");
-	public static final PrimitiveType LONG = PrimitiveTypeImpl.create("long", "J");
-	public static final PrimitiveType SHORT = PrimitiveTypeImpl.create("short", "S");
-	public static final PrimitiveType VOID = PrimitiveTypeImpl.create("void", "V");
+  public static final PrimitiveType BOOLEAN = PrimitiveTypeImpl.create("boolean", "Boolean", DESC_BOOLEAN);
+  public static final PrimitiveType BYTE = PrimitiveTypeImpl.create("byte", "Byte", DESC_BYTE);
+  public static final PrimitiveType CHAR = PrimitiveTypeImpl.create("char", "Character", DESC_CHAR);
+  public static final PrimitiveType DOUBLE = PrimitiveTypeImpl.create("double", "Double", DESC_DOUBLE);
+  public static final PrimitiveType FLOAT = PrimitiveTypeImpl.create("float", "Float", DESC_FLOAT);
+  public static final PrimitiveType INT = PrimitiveTypeImpl.create("int", "Integer", DESC_INT);
+  public static final PrimitiveType LONG = PrimitiveTypeImpl.create("long", "Long", DESC_LONG);
+  public static final PrimitiveType SHORT = PrimitiveTypeImpl.create("short", "Short", DESC_SHORT);
+  public static final PrimitiveType VOID = PrimitiveTypeImpl.create("void", "Void", DESC_VOID);
 
+  public String getQualifiedBoxedSourceName();
+  
 }
