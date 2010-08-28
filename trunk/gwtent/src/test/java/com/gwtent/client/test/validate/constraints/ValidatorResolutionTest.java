@@ -26,6 +26,7 @@ import javax.validation.Validator;
 
 import org.junit.Test;
 
+import com.gwtent.client.test.validate.VTestCase;
 import com.gwtent.client.test.validate.util.TestUtil;
 
 import static com.gwtent.client.test.validate.util.TestUtil.assertConstraintViolation;
@@ -34,7 +35,7 @@ import static com.gwtent.client.test.validate.util.TestUtil.assertNumberOfViolat
 /**
  * @author Hardy Ferentschik
  */
-public class ValidatorResolutionTest {
+public class ValidatorResolutionTest extends VTestCase{
 
 	@Test
 	public void testResolutionOfMultipleSizeValidators() {

@@ -34,6 +34,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.google.gwt.junit.tools.GWTTestSuite;
 import com.gwtent.client.test.allmodules.AllModulesTestCase;
 import com.gwtent.client.test.aop.AOPTestCase;
 import com.gwtent.client.test.common.CommonTestCase;
@@ -47,7 +48,7 @@ import com.gwtent.client.test.uibinder.DataBinderTestCase;
 import com.gwtent.client.test.uibinder.UIBinderTestCase;
 import com.gwtent.client.test.validate.ValidationTestSuite;
 
-public class AllClientGWTTestSuite extends TestCase{
+public class AllClientGWTTestSuite extends GWTTestSuite {
 
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");

@@ -25,7 +25,11 @@ import com.gwtent.reflection.client.annotations.Reflect_Full;
  * @author Hardy Ferentschik
  */
 @Reflect_Full
-class Item {
+public class Item {
 	@Valid
-	Interval interval;
+	public Interval interval;
+	
+	public Interval getInterval(){
+		return interval;
+	}
 } 

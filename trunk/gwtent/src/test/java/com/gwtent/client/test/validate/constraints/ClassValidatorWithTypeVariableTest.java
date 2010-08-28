@@ -25,9 +25,10 @@ import javax.validation.Valid;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
+
+import com.gwtent.client.test.validate.VTestCase;
 import com.gwtent.client.test.validate.util.TestUtil;
 
 import static com.gwtent.client.test.validate.util.TestUtil.assertNumberOfViolations;
@@ -37,17 +38,16 @@ import static com.gwtent.client.test.validate.util.TestUtil.assertCorrectConstra
 /**
  * HV-250
  */
-public class ClassValidatorWithTypeVariableTest {
+public class ClassValidatorWithTypeVariableTest extends VTestCase{
 
 	private Validator validator;
 
-	@BeforeClass
-	public void setUp() {
+	public void gwtSetUp() {
 		validator = TestUtil.getValidator();
 	}
 
 	@Test
-	public void offersNull() {
+	public void testOffersNull() {
 		Batch batch = new Batch( null );
 
 		Set<ConstraintViolation<Batch>> violations = validator.validate( batch );
@@ -57,7 +57,7 @@ public class ClassValidatorWithTypeVariableTest {
 	}
 
 	@Test
-	public void offerItemNull() {
+	public void testOfferItemNull() {
 		ItemAOffer offer = new ItemAOffer( null );
 		Set<ItemOffer<? extends Item>> offers = new HashSet<ItemOffer<? extends Item>>();
 		offers.add( offer );
@@ -70,7 +70,7 @@ public class ClassValidatorWithTypeVariableTest {
 	}
 
 	@Test
-	public void offerItemDateNull() {
+	public void testOfferItemDateNull() {
 		ItemA item = new ItemA( null );
 		ItemOffer<? extends Item> offer = new ItemAOffer( item );
 		Set<ItemOffer<? extends Item>> offers = new HashSet<ItemOffer<? extends Item>>();
