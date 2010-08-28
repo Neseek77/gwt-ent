@@ -397,4 +397,21 @@ public class ReflectionTestCase extends GWTTestCase {
   	assertTrue(superType.isParameterized().getActualTypeArguments()[0].isClassOrInterface().getName().equals("java.lang.String"));
   }
   
+  
+  //----InfiniteLoop----------------------
+  public static @interface DomainClass{
+    Class<?> value(); 
+  }
+  
+  @DomainClass(TtBina.class)
+  public static interface ITtBina {}
+
+  public static class TtBina implements ITtBina, Reflection{}
+  
+  public void testInfiniteLoop(){
+  	ClassType type = TypeOracle.Instance.getClassType(TtBina.class);
+  	assert type != null;
+  }
+
+  
 }

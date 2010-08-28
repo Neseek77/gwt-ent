@@ -23,6 +23,6 @@ package com.gwtent.client.test.validate.constraints;
 @StartLessThanEnd 
 public class Interval  //Have to change to public, this is a know issue about GWTENT reflection
 {
-  int start;
-  int end;
+  public int start;
+  public int end;
 } 
