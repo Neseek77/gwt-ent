@@ -17,7 +17,6 @@
 */
 package com.gwtent.client.test.validate.tck.common;
 
-import java.io.InputStream;
 import javax.validation.Configuration;
 import javax.validation.ConstraintValidatorFactory;
 import javax.validation.MessageInterpolator;
@@ -55,9 +54,9 @@ public class TCKValidatorConfiguration implements Configuration<TCKValidatorConf
 		throw new UnsupportedOperationException();
 	}
 
-	public TCKValidatorConfiguration addMapping(InputStream stream) {
-		throw new UnsupportedOperationException();
-	}
+//	public TCKValidatorConfiguration addMapping(InputStream stream) {
+//		throw new UnsupportedOperationException();
+//	}
 
 	public TCKValidatorConfiguration addProperty(String name, String value) {
 		throw new UnsupportedOperationException();

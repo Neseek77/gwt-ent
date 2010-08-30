@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.customconstraint;
 
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Author {
 
 	@Size(min = 2)

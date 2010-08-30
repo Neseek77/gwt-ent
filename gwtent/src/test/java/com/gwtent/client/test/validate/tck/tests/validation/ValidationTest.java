@@ -17,14 +17,6 @@
 */
 package com.gwtent.client.test.validate.tck.tests.validation;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +34,10 @@ import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.common.TCKValidationProvider;
 import com.gwtent.client.test.validate.tck.common.TCKValidatorConfiguration;
+import com.gwtent.reflection.client.ClassHelper;
+import com.gwtent.reflection.client.Field;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.Modifier;
 
 /**
  * Tests for the implementation of <code>Validation</code>.
@@ -114,32 +110,32 @@ public class ValidationTest extends AbstractTest {
 		List<Method> expectedValidationMethods = new ArrayList<Method>();
 		Method buildDefaultValidatorFactoryMethod = null;
 		try {
-			buildDefaultValidatorFactoryMethod = validatorClass.getMethod( "buildDefaultValidatorFactory" );
+			buildDefaultValidatorFactoryMethod = ClassHelper.AsClass(validatorClass).getMethod( "buildDefaultValidatorFactory" );
 		}
-		catch ( NoSuchMethodException e ) {
+		catch ( com.gwtent.reflection.client.NoSuchMethodException e ) {
 			fail( "Validation class is missing bootstrap method." );
 		}
 		expectedValidationMethods.add( buildDefaultValidatorFactoryMethod );
 
 		Method byDefaultProviderMethod = null;
 		try {
-			byDefaultProviderMethod = validatorClass.getMethod( "byDefaultProvider" );
+			byDefaultProviderMethod = ClassHelper.AsClass(validatorClass).getMethod( "byDefaultProvider" );
 		}
-		catch ( NoSuchMethodException e ) {
+		catch ( com.gwtent.reflection.client.NoSuchMethodException e ) {
 			fail( "Validation class is missing bootstrap method." );
 		}
 		expectedValidationMethods.add( byDefaultProviderMethod );
 
 		Method byProviderMethod = null;
 		try {
-			byProviderMethod = validatorClass.getMethod( "byProvider", Class.class );
+			byProviderMethod = ClassHelper.AsClass(validatorClass).getMethod( "byProvider", Class.class );
 		}
-		catch ( NoSuchMethodException e ) {
+		catch ( com.gwtent.reflection.client.NoSuchMethodException e ) {
 			fail( "Validation class is missing bootstrap method." );
 		}
 		expectedValidationMethods.add( byProviderMethod );
 
-		Method[] validationMethods = validatorClass.getMethods();
+		Method[] validationMethods = ClassHelper.AsClass(validatorClass).getMethods();
 		for ( Method m : validationMethods ) {
 			if ( expectedValidationMethods.contains( m ) || m.getDeclaringClass() != validatorClass ) {
 				continue;
@@ -149,7 +145,7 @@ public class ValidationTest extends AbstractTest {
 			}
 		}
 
-		Field[] validationFields = validatorClass.getFields();
+		Field[] validationFields = ClassHelper.AsClass(validatorClass).getFields();
 		for ( Field f : validationFields ) {
 			if ( f.getDeclaringClass() != validatorClass ) {
 				continue;

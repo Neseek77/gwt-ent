@@ -30,6 +30,8 @@ import javax.validation.Payload;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 
 /**
  * @author Hardy Ferentschik
@@ -42,6 +44,7 @@ import javax.validation.constraints.Size;
 @Documented
 @Target({ METHOD, FIELD, TYPE })
 @Retention(RUNTIME)
+@Reflect_Domain
 public @interface FrenchZipcode {
 	String message() default "Wrong zipcode";
 

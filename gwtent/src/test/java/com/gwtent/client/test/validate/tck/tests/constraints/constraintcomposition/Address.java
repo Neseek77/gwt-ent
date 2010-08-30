@@ -20,9 +20,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.constraintcomposit
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Address {
 	@NotNull
 	@Size(max = 30)

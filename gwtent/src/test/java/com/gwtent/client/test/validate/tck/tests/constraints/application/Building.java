@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.application;
 
 import javax.validation.constraints.Max;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Building {
 	@Max(value = 5000000, message = "Building costs are max {max} dollars.")
 	long buildingCosts;

@@ -17,9 +17,6 @@
 */
 package com.gwtent.client.test.validate.tck.tests.bootstrap.customprovider;
 
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-
 import javax.validation.Configuration;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;

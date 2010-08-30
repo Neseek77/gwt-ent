@@ -19,10 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.constraintcomposit
 
 import javax.validation.Payload;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
-
+@Reflect_Domain
 public class Severity {
 	public static class Info implements Payload {
 	}

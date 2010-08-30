@@ -1,15 +1,14 @@
 package com.gwtent.client.test.validate;
 
+import junit.framework.Test;
+
 import com.google.gwt.junit.tools.GWTTestSuite;
 import com.gwtent.client.test.validate.bootstrap.BootstrappingTestCase;
 import com.gwtent.client.test.validate.constraints.ClassValidatorWithTypeVariableTest;
 import com.gwtent.client.test.validate.constraints.ConstraintTest;
 import com.gwtent.client.test.validate.constraints.ConstraintValidatorContextTest;
 import com.gwtent.client.test.validate.constraints.ValidatorResolutionTest;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.gwtent.client.test.validate.tck.TCKTestSuite;
 
 /**
  * 
@@ -20,8 +19,10 @@ import junit.framework.TestSuite;
 public class ValidationTestSuite extends GWTTestSuite {
 	
 	public static Test suite() {
-    TestSuite suite = new TestSuite("Test for com.gwtent.client.validate");
+		GWTTestSuite suite = new GWTTestSuite("Test for com.gwtent.client.validate");
     //$JUnit-BEGIN$
+    suite.addTest(TCKTestSuite.suite());
+    
     suite.addTestSuite(com.gwtent.client.test.validate.bootstrap.ValidationTest.class);
     suite.addTestSuite(BootstrappingTestCase.class);
     

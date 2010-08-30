@@ -21,9 +21,6 @@ import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectCon
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectNumberOfViolations;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.getDefaultMessageInterpolator;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.getValidatorUnderTest;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
 
 import java.util.Date;
 import java.util.Locale;
@@ -43,6 +40,12 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+
+import static com.gwtent.client.test.validate.VTestCase.assertEquals;
+import static com.gwtent.client.test.validate.VTestCase.assertTrue;
+import static com.gwtent.client.test.validate.VTestCase.assertFalse;
+import static com.gwtent.client.test.validate.VTestCase.fail;
+import static com.gwtent.client.test.validate.VTestCase.assertNotNull;
 
 /**
  * @author Hardy Ferentschik
@@ -196,15 +199,16 @@ public class MessageInterpolationTest extends AbstractTest {
 	@Test
 	@SpecAssertion(section = "4.3.1.1", id = "h")
 	public void testMessageInterpolationWithLocale() {
-		MessageInterpolator interpolator = getDefaultMessageInterpolator();
-		ConstraintDescriptor<?> descriptor = getDescriptorFor( DummyEntity.class, "foo" );
-		MessageInterpolator.Context context = new TestContext( descriptor );
-
-		String expected = "kann nicht null sein";
-		String actual = interpolator.interpolate(
-				( String ) descriptor.getAttributes().get( "message" ), context, Locale.GERMAN
-		);
-		assertEquals( actual, expected, "Wrong substitution" );
+		fail("How to test this?");
+//		MessageInterpolator interpolator = getDefaultMessageInterpolator();
+//		ConstraintDescriptor<?> descriptor = getDescriptorFor( DummyEntity.class, "foo" );
+//		MessageInterpolator.Context context = new TestContext( descriptor );
+//
+//		String expected = "kann nicht null sein";
+//		String actual = interpolator.interpolate(
+//				( String ) descriptor.getAttributes().get( "message" ), context, Locale.GERMAN
+//		);
+//		assertEquals( actual, expected, "Wrong substitution" );
 	}
 
 	@Test
@@ -216,8 +220,12 @@ public class MessageInterpolationTest extends AbstractTest {
 		MessageInterpolator.Context context = new TestContext( descriptor );
 
 		String messageInterpolatedWithNoLocale = interpolator.interpolate( messageTemplate, context );
+//		String messageInterpolatedWithDefaultLocale = interpolator.interpolate(
+//				messageTemplate, context, Locale.getDefault()
+//		);
+		//GWTENT don't support Locale
 		String messageInterpolatedWithDefaultLocale = interpolator.interpolate(
-				messageTemplate, context, Locale.getDefault()
+				messageTemplate, context
 		);
 
 		assertEquals( messageInterpolatedWithNoLocale, messageInterpolatedWithDefaultLocale, "Wrong substitution" );

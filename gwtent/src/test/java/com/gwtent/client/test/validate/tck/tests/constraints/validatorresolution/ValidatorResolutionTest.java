@@ -20,9 +20,6 @@ package com.gwtent.client.test.validate.tck.tests.constraints.validatorresolutio
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertConstraintViolation;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectNumberOfViolations;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectPropertyPaths;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 import java.util.Set;
 
@@ -30,6 +27,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.UnexpectedTypeException;
 import javax.validation.Validator;
 
+import com.gwtent.client.test.validate.tck.AbstractTest;
 import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
@@ -41,7 +39,7 @@ import com.gwtent.client.test.validate.tck.util.TestUtil;
  * @author Hardy Ferentschik
  */
 
-public class ValidatorResolutionTest {
+public class ValidatorResolutionTest extends AbstractTest {
 
 	@Test
 	@SpecAssertion(section = "3.5.3", id = "a")

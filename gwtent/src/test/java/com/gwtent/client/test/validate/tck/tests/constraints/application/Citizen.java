@@ -20,15 +20,16 @@ package com.gwtent.client.test.validate.tck.tests.constraints.application;
 import javax.validation.constraints.Pattern;
 import javax.validation.groups.Default;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
 @SecurityCheck(groups = { Default.class, TightSecurity.class })
+@Reflect_Domain
 public interface Citizen {
 	@Pattern(regexp = "^[0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$",
 			message = "Personal number must be 10 digits with the last 4 separated by a dash.")
 	public String getPersonalNumber();
 }
 
-interface TightSecurity {
-}

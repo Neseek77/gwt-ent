@@ -31,6 +31,6 @@ import java.lang.annotation.Target;
 @Target({ METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Documented
-@interface AlwaysValidList {
+public @interface AlwaysValidList {
 	AlwaysValid[] value();
 }

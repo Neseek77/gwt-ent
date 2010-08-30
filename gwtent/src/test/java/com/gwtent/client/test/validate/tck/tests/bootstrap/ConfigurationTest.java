@@ -17,17 +17,15 @@
 */
 package com.gwtent.client.test.validate.tck.tests.bootstrap;
 
-import static org.testng.Assert.assertTrue;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
 import javax.validation.Configuration;
 
 import com.gwtent.client.test.validate.tck.AbstractTest;
 import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.ClassHelper;
+import com.gwtent.reflection.client.ParameterizedType;
+import com.gwtent.reflection.client.Type;
 
 /**
  * @author Hardy Ferentschik
@@ -39,16 +37,16 @@ public class ConfigurationTest extends AbstractTest {
 	@SpecAssertion(section = "4.4.3", id = "a")
 	public void testProviderUnderTestDefinesSubInterfaceOfConfiguration() {
 		boolean foundSubinterfaceOfConfiguration = false;
-		Type[] types = TestUtil.getValidationProviderUnderTest().getClass().getGenericInterfaces();
+		Type[] types = ClassHelper.AsClass(TestUtil.getValidationProviderUnderTest().getClass()).getGenericInterfaces();
 		for ( Type type : types ) {
-			if ( type instanceof ParameterizedType ) {
-				ParameterizedType paramType = ( ParameterizedType ) type;
+			if ( type.isParameterized() != null ) {
+				ParameterizedType paramType = type.isParameterized();
 				Type[] typeArguments = paramType.getActualTypeArguments();
-				for ( Type typeArgument : typeArguments ) {
-					if ( typeArgument instanceof Class && Configuration.class.isAssignableFrom( ( Class ) typeArgument ) ) {
-						foundSubinterfaceOfConfiguration = true;
-					}
-				}
+//				for ( Type typeArgument : typeArguments ) {
+//					if ( typeArgument instanceof Class && Configuration.class.isAssignableFrom( ( Class ) typeArgument ) ) {
+//						foundSubinterfaceOfConfiguration = true;
+//					}
+//				}
 			}
 		}
 		assertTrue( foundSubinterfaceOfConfiguration, "Could not find subinterface of Configuration" );

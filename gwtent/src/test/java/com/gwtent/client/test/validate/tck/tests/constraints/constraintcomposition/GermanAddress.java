@@ -17,9 +17,12 @@
 */
 package com.gwtent.client.test.validate.tck.tests.constraints.constraintcomposition;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class GermanAddress extends Address {
 
 	@GermanZipcode

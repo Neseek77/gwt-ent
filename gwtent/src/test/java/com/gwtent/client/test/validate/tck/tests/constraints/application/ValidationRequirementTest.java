@@ -30,6 +30,8 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectConstraintTypes;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectConstraintViolationMessages;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectNumberOfViolations;
@@ -164,6 +166,7 @@ public class ValidationRequirementTest extends AbstractTest {
 		assertCorrectNumberOfViolations( violations, 0 );
 	}
 
+	
 	static class StaticFieldsAndProperties {
 		@NotNull
 		static Object staticField = null;
@@ -175,5 +178,6 @@ public class ValidationRequirementTest extends AbstractTest {
 	}
 }
 
+@Reflect_Full
 interface DummyGroup {
 }

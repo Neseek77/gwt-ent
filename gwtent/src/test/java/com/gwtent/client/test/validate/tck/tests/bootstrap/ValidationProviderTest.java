@@ -17,11 +17,6 @@
 */
 package com.gwtent.client.test.validate.tck.tests.bootstrap;
 
-import static org.testng.Assert.assertTrue;
-import static org.testng.FileAssert.fail;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +33,9 @@ import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.common.TCKValidationProvider;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.ClassHelper;
+import com.gwtent.reflection.client.Constructor;
+import com.gwtent.reflection.client.Modifier;
 
 /**
  * @author Hardy Ferentschik
@@ -93,7 +91,7 @@ public class ValidationProviderTest extends AbstractTest {
 	public void testValidationProviderContainsNoArgConstructor() {
 		ValidationProvider<?> validationProviderUnderTest = TestUtil.getValidationProviderUnderTest();
 		try {
-			Constructor<?> constructor = validationProviderUnderTest.getClass().getConstructor();
+			Constructor<?> constructor = ClassHelper.AsClass(validationProviderUnderTest.getClass()).getConstructor();
 			assertTrue( Modifier.isPublic( constructor.getModifiers() ) );
 		}
 		catch ( Exception e ) {
@@ -114,6 +112,11 @@ public class ValidationProviderTest extends AbstractTest {
 			}
 		};
 
-		Validation.byDefaultProvider().providerResolver( resolver ).configure();
+		try {
+			Validation.byDefaultProvider().providerResolver( resolver ).configure();
+			fail();
+		} catch (ValidationException e) {
+			
+		}
 	}
 }
