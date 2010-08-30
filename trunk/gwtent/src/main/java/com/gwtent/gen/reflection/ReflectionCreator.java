@@ -819,7 +819,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 //		String reflectionTypeName = getReflectionType(classType).getName();
 //		return reflectionTypeName+ getSUFFIX();
 		
-		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
+		//return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
+		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSUFFIX();
 	}
 
 	protected Type createTypeByJType(JType jtype) {
