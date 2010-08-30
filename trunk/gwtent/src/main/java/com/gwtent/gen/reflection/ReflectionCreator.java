@@ -24,8 +24,6 @@ import java.lang.annotation.Annotation;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
-import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
-import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
@@ -40,7 +38,6 @@ import com.gwtent.gen.LogableSourceCreator;
 import com.gwtent.reflection.client.HasReflect;
 import com.gwtent.reflection.client.Reflectable;
 import com.gwtent.reflection.client.Type;
-import com.gwtent.reflection.client.impl.ParameterizedTypeImpl;
 import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
 
 public class ReflectionCreator extends LogableSourceCreator {
@@ -48,7 +45,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 	private final boolean isUseLog = true;
 
 	static final String SUFFIX = "__Reflection";
-	
+
 	private JClassType reflectionType = null;
 
 	public ReflectionCreator(TreeLogger logger, GeneratorContext context,
@@ -66,8 +63,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 		public ReflectionSourceCreator(String className, JClassType classType,
 				SourceWriter sourceWriter,
-				com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, TreeLogger logger,
-				Reflectable reflectable) {
+				com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
+				TreeLogger logger, Reflectable reflectable) {
 			this.className = className;
 			this.sourceWriter = sourceWriter;
 			this.classType = classType;
@@ -77,28 +74,33 @@ public class ReflectionCreator extends LogableSourceCreator {
 		}
 
 		public void createSource() {
-//			if (classType.isAnnotation() != null){
-//				createAnnotationImpl(classType.isAnnotation());
-//			}
+			// if (classType.isAnnotation() != null){
+			// createAnnotationImpl(classType.isAnnotation());
+			// }
 
 			sourceWriter.println("public " + className + "(){");
 			sourceWriter.indent();
-			// sourceWriter.println("super(\"" + classType.getQualifiedSourceName() +
+			// sourceWriter.println("super(\"" +
+			// classType.getQualifiedSourceName() +
 			// "\");");
-			// sourceWriter.println("super(" + classType.getQualifiedSourceName() +
+			// sourceWriter.println("super(" +
+			// classType.getQualifiedSourceName() +
 			// ".class);");
-			sourceWriter.println("super(" + classType.getQualifiedSourceName() + ".class);");
-			//sourceWriter.println("addClassMeta();");
+			sourceWriter.println("super(" + classType.getQualifiedSourceName()
+					+ ".class);");
+			// sourceWriter.println("addClassMeta();");
 			sourceWriter.println("addAnnotations();");
 			sourceWriter.println("addFields();");
 			sourceWriter.println("addMethods();");
-			
-			if (this.reflectable.constructors()){
+
+			if (this.reflectable.constructors()) {
 				if ((classType.isClass() != null)
 						&& GenUtils.hasPublicDefaultConstructor(classType)) {
-					if ((!classType.isAbstract()) && (classType.isDefaultInstantiable())) {
+					if ((!classType.isAbstract())
+							&& (classType.isDefaultInstantiable())) {
 						sourceWriter.println("new ConstructorImpl(this){");
-						sourceWriter.println("	public java.lang.Object newInstance() {");
+						sourceWriter
+								.println("	public java.lang.Object newInstance() {");
 						sourceWriter.println("return new "
 								+ classType.getQualifiedSourceName() + "();");
 						// sourceWriter.println("		return GWT.create(" +
@@ -110,25 +112,45 @@ public class ReflectionCreator extends LogableSourceCreator {
 			}
 
 			sourceWriter.println("");
-			if (classType.getSuperclass() != null && classType.getSuperclass().isPublic()) {
-				//sourceWriter.println("if (" + "TypeOracleImpl.findType(" + classType.getSuperclass().getQualifiedSourceName() + ".class)"	+ " != null)");
-				if (classType.getSuperclass().isParameterized() != null){
-					//new String[]{java.lang.String, java.lang.Integer}
-					String actArgs = GeneratorHelper.stringArrayToCode(GeneratorHelper.convertJClassTypeToStringArray(classType.getSuperclass().isParameterized().getTypeArgs()));
-					sourceWriter.println("  setSuperclass(new ParameterizedTypeImpl(\"" + classType.getSuperclass().getQualifiedSourceName() + "\", " + actArgs + "));");
-				}else{
-					sourceWriter.println("  setSuperclassName(\"" + classType.getSuperclass().getQualifiedSourceName() + "\");");
+			if (classType.getSuperclass() != null
+					&& classType.getSuperclass().isPublic()) {
+				// sourceWriter.println("if (" + "TypeOracleImpl.findType(" +
+				// classType.getSuperclass().getQualifiedSourceName() +
+				// ".class)" + " != null)");
+				if (classType.getSuperclass().isParameterized() != null) {
+					// new String[]{java.lang.String, java.lang.Integer}
+					String actArgs = GeneratorHelper
+							.stringArrayToCode(GeneratorHelper
+									.convertJClassTypeToStringArray(classType
+											.getSuperclass().isParameterized()
+											.getTypeArgs()));
+					sourceWriter
+							.println("  setSuperclass(new ParameterizedTypeImpl(\""
+									+ classType.getSuperclass()
+											.getQualifiedSourceName()
+									+ "\", "
+									+ actArgs + "));");
+				} else {
+					sourceWriter.println("  setSuperclassName(\""
+							+ classType.getSuperclass()
+									.getQualifiedSourceName() + "\");");
 				}
-				
+
 			}
 
 			sourceWriter.println();
 			for (JClassType type : classType.getImplementedInterfaces()) {
-				if (type.isParameterized() != null){
-					String actArgs = GeneratorHelper.stringArrayToCode(GeneratorHelper.convertJClassTypeToStringArray(type.isParameterized().getTypeArgs()));
-					sourceWriter.println("addImplementedInterface(\"" + type.getQualifiedSourceName() + "\", " + actArgs + ");");
-				}else{
-					sourceWriter.println("addImplementedInterface(" + type.getQualifiedSourceName() + ".class);");
+				if (type.isParameterized() != null) {
+					String actArgs = GeneratorHelper
+							.stringArrayToCode(GeneratorHelper
+									.convertJClassTypeToStringArray(type
+											.isParameterized().getTypeArgs()));
+					sourceWriter.println("addImplementedInterface(\""
+							+ type.getQualifiedSourceName() + "\", " + actArgs
+							+ ");");
+				} else {
+					sourceWriter.println("addImplementedInterface("
+							+ type.getQualifiedSourceName() + ".class);");
 				}
 			}
 			sourceWriter.outdent();
@@ -153,12 +175,14 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			JMethod[] methods = classType.getMethods();
 
+			// sxf 应该重构成一个函数
 			sourceWriter
 					.println("public java.lang.Object invoke(java.lang.Object instance, String methodName, Object[] args) throws MethodInvokeException {");
 			sourceWriter.indent();
 
-			sourceWriter.println(classType.getQualifiedSourceName() + " content = ("
-					+ classType.getQualifiedSourceName() + ")instance;");
+			sourceWriter.println(classType.getQualifiedSourceName()
+					+ " content = (" + classType.getQualifiedSourceName()
+					+ ")instance;");
 
 			sourceWriter.println("if (args == null){");
 			sourceWriter.indent();
@@ -169,19 +193,20 @@ public class ReflectionCreator extends LogableSourceCreator {
 			for (JMethod method : methods) {
 				if (!method.isPublic())
 					continue;
-				
-				if (!this.reflectable.methods()){
-					HasReflect hasReflect = method.getAnnotation(HasReflect.class);
+
+				if (!this.reflectable.methods()) {
+					HasReflect hasReflect = method
+							.getAnnotation(HasReflect.class);
 					if (hasReflect == null)
 						continue;
 				}
-				
+
 				String methodName = method.getName();
 				JParameter[] methodParameters = method.getParameters();
 				JType returnType = method.getReturnType();
 
-				sourceWriter
-						.println("if (methodName.equals(\"" + methodName + "\")) {");
+				sourceWriter.println("if (methodName.equals(\"" + methodName
+						+ "\")) {");
 				sourceWriter.indent();
 				sourceWriter.println("checkInvokeParams(methodName, "
 						+ methodParameters.length + ", args);");
@@ -193,12 +218,16 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 				if (!returnType.getSimpleSourceName().equals("void")) {
 					sourceWriter.println("return "
-							+ boxIfNeed(returnType.getQualifiedSourceName(), "content."
-									+ methodName + "("
-									+ getInvokeParams(methodParameters, "args") + ")") + ";");
+							+ boxIfNeed(returnType.getQualifiedSourceName(),
+									"content."
+											+ methodName
+											+ "("
+											+ getInvokeParams(methodParameters,
+													"args") + ")") + ";");
 				} else {
 					sourceWriter.println("content." + methodName + "("
-							+ getInvokeParams(methodParameters, "args") + ")" + ";");
+							+ getInvokeParams(methodParameters, "args") + ")"
+							+ ";");
 					sourceWriter.println("return null;");
 				}
 
@@ -213,7 +242,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 				sourceWriter.print("} else ");
 
 			}
-			sourceWriter.println("return super.invoke(instance, methodName, args);");
+			sourceWriter
+					.println("return super.invoke(instance, methodName, args);");
 			// sourceWriter.println("{");
 			// sourceWriter.indent();
 			// sourceWriter
@@ -227,39 +257,44 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println();
 
 			// -----Add Class MetaData--------------------------------
-			//addClassMeta(classType, sourceWriter);
+			// addClassMeta(classType, sourceWriter);
 			// -----Add Class Annotation------------------------------------
 			addClassAnnotation(classType, sourceWriter);
 			// -----Add fields----------------------------------------
 			addFields(classType, sourceWriter);
 			// -----Add methods---------------------------------------
 			addMethods(classType, sourceWriter);
+			
+			setFieldValue(classType, sourceWriter);
+			
+			getFieldValue(classType, sourceWriter);
 		}
 
-		
+		// protected void addClassMeta(JClassType classType, SourceWriter
+		// source) {
+		// source.println();
+		//
+		// source.println("protected void addClassMeta(){");
+		// source.indent();
+		//
+		// GeneratorHelper.addMetaDatas("this", source, classType);
+		//
+		// source.outdent();
+		// source.println("}");
+		// }
 
-//		protected void addClassMeta(JClassType classType, SourceWriter source) {
-//			source.println();
-//
-//			source.println("protected void addClassMeta(){");
-//			source.indent();
-//
-//			GeneratorHelper.addMetaDatas("this", source, classType);
-//
-//			source.outdent();
-//			source.println("}");
-//		}
-
-		protected void addClassAnnotation(JClassType classType, SourceWriter source) {
+		protected void addClassAnnotation(JClassType classType,
+				SourceWriter source) {
 			source.println();
 
 			source.println("protected void addAnnotations(){");
 			source.indent();
-			
-			if (this.reflectable.classAnnotations()){
-				Annotation[] annotations = AnnotationsHelper.getAnnotations(classType);
-				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "this", source,
-						annotations, logger);
+
+			if (this.reflectable.classAnnotations()) {
+				Annotation[] annotations = AnnotationsHelper
+						.getAnnotations(classType);
+				GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle,
+						"this", source, annotations, logger);
 			}
 
 			source.outdent();
@@ -279,26 +314,37 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField field = fields[i];
-				
-				if (needReflect || field.getAnnotation(HasReflect.class) != null){
+
+				if (needReflect
+						|| field.getAnnotation(HasReflect.class) != null) {
 					if (field.isEnumConstant() == null)
-						source.println("field = new FieldImpl(this, \"" + field.getName()	+ "\");");
+						source.println("field = new FieldImpl(this, \""
+								+ field.getName() + "\");");
 					else
-						source.println("field = new EnumConstantImpl(this, \"" + field.getName()	+ "\", " + field.isEnumConstant().getOrdinal() + ");");
-					
+						source.println("field = new EnumConstantImpl(this, \""
+								+ field.getName() + "\", "
+								+ field.isEnumConstant().getOrdinal() + ");");
+
 					source.println("field.addModifierBits("
 							+ GeneratorHelper.AccessDefToInt(field) + "); ");
-					source.println("field.setTypeName(\""
-							+ field.getType().getQualifiedSourceName() + "\");");
+					source
+							.println("field.setTypeName(\""
+									+ field.getType().getQualifiedSourceName()
+									+ "\");");
 
-					//GeneratorHelper.addMetaDatas("field", source, field);
+					// GeneratorHelper.addMetaDatas("field", source, field);
 
-					if (this.reflectable.fieldAnnotations() || (field.getAnnotation(HasReflect.class) != null && field.getAnnotation(HasReflect.class).annotation())){
-						Annotation[] annotations = AnnotationsHelper.getAnnotations(field);
-						GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "field", source,
-								annotations, logger);
+					if (this.reflectable.fieldAnnotations()
+							|| (field.getAnnotation(HasReflect.class) != null && field
+									.getAnnotation(HasReflect.class)
+									.annotation())) {
+						Annotation[] annotations = AnnotationsHelper
+								.getAnnotations(field);
+						GeneratorHelper.addAnnotations_AnnotationImpl(
+								this.typeOracle, "field", source, annotations,
+								logger);
 					}
-				
+
 					source.println();
 				}
 			}
@@ -315,39 +361,51 @@ public class ReflectionCreator extends LogableSourceCreator {
 			source.println("MethodImpl method = null;");
 
 			JMethod[] methods = classType.getMethods();
-			
+
 			boolean needReflect = this.reflectable.methods();
 
 			for (int i = 0; i < methods.length; i++) {
 				JMethod method = methods[i];
-				if (!method.isPublic())
-					continue;
+				// sxf update
+				// if (!method.isPublic())
+				// continue;
 
-				if (needReflect || method.getAnnotation(HasReflect.class) != null){
-					source.println("method = new MethodImpl(this, \"" + method.getName()
-							+ "\");");
+				if (method.isPrivate()) {
+					continue;
+				}
+
+				if (needReflect
+						|| method.getAnnotation(HasReflect.class) != null) {
+					source.println("method = new MethodImpl(this, \""
+							+ method.getName() + "\");");
 					source.println("method.addModifierBits("
 							+ GeneratorHelper.AccessDefToInt(method) + "); ");
 					source.println("method.setReturnTypeName(\""
-							+ method.getReturnType().getQualifiedSourceName() + "\");");
+							+ method.getReturnType().getQualifiedSourceName()
+							+ "\");");
 
-					//GeneratorHelper.addMetaDatas("method", source, method);
+					// GeneratorHelper.addMetaDatas("method", source, method);
 					JParameter[] params = method.getParameters();
 					for (int j = 0; j < params.length; j++) {
 						JParameter param = params[j];
 						source.println("new ParameterImpl(method, \""
-								+ param.getType().getQualifiedSourceName() + "\", \""
-								+ param.getName() + "\");");
+								+ param.getType().getQualifiedSourceName()
+								+ "\", \"" + param.getName() + "\");");
 						// TODO Support annotation of Parameter
 					}
 
-					if (this.reflectable.fieldAnnotations() || (method.getAnnotation(HasReflect.class) != null && method.getAnnotation(HasReflect.class).annotation())){
-						Annotation[] annotations = AnnotationsHelper.getAnnotations(method);
-						GeneratorHelper.addAnnotations_AnnotationImpl(this.typeOracle, "method", source,
-								annotations, logger);
+					if (this.reflectable.fieldAnnotations()
+							|| (method.getAnnotation(HasReflect.class) != null && method
+									.getAnnotation(HasReflect.class)
+									.annotation())) {
+						Annotation[] annotations = AnnotationsHelper
+								.getAnnotations(method);
+						GeneratorHelper.addAnnotations_AnnotationImpl(
+								this.typeOracle, "method", source, annotations,
+								logger);
 					}
 
-					source.println();	
+					source.println();
 				}
 			}
 
@@ -355,22 +413,129 @@ public class ReflectionCreator extends LogableSourceCreator {
 			source.println("}");
 		}
 
+		// sxf add
+		protected void setFieldValue(JClassType classType, SourceWriter source) {
+			sourceWriter
+					.println("public void setFieldValue(Object instance, String fieldName, Object value) {");
+			sourceWriter.indent();
+
+			sourceWriter.println(classType.getQualifiedSourceName()
+					+ " content = (" + classType.getQualifiedSourceName()
+					+ ")instance;");
+
+			JField[] fields = classType.getFields();
+
+			for (int i = 0; i < fields.length; i++) {
+				JField jField = fields[i];
+				if (jField.isPrivate()) {
+					continue;
+				}
+
+				if (!this.reflectable.fields()) {
+					HasReflect hasReflect = jField
+							.getAnnotation(HasReflect.class);
+					if (hasReflect == null)
+						continue;
+				}
+
+				String fieldName = jField.getName();
+
+				sourceWriter.println("if (fieldName.equals(\"" + fieldName
+						+ "\")) {");
+				sourceWriter.indent();
+
+				String value = unboxWithoutConvert(jField.getType().getQualifiedSourceName(),"value");
+				sourceWriter.println("content." + fieldName + "="+value +";");
+
+				sourceWriter.outdent();
+				sourceWriter.print("} else ");
+
+			}
+			sourceWriter
+					.println("    super.setFieldValue(instance, fieldName, value);");
+			// sourceWriter.println("{");
+			// sourceWriter.indent();
+			// sourceWriter
+			// .println(
+			// "throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");"
+			// );
+			// sourceWriter.outdent();
+			// sourceWriter.println("}");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+			sourceWriter.println();
+		}
+		// sxf add
+		protected void getFieldValue(JClassType classType, SourceWriter source) {
+			sourceWriter
+					.println("public Object getFieldValue(Object instance, String fieldName) {");
+			sourceWriter.indent();
+
+			sourceWriter.println(classType.getQualifiedSourceName()
+					+ " content = (" + classType.getQualifiedSourceName()
+					+ ")instance;");
+
+			JField[] fields = classType.getFields();
+
+			for (int i = 0; i < fields.length; i++) {
+				JField jField = fields[i];
+				if (jField.isPrivate()) {
+					continue;
+				}
+
+				if (!this.reflectable.fields()) {
+					HasReflect hasReflect = jField
+							.getAnnotation(HasReflect.class);
+					if (hasReflect == null)
+						continue;
+				}
+
+				String fieldName = jField.getName();
+
+				sourceWriter.println("if (fieldName.equals(\"" + fieldName
+						+ "\")) {");
+				sourceWriter.indent();
+
+				sourceWriter.println("return content." + fieldName +";");
+
+				sourceWriter.outdent();
+				sourceWriter.print("} else ");
+
+			}
+			sourceWriter
+					.println("    return super.getFieldValue(instance, fieldName);");
+			// sourceWriter.println("{");
+			// sourceWriter.indent();
+			// sourceWriter
+			// .println(
+			// "throw new IllegalArgumentException(\"Method: \" + methodName + \" can't found.\");"
+			// );
+			// sourceWriter.outdent();
+			// sourceWriter.println("}");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+			sourceWriter.println();
+		}
 		private boolean needCatchException(JMethod method) {
 			boolean result = false;
 			JClassType runtimeException = typeOracle.findType(
-					RuntimeException.class.getCanonicalName()).isClassOrInterface();
+					RuntimeException.class.getCanonicalName())
+					.isClassOrInterface();
 			for (JType type : method.getThrows()) {
-				result = !type.isClassOrInterface().isAssignableTo(runtimeException);
+				result = !type.isClassOrInterface().isAssignableTo(
+						runtimeException);
 				if (result)
 					return result;
 			}
 			return result;
 		}
 
-		protected String getInvokeParams(JParameter[] methodParams, String argeName) {
+		protected String getInvokeParams(JParameter[] methodParams,
+				String argeName) {
 			StringBuilder result = new StringBuilder("");
 			for (int i = 0; i < methodParams.length; i++) {
-				String requestType = methodParams[i].getType().getQualifiedSourceName();
+				String requestType = methodParams[i].getType()
+						.getQualifiedSourceName();
 				JType paramType = methodParams[i].getType();
 				if (paramType instanceof JArrayType) {
 					paramType = ((JArrayType) paramType).getComponentType();
@@ -382,7 +547,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 					if (!requestType.contains("[]"))
 						requestType += "[]";
 				}
-				result.append("(" + unboxIfNeed(requestType, argeName + "[" + i + "]")
+				result.append("("
+						+ unboxIfNeed(requestType, argeName + "[" + i + "]")
 						+ ")");
 
 				if (i != methodParams.length - 1) {
@@ -445,8 +611,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 		 * @return
 		 */
 		public String unboxIfNeed(String requestType, String argeName) {
-			// System.out.println("requestType: " + requestType + " argeName: " + argeName);
-//			return "(" + requestType + ")" + argeName;
+			// System.out.println("requestType: " + requestType + " argeName: "
+			// + argeName);
+			// return "(" + requestType + ")" + argeName;
 
 			if (!isPrimitiveType(requestType)) {
 				return "(" + requestType + ")" + argeName;
@@ -476,7 +643,40 @@ public class ReflectionCreator extends LogableSourceCreator {
 				return "(" + requestType + ")" + argeName;
 			}
 		}
+		//sxf add
+		public String unboxWithoutConvert(String requestType, String argeName) {
+			// System.out.println("requestType: " + requestType + " argeName: "
+			// + argeName);
+			// return "(" + requestType + ")" + argeName;
 
+			if (!isPrimitiveType(requestType)) {
+				return "(" + requestType + ")" + argeName;
+			} else if (requestType.equals("int")) {
+				return "((Integer)" + argeName + ")";
+			} else if (requestType.equals("byte")) {
+				return "((Byte)" + argeName + ")";
+			}
+			if (requestType.equals("short")) {
+				return "((Short)" + argeName + ")";
+			}
+			if (requestType.equals("long")) {
+				return "((Long)" + argeName + ")";
+			}
+			if (requestType.equals("float")) {
+				return "((Float)" + argeName + ")";
+			}
+			if (requestType.equals("double")) {
+				return "((Double)" + argeName + ")";
+			}
+			if (requestType.equals("boolean")) {
+				return "((Boolean)" + argeName + ")";
+			}
+			if (requestType.equals("char")) {
+				return "((Character)" + argeName + ")";
+			} else {
+				return "(" + requestType + ")" + argeName;
+			}
+		}
 		/**
 		 * Method invoke return an Object, so this auto box
 		 * 
@@ -486,48 +686,50 @@ public class ReflectionCreator extends LogableSourceCreator {
 		 */
 		public String boxIfNeed(String requestType, String argeName) {
 			return argeName;
-			
-//			if (!isPrimitiveType(requestType)) {
-//				// return "(" + requestType + ")" + argeName;
-//				// Change to Object to avoid import problem
-//				return "(Object)" + argeName;
-//			} else if (requestType.equals("integer")) {
-//				return "Integer.valueOf(" + argeName + ")";
-//			} else if (requestType.equals("Byte")) {
-//				return "Byte.valueOf(" + argeName + ")";
-//			}
-//			if (requestType.equals("Short")) {
-//				return "Short.valueOf(" + argeName + ")";
-//			}
-//			if (requestType.equals("long")) {
-//				return "Long.valueOf(" + argeName + ")";
-//			}
-//			if (requestType.equals("float")) {
-//				return "Float.valueOf(" + argeName + ")";
-//			}
-//			if (requestType.equals("double")) {
-//				return "Double.valueOf(" + argeName + ")";
-//			}
-//			if (requestType.equals("boolean")) {
-//				return "Boolean.valueOf(" + argeName + ")";
-//			}
-//			if (requestType.equals("char")) {
-//				return "Character.valueOf(" + argeName + ")";
-//			} else {
-//				return "(" + requestType + ")" + argeName;
-//			}
+
+			// if (!isPrimitiveType(requestType)) {
+			// // return "(" + requestType + ")" + argeName;
+			// // Change to Object to avoid import problem
+			// return "(Object)" + argeName;
+			// } else if (requestType.equals("integer")) {
+			// return "Integer.valueOf(" + argeName + ")";
+			// } else if (requestType.equals("Byte")) {
+			// return "Byte.valueOf(" + argeName + ")";
+			// }
+			// if (requestType.equals("Short")) {
+			// return "Short.valueOf(" + argeName + ")";
+			// }
+			// if (requestType.equals("long")) {
+			// return "Long.valueOf(" + argeName + ")";
+			// }
+			// if (requestType.equals("float")) {
+			// return "Float.valueOf(" + argeName + ")";
+			// }
+			// if (requestType.equals("double")) {
+			// return "Double.valueOf(" + argeName + ")";
+			// }
+			// if (requestType.equals("boolean")) {
+			// return "Boolean.valueOf(" + argeName + ")";
+			// }
+			// if (requestType.equals("char")) {
+			// return "Character.valueOf(" + argeName + ")";
+			// } else {
+			// return "(" + requestType + ")" + argeName;
+			// }
 		}
 
 	}
 
 	protected void createSource(SourceWriter source, JClassType classType) {
 		String className = getSimpleUnitName(classType);
-		Reflectable reflectable = GenUtils.getClassTypeAnnotationWithMataAnnotation(getReflectionType(classType), Reflectable.class);
+		Reflectable reflectable = GenUtils
+				.getClassTypeAnnotationWithMataAnnotation(
+						getReflectionType(classType), Reflectable.class);
 		if (reflectable == null)
 			reflectable = ReflectableHelper.getFullSettings(typeOracle);
-		
-		new ReflectionSourceCreator(className, getReflectionType(classType), source, this.typeOracle, logger, reflectable)
-				.createSource();
+
+		new ReflectionSourceCreator(className, getReflectionType(classType),
+				source, this.typeOracle, logger, reflectable).createSource();
 	}
 
 	/**
@@ -541,24 +743,32 @@ public class ReflectionCreator extends LogableSourceCreator {
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
 		if (getReflectionType(classType).isEnum() == null)
-			composer.setSuperclass("com.gwtent.reflection.client.impl.ClassTypeImpl<" + getReflectionType(classType).getQualifiedSourceName() + ">");
+			composer
+					.setSuperclass("com.gwtent.reflection.client.impl.ClassTypeImpl<"
+							+ getReflectionType(classType)
+									.getQualifiedSourceName() + ">");
 		else
-			composer.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeImpl<" + getReflectionType(classType).getQualifiedSourceName() + ">");
-		
+			composer
+					.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeImpl<"
+							+ getReflectionType(classType)
+									.getQualifiedSourceName() + ">");
+
 		composer.addImplementedInterface(classType.getQualifiedSourceName());
-		composer.addImport("java.lang.Object");    //Some times user has there own Object class
+		composer.addImport("java.lang.Object"); // Some times user has there own
+		// Object class
 		composer.addImport(classType.getQualifiedSourceName());
-			
+
 		composer.addImport("com.gwtent.common.client.*");
 		composer.addImport("com.gwtent.reflection.client.*");
 		composer.addImport("com.gwtent.reflection.client.impl.*");
 		composer.addImport("com.google.gwt.core.client.*");
 		composer.addImport("java.util.*");
 		composer.addImport(classType.getPackage().getName() + ".*");
-		composer.addImport(getReflectionType(classType).getPackage().getName() + ".*");
+		composer.addImport(getReflectionType(classType).getPackage().getName()
+				+ ".*");
 
-		PrintWriter printWriter = context
-				.tryCreate(logger, packageName, simpleName);
+		PrintWriter printWriter = context.tryCreate(logger, packageName,
+				simpleName);
 		if (printWriter == null) {
 			return null;
 		} else {
@@ -570,17 +780,26 @@ public class ReflectionCreator extends LogableSourceCreator {
 	protected String getPackageName(JClassType classType) {
 		classType = getReflectionType(classType);
 		String packageName = classType.getPackage().getName();
-		//avoid java.lang.SecurityException: Prohibited package name: java.lang...
-		if (packageName.startsWith("java.") || packageName.startsWith("javax.")){
-			packageName = Reflectable.class.getPackage().getName() + "." + packageName;
+		// avoid java.lang.SecurityException: Prohibited package name:
+		// java.lang...
+		if (packageName.startsWith("java.") || packageName.startsWith("javax.")) {
+			packageName = Reflectable.class.getPackage().getName() + "."
+					+ packageName;
 		}
 		return packageName;
-//		return "com.gwtent.reflection.client.gen."
-//				+ classType.getPackage().getName();
+		// return "com.gwtent.reflection.client.gen."
+		// + classType.getPackage().getName();
 	}
-	
-	protected String getSimpleUnitName(JClassType classType){
-		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
+
+	protected String getSimpleUnitName(JClassType classType) {
+		//sxf update
+//		String simpleUnitNameWithOutSuffix = getSimpleUnitNameWithOutSuffix(getReflectionType(classType));
+//		String simpleUnitNameWithOutSuffix2 = getSimpleUnitNameWithOutSuffix(classType);
+//		String string = simpleUnitNameWithOutSuffix
+//				+ "_" + simpleUnitNameWithOutSuffix2 + getSUFFIX();
+		
+		String reflectionTypeName = getReflectionType(classType).getName();
+		return reflectionTypeName+ getSUFFIX();
 	}
 
 	protected Type createTypeByJType(JType jtype) {
@@ -597,11 +816,12 @@ public class ReflectionCreator extends LogableSourceCreator {
 	protected String getSUFFIX() {
 		return SUFFIX;
 	}
-	
-	protected JClassType getReflectionType(JClassType classType){
+
+	protected JClassType getReflectionType(JClassType classType) {
 		if (reflectionType == null)
-			reflectionType = GeneratorHelper.getReflectionClassType(typeOracle, classType);
-		
+			reflectionType = GeneratorHelper.getReflectionClassType(typeOracle,
+					classType);
+
 		return reflectionType;
 	}
 

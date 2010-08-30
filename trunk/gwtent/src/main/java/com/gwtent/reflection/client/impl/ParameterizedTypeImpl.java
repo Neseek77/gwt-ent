@@ -193,5 +193,13 @@ public class ParameterizedTypeImpl<T> extends TypeImpl implements ParameterizedT
 	public ArrayType isArray() {
 		return null;
 	}
+	//sxf add
+	public Object getFieldValue(Object instance, String fieldName) {
+		throw new UnsupportedOperationException();
+	}
+	//sxf add
+	public void setFieldValue(Object instance, String fieldName, Object value) {
+		throw new UnsupportedOperationException();		
+	}
 
 }

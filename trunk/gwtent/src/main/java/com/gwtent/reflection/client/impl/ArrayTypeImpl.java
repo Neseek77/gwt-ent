@@ -204,5 +204,14 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 	public Method findMethod(String name, Class... paramTypes) {
 		return null;
 	}
+
+	//sxf add
+	public Object getFieldValue(Object instance, String fieldName) {
+		throw new UnsupportedOperationException();
+	}
+	//sxf add
+	public void setFieldValue(Object instance, String fieldName, Object value) {
+		throw new UnsupportedOperationException();		
+	}
 }
 
