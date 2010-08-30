@@ -19,11 +19,11 @@
 
 package com.gwtent.reflection.client;
 
-public interface Constructor extends AbstractMethod {
+public interface Constructor<T> extends AbstractMethod {
 	/**
 	 * New Instance
 	 * For now just support create class that contains default Constructor.
 	 * @return
 	 */
-	public Object newInstance();
+	public T newInstance();
 }

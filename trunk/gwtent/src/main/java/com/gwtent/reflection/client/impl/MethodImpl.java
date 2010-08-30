@@ -33,6 +33,7 @@ import com.gwtent.reflection.client.TypeOracle;
 public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnnotations, AbstractMethod, Method {
 
 	private final ClassTypeImpl enclosingType;
+	private Object annotationDefaultValue = null;
 
 	public MethodImpl(ClassTypeImpl enclosingType, String name) {
 		super(name);
@@ -154,5 +155,13 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 	public int getModifiers() {
 		return this.getModifierBits();
 	}
+	
+	public Object getDefaultValue(){
+		return annotationDefaultValue;
+	}
+	
+  public void setDefaultValue(Object annotationDefaultValue){
+  	this.annotationDefaultValue = annotationDefaultValue;
+  }
 
 }

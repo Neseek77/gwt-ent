@@ -115,7 +115,7 @@ public abstract class AbstractMethodImpl implements HasAnnotations, AbstractMeth
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.AbstractMethod#isConstructor()
 	 */
-	public abstract Constructor isConstructor();
+	public abstract Constructor<?> isConstructor();
 
 	public boolean isDefaultAccess() {
 		return 0 == (modifierBits & (TypeOracleImpl.MOD_PUBLIC

@@ -6,6 +6,7 @@ import javax.validation.spi.BootstrapState;
 import javax.validation.spi.ConfigurationState;
 import javax.validation.spi.ValidationProvider;
 
+import com.gwtent.reflection.client.annotations.Reflect_Full;
 import com.gwtent.validate.client.impl.ConfigurationImpl;
 import com.gwtent.validate.client.impl.ValidatorFactoryImpl;
 
@@ -15,6 +16,8 @@ import com.gwtent.validate.client.impl.ValidatorFactoryImpl;
  *
  * 21/07/2010 2:41:11 PM
  */
+
+@Reflect_Full
 public class GWTEntValidatorProvider implements ValidationProvider<GWTEntValidatorConfiguration> {
 
 	public GWTEntValidatorConfiguration createSpecializedConfiguration(BootstrapState state) {

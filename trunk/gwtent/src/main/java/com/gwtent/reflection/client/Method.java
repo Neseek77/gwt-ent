@@ -33,5 +33,22 @@ public interface Method extends AbstractMethod, AccessDef, Member{
 
 	public Type getReturnType();
 	public String getReturnTypeName();
+	
+	
+	/**
+   * Returns the default value for the annotation member represented by
+   * this <tt>Method</tt> instance.  If the member is of a primitive type,
+   * an instance of the corresponding wrapper type is returned. Returns
+   * null if no default is associated with the member, or if the method
+   * instance does not represent a declared member of an annotation type.
+   *
+   * @return the default value for the annotation member represented
+   *     by this <tt>Method</tt> instance.
+   * @throws TypeNotPresentException if the annotation is of type
+   *     {@link Class} and no definition can be found for the
+   *     default class value.
+   * @since  RC2
+   */
+  public Object getDefaultValue();
 
 }
