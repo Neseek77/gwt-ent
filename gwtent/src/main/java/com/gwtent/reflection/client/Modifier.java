@@ -1,6 +1,5 @@
 package com.gwtent.reflection.client;
 
-import java.lang.reflect.Member;
 
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
