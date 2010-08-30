@@ -263,16 +263,16 @@ public class GeneratorHelper {
 	 * @param source
 	 * @param annotations
 	 * 
-	 * {@code}
-	 * List<Annotation> list = new ArrayList<Annotation>();
-	 * Annotation store = null;
-	 * 
-	 * addAnnotation(values, store); //this will create AnnotationStoreImpl
-	 * list.add(store);
-	 * ...repeat last two lines
-	 * xx.addAnnotations(list);
-	 * 
-	 * value type: primitive, String, Class, enumerated, annotation, array of 
+	 * <p>{
+	 * <p>List<Annotation> list = new ArrayList<Annotation>();
+	 * <p>Annotation store = null;
+	 * <p>
+	 * <p>addAnnotation(values, store); //this will create AnnotationStoreImpl
+	 * <p>list.add(store);
+	 * <p>...repeat last two lines
+	 * <p>xx.addAnnotations(list);
+	 * <p>}
+	 * <p>value type: primitive, String, Class, enumerated, annotation, array of 
 	 * 
 	 */
 	public static void addAnnotations_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
@@ -311,7 +311,10 @@ public class GeneratorHelper {
 	 * @param object
 	 * @return
 	 */
-	private static String annoValueToCode(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, Object object){
+	public static String annoValueToCode(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, Object object){
+		if (object == null)
+			return "null";
+		
 		if (object instanceof String){
 	  	return "\"" + object.toString().replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 	  }else if (object instanceof Class){
