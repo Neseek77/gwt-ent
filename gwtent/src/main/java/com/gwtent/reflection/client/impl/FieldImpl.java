@@ -161,8 +161,10 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 		if (getter != null) {
 			return getter.invoke(instance, new Object[] {});
 		} else {
-			throw new RuntimeException("Can not found getter of field (" + getName()
-					+ ").");
+			//sxf update
+//			throw new RuntimeException("Can not found getter of field (" + getName()
+//					+ ").");
+			return this.getEnclosingType().getFieldValue(instance,getName());
 		}
 	}
 
@@ -177,8 +179,11 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 		if (setter != null) {
 			setter.invoke(instance, new Object[] { value });
 		} else {
-			throw new RuntimeException("Can not found setter of field (" + getName()
-					+ ").");
+			//sxf update
+//			throw new RuntimeException("Can not found setter of field (" + getName()
+//					+ ").");
+			this.getEnclosingType().setFieldValue(instance,getName(),value);
+					
 		}
 	}
 

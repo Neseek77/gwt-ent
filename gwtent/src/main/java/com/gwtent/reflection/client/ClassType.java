@@ -128,5 +128,21 @@ public interface ClassType<T> extends HasAnnotations, Type {
 	public Class<T> getDeclaringClass();
 	
 	public Object invoke(Object instance, String methodName, Object... args) throws MethodInvokeException;
+	
+	/**
+	 * get field value
+	 * @param fieldName
+	 * @return
+	 */
+	//sxf add
+	public Object getFieldValue(Object instance,String fieldName);
+	/**
+	 * set field value
+	 * @param fieldName
+	 * @param value
+	 * @return
+	 */
+	//sxf add
+	public void setFieldValue(Object instance,String fieldName,Object value);
 
 }
