@@ -77,3 +77,11 @@ public void testNoPublicParameterIssue(){
   	assertTrue(type.findField("name") != null);
   }
 }}}
+
+===IllegalAccessException===
+You will see some thing like this:
+[ERROR] java.lang.IllegalAccessException: Class com.gwtent.gen.reflection.ReflectAllInOneCreator can not access a member of class abc.def.XXXX with modifiers "public abstract";
+
+Please have a look this bug report, to avoid it you need change your class/interface/annotations to public.
+
+http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4071593
