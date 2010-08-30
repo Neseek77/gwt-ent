@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.constraintcomposit
 
 import javax.validation.groups.Default;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class FrenchAddress extends Address {
 
 	@FrenchZipcode(groups = { Default.class, FullAddressCheck.class })

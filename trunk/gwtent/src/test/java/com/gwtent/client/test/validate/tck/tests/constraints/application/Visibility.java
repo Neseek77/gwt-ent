@@ -20,9 +20,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.application;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Visibility {
 	@Min(value = 100, message = "publicField")
 	public int publicValue;

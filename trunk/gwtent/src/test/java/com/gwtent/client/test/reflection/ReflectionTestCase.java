@@ -35,6 +35,7 @@ import com.gwtent.client.test.reflection.ReflectionSaveSize.Anno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ClassRefereceByAnno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldNotThere;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldThere;
+import com.gwtent.client.test.reflection.TestAnnotationInAnnotation.MyParameterAnn;
 import com.gwtent.client.test.reflection.TestReflectionGenerics.TestReflection1;
 import com.gwtent.reflection.client.AnnotationStoreImpl;
 import com.gwtent.reflection.client.ClassType;
@@ -138,7 +139,12 @@ public class ReflectionTestCase extends GWTTestCase {
     
     classType = TypeOracle.Instance.getClassType(NotNull.class);
     assertNotNull(classType);
-        
+    
+    //Test annotation default value
+    classType = TypeOracle.Instance.getClassType(MyParameterAnn.class);
+    Method m = classType.findMethod("p2");
+    assert m != null;
+    assert m.getDefaultValue().toString().equals("1");
   }
   
   public void testPrimitive(){

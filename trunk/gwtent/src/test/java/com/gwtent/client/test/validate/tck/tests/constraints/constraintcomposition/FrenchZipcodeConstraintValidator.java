@@ -20,9 +20,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.constraintcomposit
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class FrenchZipcodeConstraintValidator implements ConstraintValidator<FrenchZipcode, String> {
 
 	public void initialize(FrenchZipcode parameters) {

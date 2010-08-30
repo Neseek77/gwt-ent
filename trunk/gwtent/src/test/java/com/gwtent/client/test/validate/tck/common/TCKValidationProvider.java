@@ -34,7 +34,8 @@ import javax.validation.spi.ValidationProvider;
 public class TCKValidationProvider implements ValidationProvider<TCKValidatorConfiguration> {
 
 	public TCKValidatorConfiguration createSpecializedConfiguration(BootstrapState state) {
-		return TCKValidatorConfiguration.class.cast( new TCKValidatorConfiguration( this ) );
+		//return TCKValidatorConfiguration.class.cast( new TCKValidatorConfiguration( this ) );
+		return new TCKValidatorConfiguration( this );
 	}
 
 	public Configuration<?> createGenericConfiguration(BootstrapState state) {

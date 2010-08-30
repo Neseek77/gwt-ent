@@ -17,9 +17,7 @@
 */
 package com.gwtent.client.test.validate.tck.tests.constraints.builtinconstraints;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Calendar;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -189,8 +187,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "0" );
 		dummy.byteObject = Byte.parseByte( "-1" );
 		dummy.shortObject = Short.parseShort( "3" );
-		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
-		dummy.bigInteger = BigInteger.valueOf( 100 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
+//		dummy.bigInteger = BigInteger.valueOf( 100 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 6 );
@@ -202,8 +200,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "12345" );
 		dummy.byteObject = Byte.parseByte( "102" );
 		dummy.shortObject = Short.parseShort( "111" );
-		dummy.bigDecimal = BigDecimal.valueOf( 101.1 );
-		dummy.bigInteger = BigInteger.valueOf( 101 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 101.1 );
+//		dummy.bigInteger = BigInteger.valueOf( 101 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
@@ -240,8 +238,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "12345" );
 		dummy.byteObject = Byte.parseByte( "111" );
 		dummy.shortObject = Short.parseShort( "1234" );
-		dummy.bigDecimal = BigDecimal.valueOf( 102 );
-		dummy.bigInteger = BigInteger.valueOf( 102 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 102 );
+//		dummy.bigInteger = BigInteger.valueOf( 102 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 6 );
@@ -253,8 +251,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "100" );
 		dummy.byteObject = Byte.parseByte( "100" );
 		dummy.shortObject = Short.parseShort( "101" );
-		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
-		dummy.bigInteger = BigInteger.valueOf( 100 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
+//		dummy.bigInteger = BigInteger.valueOf( 100 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
@@ -286,8 +284,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "0" );
 		dummy.byteObject = Byte.parseByte( "-1" );
 		dummy.shortObject = Short.parseShort( "3" );
-		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
-		dummy.bigInteger = BigInteger.valueOf( 100 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
+//		dummy.bigInteger = BigInteger.valueOf( 100 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 6 );
@@ -299,8 +297,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "12345" );
 		dummy.byteObject = Byte.parseByte( "102" );
 		dummy.shortObject = Short.parseShort( "111" );
-		dummy.bigDecimal = BigDecimal.valueOf( 101.1 );
-		dummy.bigInteger = BigInteger.valueOf( 101 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 101.1 );
+//		dummy.bigInteger = BigInteger.valueOf( 101 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
@@ -337,8 +335,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "12345" );
 		dummy.byteObject = Byte.parseByte( "111" );
 		dummy.shortObject = Short.parseShort( "1234" );
-		dummy.bigDecimal = BigDecimal.valueOf( 102 );
-		dummy.bigInteger = BigInteger.valueOf( 102 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 102 );
+//		dummy.bigInteger = BigInteger.valueOf( 102 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 6 );
@@ -350,8 +348,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "100" );
 		dummy.byteObject = Byte.parseByte( "100" );
 		dummy.shortObject = Short.parseShort( "101" );
-		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
-		dummy.bigInteger = BigInteger.valueOf( 100 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 100.9 );
+//		dummy.bigInteger = BigInteger.valueOf( 100 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
@@ -429,8 +427,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "12345" );
 		dummy.byteObject = Byte.parseByte( "111" );
 		dummy.shortObject = Short.parseShort( "1234" );
-		dummy.bigDecimal = BigDecimal.valueOf( 102 );
-		dummy.bigInteger = BigInteger.valueOf( 102 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 102 );
+//		dummy.bigInteger = BigInteger.valueOf( 102 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 6 );
@@ -442,8 +440,8 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		dummy.longObject = Long.valueOf( "1" );
 		dummy.byteObject = Byte.parseByte( "1" );
 		dummy.shortObject = Short.parseShort( "1" );
-		dummy.bigDecimal = BigDecimal.valueOf( 1.93 );
-		dummy.bigInteger = BigInteger.valueOf( 5 );
+//		dummy.bigDecimal = BigDecimal.valueOf( 1.93 );
+//		dummy.bigInteger = BigInteger.valueOf( 5 );
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
@@ -461,11 +459,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Set<ConstraintViolation<PastDummyEntity>> constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
 
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.add( Calendar.YEAR, 1 );
-
-		dummy.calendar = cal;
-		dummy.date = cal.getTime();
+//		Calendar cal = GregorianCalendar.getInstance();
+//		cal.add( Calendar.YEAR, 1 );
+//
+//		dummy.calendar = cal;
+//		dummy.date = cal.getTime();
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 2 );
@@ -473,9 +471,9 @@ public class BuiltinConstraintsTest extends AbstractTest {
 				constraintViolations, "date", "calendar"
 		);
 
-		cal.add( Calendar.YEAR, -2 );
-		dummy.calendar = cal;
-		dummy.date = cal.getTime();
+//		cal.add( Calendar.YEAR, -2 );
+//		dummy.calendar = cal;
+//		dummy.date = cal.getTime();
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
 	}
@@ -492,11 +490,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Set<ConstraintViolation<FutureDummyEntity>> constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
 
-		Calendar cal = GregorianCalendar.getInstance();
-		cal.add( Calendar.YEAR, -1 );
+//		Calendar cal = GregorianCalendar.getInstance();
+//		cal.add( Calendar.YEAR, -1 );
 
-		dummy.calendar = cal;
-		dummy.date = cal.getTime();
+//		dummy.calendar = cal;
+//		dummy.date = cal.getTime();
 
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 2 );
@@ -504,9 +502,9 @@ public class BuiltinConstraintsTest extends AbstractTest {
 				constraintViolations, "date", "calendar"
 		);
 
-		cal.add( Calendar.YEAR, 2 );
-		dummy.calendar = cal;
-		dummy.date = cal.getTime();
+//		cal.add( Calendar.YEAR, 2 );
+//		dummy.calendar = cal;
+//		dummy.date = cal.getTime();
 		constraintViolations = validator.validate( dummy );
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
 	}
@@ -610,11 +608,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 	}
 
 	class MinDummyEntity {
-		@Min(101)
-		BigDecimal bigDecimal;
-
-		@Min(101)
-		BigInteger bigInteger;
+//		@Min(101)
+//		BigDecimal bigDecimal;
+//
+//		@Min(101)
+//		BigInteger bigInteger;
 
 		@Min(101)
 		byte bytePrimitive;
@@ -642,11 +640,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 	}
 
 	class MaxDummyEntity {
-		@Max(101)
-		BigDecimal bigDecimal;
-
-		@Max(101)
-		BigInteger bigInteger;
+//		@Max(101)
+//		BigDecimal bigDecimal;
+//
+//		@Max(101)
+//		BigInteger bigInteger;
 
 		@Max(101)
 		byte bytePrimitive;
@@ -674,11 +672,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 	}
 
 	class DecimalMaxDummyEntity {
-		@DecimalMax("101.000000000")
-		BigDecimal bigDecimal;
-
-		@DecimalMax("1.01E+2")
-		BigInteger bigInteger;
+//		@DecimalMax("101.000000000")
+//		BigDecimal bigDecimal;
+//
+//		@DecimalMax("1.01E+2")
+//		BigInteger bigInteger;
 
 		@DecimalMax("101")
 		byte bytePrimitive;
@@ -706,11 +704,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 	}
 
 	class DecimalMinDummyEntity {
-		@DecimalMin("101.000000000")
-		BigDecimal bigDecimal;
-
-		@DecimalMin("1.01E+2")
-		BigInteger bigInteger;
+//		@DecimalMin("101.000000000")
+//		BigDecimal bigDecimal;
+//
+//		@DecimalMin("1.01E+2")
+//		BigInteger bigInteger;
 
 		@DecimalMin("101")
 		byte bytePrimitive;
@@ -755,11 +753,11 @@ public class BuiltinConstraintsTest extends AbstractTest {
 	}
 
 	class DigitsDummyEntity {
-		@Digits(integer = 1, fraction = 2)
-		BigDecimal bigDecimal;
-
-		@Digits(integer = 1, fraction = 0)
-		BigInteger bigInteger;
+//		@Digits(integer = 1, fraction = 2)
+//		BigDecimal bigDecimal;
+//
+//		@Digits(integer = 1, fraction = 0)
+//		BigInteger bigInteger;
 
 		@Digits(integer = 1, fraction = 0)
 		byte bytePrimitive;
@@ -787,16 +785,16 @@ public class BuiltinConstraintsTest extends AbstractTest {
 	}
 
 	class PastDummyEntity {
-		@Past
-		Calendar calendar;
+//		@Past
+//		Calendar calendar;
 
 		@Past
 		Date date;
 	}
 
 	class FutureDummyEntity {
-		@Future
-		Calendar calendar;
+//		@Future
+//		Calendar calendar;
 
 		@Future
 		Date date;

@@ -1,5 +1,7 @@
 package com.gwtent.client.test.validate;
 
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 import junit.framework.ComparisonFailure;
 
 import com.gwtent.client.test.common.GwtEntTestCase;
@@ -302,4 +304,54 @@ public class VTestCase extends GwtEntTestCase {
   static public void assertFalse(boolean condition) {
     assertFalse(condition, null);
   }
+  
+  
+  static public void fail(String message) {
+		Assert.fail(message);
+	}
+	/**
+	 * Fails a test with no message.
+	 */
+	static public void fail() {
+		Assert.fail();
+	}
+	
+	/**
+   * Asserts that an object isn't null. If it is,
+   * an AssertionError is thrown.
+   * @param object the assertion object
+   */
+  static public void assertNotNull(Object object) {
+    assertNotNull(object, null);
+  }
+  
+  /**
+   * Asserts that an object isn't null. If it is,
+   * an AssertionFailedError, with the given message, is thrown.
+   * @param object the assertion object
+   * @param message the assertion error message 
+   */
+  static public void assertNotNull(Object object, String message) {
+    assertTrue(object != null, message);
+  }
+  
+  /**
+   * Asserts that an object is null. If it is,
+   * an AssertionError, with the given message, is thrown.
+   * @param object the assertion object
+   */
+  static public void assertNull(Object object) {
+    assertNull(object, null);
+  }
+  
+  /**
+   * Asserts that an object is null.  If it is not,
+   * an AssertionFailedError, with the given message, is thrown.
+   * @param object the assertion object 
+   * @param message the assertion error message 
+   */
+  static public void assertNull(Object object, String message) {
+    assertTrue(object == null, message);
+  }
+  
 }

@@ -27,7 +27,7 @@ public class TestAnnotationInAnnotation {
 	@Target(ElementType.ANNOTATION_TYPE)
 	public static @interface MyParameterAnn {
 	  int p1();
-	  int p2() default 0;
+	  int p2() default 1;
 	}
 	
 	

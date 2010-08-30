@@ -20,10 +20,13 @@ package com.gwtent.client.test.validate.tck.tests.constraints.application;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
 @SecurityCheck(groups = Default.class)
+@Reflect_Domain
 public abstract class Person implements Citizen {
 	@NotNull
 	String firstName;

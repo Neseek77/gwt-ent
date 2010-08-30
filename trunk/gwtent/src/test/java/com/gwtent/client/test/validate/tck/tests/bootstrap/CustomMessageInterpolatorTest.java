@@ -19,9 +19,7 @@ package com.gwtent.client.test.validate.tck.tests.bootstrap;
 
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectConstraintViolationMessages;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectNumberOfViolations;
-import static org.testng.Assert.assertFalse;
 
-import java.util.Locale;
 import java.util.Set;
 
 import javax.validation.Configuration;
@@ -37,6 +35,7 @@ import com.gwtent.client.test.validate.tck.AbstractTest;
 import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * @author Hardy Ferentschik
@@ -86,11 +85,12 @@ public class CustomMessageInterpolatorTest extends AbstractTest {
 			return "my custom message";
 		}
 
-		public String interpolate(String message, Context context, Locale locale) {
-			throw new UnsupportedOperationException( "No specific locale is possible" );
-		}
+//		public String interpolate(String message, Context context, Locale locale) {
+//			throw new UnsupportedOperationException( "No specific locale is possible" );
+//		}
 	}
 
+	@Reflect_Domain
 	public class Person {
 		@NotNull
 		private String firstName;

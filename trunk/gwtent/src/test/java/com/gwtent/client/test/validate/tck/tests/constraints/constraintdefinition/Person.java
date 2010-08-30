@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.constraintdefiniti
 
 import javax.validation.constraints.NotNull;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Person {
 	@NotNull
 	private String firstName;
