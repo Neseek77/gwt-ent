@@ -338,8 +338,8 @@ public class ConstraintHelper {
 				throw new ConstraintDefinitionException( msg );
 			}
 			
-			//Class<?>[] defaultGroups = ( Class<?>[] ) method.getDefaultValue();
-			Class<?>[] defaultGroups = ( Class<?>[] ) method.invoke(annotation);
+			Class<?>[] defaultGroups = ( Class<?>[] ) method.getDefaultValue();
+			//Class<?>[] defaultGroups = ( Class<?>[] ) method.invoke(annotation);
 			if ( defaultGroups.length != 0 ) {
 				String msg = annotation.annotationType()
 						.getName() + " contains Constraint annotation, but the groups " +

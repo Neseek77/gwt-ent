@@ -25,16 +25,16 @@ import com.gwtent.reflection.client.Method;
 
 
 
-public abstract class ConstructorImpl extends AbstractMethodImpl implements Constructor {
-	  private final ClassType enclosingType;
+public abstract class ConstructorImpl<T> extends AbstractMethodImpl implements Constructor<T> {
+	  private final ClassType<T> enclosingType;
 
-	  public ConstructorImpl(ClassTypeImpl enclosingType) {
+	  public ConstructorImpl(ClassTypeImpl<T> enclosingType) {
 	    super(enclosingType.getName() + ".Constructor");
 	    this.enclosingType = enclosingType;
 	    enclosingType.addConstructor(this);
 	  }
 
-	  public ClassType getEnclosingType() {
+	  public ClassType<T> getEnclosingType() {
 	    return enclosingType;
 	  }
 
@@ -54,7 +54,7 @@ public abstract class ConstructorImpl extends AbstractMethodImpl implements Cons
 	    return sb.toString();
 	  }
 
-	  public Constructor isConstructor() {
+	  public Constructor<T> isConstructor() {
 	    return this;
 	  }
 
@@ -66,7 +66,7 @@ public abstract class ConstructorImpl extends AbstractMethodImpl implements Cons
 	    return getReadableDeclaration();
 	  }
 
-		public Class getDeclaringClass() {
+		public Class<T> getDeclaringClass() {
 			return this.getEnclosingType().getDeclaringClass();
 		}
 

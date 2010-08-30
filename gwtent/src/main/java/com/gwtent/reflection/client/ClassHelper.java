@@ -10,13 +10,13 @@ import java.lang.annotation.Annotation;
  */
 public class ClassHelper<T> implements AnnotatedElement {
 
-	private final ClassType classType;
+	private final ClassType<T> classType;
 	private final EnumType enumType;
 
 	private final Type type;
-	private final Class<?> clazz;
+	private final Class<T> clazz;
 
-	private ClassHelper(Type type, Class<?> clazz) {
+	private ClassHelper(Type type, Class<T> clazz) {
 		this.type = type;
 		this.clazz = clazz;
 
@@ -41,7 +41,7 @@ public class ClassHelper<T> implements AnnotatedElement {
 	 * @return
 	 */
 	public static <T> ClassHelper<T> AsClass(Class<T> clazz) {
-		ClassType classType = TypeOracle.Instance.getClassType(clazz);
+		ClassType<T> classType = TypeOracle.Instance.getClassType(clazz);
 
 		if (classType == null) {
 			ReflectionUtils.checkReflection(clazz);
@@ -383,5 +383,289 @@ public class ClassHelper<T> implements AnnotatedElement {
 			types = ((ClassType<?>) type).getImplementedInterfaces();
 		}
 		return types;
+  }
+  
+  /**
+   * Returns a <code>Method</code> object that reflects the specified public
+   * member method of the class or interface represented by this
+   * <code>Class</code> object. The <code>name</code> parameter is a
+   * <code>String</code> specifying the simple name the desired method. The
+   * <code>parameterTypes</code> parameter is an array of <code>Class</code>
+   * objects that identify the method's formal parameter types, in declared
+   * order. If <code>parameterTypes</code> is <code>null</code>, it is 
+   * treated as if it were an empty array.
+   *
+   * <p> If the <code>name</code> is "&lt;init&gt;"or "&lt;clinit&gt;" a
+   * <code>NoSuchMethodException</code> is raised. Otherwise, the method to
+   * be reflected is determined by the algorithm that follows.  Let C be the
+   * class represented by this object:
+   * <OL>
+   * <LI> C is searched for any <I>matching methods</I>. If no matching
+   * 	    method is found, the algorithm of step 1 is invoked recursively on
+   * 	    the superclass of C.</LI>
+   * <LI> If no method was found in step 1 above, the superinterfaces of C
+   *      are searched for a matching method. If any such method is found, it
+   *      is reflected.</LI>
+   * </OL>
+   *
+   * To find a matching method in a class C:&nbsp; If C declares exactly one
+   * public method with the specified name and exactly the same formal
+   * parameter types, that is the method reflected. If more than one such
+   * method is found in C, and one of these methods has a return type that is
+   * more specific than any of the others, that method is reflected;
+   * otherwise one of the methods is chosen arbitrarily.
+   *
+   * <p> See <em>The Java Language Specification</em>, sections 8.2 and 8.4.
+   *
+   * @param name the name of the method
+   * @param parameterTypes the list of parameters
+   * @return the <code>Method</code> object that matches the specified
+   * <code>name</code> and <code>parameterTypes</code>
+   * @exception NoSuchMethodException if a matching method is not found
+   *            or if the name is "&lt;init&gt;"or "&lt;clinit&gt;".
+   * @exception NullPointerException if <code>name</code> is <code>null</code>
+   * @exception  SecurityException
+   *             If a security manager, <i>s</i>, is present and any of the
+   *             following conditions is met:
+   *
+   *             <ul>
+   *
+   *             <li> invocation of 
+   *             <tt>{@link SecurityManager#checkMemberAccess
+   *             s.checkMemberAccess(this, Member.PUBLIC)}</tt> denies
+   *             access to the method
+   *
+   *             <li> the caller's class loader is not the same as or an
+   *             ancestor of the class loader for the current class and
+   *             invocation of <tt>{@link SecurityManager#checkPackageAccess
+   *             s.checkPackageAccess()}</tt> denies access to the package
+   *             of this class
+   *
+   *             </ul>
+   *
+   * @since JDK1.1
+   */
+  public Method getMethod(String name, Class<?> ... parameterTypes)throws NoSuchMethodException{
+  	Type[] types = new Type[parameterTypes.length];
+  	int i = 0;
+  	for (Class<?> clazz : parameterTypes){
+  		types[i] = ClassHelper.AsClass(clazz).getType();
+  		i++;
+  	}
+  	Method result = this.classType.getMethod(name, types);
+  	
+  	if (result == null)
+  		throw new NoSuchMethodException();
+  	
+  	return result;
+  }
+  
+  
+  
+  /**
+   * Returns an array containing <code>Method</code> objects reflecting all
+   * the public <em>member</em> methods of the class or interface represented
+   * by this <code>Class</code> object, including those declared by the class
+   * or interface and those inherited from superclasses and
+   * superinterfaces.  Array classes return all the (public) member methods 
+   * inherited from the <code>Object</code> class.  The elements in the array 
+   * returned are not sorted and are not in any particular order.  This 
+   * method returns an array of length 0 if this <code>Class</code> object
+   * represents a class or interface that has no public member methods, or if
+   * this <code>Class</code> object represents a primitive type or void.
+   *
+   * <p> The class initialization method <code>&lt;clinit&gt;</code> is not
+   * included in the returned array. If the class declares multiple public
+   * member methods with the same parameter types, they are all included in
+   * the returned array.
+   *
+   * <p> See <em>The Java Language Specification</em>, sections 8.2 and 8.4.
+   *
+   * @return the array of <code>Method</code> objects representing the
+   * public methods of this class
+   * @exception  SecurityException
+   *             If a security manager, <i>s</i>, is present and any of the
+   *             following conditions is met:
+   *
+   *             <ul>
+   *
+   *             <li> invocation of 
+   *             <tt>{@link SecurityManager#checkMemberAccess
+   *             s.checkMemberAccess(this, Member.PUBLIC)}</tt> denies
+   *             access to the methods within this class
+   *
+   *             <li> the caller's class loader is not the same as or an
+   *             ancestor of the class loader for the current class and
+   *             invocation of <tt>{@link SecurityManager#checkPackageAccess
+   *             s.checkPackageAccess()}</tt> denies access to the package
+   *             of this class
+   *
+   *             </ul>
+   *
+   * @since JDK1.1
+   */
+  public Method[] getMethods() {
+  	return this.classType.getMethods();
+  }
+  
+  
+  
+  /**
+   * Returns an array containing <code>Field</code> objects reflecting all
+   * the accessible public fields of the class or interface represented by
+   * this <code>Class</code> object.  The elements in the array returned are
+   * not sorted and are not in any particular order.  This method returns an
+   * array of length 0 if the class or interface has no accessible public
+   * fields, or if it represents an array class, a primitive type, or void.
+   *
+   * <p> Specifically, if this <code>Class</code> object represents a class,
+   * this method returns the public fields of this class and of all its
+   * superclasses.  If this <code>Class</code> object represents an
+   * interface, this method returns the fields of this interface and of all
+   * its superinterfaces.
+   *
+   * <p> The implicit length field for array class is not reflected by this
+   * method. User code should use the methods of class <code>Array</code> to
+   * manipulate arrays.
+   *
+   * <p> See <em>The Java Language Specification</em>, sections 8.2 and 8.3.
+   *
+   * @return the array of <code>Field</code> objects representing the
+   * public fields
+   * @exception  SecurityException
+   *             If a security manager, <i>s</i>, is present and any of the
+   *             following conditions is met:
+   *
+   *             <ul>
+   *
+   *             <li> invocation of 
+   *             <tt>{@link SecurityManager#checkMemberAccess
+   *             s.checkMemberAccess(this, Member.PUBLIC)}</tt> denies
+   *             access to the fields within this class
+   *
+   *             <li> the caller's class loader is not the same as or an
+   *             ancestor of the class loader for the current class and
+   *             invocation of <tt>{@link SecurityManager#checkPackageAccess
+   *             s.checkPackageAccess()}</tt> denies access to the package
+   *             of this class
+   *
+   *             </ul>
+   *
+   * @since JDK1.1
+   */
+  public Field[] getFields() {
+  	return this.classType.getFields();
+  }
+  
+  
+  /**
+   * Returns a <code>Constructor</code> object that reflects the specified
+   * public constructor of the class represented by this <code>Class</code>
+   * object. The <code>parameterTypes</code> parameter is an array of
+   * <code>Class</code> objects that identify the constructor's formal
+   * parameter types, in declared order.  
+   *
+   * If this <code>Class</code> object represents an inner class
+   * declared in a non-static context, the formal parameter types
+   * include the explicit enclosing instance as the first parameter.
+   *
+   * <p> The constructor to reflect is the public constructor of the class
+   * represented by this <code>Class</code> object whose formal parameter
+   * types match those specified by <code>parameterTypes</code>.
+   *
+   * @param parameterTypes the parameter array
+   * @return the <code>Constructor</code> object of the public constructor that
+   * matches the specified <code>parameterTypes</code>
+   * @exception NoSuchMethodException if a matching method is not found.
+   * @exception  SecurityException
+   *             If a security manager, <i>s</i>, is present and any of the
+   *             following conditions is met:
+   *
+   *             <ul>
+   *
+   *             <li> invocation of 
+   *             <tt>{@link SecurityManager#checkMemberAccess
+   *             s.checkMemberAccess(this, Member.PUBLIC)}</tt> denies
+   *             access to the constructor
+   *
+   *             <li> the caller's class loader is not the same as or an
+   *             ancestor of the class loader for the current class and
+   *             invocation of <tt>{@link SecurityManager#checkPackageAccess
+   *             s.checkPackageAccess()}</tt> denies access to the package
+   *             of this class
+   *
+   *             </ul>
+   *
+   * @since JDK1.1
+   */
+  public Constructor<T> getConstructor(Class<?>... parameterTypes)
+      throws NoSuchMethodException {
+  	String[] params = new String[parameterTypes.length];
+  	int i = 0;
+  	for (Class<?> clazz : parameterTypes){
+  		params[i] = ClassHelper.AsClass(clazz).getType().getQualifiedSourceName();
+  		i++;
+  	}
+  	
+  	Constructor<T> result = this.classType.findConstructor(params);
+  	if (result == null){
+  		throw new NoSuchMethodException();
+  	}
+  	
+  	return result;
+  }
+  
+  
+  
+  /**
+   * Creates a new instance of the class represented by this <tt>Class</tt>
+   * object.  The class is instantiated as if by a <code>new</code>
+   * expression with an empty argument list.  The class is initialized if it
+   * has not already been initialized.
+   *
+   * <p>Note that this method propagates any exception thrown by the
+   * nullary constructor, including a checked exception.  Use of
+   * this method effectively bypasses the compile-time exception
+   * checking that would otherwise be performed by the compiler.
+   * The {@link
+   * java.lang.reflect.Constructor#newInstance(java.lang.Object...)
+   * Constructor.newInstance} method avoids this problem by wrapping
+   * any exception thrown by the constructor in a (checked) {@link
+   * java.lang.reflect.InvocationTargetException}.
+   *
+   * @return     a newly allocated instance of the class represented by this
+   *             object.
+   * @throws Exception 
+   * @exception  IllegalAccessException  if the class or its nullary 
+   *               constructor is not accessible.
+   * @exception  InstantiationException 
+   *               if this <code>Class</code> represents an abstract class,
+   *               an interface, an array class, a primitive type, or void;
+   *               or if the class has no nullary constructor;
+   *               or if the instantiation fails for some other reason.
+   * @exception  ExceptionInInitializerError if the initialization
+   *               provoked by this method fails.
+   * @exception  SecurityException
+   *             If a security manager, <i>s</i>, is present and any of the
+   *             following conditions is met:
+   *
+   *             <ul>
+   *
+   *             <li> invocation of 
+   *             <tt>{@link SecurityManager#checkMemberAccess
+   *             s.checkMemberAccess(this, Member.PUBLIC)}</tt> denies
+   *             creation of new instances of this class
+   *
+   *             <li> the caller's class loader is not the same as or an
+   *             ancestor of the class loader for the current class and
+   *             invocation of <tt>{@link SecurityManager#checkPackageAccess
+   *             s.checkPackageAccess()}</tt> denies access to the package
+   *             of this class
+   *
+   *             </ul>
+   *
+   */
+  public T newInstance() throws Exception {
+  	return getConstructor().newInstance();
   }
 }

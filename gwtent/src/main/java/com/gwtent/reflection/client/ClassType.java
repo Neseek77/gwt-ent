@@ -86,7 +86,7 @@ public interface ClassType<T> extends HasAnnotations, Type {
 	 * @param paramTypes
 	 * @return
 	 */
-	public Constructor findConstructor(String... paramTypes);
+	public Constructor<T> findConstructor(String... paramTypes);
 
 	/**
 	 * Get field

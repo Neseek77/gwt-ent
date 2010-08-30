@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 
+import com.gwtent.reflection.client.annotations.Reflect_Full;
+
 /**
  * Define a group sequence
  * The interface hosting <code>@GroupSequence</code> is representing
@@ -34,6 +36,7 @@ import java.lang.annotation.Target;
  */
 @Target({ TYPE })
 @Retention(RUNTIME)
+@Reflect_Full
 public @interface GroupSequence {
 	Class<?>[] value();
 }
