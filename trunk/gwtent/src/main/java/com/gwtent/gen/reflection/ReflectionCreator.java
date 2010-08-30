@@ -20,6 +20,7 @@ package com.gwtent.gen.reflection;
 
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -383,6 +384,23 @@ public class ReflectionCreator extends LogableSourceCreator {
 					source.println("method.setReturnTypeName(\""
 							+ method.getReturnType().getQualifiedSourceName()
 							+ "\");");
+					
+					if (method.isAnnotationMethod() != null){
+						try {
+							Class<?> clazz = Class.forName(classType.getQualifiedSourceName());
+							Method m = clazz.getMethod(method.getName());
+							if (m != null){
+								source.println("method.setDefaultValue(" + GeneratorHelper.annoValueToCode(typeOracle, m.getDefaultValue()) + ");");
+							}
+						} catch (ClassNotFoundException e) {
+							this.logger.log(com.google.gwt.core.ext.TreeLogger.Type.ERROR, "Default value of method will not avaliable for reflection. " + method.toString() + e.toString());
+						} catch (SecurityException e) {
+							this.logger.log(com.google.gwt.core.ext.TreeLogger.Type.ERROR, "Default value of method will not avaliable for reflection. " + method.toString() + e.toString());
+						} catch (NoSuchMethodException e) {
+							this.logger.log(com.google.gwt.core.ext.TreeLogger.Type.ERROR, "Default value of method will not avaliable for reflection. " + method.toString() + e.toString());
+						}
+					}
+										
 
 					// GeneratorHelper.addMetaDatas("method", source, method);
 					JParameter[] params = method.getParameters();
@@ -427,7 +445,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField jField = fields[i];
-				if (jField.isPrivate()) {
+				if (jField.isPrivate() || jField.isFinal()) {
 					continue;
 				}
 
@@ -798,8 +816,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 //		String string = simpleUnitNameWithOutSuffix
 //				+ "_" + simpleUnitNameWithOutSuffix2 + getSUFFIX();
 		
-		String reflectionTypeName = getReflectionType(classType).getName();
-		return reflectionTypeName+ getSUFFIX();
+//		String reflectionTypeName = getReflectionType(classType).getName();
+//		return reflectionTypeName+ getSUFFIX();
+		
+		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
 	}
 
 	protected Type createTypeByJType(JType jtype) {
