@@ -58,7 +58,7 @@ public interface Field extends AccessDef, HasAnnotations, Member {
 	 * @param instance
 	 * @return the field value of instance
 	 */
-	public Object getFieldValue(Object instance);
+	public Object getFieldValue(Object instance) throws FieldIllegalAccessException;
 	
 	/**
 	 * Set field value of instance
@@ -66,8 +66,9 @@ public interface Field extends AccessDef, HasAnnotations, Member {
 	 * 
 	 * @param instance
 	 * @param value
+	 * @throws IllegalAccessException 
 	 */
-	public void setFieldValue(Object instance, Object value);
+	public void setFieldValue(Object instance, Object value) throws FieldIllegalAccessException;
 	
 	public EnumConstant isEnumConstant();
 
