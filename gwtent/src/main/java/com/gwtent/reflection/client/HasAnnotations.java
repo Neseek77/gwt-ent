@@ -33,7 +33,8 @@ import com.gwtent.reflection.client.impl.TypeOracleImpl;
  */
 public interface HasAnnotations extends AnnotatedElement{
 	
+	void addAnnotation(String annoClassName, Object[] values);
 	
-  void addAnnotations(List<Annotation> annotations);
+  //void addAnnotations(List<Annotation> annotations);
 
 }

@@ -151,11 +151,7 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 	public Annotation[] getDeclaredAnnotations() {
 		return annotations.getDeclaredAnnotations();
 	}
-
-	public void addAnnotations(List<Annotation> annotations) {
-		this.annotations.addAnnotations(annotations);
-	}
-
+	
 	public Object getFieldValue(Object instance) throws FieldIllegalAccessException{
 		Method getter = ReflectionUtils.getGetter(this.getEnclosingType(), this
 				.getName());
@@ -216,5 +212,9 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 		sb.append(" ");
 		sb.append(getName());
 		return sb.toString();
+	}
+
+	public void addAnnotation(String annoClassName, Object[] values) {
+		annotations.addAnnotation(annoClassName, values);
 	}
 }

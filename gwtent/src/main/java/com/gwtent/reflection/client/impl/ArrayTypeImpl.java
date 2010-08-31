@@ -181,10 +181,6 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 		return null;
 	}
 
-	public void addAnnotations(List<Annotation> annotations) {
-		
-	}
-
 	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 		return null;
 	}
@@ -212,6 +208,10 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 	//sxf add
 	public void setFieldValue(Object instance, String fieldName, Object value) {
 		throw new UnsupportedOperationException();		
+	}
+
+	public void addAnnotation(String annoClassName, Object[] values) {
+		throw new UnsupportedOperationException();
 	}
 }
 

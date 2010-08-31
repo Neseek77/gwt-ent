@@ -678,10 +678,6 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 		constructors.add(ctor);
 	}
 
-	public void addAnnotations(List<Annotation> declaredAnnotations) {
-		annotations.addAnnotations(declaredAnnotations);
-	}
-
 	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 		return annotations.getAnnotation(annotationClass);
 	}
@@ -747,6 +743,10 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 		else
 			throw new NotFoundException(fieldName
 					+ " not found or unimplement?");
+	}
+
+	public void addAnnotation(String annoClassName, Object[] values) {
+		annotations.addAnnotation(annoClassName, values);
 	}
 
 }

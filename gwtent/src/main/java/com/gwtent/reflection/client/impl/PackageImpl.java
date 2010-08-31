@@ -112,11 +112,6 @@ public class PackageImpl implements HasAnnotations, Package {
 	    // JDT will occasionally remove non-existent items, such as packages.
 	  }
 	  
-	  public void addAnnotations(
-	      List<Annotation> annotations) {
-	    this.annotations.addAnnotations(annotations);
-	  }
-	  
 	  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 	    return annotations.getAnnotation(annotationClass);
 	  }
@@ -138,4 +133,8 @@ public class PackageImpl implements HasAnnotations, Package {
 	  public Annotation[] getDeclaredAnnotations() {
 	    return annotations.getDeclaredAnnotations();
 	  }
+
+		public void addAnnotation(String annoClassName, Object[] values) {
+			annotations.addAnnotation(annoClassName, values);
+		}
 }
