@@ -158,10 +158,6 @@ public class ParameterizedTypeImpl<T> extends TypeImpl implements ParameterizedT
 		return getBaseType().isEnum();
 	}
 
-	public void addAnnotations(List<Annotation> annotations) {
-		getBaseType().addAnnotations(annotations);
-	}
-
 	public <A extends Annotation> A getAnnotation(Class<A> annotationClass) {
 		return getBaseType().getAnnotation(annotationClass);
 	}
@@ -195,11 +191,15 @@ public class ParameterizedTypeImpl<T> extends TypeImpl implements ParameterizedT
 	}
 	//sxf add
 	public Object getFieldValue(Object instance, String fieldName) {
-		throw new UnsupportedOperationException();
+		return this.getBaseType().getFieldValue(instance, fieldName);
 	}
 	//sxf add
 	public void setFieldValue(Object instance, String fieldName, Object value) {
-		throw new UnsupportedOperationException();		
+		this.getBaseType().setFieldValue(instance, fieldName, value);
+	}
+
+	public void addAnnotation(String annoClassName, Object[] values) {
+		getBaseType().addAnnotation(annoClassName, values);
 	}
 
 }
