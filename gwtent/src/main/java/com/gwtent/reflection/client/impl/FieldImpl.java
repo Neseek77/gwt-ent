@@ -25,6 +25,7 @@ import com.gwtent.reflection.client.AccessDef;
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.EnumConstant;
 import com.gwtent.reflection.client.Field;
+import com.gwtent.reflection.client.FieldIllegalAccessException;
 import com.gwtent.reflection.client.HasAnnotations;
 import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.ReflectionUtils;
@@ -155,7 +156,7 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 		this.annotations.addAnnotations(annotations);
 	}
 
-	public Object getFieldValue(Object instance) {
+	public Object getFieldValue(Object instance) throws FieldIllegalAccessException{
 		Method getter = ReflectionUtils.getGetter(this.getEnclosingType(), this
 				.getName());
 		if (getter != null) {
@@ -170,7 +171,7 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 
 	private Method setter = null;
 
-	public void setFieldValue(Object instance, Object value) {
+	public void setFieldValue(Object instance, Object value) throws FieldIllegalAccessException{
 		if (setter == null) {
 			setter = ReflectionUtils.getSetter(this.getEnclosingType(), this
 					.getName(), value);

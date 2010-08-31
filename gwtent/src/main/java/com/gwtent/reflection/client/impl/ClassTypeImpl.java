@@ -34,6 +34,7 @@ import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Constructor;
 import com.gwtent.reflection.client.EnumType;
 import com.gwtent.reflection.client.Field;
+import com.gwtent.reflection.client.FieldIllegalAccessException;
 import com.gwtent.reflection.client.HasAnnotations;
 import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.MethodInvokeException;
@@ -713,7 +714,13 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	}
 
 	// sxf add
-	public Object getFieldValue(Object instance, String fieldName) {
+	public Object getFieldValue(Object instance, String fieldName)throws FieldIllegalAccessException {
+		// no need to call findField(),because we don't want field in super class
+		Field field = fields.get(fieldName);
+		if (field != null && field.isPrivate()) {
+			throw new FieldIllegalAccessException(getName()+"."+fieldName
+					+ " is private,can't access");
+		}
 		if (this.getSuperclass() != null)
 			return getSuperclass().getFieldValue(instance, fieldName);
 		else
@@ -722,7 +729,18 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	}
 
 	// sxf add
-	public void setFieldValue(Object instance, String fieldName, Object value) {
+	public void setFieldValue(Object instance, String fieldName, Object value)throws FieldIllegalAccessException {
+
+		// no need to call findField(),because we don't want field in super class
+		Field field = fields.get(fieldName);
+		if (field != null && field.isPrivate()) {
+			throw new FieldIllegalAccessException(getName()+"."+fieldName
+					+ " is private,can't access");
+		}
+		if (field != null && field.isFinal()) {
+			throw new FieldIllegalAccessException(getName()+"."+fieldName
+					+ " is final,can't access");
+		}
 
 		if (this.getSuperclass() != null)
 			getSuperclass().setFieldValue(instance, fieldName, value);

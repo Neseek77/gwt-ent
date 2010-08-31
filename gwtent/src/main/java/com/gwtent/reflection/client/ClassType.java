@@ -135,7 +135,7 @@ public interface ClassType<T> extends HasAnnotations, Type {
 	 * @return
 	 */
 	//sxf add
-	public Object getFieldValue(Object instance,String fieldName);
+	public Object getFieldValue(Object instance,String fieldName) throws FieldIllegalAccessException;
 	/**
 	 * set field value
 	 * @param fieldName
@@ -143,6 +143,6 @@ public interface ClassType<T> extends HasAnnotations, Type {
 	 * @return
 	 */
 	//sxf add
-	public void setFieldValue(Object instance,String fieldName,Object value);
+	public void setFieldValue(Object instance,String fieldName,Object value)throws FieldIllegalAccessException;
 
 }
