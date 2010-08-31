@@ -274,8 +274,10 @@ public class GeneratorHelper {
 	 * <p>}
 	 * <p>value type: primitive, String, Class, enumerated, annotation, array of 
 	 * 
+	 * Deprecated, moved to "addAnnotations_AnnotationImpl"
 	 */
-	public static void addAnnotations_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
+	@Deprecated
+	public static void addAnnotations_AnnotationImpl_OldWay(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
 	    String dest, SourceWriter source, Annotation[] annotations, TreeLogger logger){
 //		return;
 		
@@ -300,6 +302,40 @@ public class GeneratorHelper {
 	  source.println(dest + ".addAnnotations(list);");
 	  source.println("}");
 	  source.outdent();
+	}
+	
+	public static void addAnnotations_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
+	    String dest, SourceWriter source, Annotation[] annotations, TreeLogger logger){
+	
+	  if (annotations.length <= 0)
+		  return;
+		
+	  for (Annotation annotation : annotations) {
+	  	JClassType classType = typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
+	  	if (classType != null){
+	  		source.print(dest + ".addAnnotation(\"" + classType.getQualifiedSourceName() + "\", new Object[]{");
+	  		
+	  		JAnnotationType annoType = classType.isAnnotation();
+	  		JAnnotationMethod[] methods = annoType.getMethods();
+	  		int index = 0;
+				for (JAnnotationMethod method : methods) {
+				  Object value = null;
+				  try {
+				    value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation);
+				    if (index > 0)
+				    	source.print(", ");
+				    source.print(annoValueToCode(typeOracle, value));
+				    index ++;
+				  } catch (Exception e){
+				  	throw new CheckedExceptionWrapper(e);
+				  }
+				}
+				source.println("});");
+				
+	  	}else{
+	  		logger.log(Type.ERROR, "Annotation (" + ReflectionUtils.getQualifiedSourceName(annotation.annotationType()) + ") not exists in compiled client source code, please ensure this class is exists and included in your module(.gwt.xml) file. GWTENT reflection process will ignore it and continue. ");
+	  	}
+    }
 	}
 	
 	/**

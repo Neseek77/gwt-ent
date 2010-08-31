@@ -125,50 +125,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 			
 			sourceWriter.println("public static interface " + className + " extends com.gwtent.reflection.client.ClassType<" + type.getQualifiedSourceName() + "> {}");
 			
-			if (type.isAnnotation() != null)
-				createAnnotationImpl(sourceWriter, type.isAnnotation());
-			
 			typeNameMap.put(type, className);
 		}
-	}
-	
-	
-	private void createAnnotationImpl(SourceWriter sourceWriter, JAnnotationType annotation) {
-		sourceWriter.println();
-		String className = annotation.getQualifiedSourceName();
-		String implClassName = className.replace('.', '_') + "Impl";
-		sourceWriter.println("public static class " + implClassName + " extends AnnotationImpl implements " + annotation.getQualifiedSourceName() + "{");
-		sourceWriter.indent();
-		JAnnotationMethod[] methods = annotation.getMethods();
-		//declare variable
-    for (JAnnotationMethod method : methods) {
-    	sourceWriter.println("private final " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + ";");
-    }
-    
-    //Constructor
-    StringBuilder sb = new StringBuilder();
-    sb.append("public ").append(implClassName).append("(Class<? extends java.lang.annotation.Annotation> clazz");
-    for (JAnnotationMethod method : methods){
-    	sb.append(", ").append(method.getReturnType().getQualifiedSourceName()).append(" ").append(method.getName());
-    }
-    sb.append("){");
-    sourceWriter.println(sb.toString());
-    sourceWriter.println("  super(clazz);");
-    for (JAnnotationMethod method : methods){
-    	sourceWriter.println("  this." + method.getName() + " = "+ method.getName() +";");
-    }
-    sourceWriter.println("}");
-    
-    //Methods
-    for (JAnnotationMethod method : methods){
-    	sourceWriter.println("public " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + "() {");
-    	sourceWriter.println("  return " + method.getName() + ";");
-    	sourceWriter.println("}");
-    }
-    
-    sourceWriter.outdent();
-    sourceWriter.println("}");
-    sourceWriter.println();
 	}
 	
 	//TODO refactor by source visitor pattern
