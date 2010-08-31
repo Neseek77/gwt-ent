@@ -53,12 +53,13 @@ public class AllClientGWTTestSuite extends GWTTestSuite {
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
+    suite.addTestSuite(ClassTypeGenTestCase.class);
+    suite.addTestSuite(ReflectionTestCase.class);
+    
+     
+    
     suite.addTest(ValidationTestSuite.suite());   
     
-    
-    suite.addTestSuite(ReflectionTestCase.class);
-    suite.addTestSuite(ClassTypeGenTestCase.class);
-     
     
     
     suite.addTestSuite(CommonTestCase.class);
