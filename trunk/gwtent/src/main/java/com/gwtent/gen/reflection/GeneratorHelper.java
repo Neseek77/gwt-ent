@@ -32,7 +32,6 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.gwtent.client.test.reflection.ClassTypeGenTestCase.ClassA;
 import com.gwtent.common.client.CheckedExceptionWrapper;
 import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;

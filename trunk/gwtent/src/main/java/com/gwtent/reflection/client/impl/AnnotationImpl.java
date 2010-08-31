@@ -9,7 +9,7 @@ import com.google.gwt.core.client.GWT;
  * @author JamesLuo.au@gmail.com
  *
  */
-public class AnnotationImpl<T extends Annotation> implements java.lang.annotation.Annotation {
+public abstract class AnnotationImpl<T extends Annotation> implements java.lang.annotation.Annotation {
 	
 	private final Class<T> clazz;
 	

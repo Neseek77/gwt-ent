@@ -41,6 +41,7 @@ import com.gwtent.gen.LogableSourceCreator;
 import com.gwtent.reflection.client.HasReflect;
 import com.gwtent.reflection.client.Reflectable;
 import com.gwtent.reflection.client.Type;
+import com.gwtent.reflection.client.impl.AnnotationTypeImpl;
 import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
 
 public class ReflectionCreator extends LogableSourceCreator {
@@ -80,8 +81,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// if (classType.isAnnotation() != null){
 			// createAnnotationImpl(classType.isAnnotation());
 			// }
-			if (classType.isAnnotation() != null){
-				createAnnotationImpl(this.sourceWriter, classType.isAnnotation());
+			
+			if (classType.isAnnotation() != null) {
+				createAnnotationImpl(this.sourceWriter, classType
+						.isAnnotation());
+
 			}
 
 			sourceWriter.println("public " + className + "(){");
@@ -190,16 +194,17 @@ public class ReflectionCreator extends LogableSourceCreator {
 			addFields(classType, sourceWriter);
 			// -----Add methods---------------------------------------
 			addMethods(classType, sourceWriter);
-			
+
 			setFieldValue(classType, sourceWriter);
-			
+
 			getFieldValue(classType, sourceWriter);
 		}
 
 		private void invoke(JClassType classType) {
 			JMethod[] methods = classType.getMethods();
 
-			sourceWriter.println("public java.lang.Object invoke(java.lang.Object instance, String methodName, Object[] args) throws MethodInvokeException {");
+			sourceWriter
+					.println("public java.lang.Object invoke(java.lang.Object instance, String methodName, Object[] args) throws MethodInvokeException {");
 			sourceWriter.indent();
 
 			sourceWriter.println(classType.getQualifiedSourceName()
@@ -391,23 +396,42 @@ public class ReflectionCreator extends LogableSourceCreator {
 					source.println("method.setReturnTypeName(\""
 							+ method.getReturnType().getQualifiedSourceName()
 							+ "\");");
-					
-					if (method.isAnnotationMethod() != null){
+
+					if (method.isAnnotationMethod() != null) {
 						try {
-							Class<?> clazz = Class.forName(classType.getQualifiedSourceName());
+							Class<?> clazz = Class.forName(classType
+									.getQualifiedSourceName());
 							Method m = clazz.getMethod(method.getName());
-							if (m != null){
-								source.println("method.setDefaultValue(" + GeneratorHelper.annoValueToCode(typeOracle, m.getDefaultValue()) + ");");
+							if (m != null) {
+								source.println("method.setDefaultValue("
+										+ GeneratorHelper
+												.annoValueToCode(typeOracle, m
+														.getDefaultValue())
+										+ ");");
 							}
 						} catch (ClassNotFoundException e) {
-							this.logger.log(com.google.gwt.core.ext.TreeLogger.Type.ERROR, "Default value of method will not avaliable for reflection. " + method.toString() + e.toString());
+							this.logger
+									.log(
+											com.google.gwt.core.ext.TreeLogger.Type.ERROR,
+											"Default value of method will not avaliable for reflection. "
+													+ method.toString()
+													+ e.toString());
 						} catch (SecurityException e) {
-							this.logger.log(com.google.gwt.core.ext.TreeLogger.Type.ERROR, "Default value of method will not avaliable for reflection. " + method.toString() + e.toString());
+							this.logger
+									.log(
+											com.google.gwt.core.ext.TreeLogger.Type.ERROR,
+											"Default value of method will not avaliable for reflection. "
+													+ method.toString()
+													+ e.toString());
 						} catch (NoSuchMethodException e) {
-							this.logger.log(com.google.gwt.core.ext.TreeLogger.Type.ERROR, "Default value of method will not avaliable for reflection. " + method.toString() + e.toString());
+							this.logger
+									.log(
+											com.google.gwt.core.ext.TreeLogger.Type.ERROR,
+											"Default value of method will not avaliable for reflection. "
+													+ method.toString()
+													+ e.toString());
 						}
 					}
-										
 
 					// GeneratorHelper.addMetaDatas("method", source, method);
 					JParameter[] params = method.getParameters();
@@ -469,8 +493,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 						+ "\")) {");
 				sourceWriter.indent();
 
-				String value = unboxWithoutConvert(jField.getType().getQualifiedSourceName(),"value");
-				sourceWriter.println("content." + fieldName + "="+value +";");
+				String value = unboxWithoutConvert(jField.getType()
+						.getQualifiedSourceName(), "value");
+				sourceWriter
+						.println("content." + fieldName + "=" + value + ";");
 
 				sourceWriter.outdent();
 				sourceWriter.print("} else ");
@@ -490,6 +516,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("}");
 			sourceWriter.println();
 		}
+
 		// sxf add
 		protected void getFieldValue(JClassType classType, SourceWriter source) {
 			sourceWriter
@@ -521,7 +548,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 						+ "\")) {");
 				sourceWriter.indent();
 
-				sourceWriter.println("return content." + fieldName +";");
+				sourceWriter.println("return content." + fieldName + ";");
 
 				sourceWriter.outdent();
 				sourceWriter.print("} else ");
@@ -541,6 +568,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("}");
 			sourceWriter.println();
 		}
+
 		private boolean needCatchException(JMethod method) {
 			boolean result = false;
 			JClassType runtimeException = typeOracle.findType(
@@ -582,45 +610,81 @@ public class ReflectionCreator extends LogableSourceCreator {
 			}
 			return result.toString();
 		}
-		
-		private void createAnnotationImpl(SourceWriter sourceWriter, JAnnotationType annotation) {
+
+		private void createAnnotationImpl(SourceWriter sourceWriter,
+				JAnnotationType annotation) {
 			sourceWriter.println();
 			String className = annotation.getQualifiedSourceName();
 			String implClassName = className.replace('.', '_') + "Impl";
-			sourceWriter.println("public static class " + implClassName + " extends AnnotationImpl implements " + annotation.getQualifiedSourceName() + "{");
+			// we don't have class object,instead,we have a className string,
+			// so can't extends AnnotationImpl
+			sourceWriter
+					.println("public static class " + implClassName
+							// + " extends AnnotationImpl "
+							+ " implements "
+							+ annotation.getQualifiedSourceName() + "{");
 			sourceWriter.indent();
 			JAnnotationMethod[] methods = annotation.getMethods();
-			//declare variable
-	    for (JAnnotationMethod method : methods) {
-	    	sourceWriter.println("private final " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + ";");
-	    }
-	    
-	    //Constructor
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("public ").append(implClassName).append("(Class<? extends java.lang.annotation.Annotation> clazz, Object[] values){");
-	    sourceWriter.println(sb.toString());
-	    sourceWriter.println("  super(clazz);");
-	    
-//	    for (JAnnotationMethod method : methods){
-//	    	sb.append(", ").append(method.getReturnType().getQualifiedSourceName()).append(" ").append(method.getName());
-//	    }
-	    int i = 0;
-	    for (JAnnotationMethod method : methods){
-	    	sourceWriter.println("  this." + method.getName() + " = " + unboxIfNeed(method.getReturnType().getQualifiedSourceName(), "values["+ i +"]") + ";");
-	    	i++;
-	    }
-	    sourceWriter.println("}");
-	    
-	    //Methods
-	    for (JAnnotationMethod method : methods){
-	    	sourceWriter.println("public " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + "() {");
-	    	sourceWriter.println("  return " + method.getName() + ";");
-	    	sourceWriter.println("}");
-	    }
-	    
-	    sourceWriter.outdent();
-	    sourceWriter.println("}");
-	    sourceWriter.println();
+			// declare variable
+			for (JAnnotationMethod method : methods) {
+				sourceWriter.println("private final "
+						+ method.getReturnType().getQualifiedSourceName() + " "
+						+ method.getName() + ";");
+			}
+
+			// Constructor
+			StringBuilder sb = new StringBuilder();
+			sb.append("public ").append(implClassName).append(
+					"(Object[] values){");
+			sourceWriter.println(sb.toString());
+
+			// for (JAnnotationMethod method : methods){
+			// sb.append(", ").append(method.getReturnType().getQualifiedSourceName()).append(" ").append(method.getName());
+			// }
+			int i = 0;
+			for (JAnnotationMethod method : methods) {
+				sourceWriter.println("  this."
+						+ method.getName()
+						+ " = "
+						+ unboxIfNeed(method.getReturnType()
+								.getQualifiedSourceName(), "values[" + i + "]")
+						+ ";");
+				i++;
+			}
+			sourceWriter.println("}");
+
+			// Methods
+			for (JAnnotationMethod method : methods) {
+				sourceWriter.println("public "
+						+ method.getReturnType().getQualifiedSourceName() + " "
+						+ method.getName() + "() {");
+				sourceWriter.println("  return " + method.getName() + ";");
+				sourceWriter.println("}");
+			}
+
+			sourceWriter.outdent();
+
+			sourceWriter
+					.println("public Class<"+annotation.getQualifiedSourceName()+"> annotationType() {");
+			sourceWriter.indent();
+
+			sourceWriter.println("return "+annotation.getQualifiedSourceName()+".class;");
+			sourceWriter.outdent();
+			sourceWriter.println("  }");
+
+			sourceWriter.println("}");
+			sourceWriter.println();
+
+			// create createAnnotation method
+			sourceWriter
+					.println("public "
+							+ implClassName
+							+ " createAnnotation(Object[] params) {");
+			sourceWriter.indent();
+			sourceWriter.println("return new " + implClassName
+					+ "(params);");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
 		}
 
 		/**
@@ -708,7 +772,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 				return "(" + requestType + ")" + argeName;
 			}
 		}
-		//sxf add
+
+		// sxf add
 		public String unboxWithoutConvert(String requestType, String argeName) {
 			// System.out.println("requestType: " + requestType + " argeName: "
 			// + argeName);
@@ -742,6 +807,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 				return "(" + requestType + ")" + argeName;
 			}
 		}
+
 		/**
 		 * Method invoke return an Object, so this auto box
 		 * 
@@ -807,18 +873,25 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
-		if (getReflectionType(classType).isEnum() == null)
+		if(getReflectionType(classType).isAnnotation()!=null){
+			composer
+			.setSuperclass(AnnotationTypeImpl.class.getName()+ "<"
+					+ getReflectionType(classType)
+							.getQualifiedSourceName() + ">");
+			 
+		}else if (getReflectionType(classType).isEnum() == null){
 			composer
 					.setSuperclass("com.gwtent.reflection.client.impl.ClassTypeImpl<"
 							+ getReflectionType(classType)
 									.getQualifiedSourceName() + ">");
-		else
+		}else{
 			composer
 					.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeImpl<"
 							+ getReflectionType(classType)
 									.getQualifiedSourceName() + ">");
+		}
 
-		//composer.addImplementedInterface(classType.getQualifiedSourceName());
+		// composer.addImplementedInterface(classType.getQualifiedSourceName());
 		composer.addImport("java.lang.Object"); // Some times user has there own
 		// Object class
 		composer.addImport(classType.getQualifiedSourceName());
@@ -857,17 +930,21 @@ public class ReflectionCreator extends LogableSourceCreator {
 	}
 
 	protected String getSimpleUnitName(JClassType classType) {
-		//sxf update
-//		String simpleUnitNameWithOutSuffix = getSimpleUnitNameWithOutSuffix(getReflectionType(classType));
-//		String simpleUnitNameWithOutSuffix2 = getSimpleUnitNameWithOutSuffix(classType);
-//		String string = simpleUnitNameWithOutSuffix
-//				+ "_" + simpleUnitNameWithOutSuffix2 + getSUFFIX();
-		
-//		String reflectionTypeName = getReflectionType(classType).getName();
-//		return reflectionTypeName+ getSUFFIX();
-		
-		//return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
-		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) + "_" + getSUFFIX();
+		// sxf update
+		// String simpleUnitNameWithOutSuffix =
+		// getSimpleUnitNameWithOutSuffix(getReflectionType(classType));
+		// String simpleUnitNameWithOutSuffix2 =
+		// getSimpleUnitNameWithOutSuffix(classType);
+		// String string = simpleUnitNameWithOutSuffix
+		// + "_" + simpleUnitNameWithOutSuffix2 + getSUFFIX();
+
+		// String reflectionTypeName = getReflectionType(classType).getName();
+		// return reflectionTypeName+ getSUFFIX();
+
+		// return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) +
+		// "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
+		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType))
+				+ "_" + getSUFFIX();
 	}
 
 	protected Type createTypeByJType(JType jtype) {
