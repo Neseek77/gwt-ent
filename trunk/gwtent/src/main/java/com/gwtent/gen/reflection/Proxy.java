@@ -179,23 +179,25 @@ public class Proxy extends ClassTypeImpl<Proxy> {
 //  }
   
   protected void addAnnotations(){
-      {
-      List<Annotation> list = new ArrayList<Annotation>();
-      AnnotationStoreImpl store = null;
-      {
-      Map<String, String> values = new HashMap<String, String>();
-      values.put("value", "RUNTIME");
-      store = new AnnotationStoreImpl(java.lang.annotation.Retention.class, values);
-      }
-      list.add(store);
-      {
-      Map<String, String> values = new HashMap<String, String>();
-      values.put("value", "[METHOD]");
-      store = new AnnotationStoreImpl(java.lang.annotation.Target.class, values);
-      }
-      list.add(store);
-      this.addAnnotations(list);
-      }
+  	this.addAnnotation("java.lang.annotation.Target", new Object[]{});
+  	
+//      {
+//      List<Annotation> list = new ArrayList<Annotation>();
+//      AnnotationStoreImpl store = null;
+//      {
+//      Map<String, String> values = new HashMap<String, String>();
+//      values.put("value", "RUNTIME");
+//      store = new AnnotationStoreImpl(java.lang.annotation.Retention.class, values);
+//      }
+//      list.add(store);
+//      {
+//      Map<String, String> values = new HashMap<String, String>();
+//      values.put("value", "[METHOD]");
+//      store = new AnnotationStoreImpl(java.lang.annotation.Target.class, values);
+//      }
+//      list.add(store);
+//      this.addAnnotations(list);
+//      }
   }
   
   protected void addFields(){

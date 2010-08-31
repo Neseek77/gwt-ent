@@ -25,6 +25,8 @@ import java.lang.reflect.Method;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
+import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
+import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
@@ -78,6 +80,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// if (classType.isAnnotation() != null){
 			// createAnnotationImpl(classType.isAnnotation());
 			// }
+			if (classType.isAnnotation() != null){
+				createAnnotationImpl(this.sourceWriter, classType.isAnnotation());
+			}
 
 			sourceWriter.println("public " + className + "(){");
 			sourceWriter.indent();
@@ -174,11 +179,27 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// sourceWriter.println("}");
 			sourceWriter.println();
 
+			invoke(classType);
+			sourceWriter.println();
+
+			// -----Add Class MetaData--------------------------------
+			// addClassMeta(classType, sourceWriter);
+			// -----Add Class Annotation------------------------------------
+			addClassAnnotation(classType, sourceWriter);
+			// -----Add fields----------------------------------------
+			addFields(classType, sourceWriter);
+			// -----Add methods---------------------------------------
+			addMethods(classType, sourceWriter);
+			
+			setFieldValue(classType, sourceWriter);
+			
+			getFieldValue(classType, sourceWriter);
+		}
+
+		private void invoke(JClassType classType) {
 			JMethod[] methods = classType.getMethods();
 
-			// sxf 应该重构成一个函数
-			sourceWriter
-					.println("public java.lang.Object invoke(java.lang.Object instance, String methodName, Object[] args) throws MethodInvokeException {");
+			sourceWriter.println("public java.lang.Object invoke(java.lang.Object instance, String methodName, Object[] args) throws MethodInvokeException {");
 			sourceWriter.indent();
 
 			sourceWriter.println(classType.getQualifiedSourceName()
@@ -255,20 +276,6 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// sourceWriter.println("}");
 			sourceWriter.outdent();
 			sourceWriter.println("}");
-			sourceWriter.println();
-
-			// -----Add Class MetaData--------------------------------
-			// addClassMeta(classType, sourceWriter);
-			// -----Add Class Annotation------------------------------------
-			addClassAnnotation(classType, sourceWriter);
-			// -----Add fields----------------------------------------
-			addFields(classType, sourceWriter);
-			// -----Add methods---------------------------------------
-			addMethods(classType, sourceWriter);
-			
-			setFieldValue(classType, sourceWriter);
-			
-			getFieldValue(classType, sourceWriter);
 		}
 
 		// protected void addClassMeta(JClassType classType, SourceWriter
@@ -575,6 +582,46 @@ public class ReflectionCreator extends LogableSourceCreator {
 			}
 			return result.toString();
 		}
+		
+		private void createAnnotationImpl(SourceWriter sourceWriter, JAnnotationType annotation) {
+			sourceWriter.println();
+			String className = annotation.getQualifiedSourceName();
+			String implClassName = className.replace('.', '_') + "Impl";
+			sourceWriter.println("public static class " + implClassName + " extends AnnotationImpl implements " + annotation.getQualifiedSourceName() + "{");
+			sourceWriter.indent();
+			JAnnotationMethod[] methods = annotation.getMethods();
+			//declare variable
+	    for (JAnnotationMethod method : methods) {
+	    	sourceWriter.println("private final " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + ";");
+	    }
+	    
+	    //Constructor
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("public ").append(implClassName).append("(Class<? extends java.lang.annotation.Annotation> clazz, Object[] values){");
+	    sourceWriter.println(sb.toString());
+	    sourceWriter.println("  super(clazz);");
+	    
+//	    for (JAnnotationMethod method : methods){
+//	    	sb.append(", ").append(method.getReturnType().getQualifiedSourceName()).append(" ").append(method.getName());
+//	    }
+	    int i = 0;
+	    for (JAnnotationMethod method : methods){
+	    	sourceWriter.println("  this." + method.getName() + " = " + unboxIfNeed(method.getReturnType().getQualifiedSourceName(), "values["+ i +"]") + ";");
+	    	i++;
+	    }
+	    sourceWriter.println("}");
+	    
+	    //Methods
+	    for (JAnnotationMethod method : methods){
+	    	sourceWriter.println("public " + method.getReturnType().getQualifiedSourceName() + " " + method.getName() + "() {");
+	    	sourceWriter.println("  return " + method.getName() + ";");
+	    	sourceWriter.println("}");
+	    }
+	    
+	    sourceWriter.outdent();
+	    sourceWriter.println("}");
+	    sourceWriter.println();
+		}
 
 		/**
 		 * jdk1.4 did support box and unbox, so
@@ -771,7 +818,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 							+ getReflectionType(classType)
 									.getQualifiedSourceName() + ">");
 
-		composer.addImplementedInterface(classType.getQualifiedSourceName());
+		//composer.addImplementedInterface(classType.getQualifiedSourceName());
 		composer.addImport("java.lang.Object"); // Some times user has there own
 		// Object class
 		composer.addImport(classType.getQualifiedSourceName());
