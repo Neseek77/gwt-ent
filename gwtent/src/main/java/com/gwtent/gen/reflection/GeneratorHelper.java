@@ -160,47 +160,6 @@ public class GeneratorHelper {
 		
 	}
 	
-	/**
-	 * 
-	 * @param typeOracle
-	 * @param mapValueName
-	 * @param source
-	 * @param annotation
-	 * 
-	 * Must declare values first 
-	 * 
-	 * Map<String, Object> values = new HashMap<String, Object>();
-	 * values.clear();
-	 * values.put("name", "Test_Table");
-	 * values.put("name1", "value1");
-	 * AnnotationStoreImpl store = new AnnotationStoreImpl(com.gwtent.test.TestAnnotation.class, values);
-	 */
-	public static void addAnnotation(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, 
-	    String AnnotationStoreVarName, SourceWriter source, Annotation annotation){
-	  source.println("{");
-	  source.println("Map<String, String> values = new HashMap<String, String>();");
-	  String mapVarName = "values";
-	  //source.println(mapVarName + ".clear();");
-	  try {
-      JClassType classType = typeOracle.getType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
-      JAnnotationType annoType = classType.isAnnotation();
-      JAnnotationMethod[] methods = annoType.getMethods();
-      for (JAnnotationMethod method : methods) {
-        Object value = null;
-        try {
-          value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
-          source.println(mapVarName + ".put(\"" + method.getName() + "\", \"" + toString(value) + "\");");
-        } catch (Exception e){
-        	throw new CheckedExceptionWrapper(e);
-        }
-      }
-    } catch (NotFoundException e) {
-      throw new CheckedExceptionWrapper(e);
-    }
-    source.println(AnnotationStoreVarName + " = new AnnotationStoreImpl(" + annotation.annotationType().getName() + ".class, " + mapVarName + ");");
-    source.println("}");
-	}
-	
 	private static String toString(Object object){
 	  if (object instanceof Class)
 	    return ((Class)object).getName();
@@ -219,89 +178,6 @@ public class GeneratorHelper {
 	    return object.toString();
 	}
 	
-	/**
-	 * 
-	 * @param dest
-	 * @param source
-	 * @param annotations
-	 * 
-	 * {@code}
-	 * List<AnnotationStore> list = new ArrayList<AnnotationStore>();
-	 * AnnotationStoreImpl store = null;
-	 * 
-	 * addAnnotation(values, store); //this will create AnnotationStoreImpl
-	 * list.add(store);
-	 * ...repeat last two lines
-	 * xx.addAnnotations(list);
-	 * 
-	 */
-	public static void addAnnotations(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
-	    String dest, SourceWriter source, Annotation[] annotations){
-		
-	  if (annotations.length <= 0)
-		  return;
-		
-	  source.indent();
-	  source.println("{");
-	  source.println("List<AnnotationStore> list = new ArrayList<AnnotationStore>();");
-	  source.println("AnnotationStoreImpl store = null;");
-	  
-	  for (Annotation annotation : annotations) {
-	    addAnnotation(typeOracle, "store", source, annotation);
-	    source.println("list.add(store);");
-    }
-	  
-	  source.println(dest + ".addAnnotations(list);");
-	  source.println("}");
-	  source.outdent();
-	}
-	
-	/**
-	 * 
-	 * @param dest
-	 * @param source
-	 * @param annotations
-	 * 
-	 * <p>{
-	 * <p>List<Annotation> list = new ArrayList<Annotation>();
-	 * <p>Annotation store = null;
-	 * <p>
-	 * <p>addAnnotation(values, store); //this will create AnnotationStoreImpl
-	 * <p>list.add(store);
-	 * <p>...repeat last two lines
-	 * <p>xx.addAnnotations(list);
-	 * <p>}
-	 * <p>value type: primitive, String, Class, enumerated, annotation, array of 
-	 * 
-	 * Deprecated, moved to "addAnnotations_AnnotationImpl"
-	 */
-	@Deprecated
-	public static void addAnnotations_AnnotationImpl_OldWay(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
-	    String dest, SourceWriter source, Annotation[] annotations, TreeLogger logger){
-//		return;
-		
-	  if (annotations.length <= 0)
-		  return;
-		
-	  source.indent();
-	  source.println("{");
-	  source.println("List<java.lang.annotation.Annotation> list = new ArrayList<java.lang.annotation.Annotation>();");
-	  source.println("java.lang.annotation.Annotation store = null;");
-	  
-	  for (Annotation annotation : annotations) {
-	  	JClassType classType = typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
-	  	if (classType != null){
-	  		addAnnotation_AnnotationImpl(typeOracle, "store", source, annotation);
-		    source.println("list.add(store);");
-	  	}else{
-	  		logger.log(Type.ERROR, "Annotation (" + ReflectionUtils.getQualifiedSourceName(annotation.annotationType()) + ") not exists in compiled client source code, please ensure this class is exists and included in your module(.gwt.xml) file. GWTENT reflection process will ignore it and continue. ");
-	  	}
-    }
-	  
-	  source.println(dest + ".addAnnotations(list);");
-	  source.println("}");
-	  source.outdent();
-	}
 	
 	public static void addAnnotations_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,
 	    String dest, SourceWriter source, Annotation[] annotations, TreeLogger logger){
@@ -312,29 +188,43 @@ public class GeneratorHelper {
 	  for (Annotation annotation : annotations) {
 	  	JClassType classType = typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
 	  	if (classType != null){
-	  		source.print(dest + ".addAnnotation(\"" + classType.getQualifiedSourceName() + "\", new Object[]{");
-	  		
-	  		JAnnotationType annoType = classType.isAnnotation();
-	  		JAnnotationMethod[] methods = annoType.getMethods();
-	  		int index = 0;
-				for (JAnnotationMethod method : methods) {
-				  Object value = null;
-				  try {
-				    value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation);
-				    if (index > 0)
-				    	source.print(", ");
-				    source.print(annoValueToCode(typeOracle, value));
-				    index ++;
-				  } catch (Exception e){
-				  	throw new CheckedExceptionWrapper(e);
-				  }
-				}
-				source.println("});");
+	  		source.print(dest + ".addAnnotation(" + createAnnotationValues(typeOracle, annotation, logger) + ");");
 				
 	  	}else{
 	  		logger.log(Type.ERROR, "Annotation (" + ReflectionUtils.getQualifiedSourceName(annotation.annotationType()) + ") not exists in compiled client source code, please ensure this class is exists and included in your module(.gwt.xml) file. GWTENT reflection process will ignore it and continue. ");
 	  	}
     }
+	}
+	
+	public static String createAnnotationValues(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, 
+			Annotation annotation, TreeLogger logger){
+		StringBuilder sb = new StringBuilder();
+		JClassType classType = typeOracle.findType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
+  	if (classType != null){
+  		sb.append("com.gwtent.reflection.client.impl.AnnotationValues.toAnnotation(new com.gwtent.reflection.client.impl.AnnotationValues(");
+  		sb.append("\"" + classType.getQualifiedSourceName() + "\", new Object[]{");
+  		
+  		JAnnotationType annoType = classType.isAnnotation();
+  		JAnnotationMethod[] methods = annoType.getMethods();
+  		int index = 0;
+			for (JAnnotationMethod method : methods) {
+			  Object value = null;
+			  try {
+			    value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation);
+			    if (index > 0)
+			    	sb.append(", ");
+			    sb.append(annoValueToCode(typeOracle, value, logger));
+			    index ++;
+			  } catch (Exception e){
+			  	throw new CheckedExceptionWrapper(e);
+			  }
+			}
+			sb.append("}))");
+			
+  	}else{
+  		logger.log(Type.ERROR, "Annotation (" + ReflectionUtils.getQualifiedSourceName(annotation.annotationType()) + ") not exists in compiled client source code, please ensure this class is exists and included in your module(.gwt.xml) file. GWTENT reflection process will ignore it and continue. ");
+  	}
+  	return sb.toString();
 	}
 	
 	/**
@@ -346,7 +236,7 @@ public class GeneratorHelper {
 	 * @param object
 	 * @return
 	 */
-	public static String annoValueToCode(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, Object object){
+	public static String annoValueToCode(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, Object object, TreeLogger logger){
 		if (object == null)
 			return "null";
 		
@@ -362,14 +252,16 @@ public class GeneratorHelper {
 	    for (int i = 0; i < Array.getLength(object); i++){
 	      if (i > 0)
 	        sb.append(", ");
-	      sb.append(annoValueToCode(typeOracle, Array.get(object, i)));
+	      if (compType.isAnnotation())
+	      	sb.append("(").append(compType.getCanonicalName()).append(")");
+	      sb.append(annoValueToCode(typeOracle, Array.get(object, i), logger));
 	    }
 	    sb.append("}");
 	    return sb.toString();
 	  } else if (object.getClass().isEnum()){
 	  	return object.getClass().getCanonicalName() + "." + ((Enum)object).name();
 	  }else if (object instanceof Annotation){
-	  	return newAnnotation_AnnotationImpl(typeOracle, (Annotation)object);
+	  	return createAnnotationValues(typeOracle, (Annotation)object, logger);
 	  }else if (object instanceof Float){
 	  	return object.toString() + "F";
 	  }else if (object instanceof Double){
@@ -379,45 +271,6 @@ public class GeneratorHelper {
 	  } 
 		
 	  return object.toString();
-	}
-	
-	public static void addAnnotation_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle, 
-	    String AnnotationStoreVarName, SourceWriter source, Annotation annotation){
-	  StringBuilder sb = new StringBuilder();
-	  
-    sb.append(AnnotationStoreVarName).append(" = ").append(newAnnotation_AnnotationImpl(typeOracle, annotation)).append(";");
-    
-    source.println(sb.toString());
-	}
-
-	private static String newAnnotation_AnnotationImpl(com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle,	Annotation annotation) {
-		try {
-			JClassType classType = typeOracle.getType(ReflectionUtils.getQualifiedSourceName(annotation.annotationType()));
-	    JAnnotationType annoType = classType.isAnnotation();
-			String annoReflectionClassName = annoType.getQualifiedSourceName().replace(".", "_");
-			
-			StringBuilder sb = new StringBuilder();
-			//sb.append(" new ").append(annoReflectionClassName).append(".").append(annoReflectionClassName).append("Impl");
-			sb.append(" new ").append("com.gwtent.reflection.client.TypeOracle_Visitor").append(".").append(annoReflectionClassName).append("Impl");
-			
-			sb.append("(").append(annoType.getQualifiedSourceName()).append(".class");
-			
-			JAnnotationMethod[] methods = annoType.getMethods();
-			for (JAnnotationMethod method : methods) {
-			  Object value = null;
-			  try {
-			    value = annotation.annotationType().getMethod(method.getName(), new Class[]{}).invoke(annotation, null);
-			    sb.append(", ").append(annoValueToCode(typeOracle, value));
-			  } catch (Exception e){
-			  	throw new CheckedExceptionWrapper(e);
-			  }
-			}
-			sb.append(")");
-			
-			return sb.toString();
-		} catch (NotFoundException e) {
-      throw new CheckedExceptionWrapper(e);
-    }
 	}
 	
 	

@@ -25,6 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.gwtent.reflection.client.AnnotationStoreImpl;
 import com.gwtent.reflection.client.MethodInvokeException;
 import com.gwtent.reflection.client.impl.AnnotationImpl;
+import com.gwtent.reflection.client.impl.AnnotationValues;
 import com.gwtent.reflection.client.impl.ClassTypeImpl;
 import com.gwtent.reflection.client.impl.ConstructorImpl;
 import com.gwtent.reflection.client.impl.FieldImpl;
@@ -179,25 +180,7 @@ public class Proxy extends ClassTypeImpl<Proxy> {
 //  }
   
   protected void addAnnotations(){
-  	this.addAnnotation("java.lang.annotation.Target", new Object[]{});
-  	
-//      {
-//      List<Annotation> list = new ArrayList<Annotation>();
-//      AnnotationStoreImpl store = null;
-//      {
-//      Map<String, String> values = new HashMap<String, String>();
-//      values.put("value", "RUNTIME");
-//      store = new AnnotationStoreImpl(java.lang.annotation.Retention.class, values);
-//      }
-//      list.add(store);
-//      {
-//      Map<String, String> values = new HashMap<String, String>();
-//      values.put("value", "[METHOD]");
-//      store = new AnnotationStoreImpl(java.lang.annotation.Target.class, values);
-//      }
-//      list.add(store);
-//      this.addAnnotations(list);
-//      }
+  	this.addAnnotation(AnnotationValues.toAnnotation(new AnnotationValues("java.lang.annotation.Target", new Object[]{})));
   }
   
   protected void addFields(){

@@ -406,7 +406,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 								source.println("method.setDefaultValue("
 										+ GeneratorHelper
 												.annoValueToCode(typeOracle, m
-														.getDefaultValue())
+														.getDefaultValue(), logger)
 										+ ");");
 							}
 						} catch (ClassNotFoundException e) {

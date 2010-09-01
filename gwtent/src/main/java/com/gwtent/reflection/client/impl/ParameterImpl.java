@@ -132,7 +132,7 @@ public class ParameterImpl implements HasAnnotations, Parameter {
     return annotations.getDeclaredAnnotations();
   }
   
-	public void addAnnotation(String annoClassName, Object[] values) {
-		annotations.addAnnotation(annoClassName, values);
+	public void addAnnotation(Annotation ann) {
+		annotations.addAnnotation(ann);
 	}
 }

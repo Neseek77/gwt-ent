@@ -745,8 +745,8 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 					+ " not found or unimplement?");
 	}
 
-	public void addAnnotation(String annoClassName, Object[] values) {
-		annotations.addAnnotation(annoClassName, values);
+	public void addAnnotation(Annotation ann) {
+		annotations.addAnnotation(ann);
 	}
 
 }

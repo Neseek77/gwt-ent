@@ -214,7 +214,7 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 		return sb.toString();
 	}
 
-	public void addAnnotation(String annoClassName, Object[] values) {
-		annotations.addAnnotation(annoClassName, values);
+	public void addAnnotation(Annotation ann) {
+		annotations.addAnnotation(ann);
 	}
 }
