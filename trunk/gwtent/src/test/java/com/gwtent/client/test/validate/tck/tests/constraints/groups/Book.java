@@ -22,9 +22,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Book {
 	@NotNull(groups = First.class, message = "The book title cannot be null")
 	@Size(min = 1, groups = First.class)

@@ -36,6 +36,7 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * @author Emmanuel Bernard
@@ -199,16 +200,19 @@ public class CustomConstraintValidatorTest extends AbstractTest {
 	}
 
 
+	@Reflect_Domain
 	public static class Shoe {
 		@Positive
 		public int size;
 	}
 
+	@Reflect_Domain
 	public static class OddShoe {
 		@Positive
 		public String size;
 	}
 
+	@Reflect_Domain
 	public static class Freezer {
 		@Negative
 		public int temperature;

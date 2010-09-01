@@ -48,6 +48,7 @@ import com.gwtent.client.test.validate.tck.AbstractTest;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
 
 import com.gwtent.client.test.validate.tck.Test;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertConstraintViolation;
 import static com.gwtent.client.test.validate.tck.util.TestUtil.assertCorrectNumberOfViolations;
@@ -533,6 +534,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		assertCorrectNumberOfViolations( constraintViolations, 0 );
 	}
 
+	@Reflect_Domain
 	class NullDummyEntity {
 		@Null
 		Object property;
@@ -546,6 +548,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class NotNullDummyEntity {
 		@NotNull
 		Object property;
@@ -559,6 +562,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class AssertTrueDummyEntity {
 		@AssertTrue
 		boolean primitiveBoolean;
@@ -583,6 +587,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class AssertFalseDummyEntity {
 		@AssertFalse
 		boolean primitiveBoolean;
@@ -607,6 +612,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class MinDummyEntity {
 //		@Min(101)
 //		BigDecimal bigDecimal;
@@ -639,6 +645,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Long longObject;
 	}
 
+	@Reflect_Domain
 	class MaxDummyEntity {
 //		@Max(101)
 //		BigDecimal bigDecimal;
@@ -671,6 +678,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Long longObject;
 	}
 
+	@Reflect_Domain
 	class DecimalMaxDummyEntity {
 //		@DecimalMax("101.000000000")
 //		BigDecimal bigDecimal;
@@ -703,6 +711,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Long longObject;
 	}
 
+	@Reflect_Domain
 	class DecimalMinDummyEntity {
 //		@DecimalMin("101.000000000")
 //		BigDecimal bigDecimal;
@@ -735,6 +744,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Long longObject;
 	}
 
+	@Reflect_Domain
 	class SizeDummyEntity {
 		@Size(min = 1, max = 1)
 		String string;
@@ -752,6 +762,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		int[] intArray;
 	}
 
+	@Reflect_Domain
 	class DigitsDummyEntity {
 //		@Digits(integer = 1, fraction = 2)
 //		BigDecimal bigDecimal;
@@ -784,6 +795,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Long longObject;
 	}
 
+	@Reflect_Domain
 	class PastDummyEntity {
 //		@Past
 //		Calendar calendar;
@@ -792,6 +804,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Date date;
 	}
 
+	@Reflect_Domain
 	class FutureDummyEntity {
 //		@Future
 //		Calendar calendar;
@@ -800,6 +813,7 @@ public class BuiltinConstraintsTest extends AbstractTest {
 		Date date;
 	}
 
+	@Reflect_Domain
 	class PatternDummyEntity {
 		@Pattern(regexp = "[a-z][a-z] \\d\\d")
 		String pattern;
