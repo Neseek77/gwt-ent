@@ -20,6 +20,7 @@ package com.gwtent.reflection.client.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,7 @@ class Annotations implements HasAnnotations {
 	/**
 	 * All annotations declared on the annotated element.
 	 */
-	private Map<Class<?>, Annotation> declaredAnnotations = null;
+	private Map<Class<?>, Annotation> declaredAnnotations = new HashMap<Class<?>, Annotation>();
 
 	/**
 	 * Lazily initialized collection of annotations declared on or inherited by
@@ -48,7 +49,6 @@ class Annotations implements HasAnnotations {
 	 */
 	private Map<Class<?>, Annotation> lazyAnnotations = null;
 
-	private Map<String, Object[]> declaredRawAnnotations = new HashMap<String, Object[]>();
 
 	/**
 	 * If not <code>null</code> the parent to inherit annotations from.
@@ -84,9 +84,11 @@ class Annotations implements HasAnnotations {
 		return getAnnotation(annotationClass) != null;
 	}
 
-	public void addAnnotation(String annoClassName, Object[] values) {
-		declaredRawAnnotations.put(annoClassName, values);
+	public void addAnnotation(Annotation ann) {
+		if (ann != null)
+			this.declaredAnnotations.put(ann.annotationType(), ann);
 	}
+	
 
 	void setParent(HasAnnotations parent) {
 		this.parent = parent;
@@ -96,8 +98,6 @@ class Annotations implements HasAnnotations {
 		if (lazyAnnotations != null) {
 			return;
 		}
-
-		initializeDeclaredAnnotations();
 
 		if (parent != null) {
 			lazyAnnotations = new HashMap<Class<?>, Annotation>();
@@ -122,30 +122,5 @@ class Annotations implements HasAnnotations {
 		} else {
 			lazyAnnotations = declaredAnnotations;
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private void initializeDeclaredAnnotations() {
-		if (this.declaredAnnotations != null)
-			return;
-
-		declaredAnnotations = new HashMap<Class<?>, Annotation>();
-
-		for (String annoClassName : this.declaredRawAnnotations.keySet()) {
-			ClassType<? extends Annotation> type = (ClassType<? extends Annotation>) TypeOracle.Instance
-					.getClassType(annoClassName);
-
-			if (type != null && type instanceof AnnotationType) {
-				Object[] params = declaredRawAnnotations.get(annoClassName);
-
-				AnnotationType<? extends Annotation> antoType = (AnnotationType<? extends Annotation>) type;
-				Annotation ann = antoType.createAnnotation(
-						params);
-
-				this.declaredAnnotations.put(type.getDeclaringClass(), ann);
-
-			}
-		}
-
 	}
 }

@@ -210,7 +210,7 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 		throw new UnsupportedOperationException();		
 	}
 
-	public void addAnnotation(String annoClassName, Object[] values) {
+	public void addAnnotation(Annotation ann) {
 		throw new UnsupportedOperationException();
 	}
 }

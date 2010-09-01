@@ -270,8 +270,8 @@ public abstract class AbstractMethodImpl implements HasAnnotations, AbstractMeth
     return annotations.getDeclaredAnnotations();
   }
   
-  public void addAnnotation(String annoClassName, Object[] values) {
-		annotations.addAnnotation(annoClassName, values);
+  public void addAnnotation(Annotation ann) {
+		annotations.addAnnotation(ann);
 	}
   
   public String toString(){

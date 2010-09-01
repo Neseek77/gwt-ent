@@ -20,7 +20,6 @@
 package com.gwtent.reflection.client;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
@@ -33,8 +32,6 @@ import com.gwtent.reflection.client.impl.TypeOracleImpl;
  */
 public interface HasAnnotations extends AnnotatedElement{
 	
-	void addAnnotation(String annoClassName, Object[] values);
-	
-  //void addAnnotations(List<Annotation> annotations);
+	public void addAnnotation(Annotation ann);
 
 }

@@ -198,8 +198,8 @@ public class ParameterizedTypeImpl<T> extends TypeImpl implements ParameterizedT
 		this.getBaseType().setFieldValue(instance, fieldName, value);
 	}
 
-	public void addAnnotation(String annoClassName, Object[] values) {
-		getBaseType().addAnnotation(annoClassName, values);
+	public void addAnnotation(Annotation ann) {
+		getBaseType().addAnnotation(ann);
 	}
 
 }
