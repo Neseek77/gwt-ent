@@ -35,6 +35,11 @@ public class ClassTypeGenTestCase extends GWTTestCase {
 		}
   }
   
+  @TestAnnotation(name = "anno1", value = "anno1-value", fvalue=1.0F)
+  public static class ClassB{
+  	
+  }
+  
   /**
    * At least package visible
    *
@@ -43,7 +48,14 @@ public class ClassTypeGenTestCase extends GWTTestCase {
   	
   }
   
+  interface ClassTypeOfB extends ClassType<ClassB>{};
+  
   public void testGen(){
+  	ClassType<ClassB> typeB = GWT.create(ClassTypeOfB.class);
+  	assert typeB != null;
+  	TestAnnotation a = typeB.getAnnotation(TestAnnotation.class);
+  	assert a != null;
+  	
   	ClassType<ClassA> type = GWT.create(ClassTypeOfA.class);
   	assert type != null;
   	

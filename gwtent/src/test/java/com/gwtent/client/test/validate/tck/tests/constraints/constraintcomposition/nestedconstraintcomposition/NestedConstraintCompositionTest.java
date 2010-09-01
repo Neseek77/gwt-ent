@@ -32,6 +32,7 @@ import com.gwtent.client.test.validate.tck.AbstractTest;
 import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * Tests for error creation for nested composed constraints with different variations of @REeportAsSingleViolation.
@@ -91,6 +92,7 @@ public class NestedConstraintCompositionTest extends AbstractTest {
 		assertCorrectConstraintViolationMessages( constraintViolations, "CompositeConstraint4 failed." );
 	}
 
+	@Reflect_Domain
 	class DummyEntity1 {
 		@CompositeConstraint1
 		String string;
@@ -100,6 +102,7 @@ public class NestedConstraintCompositionTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class DummyEntity2 {
 		@CompositeConstraint2
 		String string;
@@ -109,6 +112,7 @@ public class NestedConstraintCompositionTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class DummyEntity3 {
 		@CompositeConstraint3
 		String string;
@@ -118,6 +122,7 @@ public class NestedConstraintCompositionTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class DummyEntity4 {
 		@CompositeConstraint4
 		String string;

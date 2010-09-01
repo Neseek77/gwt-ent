@@ -20,6 +20,7 @@ package com.gwtent.client.test.validate.tck.tests.constraints.builtinconstraints
 import javax.validation.constraints.NotNull;
 
 import com.gwtent.client.test.validate.tck.AbstractTest;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * @author Hardy Ferentschik
@@ -44,6 +45,7 @@ public class BuiltinValidatorOverrideTest extends AbstractTest {
 //		assertCorrectNumberOfViolations( violations, 1 );
 //	}
 
+	@Reflect_Domain
 	class DummyEntity {
 		@NotNull
 		String dummyProperty;

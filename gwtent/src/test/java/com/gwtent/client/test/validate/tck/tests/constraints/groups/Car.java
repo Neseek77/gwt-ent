@@ -22,11 +22,14 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Emmanuel Bernard
  * @author Hardy Ferentschik
  */
 @GroupSequence({ Car.class, Car.Test.class })
+@Reflect_Domain
 public class Car {
 	@Pattern(regexp = ".*", groups = Default.class)
 	@Size(min = 2, max = 20, groups = Car.Test.class, message = "Car type has to be between {min} and {max} characters.")
