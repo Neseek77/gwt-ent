@@ -7,6 +7,7 @@ import com.gwtent.client.test.reflection.TestAnnotationInAnnotation.MyMethodAnn;
 import com.gwtent.client.test.reflection.TestAnnotationInAnnotation.TestAnnotation;
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.ReflectionTarget;
 
 /**
  * 
@@ -40,6 +41,9 @@ public class ClassTypeGenTestCase extends GWTTestCase {
   	
   }
   
+  @ReflectionTarget(value="com.gwtent.client.test.reflection.ClassTypeGenTestCase.ClassA")
+  public static interface ClassAByAnnotation extends ClassType{}
+  
   /**
    * At least package visible
    *
@@ -51,13 +55,20 @@ public class ClassTypeGenTestCase extends GWTTestCase {
   interface ClassTypeOfB extends ClassType<ClassB>{};
   
   public void testGen(){
+  	ClassType<ClassA> typeAByAnnotation = GWT.create(ClassAByAnnotation.class);
+  	checkClassA(typeAByAnnotation);
+  	
   	ClassType<ClassB> typeB = GWT.create(ClassTypeOfB.class);
   	assert typeB != null;
   	TestAnnotation a = typeB.getAnnotation(TestAnnotation.class);
   	assert a != null;
   	
   	ClassType<ClassA> type = GWT.create(ClassTypeOfA.class);
-  	assert type != null;
+  	checkClassA(type);
+  }
+
+	private void checkClassA(ClassType<ClassA> type) {
+		assert type != null;
   	
   	assert type.getMethods().length == 2;
   	
@@ -72,6 +83,6 @@ public class ClassTypeGenTestCase extends GWTTestCase {
   	MyMethodAnn ann = m.getAnnotation(MyMethodAnn.class);
   	assert ann != null;
   	assert ann.p1() == 100;
-  }
+	}
 
 }
