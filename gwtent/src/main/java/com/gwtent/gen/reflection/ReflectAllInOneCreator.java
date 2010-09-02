@@ -54,6 +54,7 @@ import com.gwtent.gen.LogableSourceCreator;
 import com.gwtent.gen.reflection.ReflectionCreator.ReflectionSourceCreator;
 import com.gwtent.reflection.client.HasReflect;
 import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.reflection.client.ReflectionTarget;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
@@ -123,7 +124,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		for(JClassType type : candidateList){
 			String className = type.getPackage().getName().replace('.', '_') + '_' + getSimpleUnitNameWithOutSuffix(type) + "_GWTENTAUTO_ClassType"; //type.getPackage().getName().replace('.', '_') + '_' + type.getSimpleSourceName().replace('.', '_'); //getSimpleUnitName(type);
 			
-			sourceWriter.println("public static interface " + className + " extends com.gwtent.reflection.client.ClassType<" + type.getQualifiedSourceName() + "> {}");
+			sourceWriter.println("@ReflectionTarget(value=\"" + type.getQualifiedSourceName() + "\")");
+			sourceWriter.println("public static interface " + className + " extends com.gwtent.reflection.client.ClassType {}");
 			
 			typeNameMap.put(type, className);
 		}
