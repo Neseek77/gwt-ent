@@ -37,11 +37,16 @@ import com.gwtent.gen.reflection.accessadapter.JFeildAdapter;
 import com.gwtent.gen.reflection.accessadapter.JMethodAdapter;
 import com.gwtent.reflection.client.AccessDef;
 import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.ReflectionTarget;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
 import com.gwtent.uibinder.client.DataBinder;
 
 public class GeneratorHelper {
+	
+	public static boolean isSystemClass(JClassType type){
+		return type.getPackage().getName().startsWith("java.") || type.getPackage().getName().startsWith("javax.");
+	}
 	
 	/**
 	 * private interface ClassTypeOfA extends ClassType<ClassA>{
@@ -60,8 +65,20 @@ public class GeneratorHelper {
 		try {
 			classClassType = oracle.getType(ClassType.class.getCanonicalName());
 		} catch (NotFoundException e) {
-			throw new RuntimeException("Can not found DataBinder class, forgot include module xml file?" + e.getMessage());
+			throw new RuntimeException("Can not found reflection class, forgot include module xml file?" + e.getMessage());
 		}
+		
+		ReflectionTarget target = classType.getAnnotation(ReflectionTarget.class);
+		if (target != null){
+			if (target.value() != null && target.value().length() > 0){
+				try {
+					return oracle.getType(target.value());
+				} catch (NotFoundException e) {
+					
+				}
+			}
+		}
+		
 		for (JClassType supClass : classType.getFlattenedSupertypeHierarchy()){
 			if (supClass.isParameterized() != null && supClass.isAssignableTo(classClassType)){
 				if (supClass.isParameterized().getTypeArgs().length == 1){
@@ -72,7 +89,7 @@ public class GeneratorHelper {
 			}
 		}
 		
-		throw new RuntimeException("ClassType should have at least one Parameterized type, please see document of ClassType interface. Current processing type: " + classType.getQualifiedSourceName());
+		throw new RuntimeException("ClassType should have at least one Parameterized type or annotated by @ReflectionTarget, please see document of ClassType interface. Current processing type: " + classType.getQualifiedSourceName());
 	}
 	
 	

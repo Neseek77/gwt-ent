@@ -476,7 +476,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField jField = fields[i];
-				if (jField.isPrivate() || jField.isFinal()) {
+				
+				if (jField.isPrivate() || jField.isFinal() || (jField.isProtected() && GeneratorHelper.isSystemClass(classType))) {
 					continue;
 				}
 
@@ -531,7 +532,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField jField = fields[i];
-				if (jField.isPrivate()) {
+				//Private or protected field under package java.x, javax.x is not accessible 
+				if (jField.isPrivate() || (jField.isProtected() && GeneratorHelper.isSystemClass(classType))) {
 					continue;
 				}
 
@@ -920,9 +922,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String packageName = classType.getPackage().getName();
 		// avoid java.lang.SecurityException: Prohibited package name:
 		// java.lang...
-		if (packageName.startsWith("java.") || packageName.startsWith("javax.")) {
-			packageName = Reflectable.class.getPackage().getName() + "."
-					+ packageName;
+		if (GeneratorHelper.isSystemClass(classType)) {
+			packageName = Reflectable.class.getPackage().getName();
 		}
 		return packageName;
 		// return "com.gwtent.reflection.client.gen."
@@ -943,8 +944,16 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 		// return getSimpleUnitNameWithOutSuffix(getReflectionType(classType)) +
 		// "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
-		return getSimpleUnitNameWithOutSuffix(getReflectionType(classType))
+		JClassType refectionType = getReflectionType(classType);
+		if (GeneratorHelper.isSystemClass(refectionType)) {
+			return refectionType.getPackage().getName().replace('.', '_') + "_" 
+				+ getSimpleUnitNameWithOutSuffix(refectionType)
 				+ "_" + getSUFFIX();
+		}else{
+			return getSimpleUnitNameWithOutSuffix(refectionType)
+			+ "_" + getSUFFIX();
+		}
+		
 	}
 
 	protected Type createTypeByJType(JType jtype) {
