@@ -42,7 +42,9 @@ import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Constructor;
 import com.gwtent.reflection.client.Field;
 import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.Reflectable;
 import com.gwtent.reflection.client.Reflection;
+import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.TypeOracle;
 
 public class ReflectionTestCase extends GWTTestCase {
@@ -326,8 +328,27 @@ public class ReflectionTestCase extends GWTTestCase {
   	
   	assertNotNull(classType.findField("thisShouldThere"));
   	assertNotNull(TypeOracle.Instance.getClassType(ThisShouldThere.class));
-  	assertNull(TypeOracle.Instance.getClassType(ThisShouldNotThere.class));
-  	assertNull(TypeOracle.Instance.getClassType(ReflectParent.class));
+  	try {
+			TypeOracle.Instance.getClassType(ThisShouldNotThere.class);
+			fail("Should not exists");
+		} catch (ReflectionRequiredException e) {
+			
+		}
+		
+		try {
+			TypeOracle.Instance.getClassType(ThisShouldNotThere.class);
+			fail("Should not exists");
+		} catch (ReflectionRequiredException e) {
+			
+		}
+		
+		try {
+			TypeOracle.Instance.getClassType(ReflectParent.class);
+			fail("Should not exists");
+		} catch (ReflectionRequiredException e) {
+			
+		}
+  
   	
   	assertNotNull(TypeOracle.Instance.getClassType(Anno.class));  	
   	assertNotNull(TypeOracle.Instance.getClassType(ClassRefereceByAnno.class));
@@ -347,7 +368,12 @@ public class ReflectionTestCase extends GWTTestCase {
   } 
   
   public void testAnonymousClass(){
-  	assertNull(TypeOracle.Instance.getClassType(TestReflectionInnerClass.class));
+  	try {
+  		TypeOracle.Instance.getClassType(TestReflectionInnerClass.class);
+			fail("Should not exists");
+		} catch (ReflectionRequiredException e) {
+			
+		}
   	
   	TestReflection r = new TestReflection(){
   		private String abc = "Anonymous Field";
@@ -368,8 +394,13 @@ public class ReflectionTestCase extends GWTTestCase {
   	
   	System.out.println(r.getClass().getName());
   	System.out.println(TestReflectionInnerClass.class.getName());
-  	ClassType ct = TypeOracle.Instance.getClassType(r.getClass());
-  	assertNull(ct);
+  	
+		try {
+			ClassType ct = TypeOracle.Instance.getClassType(r.getClass());
+			fail("");
+		} catch (ReflectionRequiredException e) {
+			
+		}
   	//assertNull(ct.getField("abc"));
   }
   
@@ -420,4 +451,21 @@ public class ReflectionTestCase extends GWTTestCase {
   }
 
   
+  @Reflectable
+  class PackageAccessClass{
+  	private String str;
+
+		public void setStr(String str) {
+			this.str = str;
+		}
+
+		public String getStr() {
+			return str;
+		}
+  }
+  
+  public void testPackageAccess(){
+  	ClassType type = TypeOracle.Instance.getClassType(PackageAccessClass.class);
+  	assertTrue(type != null);
+  }
 }
