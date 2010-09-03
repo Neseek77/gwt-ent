@@ -45,6 +45,7 @@ import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.TypeOracle;
 import com.gwtent.validate.client.metadata.annotationfactory.AnnotationDescriptor;
+import com.gwtent.validate.client.metadata.annotationfactory.AnnotationFactory;
 import com.gwtent.validate.client.util.GetAnnotationParameter;
 import com.gwtent.validate.client.util.GetDeclaredMethods;
 import com.gwtent.validate.client.util.GetMethod;
@@ -422,7 +423,7 @@ public class ConstraintDescriptorImpl<T extends Annotation> implements Constrain
 		annotationDescriptor.setValue( PAYLOAD, payloads.toArray( new Class<?>[payloads.size()] ) );
 
 		U annotationProxy = null;
-		//annotationProxy = AnnotationFactory.create( annotationDescriptor );
+		annotationProxy = AnnotationFactory.create( annotationDescriptor );
 		return new ConstraintDescriptorImpl<U>(
 				annotationProxy, constraintHelper, elementType, definedOn
 		);

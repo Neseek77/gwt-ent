@@ -24,24 +24,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.AbstractReferenceMap;
-import org.apache.commons.collections.map.ReferenceIdentityMap;
-
-import com.google.gwt.core.ext.typeinfo.BadTypeArgsException;
-import com.google.gwt.core.ext.typeinfo.JArrayType;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.core.ext.typeinfo.ParseException;
 import com.gwtent.reflection.client.ArrayType;
 import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.NotFoundException;
 import com.gwtent.reflection.client.Parameter;
 import com.gwtent.reflection.client.PrimitiveType;
+import com.gwtent.reflection.client.ReflectionRequiredException;
+import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.TypeOracle;
 
-public class TypeOracleImpl implements TypeOracle {
+public abstract class TypeOracleImpl implements TypeOracle {
 
 	/**
 	 * A reserved metadata tag to indicates that a field type, method return
@@ -154,14 +147,25 @@ public class TypeOracleImpl implements TypeOracle {
 		}
 	}
 	
+	public abstract Type doGetType(String name);
 	
-	public Type getType(String name) {
+	public Type getType(String name) throws ReflectionRequiredException {
 	// Remove all internal and external whitespace.
     //
 		name = name.replaceAll("\\\\s", "");
-    
-    
-		return parseImpl(name);
+    try {
+			Type result = parseImpl(name);
+			if (result == null)
+				throw new ReflectionRequiredException();
+			else
+				return result;
+		} catch (ReflectionRequiredException e) {
+			Type result = doGetType(name);
+			if (result == null)
+				throw new ReflectionRequiredException(ReflectionUtils.createReflectionRequireMsg(name, ""));
+			else
+				return result;
+		}
 	}
 	
 	public static Type findType(String name) {
@@ -174,13 +178,13 @@ public class TypeOracleImpl implements TypeOracle {
 		return type;
 	}
 
-	public ClassType getClassType(String name) {
+	public ClassType getClassType(String name) throws ReflectionRequiredException {
 		Type type = this.getType(name);
-		if (type != null && type instanceof ClassType)
-			//return type.isClassOrInterface();
-			return (ClassType)type;
-		else
-			return null;
+
+		if (type instanceof ClassType)
+				return (ClassType)type;
+			else
+				throw new RuntimeException(name + " not a class type.");
 	}
 	
 	private final Map<Type, ArrayType> arrayTypes = new HashMap<Type, ArrayType>();
@@ -207,7 +211,11 @@ public class TypeOracleImpl implements TypeOracle {
    */
   public ClassType getJavaLangObject() {
     if (javaLangObject == null) {
-      javaLangObject = this.getClassType("java.lang.Object");
+      try {
+				javaLangObject = this.getClassType("java.lang.Object");
+			} catch (ReflectionRequiredException e) {
+				throw new RuntimeException("Not include gwt reflection module? " + e.getMessage());
+			}
       assert javaLangObject != null;
     }
     return javaLangObject;
@@ -223,7 +231,7 @@ public class TypeOracleImpl implements TypeOracle {
 
 	private static Map<String, Type> typeMap = new HashMap<String, Type>();
 
-	public <T> ClassType<T> getClassType(Class<T> classz) {
+	public <T> ClassType<T> getClassType(Class<T> classz) throws ReflectionRequiredException {
 		if (classz.isArray()){
 			return this.getArrayType(getClassType(classz.getComponentType()));
 		}
@@ -232,7 +240,7 @@ public class TypeOracleImpl implements TypeOracle {
 	}
 	
 	
-	private Type parseImpl(String type) {
+	private Type parseImpl(String type) throws ReflectionRequiredException {
 		if (type.endsWith("[]")) {
 		  String remainder = type.substring(0, type.length() - 2);
 		  Type componentType = this.getType(remainder);
@@ -267,8 +275,7 @@ public class TypeOracleImpl implements TypeOracle {
       return result;
     }
 
-    return null;
-    //throw new RuntimeException("Unable to recognize '" + type + "' as a type name (is it fully qualified?)");
+    throw new ReflectionRequiredException(ReflectionUtils.createReflectionRequireMsg(type, "Unable to recognize '" + type + "' as a type name (is it fully qualified?)"));
 	}
 	
 	private PrimitiveType findPrimitiveType(String name){

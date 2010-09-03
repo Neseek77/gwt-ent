@@ -25,6 +25,7 @@ import java.util.List;
 import com.gwtent.reflection.client.HasAnnotations;
 import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.Parameter;
+import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.TypeOracle;
 
@@ -79,7 +80,7 @@ public class ParameterImpl implements HasAnnotations, Parameter {
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.Parameter#getType()
 	 */
-	public Type getType() {
+	public Type getType() throws ReflectionRequiredException {
 		if (type == null)
 			type = TypeOracle.Instance.getType(typeName);
 		

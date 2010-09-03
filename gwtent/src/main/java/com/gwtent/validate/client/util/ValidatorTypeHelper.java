@@ -67,7 +67,7 @@ public class ValidatorTypeHelper {
 		//we now have all bind from a type to its resolution at one level
 		Type validatorType = ( ( ParameterizedType ) constraintValidatorType ).getActualTypeArguments()[VALIDATOR_TYPE_INDEX];
 		if ( validatorType == null ) {
-			throw new ValidationException( "null is an invalid type for a constraint validator." );
+			throw new ValidationException( "null is an invalid type for a constraint validator. " + validator.getName());
 		}
 		//TODO support GenericArrayType
 //		else if ( validatorType instanceof GenericArrayType ) {
@@ -132,8 +132,7 @@ public class ValidatorTypeHelper {
 		for ( Type genericInterface : helper.getGenericInterfaces() ) {
 			returnedType = resolveTypes( resolvedTypes, genericInterface );
 			if ( returnedType != null ) {
-				return returnedType;
-			}
+				return returnedType;		}
 		}
 //		for ( Type genericInterface : helper.getType().isClassOrInterface().getImplementedInterfaces() ) {
 //			returnedType = resolveTypes( resolvedTypes, genericInterface );

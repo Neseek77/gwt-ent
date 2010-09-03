@@ -57,7 +57,7 @@ public class AnnotationStoreImpl implements Annotation {
     return values;
   }
 
-	public ClassType getAsClassType(String name) {
+	public ClassType getAsClassType(String name) throws ReflectionRequiredException {
 		String value = getValue(name);
 		return TypeOracle.Instance.getClassType(value);
 	}

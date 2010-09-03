@@ -399,8 +399,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 					if (method.isAnnotationMethod() != null) {
 						try {
-							Class<?> clazz = Class.forName(classType
-									.getQualifiedSourceName());
+							Class<?> clazz = Class.forName(classType.getQualifiedBinaryName());
 							Method m = clazz.getMethod(method.getName());
 							if (m != null) {
 								source.println("method.setDefaultValue("

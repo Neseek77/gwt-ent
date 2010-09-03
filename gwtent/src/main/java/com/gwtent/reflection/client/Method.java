@@ -31,7 +31,16 @@ public interface Method extends AbstractMethod, AccessDef, Member{
 	 */
 	public Object invoke(Object instance, Object... args) throws MethodInvokeException;
 
-	public Type getReturnType();
+	/**
+	 * Returns a <code>Type</code> object that represents the formal return type
+     of the method represented by this <code>Method</code> object.
+     
+	 * @return the return type for the method this object represents
+	 * 
+	 * @throws ReflectionRequiredException if there is no reflection information of {@link getReturnTypeName()}
+	 */
+	public Type getReturnType() throws ReflectionRequiredException;
+	
 	public String getReturnTypeName();
 	
 	

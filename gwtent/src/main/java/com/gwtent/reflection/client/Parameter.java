@@ -28,5 +28,5 @@ public interface Parameter {
 	public abstract String getName();
 
 	public abstract String getTypeName();
-	public abstract Type getType();
+	public abstract Type getType() throws ReflectionRequiredException;
 }

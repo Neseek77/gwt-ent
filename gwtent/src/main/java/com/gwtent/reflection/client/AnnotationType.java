@@ -6,5 +6,12 @@ package com.gwtent.reflection.client;
  * 
  */
 public interface AnnotationType<T> extends ClassType<T> {
+	
+	/**
+	 * Create a new Annotation.
+	 * 
+	 * @param params the params must be exactly same order of the methods
+	 * @return
+	 */
 	public T createAnnotation(Object[] params);
 }

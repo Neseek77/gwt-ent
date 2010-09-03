@@ -28,6 +28,7 @@ import com.gwtent.reflection.client.Field;
 import com.gwtent.reflection.client.FieldIllegalAccessException;
 import com.gwtent.reflection.client.HasAnnotations;
 import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.TypeOracle;
@@ -81,7 +82,7 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 	 * 
 	 * @see com.gwtent.client.reflection.Field#getType()
 	 */
-	public Type getType() {
+	public Type getType() throws ReflectionRequiredException {
 		if (type == null){
 			type = TypeOracle.Instance.getType(this.getTypeName());
 		}
