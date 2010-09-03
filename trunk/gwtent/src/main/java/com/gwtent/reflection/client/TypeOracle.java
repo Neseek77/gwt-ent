@@ -43,10 +43,17 @@ public interface TypeOracle {
    * 
    * @param type a type signature to be parsed
    * @return the type object corresponding to the parse type
+   * @throws ReflectionRequiredException If not reflection information available for clazz, will throw ReflectionRequiredException exception
    */
-	public Type getType(String name);
+	public Type getType(String name) throws ReflectionRequiredException;
 
-	public ClassType getClassType(String name);
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 * @throws ReflectionRequiredException If not reflection information available for clazz, will throw ReflectionRequiredException exception
+	 */
+	public ClassType getClassType(String name) throws ReflectionRequiredException;
 
 	/**
 	 * Get Class type, this supported:
@@ -57,9 +64,10 @@ public interface TypeOracle {
 	 * <li>Array</li>
 	 * </ul>
 	 * @param clazz
-	 * @return
+	 * @return 
+	 * @throws ReflectionRequiredException If not reflection information available for clazz, will throw ReflectionRequiredException exception
 	 */
-	public <T> ClassType<T> getClassType(Class<T> clazz);
+	public <T> ClassType<T> getClassType(Class<T> clazz) throws ReflectionRequiredException;
 
 	/**
 	 * Gets the type object that represents an array of the specified type.

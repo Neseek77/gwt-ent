@@ -26,6 +26,8 @@ import com.gwtent.reflection.client.Constructor;
 import com.gwtent.reflection.client.HasAnnotations;
 import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.MethodInvokeException;
+import com.gwtent.reflection.client.ReflectionRequiredException;
+import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.TypeOracle;
 
@@ -58,9 +60,13 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.Method#getReturnType()
 	 */
-	public Type getReturnType() {
-		if (returnType == null)
+	public Type getReturnType() throws ReflectionRequiredException{
+		if (returnType == null){
 			returnType = (TypeImpl)TypeOracle.Instance.getType(returnTypeName);
+			
+			if (returnType == null)
+				ReflectionUtils.checkReflection(returnTypeName);
+		}
 		
 		return returnType;
 	}

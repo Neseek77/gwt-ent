@@ -104,10 +104,10 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 //		source.outdent();
 //		source.println("}");
 		
-		source.println("public com.gwtent.reflection.client.Type getType(String name) {");
+		source.println("public com.gwtent.reflection.client.Type doGetType(String name) {");
 		source.indent();
-		source.println("com.gwtent.reflection.client.Type resultType = super.getType(name);");
-		source.println("if (resultType != null) {return resultType;}");
+		//source.println("com.gwtent.reflection.client.Type resultType = super.doGetType(name);");
+		//source.println("if (resultType != null) {return resultType;}");
 		
 		for (JClassType type : typeNameMap.keySet()){
 			source.println("if (name.equals( \"" + type.getQualifiedSourceName() + "\")){return GWT.create(" + typeNameMap.get(type) + ".class);}");
@@ -396,7 +396,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 		}
 		
 		//we just process public classes
-		if ((classType == null) || (!classType.isPublic()))
+		if ((classType == null) || (classType.isPrivate()) || (classType.isProtected()) || (GeneratorHelper.isSystemClass(classType) && !classType.isPublic()))
 		  return false;
 		
 		//no need java.lang.class

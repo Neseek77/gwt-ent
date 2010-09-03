@@ -19,6 +19,12 @@ package com.gwtent.validate.client.metadata.annotationfactory;
 
 import java.lang.annotation.Annotation;
 
+import com.gwtent.reflection.client.AnnotationType;
+import com.gwtent.reflection.client.ClassType;
+import com.gwtent.reflection.client.Method;
+import com.gwtent.reflection.client.ReflectionUtils;
+import com.gwtent.reflection.client.TypeOracle;
+
 
 /**
  * Creates live annotations (actually <code>AnnotationProxies</code>) from <code>AnnotationDescriptors</code>.
@@ -31,6 +37,27 @@ public class AnnotationFactory {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> T create(AnnotationDescriptor<T> descriptor) {
+		ClassType<T> type = TypeOracle.Instance.getClassType(descriptor.type());
+		
+		if (type != null){
+			if ( type.isAnnotation() != null){
+				AnnotationType<T> annType = type.isAnnotation();
+				Object[] params = new Object[type.getMethods().length];
+				
+				int i = 0;
+				for (Method m : type.getMethods()){
+					params[i] = descriptor.valueOf(m.getName());
+					i++;
+				}
+				
+				return annType.createAnnotation(params);
+			}else{
+				throw new RuntimeException("Type must annotation: " + type.getName());
+			}
+		}else{
+			ReflectionUtils.checkReflection(descriptor.type());
+		}
+		
 //		boolean isSecured = System.getSecurityManager() != null;
 //		GetClassLoader action = GetClassLoader.fromContext();
 //		ClassLoader classLoader = isSecured ? AccessController.doPrivileged( action ) : action.run();

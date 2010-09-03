@@ -40,7 +40,7 @@ public interface Field extends AccessDef, HasAnnotations, Member {
    * @return a <code>ClassType</code> object identifying the declared
    * type of the field represented by this object
    */
-	public Type getType();
+	public Type getType() throws ReflectionRequiredException;
 	
 	/**
 	 * please using getType() instead

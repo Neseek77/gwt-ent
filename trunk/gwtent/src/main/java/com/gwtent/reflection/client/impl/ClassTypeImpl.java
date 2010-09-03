@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,6 +43,7 @@ import com.gwtent.reflection.client.NotFoundException;
 import com.gwtent.reflection.client.Package;
 import com.gwtent.reflection.client.Parameter;
 import com.gwtent.reflection.client.PrimitiveType;
+import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.TypeOracle;
@@ -49,8 +51,7 @@ import com.gwtent.reflection.client.TypeOracle;
 /**
  * Type representing a Java class or interface type.
  */
-public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
-		HasAnnotations, ClassType<T> {
+public class ClassTypeImpl<T> extends TypeImpl implements AccessDef, HasAnnotations, ClassType<T> {
 
 	private final Set<ClassTypeImpl<?>> allSubtypes = new HashSet<ClassTypeImpl<?>>();
 	private final Annotations annotations = new Annotations();
@@ -73,7 +74,7 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 
 	// private String lazyHash;
 
-	private final Map methods = new HashMap<String, List>();
+	private final Map methods = new LinkedHashMap<String, List>();
 
 	private int modifierBits;
 
@@ -88,27 +89,21 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 
 	private boolean savedIsDefaultInstantiable;
 
-	protected void checkInvokeParams(String methodName, int paramCount,
-			Object[] args) throws IllegalArgumentException {
+	protected void checkInvokeParams(String methodName, int paramCount, Object[] args) throws IllegalArgumentException {
 		if (args.length != paramCount) {
-			throw new IllegalArgumentException("Method: " + methodName
-					+ "request " + paramCount + " params, but invoke provide "
-					+ args.length + " params.");
+			throw new IllegalArgumentException("Method: " + methodName + "request " + paramCount + " params, but invoke provide " + args.length + " params.");
 		}
 	}
 
-	public Object invoke(Object instance, String methodName, Object[] args)
-			throws MethodInvokeException {
+	public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {
 		if (this.getSuperclass() != null)
 			return getSuperclass().invoke(instance, methodName, args);
 		else
-			throw new NotFoundException(methodName
-					+ " not found or unimplement?");
+			throw new NotFoundException(methodName + " not found or unimplement?");
 	}
 
 	public ClassTypeImpl(Class<T> declaringClass) {
-		TypeOracleImpl.putType(this, ReflectionUtils
-				.getQualifiedSourceName(declaringClass));
+		TypeOracleImpl.putType(this, ReflectionUtils.getQualifiedSourceName(declaringClass));
 		this.declaringClass = declaringClass;
 
 		// if (! qualifiedName.equals("java.lang.Object"))
@@ -119,10 +114,8 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 		interfaces.add(clazz);
 	}
 
-	public void addImplementedInterface(String baseClassName,
-			String[] actArgsType) {
-		interfacesParameterized.add(new ParameterizedTypeImpl(baseClassName,
-				actArgsType));
+	public void addImplementedInterface(String baseClassName, String[] actArgsType) {
+		interfacesParameterized.add(new ParameterizedTypeImpl(baseClassName, actArgsType));
 	}
 
 	public void addModifierBits(int bits) {
@@ -239,7 +232,7 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	 * 
 	 * @see com.gwtent.client.reflection.ClassType#getImplementedInterfaces()
 	 */
-	public ClassType<?>[] getImplementedInterfaces() {
+	public ClassType<?>[] getImplementedInterfaces() throws ReflectionRequiredException {
 		if (lasyinterfaces == null) {
 			lasyinterfaces = new ArrayList<ClassType<?>>();
 			for (Class<?> clazz : interfaces) {
@@ -271,8 +264,7 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	 * @see com.gwtent.client.reflection.ClassType#getMethod(java.lang.String,
 	 * com.gwtent.client.reflection.Type[])
 	 */
-	public Method getMethod(String name, Type[] paramTypes)
-			throws NotFoundException {
+	public Method getMethod(String name, Type[] paramTypes) throws NotFoundException {
 		Method result = findMethod(name, paramTypes);
 		// if (result == null) {
 		// throw new NotFoundException();
@@ -317,15 +309,13 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	}
 
 	public ClassType[] getNestedTypes() {
-		return (ClassType[]) nestedTypes.values().toArray(
-				TypeOracleImpl.NO_JCLASSES);
+		return (ClassType[]) nestedTypes.values().toArray(TypeOracleImpl.NO_JCLASSES);
 	}
 
 	public MethodImpl[] getOverloads(String name) {
 		List resultMethods = (List) methods.get(name);
 		if (resultMethods != null) {
-			return (MethodImpl[]) resultMethods
-					.toArray(TypeOracleImpl.NO_JMETHODS);
+			return (MethodImpl[]) resultMethods.toArray(TypeOracleImpl.NO_JMETHODS);
 		} else {
 			return TypeOracleImpl.NO_JMETHODS;
 		}
@@ -334,13 +324,12 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	/**
 	 * Iterates over the most-derived declaration of each unique overridable
 	 * method available in the type hierarchy of the specified type, including
-	 * those found in superclasses and superinterfaces. A method is overridable
-	 * if it is not <code>final</code> and its accessibility is
-	 * <code>public</code>, <code>protected</code>, or package protected.
+	 * those found in superclasses and superinterfaces. A method is overridable if
+	 * it is not <code>final</code> and its accessibility is <code>public</code>,
+	 * <code>protected</code>, or package protected.
 	 * 
-	 * Deferred binding generators often need to generate method
-	 * implementations; this method offers a convenient way to find candidate
-	 * methods to implement.
+	 * Deferred binding generators often need to generate method implementations;
+	 * this method offers a convenient way to find candidate methods to implement.
 	 * 
 	 * Note that the behavior does not match
 	 * {@link Class#getMethod(String, Class[])}, which does not return the most
@@ -363,7 +352,6 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	// }
 	// return cachedOverridableMethods;
 	// }
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -392,9 +380,11 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	 */
 	public ClassType<? super T> getSuperclass() {
 		if (superclass == null && superclassName != null)
-			this
-					.setSuperclass(TypeOracle.Instance
-							.getClassType(superclassName));
+			try {
+				this.setSuperclass(TypeOracle.Instance.getClassType(superclassName));
+			} catch (ReflectionRequiredException e) {
+				return null;
+			}
 
 		return superclass;
 	}
@@ -433,8 +423,8 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	}
 
 	/**
-	 * Determines if the class can be constructed using a simple
-	 * <code>new</code> operation. Specifically, the class must
+	 * Determines if the class can be constructed using a simple <code>new</code>
+	 * operation. Specifically, the class must
 	 * <ul>
 	 * <li>be a class rather than an interface,</li>
 	 * <li>have either no constructors or a parameterless constructor, and</li>
@@ -620,41 +610,39 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	 * 
 	 * @param methodsBySignature
 	 */
-	private void getOverridableMethodsOnSuperinterfacesAndMaybeThisInterface(
-			Map methodsBySignature) {
-		// Recurse first so that more derived methods will clobber less derived
-		// methods.
-		ClassType[] superIntfs = getImplementedInterfaces();
-		for (int i = 0; i < superIntfs.length; i++) {
-			ClassTypeImpl superIntf = (ClassTypeImpl) superIntfs[i];
-			superIntf
-					.getOverridableMethodsOnSuperinterfacesAndMaybeThisInterface(methodsBySignature);
-		}
-
-		if (isInterface() == null) {
-			// This is not an interface, so we're done after having visited its
-			// implemented interfaces.
-			return;
-		}
-
-		MethodImpl[] declaredMethods = getMethods();
-		for (int i = 0; i < declaredMethods.length; i++) {
-			MethodImpl method = declaredMethods[i];
-
-			String sig = computeInternalSignature(method);
-			Method existing = (Method) methodsBySignature.get(sig);
-			if (existing != null) {
-				// ClassType existingType = existing.getEnclosingType();
-				// ClassType thisType = method.getEnclosingType();
-				// if (thisType.isAssignableFrom(existingType)) {
-				// // The existing method is in a more-derived type, so don't
-				// replace it.
-				// continue;
-				// }
-			}
-			methodsBySignature.put(sig, method);
-		}
-	}
+//	private void getOverridableMethodsOnSuperinterfacesAndMaybeThisInterface(Map methodsBySignature) {
+//		// Recurse first so that more derived methods will clobber less derived
+//		// methods.
+//		ClassType[] superIntfs = getImplementedInterfaces();
+//		for (int i = 0; i < superIntfs.length; i++) {
+//			ClassTypeImpl superIntf = (ClassTypeImpl) superIntfs[i];
+//			superIntf.getOverridableMethodsOnSuperinterfacesAndMaybeThisInterface(methodsBySignature);
+//		}
+//
+//		if (isInterface() == null) {
+//			// This is not an interface, so we're done after having visited its
+//			// implemented interfaces.
+//			return;
+//		}
+//
+//		MethodImpl[] declaredMethods = getMethods();
+//		for (int i = 0; i < declaredMethods.length; i++) {
+//			MethodImpl method = declaredMethods[i];
+//
+//			String sig = computeInternalSignature(method);
+//			Method existing = (Method) methodsBySignature.get(sig);
+//			if (existing != null) {
+//				// ClassType existingType = existing.getEnclosingType();
+//				// ClassType thisType = method.getEnclosingType();
+//				// if (thisType.isAssignableFrom(existingType)) {
+//				// // The existing method is in a more-derived type, so don't
+//				// replace it.
+//				// continue;
+//				// }
+//			}
+//			methodsBySignature.put(sig, method);
+//		}
+//	}
 
 	/**
 	 * Tells this type's superclasses and superinterfaces about it.
@@ -668,7 +656,6 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	// intf.acceptSubtype(me);
 	// }
 	// }
-
 	public boolean isFinal() {
 		return false;
 	}
@@ -682,8 +669,7 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 		return annotations.getAnnotation(annotationClass);
 	}
 
-	public boolean isAnnotationPresent(
-			Class<? extends Annotation> annotationClass) {
+	public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
 		return annotations.isAnnotationPresent(annotationClass);
 	}
 
@@ -710,39 +696,34 @@ public class ClassTypeImpl<T> extends TypeImpl implements AccessDef,
 	}
 
 	// sxf add
-	public Object getFieldValue(Object instance, String fieldName)throws FieldIllegalAccessException {
+	public Object getFieldValue(Object instance, String fieldName) throws FieldIllegalAccessException {
 		// no need to call findField(),because we don't want field in super class
 		Field field = fields.get(fieldName);
 		if (field != null && field.isPrivate()) {
-			throw new FieldIllegalAccessException(getName()+"."+fieldName
-					+ " is private,can't access");
+			throw new FieldIllegalAccessException(getName() + "." + fieldName + " is private,can't access");
 		}
 		if (this.getSuperclass() != null)
 			return getSuperclass().getFieldValue(instance, fieldName);
 		else
-			throw new NotFoundException(fieldName
-					+ " not found or unimplement?");
+			throw new NotFoundException(fieldName + " not found or unimplement?");
 	}
 
 	// sxf add
-	public void setFieldValue(Object instance, String fieldName, Object value)throws FieldIllegalAccessException {
+	public void setFieldValue(Object instance, String fieldName, Object value) throws FieldIllegalAccessException {
 
 		// no need to call findField(),because we don't want field in super class
 		Field field = fields.get(fieldName);
 		if (field != null && field.isPrivate()) {
-			throw new FieldIllegalAccessException(getName()+"."+fieldName
-					+ " is private,can't access");
+			throw new FieldIllegalAccessException(getName() + "." + fieldName + " is private,can't access");
 		}
 		if (field != null && field.isFinal()) {
-			throw new FieldIllegalAccessException(getName()+"."+fieldName
-					+ " is final,can't access");
+			throw new FieldIllegalAccessException(getName() + "." + fieldName + " is final,can't access");
 		}
 
 		if (this.getSuperclass() != null)
 			getSuperclass().setFieldValue(instance, fieldName, value);
 		else
-			throw new NotFoundException(fieldName
-					+ " not found or unimplement?");
+			throw new NotFoundException(fieldName + " not found or unimplement?");
 	}
 
 	public void addAnnotation(Annotation ann) {

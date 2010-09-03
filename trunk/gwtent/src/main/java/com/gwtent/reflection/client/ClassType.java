@@ -101,7 +101,7 @@ public interface ClassType<T> extends HasAnnotations, Type {
 	 */
 	public Field[] getFields();
 
-	public ClassType<?>[] getImplementedInterfaces();
+	public ClassType<?>[] getImplementedInterfaces() throws ReflectionRequiredException;
 
 	/**
 	 * get method
@@ -124,7 +124,7 @@ public interface ClassType<T> extends HasAnnotations, Type {
 	//For now not support packagej
 //	public Package getPackage();
 
-	public ClassType<? super T> getSuperclass();
+	public ClassType<? super T> getSuperclass() throws ReflectionRequiredException;
 	public Class<T> getDeclaringClass();
 	
 	public Object invoke(Object instance, String methodName, Object... args) throws MethodInvokeException;
