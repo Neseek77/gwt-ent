@@ -35,6 +35,7 @@ import com.gwtent.client.test.reflection.ReflectionSaveSize.Anno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ClassRefereceByAnno;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldNotThere;
 import com.gwtent.client.test.reflection.ReflectionSaveSize.ThisShouldThere;
+import com.gwtent.client.test.reflection.ReflectionSuperclass.TestExtendedReflection;
 import com.gwtent.client.test.reflection.TestAnnotationInAnnotation.MyParameterAnn;
 import com.gwtent.client.test.reflection.TestReflectionGenerics.TestReflection1;
 import com.gwtent.reflection.client.AnnotationStoreImpl;
@@ -467,5 +468,10 @@ public class ReflectionTestCase extends GWTTestCase {
   public void testPackageAccess(){
   	ClassType type = TypeOracle.Instance.getClassType(PackageAccessClass.class);
   	assertTrue(type != null);
+  }
+  
+  //issue http://code.google.com/p/gwt-ent/issues/detail?id=31
+  public void testSuperclass(){
+  	assert TypeOracle.Instance.getClassType(TestExtendedReflection.class).getSuperclass() != null;
   }
 }
