@@ -19,26 +19,22 @@
 
 package com.gwtent.gen.reflection;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.ext.typeinfo.JParameter;
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.gwtent.reflection.client.AnnotationStoreImpl;
+import com.google.gwt.core.client.GWT;
+import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.MethodInvokeException;
+import com.gwtent.reflection.client.ReflectionTarget;
 import com.gwtent.reflection.client.impl.AnnotationImpl;
 import com.gwtent.reflection.client.impl.AnnotationValues;
 import com.gwtent.reflection.client.impl.ClassTypeImpl;
 import com.gwtent.reflection.client.impl.ConstructorImpl;
 import com.gwtent.reflection.client.impl.FieldImpl;
 import com.gwtent.reflection.client.impl.MethodImpl;
-import com.gwtent.reflection.client.impl.ParameterImpl;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
-
-import java.lang.annotation.Annotation;
-import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class Proxy extends ClassTypeImpl<Proxy> {
@@ -146,7 +142,9 @@ public class Proxy extends ClassTypeImpl<Proxy> {
 			}
   		
   	}
-  	
+  	@ReflectionTarget(value="java.lang.annotation.Annotation")
+    public static interface Annotation_GWTENTAUTO_ClassType extends com.gwtent.reflection.client.ClassType {}
+
   public org_aspectj_lang_annotation_Before(){
     super(org.aspectj.lang.annotation.Before.class);
     //addClassMeta();
@@ -157,7 +155,7 @@ public class Proxy extends ClassTypeImpl<Proxy> {
     if (TypeOracleImpl.findType(java.lang.Object.class) != null)
     setSuperclass((ClassTypeImpl)TypeOracleImpl.findType(java.lang.Object.class).isClassOrInterface());
     
-    addImplementedInterface(java.lang.annotation.Annotation.class);
+    addImplementedInterface((ClassType) GWT.create(Annotation_GWTENTAUTO_ClassType.class));
   }
   
   public Object invoke(Object instance, String methodName, Object[] args) throws MethodInvokeException {
@@ -180,7 +178,7 @@ public class Proxy extends ClassTypeImpl<Proxy> {
 //  }
   
   protected void addAnnotations(){
-  	this.addAnnotation(AnnotationValues.toAnnotation(new AnnotationValues("java.lang.annotation.Target", new Object[]{})));
+  	this.addAnnotation((ClassType)GWT.create(java.lang.annotation.Target.class), new AnnotationValues("java.lang.annotation.Target", new Object[]{}));
   }
   
   protected void addFields(){
