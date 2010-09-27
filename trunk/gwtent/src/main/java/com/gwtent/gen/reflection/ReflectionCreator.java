@@ -20,11 +20,23 @@ package com.gwtent.gen.reflection;
 
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
+import com.google.gwt.core.ext.typeinfo.HasAnnotations;
 import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
 import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -34,12 +46,17 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.JTypeParameter;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.gwtent.common.client.CheckedExceptionWrapper;
+import com.gwtent.gen.GenExclusion;
 import com.gwtent.gen.GenUtils;
 import com.gwtent.gen.LogableSourceCreator;
 import com.gwtent.reflection.client.HasReflect;
 import com.gwtent.reflection.client.Reflectable;
+import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
 import com.gwtent.reflection.client.impl.AnnotationTypeImpl;
 import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
@@ -64,6 +81,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 		private final com.google.gwt.core.ext.typeinfo.TypeOracle typeOracle;
 		private final Reflectable reflectable;
 		private final TreeLogger logger;
+		private List<JClassType> candidateList = new ArrayList<JClassType>();
+		private Map<JClassType, Reflectable> candidates = new HashMap<JClassType, Reflectable>();
+		private Set<JClassType> relationClassesProcessed = new HashSet<JClassType>();
 
 		public ReflectionSourceCreator(String className, JClassType classType,
 				SourceWriter sourceWriter,
@@ -77,18 +97,84 @@ public class ReflectionCreator extends LogableSourceCreator {
 			this.reflectable = reflectable;
 		}
 
+		private String getClassInterface(JClassType type) {
+			if (type instanceof JTypeParameter) {
+				JTypeParameter typep = (JTypeParameter) type;
+				type = typep.getBaseType();
+			}
+			String className = type.getPackage().getName().replace('.', '_')
+					+ '_' + getSimpleUnitNameWithOutSuffix(type)
+					+ "_GWTENTAUTO_ClassType"; // type.getPackage().getName().replace('.',
+			// '_') + '_' +
+			// type.getSimpleSourceName().replace('.',
+			// '_');
+			// //getSimpleUnitName(type);
+
+			return className;
+
+		}
+
 		public void createSource() {
+			String simpleUnitName = getSimpleUnitNameWithOutSuffix(classType);
+
+			sourceWriter.println(" private static boolean inited = false;");
+			sourceWriter
+					.println(" protected static ClassType<?> instance = null;");
+
+			sourceWriter.println("public " + className + "() {");
+			sourceWriter.println("	if (!inited) {");
+			sourceWriter.println("		inited = true;");
+			sourceWriter.println("		instance =");
+			sourceWriter.println("		   new " + simpleUnitName
+					+ "___ClassImpl();");
+			sourceWriter.println("	} ");
+			sourceWriter.println("	classType = instance;");
+			sourceWriter.println("}");
+
+			sourceWriter.println("public static class " + simpleUnitName
+					+ "___ClassImpl ");
+			JClassType refType = classType;
+
+			if (refType.isAnnotation() != null) {
+				sourceWriter.println(" extends "
+						+ AnnotationTypeImpl.class.getName() + "<"
+						+ refType.getQualifiedSourceName() + "> {");
+
+			} else if (refType.isEnum() == null) {
+				sourceWriter
+						.println(" extends com.gwtent.reflection.client.impl.ClassTypeImpl<"
+								+ refType.getQualifiedSourceName() + "> {");
+
+			} else {
+				sourceWriter
+						.println(" extends com.gwtent.reflection.client.impl.EnumTypeImpl<"
+								+ refType.getQualifiedSourceName() + ">{");
+			}
+
+			sourceWriter.indent();
+			createInnerClass();
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+		}
+
+		public void createInnerClass() {
+
 			// if (classType.isAnnotation() != null){
 			// createAnnotationImpl(classType.isAnnotation());
 			// }
-			
+			// 创建用到的类的接口
+			createRelInterface();
+
 			if (classType.isAnnotation() != null) {
 				createAnnotationImpl(this.sourceWriter, classType
 						.isAnnotation());
 
 			}
 
-			sourceWriter.println("public " + className + "(){");
+			// constructor
+			sourceWriter.println("public "
+					+ getSimpleUnitNameWithOutSuffix(classType)
+					+ "___ClassImpl(){");
 			sourceWriter.indent();
 			// sourceWriter.println("super(\"" +
 			// classType.getQualifiedSourceName() +
@@ -122,45 +208,89 @@ public class ReflectionCreator extends LogableSourceCreator {
 			}
 
 			sourceWriter.println("");
+
 			if (classType.getSuperclass() != null
 					&& classType.getSuperclass().isPublic()) {
-				// sourceWriter.println("if (" + "TypeOracleImpl.findType(" +
-				// classType.getSuperclass().getQualifiedSourceName() +
-				// ".class)" + " != null)");
-				if (classType.getSuperclass().isParameterized() != null) {
-					// new String[]{java.lang.String, java.lang.Integer}
-					String actArgs = GeneratorHelper
-							.stringArrayToCode(GeneratorHelper
-									.convertJClassTypeToStringArray(classType
-											.getSuperclass().isParameterized()
-											.getTypeArgs()));
-					sourceWriter
-							.println("  setSuperclass(new ParameterizedTypeImpl(\""
-									+ classType.getSuperclass()
-											.getQualifiedSourceName()
-									+ "\", "
-									+ actArgs + "));");
-				} else {
-					sourceWriter.println("  setSuperclassName(\""
-							+ classType.getSuperclass()
-									.getQualifiedSourceName() + "\");");
-				}
+				sourceWriter.println("  setSuperclassName(\""
+						+ classType.getSuperclass().getQualifiedSourceName()
+						+ "\");");
+				if (reflectable.superClasses()) {
+					// sourceWriter.println("if (" + "TypeOracleImpl.findType("
+					// +
+					// classType.getSuperclass().getQualifiedSourceName() +
+					// ".class)" + " != null)");
+					String classInterface = getClassInterface(classType
+							.getSuperclass());
+					if (classType.getSuperclass().isParameterized() != null) {
+						// new String[]{java.lang.String, java.lang.Integer}
+						JClassType[] paramTypeArgs = classType.getSuperclass()
+								.isParameterized().getTypeArgs();
+						String actArgs = GeneratorHelper
+								.stringArrayToCode(GeneratorHelper
+										.convertJClassTypeToStringArray(paramTypeArgs));
 
+						StringBuffer actualTypeString = new StringBuffer();
+						actualTypeString.append("    new ClassType[]{");
+						for (int i = 0; i < paramTypeArgs.length; i++) {
+							actualTypeString.append("(ClassType)GWT.create("
+									+ getClassInterface(paramTypeArgs[i])
+									+ ".class), ");
+						}
+						actualTypeString.append("    }");
+						sourceWriter
+								.println("  setSuperclass(new ParameterizedTypeImpl(\""
+										+ classType.getSuperclass()
+												.getQualifiedSourceName()
+										+ "\", (ClassType)GWT.create("
+										+ classInterface
+										+ ".class), "
+
+										+ actArgs
+										+ ","
+										+ actualTypeString
+										+ "));");
+					} else {
+
+						sourceWriter
+								.println("  setSuperclass((ClassType)GWT.create("
+										+ classInterface + ".class));");
+						// sourceWriter.println("  setSuperclass(\"在这里创建类sxf\");");
+					}
+				}
 			}
 
 			sourceWriter.println();
-			for (JClassType type : classType.getImplementedInterfaces()) {
-				if (type.isParameterized() != null) {
-					String actArgs = GeneratorHelper
-							.stringArrayToCode(GeneratorHelper
-									.convertJClassTypeToStringArray(type
-											.isParameterized().getTypeArgs()));
-					sourceWriter.println("addImplementedInterface(\""
-							+ type.getQualifiedSourceName() + "\", " + actArgs
-							+ ");");
-				} else {
-					sourceWriter.println("addImplementedInterface("
-							+ type.getQualifiedSourceName() + ".class);");
+			if (reflectable.relationTypes()) {
+				for (JClassType type : classType.getImplementedInterfaces()) {
+					if (type.isParameterized() != null) {
+						String actArgs = GeneratorHelper
+								.stringArrayToCode(GeneratorHelper
+										.convertJClassTypeToStringArray(type
+												.isParameterized()
+												.getTypeArgs()));
+
+						JClassType[] paramTypeArgs = type.isParameterized()
+								.getTypeArgs();
+						StringBuffer actualTypeString = new StringBuffer();
+						actualTypeString.append("    new ClassType[]{");
+						for (int i = 0; i < paramTypeArgs.length; i++) {
+							actualTypeString.append("(ClassType)GWT.create("
+									+ getClassInterface(paramTypeArgs[i])
+									+ ".class), ");
+						}
+						actualTypeString.append("    }");
+						sourceWriter.println("addImplementedInterface(\""
+								+ type.getQualifiedSourceName()
+								+ "\", "
+								+ TypeHelper.getClassTypeCode(type
+										.getQualifiedSourceName()) + ","
+
+								+ actArgs + "," + actualTypeString + ");");
+					} else {
+						sourceWriter.println("addImplementedInterface("
+								+ TypeHelper.getClassTypeCode(type
+										.getQualifiedSourceName()) + " );");
+					}
 				}
 			}
 			sourceWriter.outdent();
@@ -198,6 +328,394 @@ public class ReflectionCreator extends LogableSourceCreator {
 			setFieldValue(classType, sourceWriter);
 
 			getFieldValue(classType, sourceWriter);
+		}
+
+		protected String getSimpleUnitNameWithOutSuffix(JClassType classType) {
+			return classType.getName().replace('.', '_');
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processAnnotationClasses(HasAnnotations annotations,
+				Reflectable reflectable) {
+			if (!reflectable.classAnnotations())
+				return;
+
+			Annotation[] annos = AnnotationsHelper.getAnnotations(annotations);
+			if (annos == null)
+				return;
+
+			for (Annotation annotation : annos) {
+				processAnnotation(annotation);
+			}
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private boolean addClassIfNotExists(JClassType classType,
+				Reflectable setting) {
+			// Add next line we can make sure we just append normal class type,
+			// always get from TypeOracle
+			// not JParameterizedType or JTypeParameter etc...
+			// RC2 we support ParameterizedType now.
+			if (classType != null && classType.isParameterized() == null) {
+				// System.out.println("addClassIfNotExists: " +
+				// classType.getQualifiedSourceName());
+				classType = this.typeOracle.findType(classType
+						.getQualifiedSourceName());
+
+			}
+
+			// we just process public classes
+			if ((classType == null)
+					|| (classType.isPrivate())
+					|| (classType.isProtected())
+					|| (GeneratorHelper.isSystemClass(classType) && !classType
+							.isPublic()))
+				return false;
+
+			// no need java.lang.class
+			if (classType.getQualifiedSourceName().equals("java.lang.Class"))
+				return false;
+
+			if (candidateList.indexOf(classType.getErasedType()) < 0) {
+				candidateList.add(classType.getErasedType());
+				candidates.put(classType.getErasedType(), setting);
+				return true;
+			}
+
+			return false;
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private Reflectable getNearestSetting(JClassType classType,
+				Reflectable defaultSetting) {
+			Reflectable result = GenUtils
+					.getClassTypeAnnotationWithMataAnnotation(classType,
+							Reflectable.class);
+			if (result != null)
+				return result;
+			else
+				return defaultSetting;
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processRelationClass(JClassType classType,
+				Reflectable reflectable) {
+			Reflectable nearest = getNearestSetting(classType, reflectable);
+			processRelationClasses(classType, nearest);
+			processAnnotationClasses(classType, nearest);
+			addClassIfNotExists(classType, nearest);
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processMethods(JClassType classType,
+				Reflectable reflectable) {
+			boolean need = reflectable.relationTypes();
+			for (JMethod method : classType.getMethods()) {
+				if (reflectable.fieldAnnotations()
+						|| (hasReflectionAnnotation(method))) {
+					processAnnotationClasses(method, reflectable);
+
+					HasReflect hasReflect = method
+							.getAnnotation(HasReflect.class);
+					JClassType type = null;
+
+					if (need || (hasReflect != null && hasReflect.resultType())) {
+						if (method.getReturnType() != null
+								&& method.getReturnType().isArray() != null) {
+							JArrayType array = method.getReturnType().isArray();
+							JType componentType = array.getComponentType();
+							if (componentType.isClassOrInterface() != null) {
+								type = componentType.isClassOrInterface();
+							}
+							processRelationClasses(type, reflectable);
+
+							addClassIfNotExists(type, reflectable);
+
+						}
+						if (method.getReturnType() != null
+								&& method.getReturnType().isClassOrInterface() != null) {
+							type = method.getReturnType().isClassOrInterface();
+
+							if (!type.isAssignableTo(classType))
+								processRelationClasses(type, reflectable);
+
+							addClassIfNotExists(type, reflectable);
+						}
+					}
+
+					if (need
+							|| (hasReflect != null && hasReflect
+									.parameterTypes())) {
+						for (JParameter parameter : method.getParameters()) {
+							if (parameter.getType() != null
+									&& parameter.getType().isClassOrInterface() != null) {
+								type = parameter.getType().isClassOrInterface();
+
+								if (!type.isAssignableTo(classType))
+									processRelationClasses(type, reflectable);
+
+								addClassIfNotExists(type, reflectable);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private boolean hasReflection(HasAnnotations type) {
+			return type.getAnnotation(HasReflect.class) != null;
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private boolean hasReflectionAnnotation(HasAnnotations type) {
+			return (type.getAnnotation(HasReflect.class) != null)
+					&& type.getAnnotation(HasReflect.class).annotation();
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processFields(JClassType classType, Reflectable reflectable) {
+			boolean need = reflectable.relationTypes();
+
+			for (JField field : classType.getFields()) {
+				if (reflectable.fieldAnnotations()
+						|| (hasReflectionAnnotation(field))) {
+					// 不知道为什么，在Object中，会多出一个这样的属性，类型是javascriptObject
+					if (classType.getQualifiedSourceName().equals(
+							Object.class.getName())
+							&& (field.getName().equals("expando") || field
+									.getName().equals("typeMarker"))) {
+						continue;
+					}
+					processAnnotationClasses(field, reflectable);
+
+					JClassType type = field.getType().isClassOrInterface();
+					if (type != null)
+						if (need
+								|| (hasReflection(field) && field
+										.getAnnotation(HasReflect.class)
+										.fieldType()))
+							if (!type.isAssignableTo(classType)) // some times,
+								// it's
+								// itself of
+								// devided
+								// class
+								processRelationClasses(type, reflectable);
+
+					addClassIfNotExists(type, reflectable);
+				}
+
+			}
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processRelationClasses(JClassType classType,
+				Reflectable reflectable) {
+			if (classType == null)
+				return;
+
+			if (classType.isParameterized() != null)
+				classType = classType.isParameterized().getBaseType();
+
+			if (classType.isRawType() != null || classType.isWildcard() != null
+					|| classType.isTypeParameter() != null)
+				classType = classType.getErasedType();
+
+			if (relationClassesProcessed.contains(classType))
+				return;
+
+			processAnnotationClasses(classType, reflectable);
+
+			if (reflectable.superClasses()) {
+				if (classType.getSuperclass() != null) {
+					processRelationClass(classType.getSuperclass(), reflectable);
+				}
+			}
+
+			if (reflectable.relationTypes()) {
+				for (JClassType type : classType.getImplementedInterfaces()) {
+					processRelationClass(type, reflectable);
+				}
+			}
+
+			relationClassesProcessed.add(classType);
+
+			processFields(classType, reflectable);
+
+			processMethods(classType, reflectable);
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processClass(Class<?> clazz, Reflectable reflectable) {
+			processClass(typeOracle.findType(ReflectionUtils
+					.getQualifiedSourceName(clazz)), reflectable);
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		protected GenExclusion getGenExclusion() {
+			return GenExclusionCompositeReflection.INSTANCE;
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		protected boolean genExclusion(JClassType classType) {
+			if (getGenExclusion() != null) {
+				return getGenExclusion().exclude(classType);
+			} else
+				return false;
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processClass(JClassType classType, Reflectable reflectable) {
+			if (!genExclusion(classType)) {
+				// if (addClassIfNotExists(classType, reflectable)) {//不需要增加自己了
+				processRelationClasses(classType, reflectable);
+				processAnnotationClasses(classType, reflectable);
+				// }
+			}
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private Reflectable getNearestSetting(Class<?> clazz,
+				Reflectable defaultSetting) {
+			return getNearestSetting(typeOracle.findType(ReflectionUtils
+					.getQualifiedSourceName(clazz)), defaultSetting);
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private Reflectable getFullSettings() {
+			return ReflectableHelper.getFullSettings(typeOracle);
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processClassFromAnnotationValue(Object value) {
+			if (value != null && value instanceof Class
+					&& (!((Class) value).getName().equals("void"))) {
+				processClass((Class) value, getNearestSetting((Class) value,
+						getFullSettings()));
+			}
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processJType(JType type) {
+			JClassType classType = null;
+			if (type.isClassOrInterface() != null) {
+				classType = type.isClassOrInterface();
+			} else if (type.isArray() != null) {
+				processJType(type.isArray().getComponentType());
+			} else if (type.isAnnotation() != null) {
+				classType = type.isAnnotation();
+			}
+
+			if (classType != null)
+				processClass(classType, getNearestSetting(classType,
+						getFullSettings()));
+		}
+
+		// sxf copy from ReflectAllInOneCreator
+		private void processAnnotation(Annotation annotation) {
+			if (annotation.annotationType().getName().startsWith(
+					"java.lang.annotation")) {
+				return; // Document's parent is itself, must check here
+			} else {
+				JClassType classType = this.typeOracle.findType(ReflectionUtils
+						.getQualifiedSourceName(annotation.annotationType()));
+
+				if (classType == null)
+					return; //
+
+				addClassIfNotExists(classType, getNearestSetting(classType,
+						getFullSettings()));
+
+				// Go through all annotation methods, if has class, add that
+				// class to reflection as well
+				JAnnotationType annoType = classType.isAnnotation();
+				JAnnotationMethod[] methods = annoType.getMethods();
+				for (JAnnotationMethod method : methods) {
+					Object value = null;
+					try {
+						value = annotation.annotationType().getMethod(
+								method.getName(), new Class[] {}).invoke(
+								annotation, null);
+						// System.out.println(value);
+						// System.out.println(value.getClass());
+						if (value instanceof Class) {
+							processClassFromAnnotationValue(value);
+						} else if (value.getClass().isArray()) {
+							for (int i = 0; i < Array.getLength(value); i++) {
+								if (Array.get(value, i) instanceof Class)
+									processClassFromAnnotationValue(Array.get(
+											value, i));
+							}
+						} else if (value instanceof Annotation) {
+							processAnnotation((Annotation) value);
+						}
+					} catch (Exception e) {
+						throw new CheckedExceptionWrapper(e);
+					}
+
+					if (method.getReturnType() != null) {
+						JType type = method.getReturnType();
+						processJType(type);
+
+					}
+				}
+
+				Class<? extends Annotation> annotationType = annotation
+						.annotationType();
+				Annotation[] metaAnnotations = annotationType.getAnnotations();
+				for (Annotation metaAnnotation : metaAnnotations) {
+					processAnnotation(metaAnnotation);
+				}
+			}
+		}
+
+		// sxf
+		private void createRelInterface() {
+
+			Reflectable reflectable = GenUtils
+					.getClassTypeAnnotationWithMataAnnotation(classType,
+							Reflectable.class);
+			if (reflectable == null) {
+				reflectable = ReflectableHelper.getFullSettings(typeOracle);
+			}
+			try {
+				addClassIfNotExists(typeOracle.getType(Retention.class
+						.getCanonicalName()), ReflectableHelper
+						.getDefaultSettings(typeOracle));
+				addClassIfNotExists(typeOracle.getType(Documented.class
+						.getCanonicalName()), ReflectableHelper
+						.getDefaultSettings(typeOracle));
+				addClassIfNotExists(typeOracle.getType(Inherited.class
+						.getCanonicalName()), ReflectableHelper
+						.getDefaultSettings(typeOracle));
+				addClassIfNotExists(typeOracle.getType(Target.class
+						.getCanonicalName()), ReflectableHelper
+						.getDefaultSettings(typeOracle));
+				addClassIfNotExists(typeOracle.getType(Deprecated.class
+						.getCanonicalName()), ReflectableHelper
+						.getDefaultSettings(typeOracle));
+			} catch (NotFoundException e) {
+				throw new RuntimeException(e);
+			}
+
+			processClass(classType, reflectable);
+			for (JClassType type : candidateList) {
+				String className = type.getPackage().getName()
+						.replace('.', '_')
+						+ '_'
+						+ getSimpleUnitNameWithOutSuffix(type)
+						+ "_GWTENTAUTO_ClassType"; // type.getPackage().getName().replace('.',
+				// '_') + '_' +
+				// type.getSimpleSourceName().replace('.',
+				// '_');
+				// //getSimpleUnitName(type);
+
+				sourceWriter.println("@ReflectionTarget(value=\""
+						+ type.getQualifiedSourceName() + "\")");
+				sourceWriter.println("public static interface " + className
+						+ " extends com.gwtent.reflection.client.ClassType {}");
+			}
+
 		}
 
 		private void invoke(JClassType classType) {
@@ -327,7 +845,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField field = fields[i];
-
+				// 不知道为什么，在Object中，会多出一个这样的属性，类型是javascriptObject
+				if (classType.getQualifiedSourceName().equals(
+						Object.class.getName())
+						&& (field.getName().equals("expando") || field
+								.getName().equals("typeMarker"))) {
+					continue;
+				}
 				if (needReflect
 						|| field.getAnnotation(HasReflect.class) != null) {
 					if (field.isEnumConstant() == null)
@@ -340,13 +864,17 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 					source.println("field.addModifierBits("
 							+ GeneratorHelper.AccessDefToInt(field) + "); ");
-					source
-							.println("field.setTypeName(\""
-									+ field.getType().getQualifiedSourceName()
-									+ "\");");
-
-					// GeneratorHelper.addMetaDatas("field", source, field);
-
+					String fieldType = field.getType().getQualifiedSourceName();
+					source.println("field.setTypeName(\"" + fieldType + "\");");
+					if (reflectable.relationTypes()) {
+						StringBuffer classTypeCode = TypeHelper
+								.getClassTypeCode(field.getType()
+										.getQualifiedSourceName());
+						source
+								.println("field.setType(" + classTypeCode
+										+ "); ");
+						// GeneratorHelper.addMetaDatas("field", source, field);
+					}
 					if (this.reflectable.fieldAnnotations()
 							|| (field.getAnnotation(HasReflect.class) != null && field
 									.getAnnotation(HasReflect.class)
@@ -397,15 +925,25 @@ public class ReflectionCreator extends LogableSourceCreator {
 							+ method.getReturnType().getQualifiedSourceName()
 							+ "\");");
 
+					// no need java.lang.class
+					if (reflectable.relationTypes()
+							&& !method.getReturnType().getQualifiedSourceName()
+									.equals("java.lang.Class")) {
+						source.println("method.setReturnType("
+								+ TypeHelper.getClassTypeCode(method
+										.getReturnType()
+										.getQualifiedSourceName()) + ");");
+					}
 					if (method.isAnnotationMethod() != null) {
 						try {
-							Class<?> clazz = Class.forName(classType.getQualifiedBinaryName());
+							Class<?> clazz = Class.forName(classType
+									.getQualifiedBinaryName());
 							Method m = clazz.getMethod(method.getName());
 							if (m != null) {
 								source.println("method.setDefaultValue("
-										+ GeneratorHelper
-												.annoValueToCode(typeOracle, m
-														.getDefaultValue(), logger)
+										+ GeneratorHelper.annoValueToCode(
+												typeOracle,
+												m.getDefaultValue(), logger)
 										+ ");");
 							}
 						} catch (ClassNotFoundException e) {
@@ -436,9 +974,24 @@ public class ReflectionCreator extends LogableSourceCreator {
 					JParameter[] params = method.getParameters();
 					for (int j = 0; j < params.length; j++) {
 						JParameter param = params[j];
-						source.println("new ParameterImpl(method, \""
-								+ param.getType().getQualifiedSourceName()
-								+ "\", \"" + param.getName() + "\");");
+						// no need java.lang.class
+						if (reflectable.relationTypes()
+								&& !param.getType().getQualifiedSourceName().equals(
+												"java.lang.Class")) {
+							source.println("new ParameterImpl(method, \""
+									+ param.getType().getQualifiedSourceName()
+									+ "\","
+									+ TypeHelper
+											.getClassTypeCode(param.getType()
+													.getQualifiedSourceName())
+									+ ", \"" + param.getName() + "\");");
+						}else{
+							source.println("new ParameterImpl(method, \""
+									+ param.getType().getQualifiedSourceName()
+									+ "\","
+									+ "null"
+									+ ", \"" + param.getName() + "\");");
+						}
 						// TODO Support annotation of Parameter
 					}
 
@@ -475,8 +1028,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField jField = fields[i];
-				
-				if (jField.isPrivate() || jField.isFinal() || (jField.isProtected() && GeneratorHelper.isSystemClass(classType))) {
+
+				if (jField.isPrivate()
+						|| jField.isFinal()
+						|| (jField.isProtected() && GeneratorHelper
+								.isSystemClass(classType))) {
 					continue;
 				}
 
@@ -531,8 +1087,11 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			for (int i = 0; i < fields.length; i++) {
 				JField jField = fields[i];
-				//Private or protected field under package java.x, javax.x is not accessible 
-				if (jField.isPrivate() || (jField.isProtected() && GeneratorHelper.isSystemClass(classType))) {
+				// Private or protected field under package java.x, javax.x is
+				// not accessible
+				if (jField.isPrivate()
+						|| (jField.isProtected() && GeneratorHelper
+								.isSystemClass(classType))) {
 					continue;
 				}
 
@@ -619,11 +1178,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 			String implClassName = className.replace('.', '_') + "Impl";
 			// we don't have class object,instead,we have a className string,
 			// so can't extends AnnotationImpl
-			sourceWriter
-					.println("public static class " + implClassName
-							// + " extends AnnotationImpl "
-							+ " implements "
-							+ annotation.getQualifiedSourceName() + "{");
+			sourceWriter.println("public static class " + implClassName
+					// + " extends AnnotationImpl "
+					+ " implements " + annotation.getQualifiedSourceName()
+					+ "{");
 			sourceWriter.indent();
 			JAnnotationMethod[] methods = annotation.getMethods();
 			// declare variable
@@ -665,11 +1223,13 @@ public class ReflectionCreator extends LogableSourceCreator {
 
 			sourceWriter.outdent();
 
-			sourceWriter
-					.println("public Class<"+annotation.getQualifiedSourceName()+"> annotationType() {");
+			sourceWriter.println("public Class<"
+					+ annotation.getQualifiedSourceName()
+					+ "> annotationType() {");
 			sourceWriter.indent();
 
-			sourceWriter.println("return "+annotation.getQualifiedSourceName()+".class;");
+			sourceWriter.println("return "
+					+ annotation.getQualifiedSourceName() + ".class;");
 			sourceWriter.outdent();
 			sourceWriter.println("  }");
 
@@ -677,13 +1237,10 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println();
 
 			// create createAnnotation method
-			sourceWriter
-					.println("public "
-							+ implClassName
-							+ " createAnnotation(Object[] params) {");
+			sourceWriter.println("public " + implClassName
+					+ " createAnnotation(Object[] params) {");
 			sourceWriter.indent();
-			sourceWriter.println("return new " + implClassName
-					+ "(params);");
+			sourceWriter.println("return new " + implClassName + "(params);");
 			sourceWriter.outdent();
 			sourceWriter.println("}");
 		}
@@ -874,20 +1431,20 @@ public class ReflectionCreator extends LogableSourceCreator {
 		String simpleName = getSimpleUnitName(classType);
 		ClassSourceFileComposerFactory composer = new ClassSourceFileComposerFactory(
 				packageName, simpleName);
-		if(getReflectionType(classType).isAnnotation()!=null){
+		if (getReflectionType(classType).isAnnotation() != null) {
 			composer
-			.setSuperclass(AnnotationTypeImpl.class.getName()+ "<"
-					+ getReflectionType(classType)
-							.getQualifiedSourceName() + ">");
-			 
-		}else if (getReflectionType(classType).isEnum() == null){
-			composer
-					.setSuperclass("com.gwtent.reflection.client.impl.ClassTypeImpl<"
+					.setSuperclass("com.gwtent.reflection.client.impl.AnnotationTypeProxy<"
 							+ getReflectionType(classType)
 									.getQualifiedSourceName() + ">");
-		}else{
+
+		} else if (getReflectionType(classType).isEnum() == null) {
 			composer
-					.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeImpl<"
+					.setSuperclass("com.gwtent.reflection.client.impl.ClassTypeProxy<"
+							+ getReflectionType(classType)
+									.getQualifiedSourceName() + ">");
+		} else {
+			composer
+					.setSuperclass("com.gwtent.reflection.client.impl.EnumTypeProxy<"
 							+ getReflectionType(classType)
 									.getQualifiedSourceName() + ">");
 		}
@@ -945,14 +1502,14 @@ public class ReflectionCreator extends LogableSourceCreator {
 		// "_" + getSimpleUnitNameWithOutSuffix(classType) + getSUFFIX();
 		JClassType refectionType = getReflectionType(classType);
 		if (GeneratorHelper.isSystemClass(refectionType)) {
-			return refectionType.getPackage().getName().replace('.', '_') + "_" 
-				+ getSimpleUnitNameWithOutSuffix(refectionType)
-				+ "_" + getSUFFIX();
-		}else{
-			return getSimpleUnitNameWithOutSuffix(refectionType)
-			+ "_" + getSUFFIX();
+			return refectionType.getPackage().getName().replace('.', '_') + "_"
+					+ getSimpleUnitNameWithOutSuffix(refectionType) + "_"
+					+ getSUFFIX();
+		} else {
+			return getSimpleUnitNameWithOutSuffix(refectionType) + "_"
+					+ getSUFFIX();
 		}
-		
+
 	}
 
 	protected Type createTypeByJType(JType jtype) {
