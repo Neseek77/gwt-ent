@@ -29,7 +29,6 @@ import com.gwtent.reflection.client.MethodInvokeException;
 import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
-import com.gwtent.reflection.client.TypeOracle;
 
 
 public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnnotations, AbstractMethod, Method {
@@ -54,19 +53,19 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 		return enclosingType.invoke(instance, this.getName(), args);
 	}
 
-	private TypeImpl returnType;
+	private Type returnType;
 	private String returnTypeName;
 
 	/* (non-Javadoc)
 	 * @see com.gwtent.client.reflection.Method#getReturnType()
 	 */
 	public Type getReturnType() throws ReflectionRequiredException{
-		if (returnType == null){
-			returnType = (TypeImpl)TypeOracle.Instance.getType(returnTypeName);
-			
-			if (returnType == null)
-				ReflectionUtils.checkReflection(returnTypeName);
-		}
+//		if (returnType == null){
+//			returnType = (TypeImpl)TypeOracle.Instance.getType(returnTypeName);
+//			
+//			if (returnType == null)
+//				ReflectionUtils.checkReflection(returnTypeName);
+//		}
 		
 		return returnType;
 	}
@@ -93,7 +92,7 @@ public class MethodImpl extends AbstractMethodImpl implements AccessDef, HasAnno
 
 	
 
-	public void setReturnType(TypeImpl type) {
+	public void setReturnType(Type type) {
 		returnType = type;
 	}
 

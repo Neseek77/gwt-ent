@@ -1,10 +1,8 @@
 package com.gwtent.reflection.client.impl;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 
 import com.gwtent.reflection.client.ArrayType;
-import com.gwtent.reflection.client.ClassHelper;
 import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.Constructor;
 import com.gwtent.reflection.client.EnumType;
@@ -13,9 +11,7 @@ import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.MethodInvokeException;
 import com.gwtent.reflection.client.ParameterizedType;
 import com.gwtent.reflection.client.PrimitiveType;
-import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
-import com.gwtent.reflection.client.TypeOracle;
 
 /**
  * 
@@ -25,46 +21,50 @@ import com.gwtent.reflection.client.TypeOracle;
  */
 public class ParameterizedTypeImpl<T> extends TypeImpl implements ParameterizedType<T> {
 
-	private ClassTypeImpl<T> baseType;
+	private ClassType<T> baseType;
 	private final String baseTypeName;
 	private final String[] actArgsType;
 	private ClassType<?>[] actualTypeArguments;
 	
-	public ParameterizedTypeImpl(String baseClassTypeName, String[] actArgsType) {
+	public ParameterizedTypeImpl(String baseClassTypeName,ClassType<T> baseType, String[] actArgsType,ClassType<?>[] actualTypeArguments) {
 		assert baseClassTypeName != null;
 		
 		baseTypeName = baseClassTypeName;
+		this.baseType = baseType;
+		
 		
 		
 		if (actArgsType == null)
 			actArgsType = new String[0];
 		this.actArgsType = actArgsType;
+		this.actualTypeArguments = actualTypeArguments;
+		
 	}
 	
-	private ClassType<T> getBaseType(){
-		if (baseType == null){
-			//Type type = TypeOracleImpl.findType(baseTypeName);
-			Type type = TypeOracle.Instance.getType(baseTypeName);
-			if (type == null)
-				ReflectionUtils.checkReflection(baseTypeName);
-			
-			baseType = (ClassTypeImpl<T>)type.isClassOrInterface();
-			if (baseType == null)
-				throw new RuntimeException("Super class of a parameterized type must a class or interface. current type name:" + baseTypeName);
-		}
+	public ClassType<T> getBaseType(){
+//		if (baseType == null){
+//			//Type type = TypeOracleImpl.findType(baseTypeName);
+//			Type type = TypeOracle.Instance.getType(baseTypeName);
+//			if (type == null)
+//				ReflectionUtils.checkReflection(baseTypeName);
+//			
+//			baseType = (ClassTypeImpl<T>)type.isClassOrInterface();
+//			if (baseType == null)
+//				throw new RuntimeException("Super class of a parameterized type must a class or interface. current type name:" + baseTypeName);
+//		}
 		
 		return baseType;
 	}
 
 	public ClassType<?>[] getActualTypeArguments() {
-		if (actualTypeArguments == null){
-			actualTypeArguments = new ClassType[actArgsType.length];
-			for (int i = 0; i < actArgsType.length; i++){
-				String name = actArgsType[i];
-				ClassType<?> type = TypeOracle.Instance.getClassType(name);
-				actualTypeArguments[i] = type;
-			}
-		}
+//		if (actualTypeArguments == null){
+//			actualTypeArguments = new ClassType[actArgsType.length];
+//			for (int i = 0; i < actArgsType.length; i++){
+//				String name = actArgsType[i];
+//				ClassType<?> type = TypeOracle.Instance.getClassType(name);
+//				actualTypeArguments[i] = type;
+//			}
+//		}
 		
 		return actualTypeArguments;
 	}
@@ -197,9 +197,10 @@ public class ParameterizedTypeImpl<T> extends TypeImpl implements ParameterizedT
 	public void setFieldValue(Object instance, String fieldName, Object value) {
 		this.getBaseType().setFieldValue(instance, fieldName, value);
 	}
-
-	public void addAnnotation(Annotation ann) {
-		getBaseType().addAnnotation(ann);
+	public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
+		getBaseType().addAnnotation(type,ann);
 	}
+
+	 
 
 }

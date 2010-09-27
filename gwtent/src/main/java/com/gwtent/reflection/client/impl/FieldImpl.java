@@ -31,7 +31,6 @@ import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.Type;
-import com.gwtent.reflection.client.TypeOracle;
 
 public class FieldImpl implements Field, AccessDef, HasAnnotations {
 
@@ -83,13 +82,15 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 	 * @see com.gwtent.client.reflection.Field#getType()
 	 */
 	public Type getType() throws ReflectionRequiredException {
-		if (type == null){
-			type = TypeOracle.Instance.getType(this.getTypeName());
-		}
+//		if (type == null){
+//			type = TypeOracle.Instance.getType(this.getTypeName());
+//		}
 		
 		return type;
 	}
-
+	public void setType(Type type) {
+		this.type = type;
+	}
 	public boolean isDefaultAccess() {
 		return 0 == (modifierBits & (TypeOracleImpl.MOD_PUBLIC
 				| TypeOracleImpl.MOD_PRIVATE | TypeOracleImpl.MOD_PROTECTED));
@@ -215,7 +216,8 @@ public class FieldImpl implements Field, AccessDef, HasAnnotations {
 		return sb.toString();
 	}
 
-	public void addAnnotation(Annotation ann) {
-		annotations.addAnnotation(ann);
+	public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
+		annotations.addAnnotation(type,ann);
 	}
+
 }
