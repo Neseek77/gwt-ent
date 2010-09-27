@@ -32,28 +32,26 @@ public class AnnotationValues {
 		return values;
 	}
 
-	public static Annotation toAnnotation(AnnotationValues ann) {
-		if (ann == null)
-			return null;
-
-		String annoClassName = ann.getAnnoClassName();
-		
-		try {
-			ClassType<? extends Annotation> type = (ClassType<? extends Annotation>) TypeOracle.Instance.getClassType(annoClassName);
-			
-			if (type.isAnnotation() == null){
-				GWT.log(annoClassName + " not a annotation type, we will set up the annotation as null.");
-				return null;
-			}
-			
-			AnnotationType<? extends Annotation> antoType = (AnnotationType<? extends Annotation>) type;
-			Annotation result = antoType.createAnnotation(ann.getValues());
-
-			return result;
-		} catch (ReflectionRequiredException e) {
-			GWT.log("You are try to access annotation :" + annoClassName
-					+ ", but this class don't have any reflection information yet, we will set up the annotation as 'null'.");
-			return null;
-		}
-	}
+//	public static Annotation toAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
+//		if (ann == null)
+//			return null;
+//
+//		
+//		try {
+//			
+//			if (type.isAnnotation() == null){
+//				GWT.log(type + " not a annotation type, we will set up the annotation as null.");
+//				return null;
+//			}
+//			
+//			AnnotationType<? extends Annotation> antoType = (AnnotationType<? extends Annotation>) type;
+//			Annotation result = antoType.createAnnotation(ann.getValues());
+//
+//			return result;
+//		} catch (ReflectionRequiredException e) {
+//			GWT.log("You are try to access annotation :" + type
+//					+ ", but this class don't have any reflection information yet, we will set up the annotation as 'null'.");
+//			return null;
+//		}
+//	}
 }

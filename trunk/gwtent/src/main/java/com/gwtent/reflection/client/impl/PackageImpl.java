@@ -134,7 +134,7 @@ public class PackageImpl implements HasAnnotations, Package {
 	    return annotations.getDeclaredAnnotations();
 	  }
 
-		public void addAnnotation(Annotation ann) {
-			annotations.addAnnotation(ann);
+	  public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
+			annotations.addAnnotation(type,ann);
 		}
 }

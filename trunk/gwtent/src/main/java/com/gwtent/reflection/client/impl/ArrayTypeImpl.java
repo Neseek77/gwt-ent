@@ -44,7 +44,7 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 
   private String lazySimpleName;
 
-  ArrayTypeImpl(Type componentType) {
+  public ArrayTypeImpl(Type componentType) {
     this.componentType = componentType;
   }
 
@@ -209,8 +209,7 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 	public void setFieldValue(Object instance, String fieldName, Object value) {
 		throw new UnsupportedOperationException();		
 	}
-
-	public void addAnnotation(Annotation ann) {
+	public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
 		throw new UnsupportedOperationException();
 	}
 }

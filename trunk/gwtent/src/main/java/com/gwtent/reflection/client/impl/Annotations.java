@@ -38,17 +38,29 @@ import com.gwtent.reflection.client.TypeOracle;
  * Default implementation of the {@link HasAnnotations} interface.
  */
 class Annotations implements HasAnnotations {
+	public static class AnnotationBean {
+		AnnotationBean(ClassType<? extends Annotation> type,
+				AnnotationValues ann) {
+			this.type = type;
+			this.ann = ann;
+
+		}
+
+		ClassType<? extends Annotation> type;
+		AnnotationValues ann;
+	}
+
 	/**
 	 * All annotations declared on the annotated element.
 	 */
 	private Map<Class<?>, Annotation> declaredAnnotations = new HashMap<Class<?>, Annotation>();
 
+	private List<AnnotationBean> annotationBeans = new ArrayList<AnnotationBean>();
 	/**
 	 * Lazily initialized collection of annotations declared on or inherited by
 	 * the annotated element.
 	 */
 	private Map<Class<?>, Annotation> lazyAnnotations = null;
-
 
 	/**
 	 * If not <code>null</code> the parent to inherit annotations from.
@@ -84,17 +96,31 @@ class Annotations implements HasAnnotations {
 		return getAnnotation(annotationClass) != null;
 	}
 
-	public void addAnnotation(Annotation ann) {
-		if (ann != null)
-			this.declaredAnnotations.put(ann.annotationType(), ann);
+	public void addAnnotation(ClassType<? extends Annotation> type,
+			AnnotationValues ann) {
+		annotationBeans.add(new AnnotationBean(type, ann));
+		// if (ann != null)
+		// this.declaredAnnotations.put(ann.annotationType(), ann);
 	}
-	
 
 	void setParent(HasAnnotations parent) {
 		this.parent = parent;
 	}
 
 	private void initializeAnnotations() {
+		if(annotationBeans.size()>0){
+			for (int i = 0; i < annotationBeans.size(); i++) {
+				AnnotationBean annotationBean = annotationBeans.get(i);
+				ClassType<? extends Annotation> type = annotationBean.type;
+				AnnotationValues ann = annotationBean.ann;
+				if (type.isAnnotation() != null){
+					AnnotationType<? extends Annotation> antoType = (AnnotationType<? extends Annotation>) type;
+					Annotation result = antoType.createAnnotation(ann.getValues());
+					declaredAnnotations.put(result.annotationType(), result);
+				}
+			}
+			annotationBeans.clear();
+		}
 		if (lazyAnnotations != null) {
 			return;
 		}
