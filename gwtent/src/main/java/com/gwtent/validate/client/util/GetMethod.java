@@ -42,7 +42,7 @@ public class GetMethod implements PrivilegedAction<Method> {
 		ReflectionUtils.checkReflection(clazz);
 		
 		try {
-			return TypeOracle.Instance.getClassType(clazz).getMethod(methodName, null);
+			return TypeOracle.Util.getInstance().getClassType(clazz).getMethod(methodName, null);
 		}
 		catch ( Exception e ) {
 			return null;

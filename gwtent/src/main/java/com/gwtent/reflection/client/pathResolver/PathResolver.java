@@ -70,7 +70,7 @@ public class PathResolver {
     
     ReflectionUtils.checkReflection(typeName);
     
-    return TypeOracle.Instance.getClassType(typeName);
+    return TypeOracle.Util.getInstance().getClassType(typeName);
   }
   
   /**
@@ -85,7 +85,7 @@ public class PathResolver {
     ReflectionUtils.checkReflection(clazz);
     
     String[] paths = fullPath.split("\\.");
-    ClassType parent = TypeOracle.Instance.getClassType(clazz);
+    ClassType parent = TypeOracle.Util.getInstance().getClassType(clazz);
     for (int i = 0; i < paths.length - 1; i ++){
       parent = getClassTypeBySubPath(parent, paths[i], fullPath);
     }
@@ -95,7 +95,7 @@ public class PathResolver {
   
   private static Object getInstanceBySubPath(Object instance, String path, String fullPath){
     Object object = null;
-    ClassType parent = TypeOracle.Instance.getClassType(instance.getClass());
+    ClassType parent = TypeOracle.Util.getInstance().getClassType(instance.getClass());
     if (! isMethod(path)){
       Field field = parent.findField(path);
       if (field == null)

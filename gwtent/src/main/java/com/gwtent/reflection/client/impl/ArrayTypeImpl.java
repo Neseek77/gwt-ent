@@ -169,7 +169,7 @@ public class ArrayTypeImpl extends TypeImpl implements ArrayType {
 	}
 
 	public ClassType getSuperclass() {
-		return TypeOracle.Instance.getJavaLangObject();
+		return TypeOracle.Util.getInstance().getJavaLangObject();
 	}
 
 	public Object invoke(Object instance, String methodName, Object... args)

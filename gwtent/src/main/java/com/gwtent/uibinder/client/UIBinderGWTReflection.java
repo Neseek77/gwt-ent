@@ -22,7 +22,7 @@ public abstract class UIBinderGWTReflection implements UIBinder {
     ReflectionUtils.checkReflection(model.getClass());
     
     this.model = PathResolver.getInstanceLastLevelByPath(model, path);
-    this.classTypeModel = TypeOracle.Instance.getClassType(model.getClass());
+    this.classTypeModel = TypeOracle.Util.getInstance().getClassType(model.getClass());
 
     //doInit(widget, this.model, )
   }

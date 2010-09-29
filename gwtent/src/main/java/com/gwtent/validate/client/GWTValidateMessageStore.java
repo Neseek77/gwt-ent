@@ -46,7 +46,7 @@ public class GWTValidateMessageStore {
 		
 		setMessageStoreChanged(true);
 		
-		ClassType type = TypeOracle.Instance.getClassType(clazz);
+		ClassType type = TypeOracle.Util.getInstance().getClassType(clazz);
 		messagesClasses.add(type);
 		messageStores.put(type, messageStore);
 	}

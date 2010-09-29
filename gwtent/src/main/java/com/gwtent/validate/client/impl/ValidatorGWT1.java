@@ -56,7 +56,7 @@ public class ValidatorGWT1 implements Validator{
 	}
 
   public <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
-    ClassType type = TypeOracle.Instance.getClassType(object.getClass());
+    ClassType type = TypeOracle.Util.getInstance().getClassType(object.getClass());
     if (type == null)
       ReflectionUtils.reflectionRequired(object.getClass());
     
@@ -83,7 +83,7 @@ public class ValidatorGWT1 implements Validator{
     if (lstGroups.size() <= 0)
       lstGroups.add(Default.class);
     
-    ClassType type = TypeOracle.Instance.getClassType(object.getClass());
+    ClassType type = TypeOracle.Util.getInstance().getClassType(object.getClass());
     if (type == null)
       ReflectionUtils.reflectionRequired(object.getClass());
 
@@ -125,7 +125,7 @@ public class ValidatorGWT1 implements Validator{
     if (lstGroups.size() <= 0)
       lstGroups.add(Default.class);
     
-    ClassType type = TypeOracle.Instance.getClassType(beanType);
+    ClassType type = TypeOracle.Util.getInstance().getClassType(beanType);
     if (type == null)
       ReflectionUtils.reflectionRequired(beanType);
     
@@ -327,7 +327,7 @@ public class ValidatorGWT1 implements Validator{
   	Constraint storeConstraint = ReflectionUtils.getMetaAnnotation(store, Constraint.class);
   	
   	for (Class<? extends ConstraintValidator<?, ?>> clazz : storeConstraint.validatedBy()){
-  		ClassType ctConstraintValidator = TypeOracle.Instance.getClassType(clazz);
+  		ClassType ctConstraintValidator = TypeOracle.Util.getInstance().getClassType(clazz);
       if (ctConstraintValidator == null)
         ReflectionUtils.reflectionRequired(clazz, "To make ConstraintValidator works with GWT, please makesure your Pojo class full reflection enabled. For example annotated by @Reflection_Domain, @Reflection_Full or \"@Reflectable(relationTypes=true)\"");
       

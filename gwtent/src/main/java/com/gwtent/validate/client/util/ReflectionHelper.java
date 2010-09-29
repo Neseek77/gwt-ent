@@ -56,7 +56,7 @@ public class ReflectionHelper {
 			String parameterName, Class<T> type) {
 		ReflectionUtils.checkReflection(annotation.annotationType());
 
-		Method m = TypeOracle.Instance.getClassType(annotation.annotationType())
+		Method m = TypeOracle.Util.getInstance().getClassType(annotation.annotationType())
 				.findMethod(parameterName);
 
 		Object o = m.invoke(annotation);
@@ -181,7 +181,7 @@ public class ReflectionHelper {
 
 		Iterator<?> iter;
 		//Type type = value.getClass();
-		Type type = TypeOracle.Instance.getClassType(value.getClass());
+		Type type = TypeOracle.Util.getInstance().getClassType(value.getClass());
 		if ( isIterable( type ) ) {
 			iter = ( ( Iterable<?> ) value ).iterator();
 		}

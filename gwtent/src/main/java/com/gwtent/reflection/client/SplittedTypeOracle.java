@@ -19,24 +19,23 @@
 package com.gwtent.reflection.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface TypeOracle {
-	
-	
+public interface SplittedTypeOracle {
+
 	public static class Util {
-		static TypeOracle instance = null;
-		public static TypeOracle getInstance() {
+		static SplittedTypeOracle instance = null;
+		public static SplittedTypeOracle getInstance() {
 			//在同一个项目中,TypeOracle与splittedTypeOralce只能选用一个
-			if(SplittedTypeOracle.Util.instance!=null){
-				throw new RuntimeException("SplittedTypeOracle used!");
+			if(TypeOracle.Util.instance!=null){
+				throw new RuntimeException("TypeOracle used!");
 			}
 			if(instance == null){
-				instance=(TypeOracle) GWT.create(TypeOracle.class);
+				instance=(SplittedTypeOracle) GWT.create(SplittedTypeOracle.class);
 			}
 			return instance;
 		}
 	}
-
 	/**
    * Parses the string form of a type to produce the corresponding type object.
    * The types that can be parsed include primitives, class and interface names,
@@ -59,7 +58,7 @@ public interface TypeOracle {
    * @return the type object corresponding to the parse type
    * @throws ReflectionRequiredException If not reflection information available for clazz, will throw ReflectionRequiredException exception
    */
-	public Type getType(String name) throws ReflectionRequiredException;
+	public void getType(String name,AsyncCallback<Type> callback);
 
 	/**
 	 * 
@@ -67,7 +66,7 @@ public interface TypeOracle {
 	 * @return
 	 * @throws ReflectionRequiredException If not reflection information available for clazz, will throw ReflectionRequiredException exception
 	 */
-	public ClassType getClassType(String name) throws ReflectionRequiredException;
+	public void getClassType(String name,AsyncCallback<ClassType> callback);
 
 	/**
 	 * Get Class type, this supported:
@@ -81,7 +80,7 @@ public interface TypeOracle {
 	 * @return 
 	 * @throws ReflectionRequiredException If not reflection information available for clazz, will throw ReflectionRequiredException exception
 	 */
-	public <T> ClassType<T> getClassType(Class<T> clazz) throws ReflectionRequiredException;
+	public <T> void getClassType(Class<T> clazz,AsyncCallback<ClassType<T>> callback);
 
 	/**
 	 * Gets the type object that represents an array of the specified type.
@@ -92,7 +91,7 @@ public interface TypeOracle {
 	 * 
 	 * @since RC2
 	 */
-	public ArrayType getArrayType(Type componentType);
+	public void getArrayType(Type componentType,AsyncCallback<ArrayType> callback);
 
 	/**
 	 * Gets a reference to the type object representing
@@ -100,5 +99,5 @@ public interface TypeOracle {
 	 * 
 	 * @since RC2
 	 */
-	public ClassType getJavaLangObject();
+	public void getJavaLangObject(AsyncCallback<ClassType> callback);
 }

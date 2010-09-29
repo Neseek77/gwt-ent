@@ -18,7 +18,7 @@ public class ReflectionUtils {
 	 * @return
 	 */
 	public static String getDescription(Class<?> clazz){
-		ClassType type = TypeOracle.Instance.getClassType(clazz);
+		ClassType type = TypeOracle.Util.getInstance().getClassType(clazz);
 		if (type == null)
 			return clazz.getName() +  ": Not Reflection Information available.";
 		
@@ -64,7 +64,7 @@ public class ReflectionUtils {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(anno.annotationType().getName()).append("(");
-		ClassType type = TypeOracle.Instance.getClassType(anno.annotationType());
+		ClassType type = TypeOracle.Util.getInstance().getClassType(anno.annotationType());
 		for (Method method : type.getMethods()){
 			sb.append(method.getName()).append("=").append(method.invoke(anno)).append(";");
 		}
@@ -175,7 +175,7 @@ public class ReflectionUtils {
   }
   
   public static boolean checkReflection(String className){
-    boolean result = TypeOracle.Instance.getClassType(className) != null;
+    boolean result = TypeOracle.Util.getInstance().getClassType(className) != null;
     
     if (! result)
       ReflectionUtils.reflectionRequired(className, "");
@@ -189,7 +189,7 @@ public class ReflectionUtils {
    * @param clazz
    */
   public static void checkReflection(Class<?> clazz){
-    boolean result = TypeOracle.Instance.getClassType(clazz) != null;
+    boolean result = TypeOracle.Util.getInstance().getClassType(clazz) != null;
     
     if (! result)
       ReflectionUtils.reflectionRequired(clazz.getName(), "");
@@ -204,7 +204,7 @@ public class ReflectionUtils {
    * @return "abc"
    */
   public static Object getAnnotationValueByName(Annotation annotation, String methodName){
-  	ClassType type = TypeOracle.Instance.getClassType(annotation.annotationType());
+  	ClassType type = TypeOracle.Util.getInstance().getClassType(annotation.annotationType());
   	if (type == null)
   		reflectionRequired(annotation.annotationType().getName(), "");
   	
@@ -214,7 +214,7 @@ public class ReflectionUtils {
   
   
   public static Map<String, Object> getAnnotationValues(Annotation annotation){
-  	ClassType type = TypeOracle.Instance.getClassType(annotation.annotationType());
+  	ClassType type = TypeOracle.Util.getInstance().getClassType(annotation.annotationType());
   	if (type == null)
   		reflectionRequired(annotation.annotationType().getName(), "");
   	
@@ -240,7 +240,7 @@ public class ReflectionUtils {
    * @return
    */
   public static <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> annotationClass){
-  	ClassType type = TypeOracle.Instance.getClassType(clazz);
+  	ClassType type = TypeOracle.Util.getInstance().getClassType(clazz);
   	if (type == null)
   		reflectionRequired(clazz);
   	
@@ -255,7 +255,7 @@ public class ReflectionUtils {
 	 * @return the annotation which meet clazz
 	 */
   public static <T extends Annotation> T getAnnotation(Annotation[] annos, Class<T>clazz){
-    ClassType classType = TypeOracle.Instance.getClassType(clazz);
+    ClassType classType = TypeOracle.Util.getInstance().getClassType(clazz);
     for (Annotation anno : annos){
       if (anno.annotationType().getName() == classType.getName())
         return (T) anno;
@@ -271,7 +271,7 @@ public class ReflectionUtils {
    * @return if store has annotated by meta annotation, return that annotation, otherwise, return null
    */
   public static <T extends Annotation>T getMetaAnnotation(Annotation store, Class<T> clazz) {
-    ClassType annoClass = TypeOracle.Instance.getClassType(store.annotationType());
+    ClassType annoClass = TypeOracle.Util.getInstance().getClassType(store.annotationType());
     if (annoClass != null){
       return ReflectionUtils.getAnnotation(annoClass.getAnnotations(), clazz);
     }
@@ -333,7 +333,7 @@ public class ReflectionUtils {
   public static boolean isAssignable(Class<?> parentClass, Class<?> classToTest){
   	checkReflection(classToTest);
   	
-  	ClassType typeToTest = TypeOracle.Instance.getClassType(classToTest);
+  	ClassType typeToTest = TypeOracle.Util.getInstance().getClassType(classToTest);
   	
   	if (testAssignableWithoutSuper(parentClass, typeToTest))
   		return true;

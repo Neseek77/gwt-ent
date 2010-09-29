@@ -39,6 +39,6 @@ public class GetDeclaredFields implements PrivilegedAction<Field[]> {
 	public Field[] run() {
 		ReflectionUtils.checkReflection(clazz);
 
-		return TypeOracle.Instance.getClassType(clazz).getFields();
+		return TypeOracle.Util.getInstance().getClassType(clazz).getFields();
 	}
 }
