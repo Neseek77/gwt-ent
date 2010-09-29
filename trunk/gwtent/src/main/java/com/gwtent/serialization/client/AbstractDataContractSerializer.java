@@ -8,7 +8,7 @@ public abstract class AbstractDataContractSerializer implements DataContractSeri
 
 	public <T extends Object> T deserializeObject(String json, Class<T> clazz) {
 	  ReflectionUtils.checkReflection(clazz);
-		ClassType type = TypeOracle.Instance.getClassType(clazz);
+		ClassType type = TypeOracle.Util.getInstance().getClassType(clazz);
 		return (T) deserializeObject(json, type);
 	}
 	
@@ -17,7 +17,7 @@ public abstract class AbstractDataContractSerializer implements DataContractSeri
 
 	public String serializeObject(Object object) {
 	  ReflectionUtils.checkReflection(object.getClass());
-	  ClassType type = TypeOracle.Instance.getClassType(object.getClass());
+	  ClassType type = TypeOracle.Util.getInstance().getClassType(object.getClass());
 	  return serializeObject(object, type);
 	}
 }

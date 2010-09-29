@@ -39,6 +39,6 @@ public class GetMethods implements PrivilegedAction<Method[]> {
 	public Method[] run() {
 		ReflectionUtils.checkReflection(clazz);
 		
-		return TypeOracle.Instance.getClassType(clazz).getMethods();
+		return TypeOracle.Util.getInstance().getClassType(clazz).getMethods();
 	}
 }

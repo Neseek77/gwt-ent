@@ -40,7 +40,7 @@ public class GetDeclaredField implements PrivilegedAction<Field> {
 	public Field run() {
 		ReflectionUtils.checkReflection(clazz);
 		
-		return TypeOracle.Instance.getClassType(clazz).getField(fieldName);
+		return TypeOracle.Util.getInstance().getClassType(clazz).getField(fieldName);
 //		try {
 //			final Field field =  clazz.getDeclaredField( fieldName );
 //			ReflectionHelper.setAccessibility( field );
