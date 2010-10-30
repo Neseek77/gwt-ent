@@ -21,9 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class AnimalCaretaker {
 	@Valid
 	Map<String, Animal> caresFor = new HashMap<String, Animal>();

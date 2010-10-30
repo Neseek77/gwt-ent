@@ -22,11 +22,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 
 /**
  * @author Hardy Ferentschik
  */
 @GroupSequence({ Minimal.class, E.class })
+@Reflect_Domain
 public class E {
 
 	public E() {

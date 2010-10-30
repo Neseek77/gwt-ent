@@ -21,9 +21,12 @@ import javax.validation.GroupSequence;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Emmanuel Bernard
  */
+@Reflect_Domain
 public class Parent {
 	private String name;
 	private Child child;
@@ -46,13 +49,16 @@ public class Parent {
 		this.child = child;
 	}
 
+	@Reflect_Domain
 	public interface ParentSecond {
 	}
 
+	@Reflect_Domain
 	public interface ChildFirst {
 	}
 
 	@GroupSequence({ ChildFirst.class, ParentSecond.class })
+	@Reflect_Domain
 	public interface ProperOrder {
 	}
 }

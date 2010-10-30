@@ -27,6 +27,7 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * @author Hardy Ferentschik
@@ -189,38 +190,47 @@ public class InvalidConstraintDefinitionsTest extends AbstractTest {
 	}
 
 	@InvalidDefaultGroup
+	@Reflect_Domain
 	public class DummyEntityInvalidDefaultGroup {
 	}
 
 	@NoGroups
+	@Reflect_Domain
 	public class DummyEntityNoGroups {
 	}
 
 	@NoMessage
+	@Reflect_Domain
 	public class DummyEntityNoMessage {
 	}
 
 	@ValidInPropertyName
+	@Reflect_Domain
 	public class DummyEntityValidProperty {
 	}
 
 	@NoPayload
+	@Reflect_Domain
 	public class DummyEntityNoPayload {
 	}
 
 	@InvalidDefaultPayload
+	@Reflect_Domain
 	public class DummyEntityInvalidDefaultPayload {
 	}
 
 	@InvalidPayloadClass
+	@Reflect_Domain
 	public class DummyEntityInvalidPayloadClass {
 	}
 
 	@InvalidMessageType
+	@Reflect_Domain
 	public class DummyEntityInvalidMessageType {
 	}
 
 	@InvalidGroupsType
+	@Reflect_Domain
 	public class DummyEntityInvalidGroupsType {
 	}
 }

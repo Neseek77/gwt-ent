@@ -65,6 +65,7 @@ public class Book {
 	}
 
 	@GroupSequence(value = { First.class, Second.class, Last.class })
+	@Reflect_Domain
 	public interface All {
 	}
 }

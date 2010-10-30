@@ -19,10 +19,13 @@ package com.gwtent.client.test.validate.tck.tests.traversableresolver;
 
 import javax.validation.constraints.Max;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 
 /**
  * @author Emmanuel Bernard
  */
+@Reflect_Domain
 public class Jacket {
 	Integer width;
 

@@ -21,9 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Customer implements Person {
 
 	private String firstName;

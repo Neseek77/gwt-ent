@@ -17,9 +17,12 @@
 */
 package com.gwtent.client.test.validate.tck.tests.constraints.inheritance;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class Bar extends Foo implements Fubar {
 
 	public String getFubar() {

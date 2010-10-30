@@ -17,10 +17,13 @@
 */
 package com.gwtent.client.test.validate.tck.tests.metadata;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * Class with no constraints but with a cascade @Valid annotation
  */
 @AccountChecker
+@Reflect_Domain
 public class Account {
 	private String accountLogin;
 	private Customer customer;

@@ -20,10 +20,13 @@ package com.gwtent.client.test.validate.tck.tests.constraints.groups.groupsequen
 import javax.validation.GroupSequence;
 import javax.validation.constraints.Size;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
 @GroupSequence({ Minimal.class, B2.class, Heavy.class })
+@Reflect_Domain
 public class B2 extends A {
 	@SafeEncryption(groups = Heavy.class)
 	String encryptionKey;

@@ -45,6 +45,7 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * Tests for the implementation of <code>Validator</code>.
@@ -228,6 +229,7 @@ public class PropertyPathTest extends AbstractTest {
 	}
 
 	@Special()
+	@Reflect_Domain
 	class VerySpecialClass {
 	}
 
@@ -242,6 +244,7 @@ public class PropertyPathTest extends AbstractTest {
 		public abstract Class<? extends Payload>[] payload() default { };
 	}
 
+	@Reflect_Domain
 	public static class SpecialValidator implements ConstraintValidator<Special, VerySpecialClass> {
 		public void initialize(Special constraintAnnotation) {
 		}
@@ -251,6 +254,7 @@ public class PropertyPathTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	class ActorDB {
 		private int idGen = 0;
 

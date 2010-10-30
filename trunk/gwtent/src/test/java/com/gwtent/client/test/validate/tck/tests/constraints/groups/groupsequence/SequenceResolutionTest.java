@@ -33,6 +33,7 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * @author Hardy Ferentschik
@@ -89,6 +90,7 @@ public class SequenceResolutionTest extends AbstractTest {
 		assertCorrectNumberOfViolations( violations, 2 );
 	}
 
+	@Reflect_Domain
 	class Car {
 		@Pattern(regexp = "[A-Z][A-Z][A-Z]-[0-9][0-9][0-9]", groups = { First.class, Second.class })
 		private String licensePlateNumber;
@@ -105,28 +107,35 @@ public class SequenceResolutionTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	interface First {
 	}
 
+	@Reflect_Domain
 	interface Second {
 	}
 
+	@Reflect_Domain
 	interface Third {
 	}
 
 	@GroupSequence({ First.class, Second.class, Third.class })
+	@Reflect_Domain
 	interface All {
 	}
 
 	@GroupSequence({ Third.class, Second.class, First.class })
+	@Reflect_Domain
 	interface AllReverse {
 	}
 
 	@GroupSequence({ Second.class, Third.class, First.class })
+	@Reflect_Domain
 	interface Mixed {
 	}
 
 	@GroupSequence({ First.class, Third.class, Mixed.class })
+	@Reflect_Domain
 	interface InvalidGroupSequence {
 	}
 }

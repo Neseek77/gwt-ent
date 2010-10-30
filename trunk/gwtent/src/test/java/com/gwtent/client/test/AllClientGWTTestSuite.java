@@ -58,8 +58,8 @@ public class AllClientGWTTestSuite extends GWTTestSuite {
     
      
     
-    suite.addTest(ValidationTestSuite.suite());   
     
+    suite.addTest(ValidationTestSuite.suite());   
     
     
     suite.addTestSuite(CommonTestCase.class);
