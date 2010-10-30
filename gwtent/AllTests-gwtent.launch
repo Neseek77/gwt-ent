@@ -28,5 +28,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.gwtent.client.test.AllClientGWTTestSuite"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="gwtent"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.maven.ide.eclipse.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -Dgwt.args=&quot; -port 8888 -gen c:\gen&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -Dgwt.args=&quot;  -port 8888 -gen c:\gen&quot;"/>
 </launchConfiguration>
