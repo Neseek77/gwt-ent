@@ -34,7 +34,7 @@
 		<gxt.version>2.1.1</gxt.version>
 		<gwtext.version>2.0.5</gwtext.version>
 		<log4j.version>1.2.15</log4j.version>
-		<gwtent.version>1.0.0-RC1</gwtent.version>
+		<gwtent.version>1.0.0-RC2</gwtent.version>
 		<gae.version>1.2.0</gae.version>
 		<gae.port>8080</gae.port>
 	</properties>
