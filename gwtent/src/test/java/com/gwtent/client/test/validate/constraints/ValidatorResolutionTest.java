@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import com.gwtent.client.test.validate.VTestCase;
 import com.gwtent.client.test.validate.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 import static com.gwtent.client.test.validate.util.TestUtil.assertConstraintViolation;
 import static com.gwtent.client.test.validate.util.TestUtil.assertNumberOfViolations;
@@ -165,6 +166,7 @@ public class ValidatorResolutionTest extends VTestCase{
 		assertNumberOfViolations( constraintViolations, 0 );
 	}
 
+	@Reflect_Domain
 	public class Foo {
 		@com.gwtent.client.test.validate.constraints.Object
 		private com.gwtent.client.test.validate.constraints.Object[] objectArray;
@@ -178,6 +180,7 @@ public class ValidatorResolutionTest extends VTestCase{
 		}
 	}
 
+	@Reflect_Domain
 	public class Bar {
 		@com.gwtent.client.test.validate.constraints.Cloneable
 		private com.gwtent.client.test.validate.constraints.Object[] objectArray;
@@ -191,6 +194,7 @@ public class ValidatorResolutionTest extends VTestCase{
 		}
 	}
 
+	@Reflect_Domain
 	public class Fubar {
 		@Serializable
 		private com.gwtent.client.test.validate.constraints.Object[] objectArray;
@@ -204,6 +208,7 @@ public class ValidatorResolutionTest extends VTestCase{
 		}
 	}
 
+	@Reflect_Domain
 	public class SubTypeEntity {
 		@SuperTypeArray
 		private SubType[] subTypeArray;

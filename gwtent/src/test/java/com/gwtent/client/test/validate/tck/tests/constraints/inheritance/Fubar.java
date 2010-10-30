@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.inheritance;
 
 import javax.validation.constraints.NotNull;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public interface Fubar {
 	@NotNull
 	String getFubar();

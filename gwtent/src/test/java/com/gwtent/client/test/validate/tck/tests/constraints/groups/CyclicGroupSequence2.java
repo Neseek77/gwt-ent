@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.groups;
 
 import javax.validation.GroupSequence;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
 @GroupSequence(value = CyclicGroupSequence1.class)
+@Reflect_Domain
 public interface CyclicGroupSequence2 {
 }

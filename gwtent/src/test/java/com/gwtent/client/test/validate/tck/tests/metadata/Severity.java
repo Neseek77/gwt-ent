@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.metadata;
 
 import javax.validation.Payload;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Emmanuel Bernard
  */
+@Reflect_Domain
 public interface Severity {
 	interface Info extends Payload {}
 }

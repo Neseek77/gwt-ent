@@ -44,6 +44,7 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * Tests for the implementation of <code>Validator</code>.
@@ -335,6 +336,7 @@ public class ValidateTest extends AbstractTest {
 		assertCorrectNumberOfViolations( constraintViolations, 100 );
 	}
 
+	@Reflect_Domain
 	class Car {
 		@Pattern(regexp = "[A-Z][A-Z][A-Z]-[0-9][0-9][0-9]", groups = { First.class, Second.class })
 		private String licensePlateNumber;
@@ -352,9 +354,11 @@ public class ValidateTest extends AbstractTest {
 		}
 	}
 
+	@Reflect_Domain
 	interface First {
 	}
 
+	@Reflect_Domain
 	interface Second {
 	}
 }

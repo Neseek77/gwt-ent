@@ -19,9 +19,12 @@ package com.gwtent.client.test.validate.tck.tests.constraints.validatorresolutio
 
 import java.io.Serializable;
 
+import com.gwtent.reflection.client.annotations.Reflect_Domain;
+
 /**
  * @author Hardy Ferentschik
  */
+@Reflect_Domain
 public class SerializableBarSubclass extends Bar implements Serializable {
 
 }
