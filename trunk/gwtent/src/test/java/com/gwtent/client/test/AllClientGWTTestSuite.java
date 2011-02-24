@@ -31,7 +31,6 @@
 package com.gwtent.client.test;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
@@ -46,7 +45,6 @@ import com.gwtent.client.test.reflection.ReflectionTestCase;
 import com.gwtent.client.test.template.TemplateTestCase;
 import com.gwtent.client.test.uibinder.DataBinderTestCase;
 import com.gwtent.client.test.uibinder.UIBinderTestCase;
-import com.gwtent.client.test.validate.ValidationTestSuite;
 
 public class AllClientGWTTestSuite extends GWTTestSuite {
 
@@ -58,8 +56,8 @@ public class AllClientGWTTestSuite extends GWTTestSuite {
     
      
     
+    //suite.addTest(ValidationTestSuite.suite());   
     
-    suite.addTest(ValidationTestSuite.suite());   
     
     
     suite.addTestSuite(CommonTestCase.class);
