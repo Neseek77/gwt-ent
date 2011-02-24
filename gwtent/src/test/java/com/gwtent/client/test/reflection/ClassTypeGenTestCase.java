@@ -42,7 +42,7 @@ public class ClassTypeGenTestCase extends GWTTestCase {
   }
   
   @ReflectionTarget(value="com.gwtent.client.test.reflection.ClassTypeGenTestCase.ClassA")
-  public static interface ClassAByAnnotation extends ClassType{}
+  public static interface ClassAByAnnotation extends ClassType<ClassA>{}
   
   /**
    * At least package visible
