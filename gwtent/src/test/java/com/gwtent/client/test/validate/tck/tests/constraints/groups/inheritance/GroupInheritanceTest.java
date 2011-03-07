@@ -36,7 +36,6 @@ import com.gwtent.client.test.validate.tck.AbstractTest;
 import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * @author Hardy Ferentschik
@@ -91,7 +90,6 @@ public class GroupInheritanceTest extends AbstractTest {
 		assertEquals( descriptorsForGroup.iterator().next().getAnnotation().annotationType(), Max.class );
 	}
 
-	@Reflect_Domain
 	class Part {
 		@Digits(integer = 5, fraction = 0, groups = PreManufacturing.class)
 		private int partNumber;
@@ -116,7 +114,6 @@ public class GroupInheritanceTest extends AbstractTest {
 		}
 	}
 
-	@Reflect_Domain
 	class MiniaturePart extends Part {
 		@Max(value = 10, groups = All.class)
 		private int size;

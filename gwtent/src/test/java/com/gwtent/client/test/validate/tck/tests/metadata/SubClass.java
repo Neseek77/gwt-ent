@@ -20,14 +20,11 @@ package com.gwtent.client.test.validate.tck.tests.metadata;
 import javax.validation.GroupSequence;
 import javax.validation.constraints.Max;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 
 /**
  * @author Hardy Ferentschik
  */
 @GroupSequence({ SubClass.class, SubClass.DefaultGroup.class })
-@Reflect_Domain
 public class SubClass extends SuperClass {
 	@Max(value = 10, groups = SubClass.DefaultGroup.class)
 	private String myField = "1234567890";

@@ -20,12 +20,9 @@ package com.gwtent.client.test.validate.tck.tests.constraints.validatorresolutio
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class MinMax {
 	@Min(10l)
 	@Max(20l)

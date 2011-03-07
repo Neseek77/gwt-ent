@@ -21,12 +21,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.groups.Default;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Emmanuel Bernard
  */
-@Reflect_Domain
 public class Trousers {
 	@Min(value = 70)
 	@Max(value = 220)

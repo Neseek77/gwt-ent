@@ -19,12 +19,9 @@ package com.gwtent.client.test.validate.tck.tests.validation.graphnavigation;
 
 import javax.validation.constraints.NotNull;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Emmanuel Bernard
  */
-@Reflect_Domain
 public class Child {
 	private String name;
 

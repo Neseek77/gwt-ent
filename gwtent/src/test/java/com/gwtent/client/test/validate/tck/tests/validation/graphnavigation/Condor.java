@@ -19,12 +19,9 @@ package com.gwtent.client.test.validate.tck.tests.validation.graphnavigation;
 
 import javax.validation.constraints.Min;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Condor extends Animal {
 	@Min(value = 250, message = "The wingspan of a condor is at least 250 cm")
 	private int wingspan;

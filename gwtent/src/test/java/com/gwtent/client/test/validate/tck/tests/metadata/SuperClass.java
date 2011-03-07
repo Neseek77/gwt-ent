@@ -19,14 +19,11 @@ package com.gwtent.client.test.validate.tck.tests.metadata;
 
 import javax.validation.constraints.NotNull;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 
 /**
  * @author Hardy Ferentschik
  */
 @SuperConstraint
-@Reflect_Domain
 public class SuperClass {
 	@NotNull(groups = BasicGroup.class)
 	private String myField = "12345678901234567890";
@@ -35,15 +32,12 @@ public class SuperClass {
 		return myField;
 	}
 
-	@Reflect_Domain
 	interface UnusedGroup {
 	}
 
-	@Reflect_Domain
 	interface BasicGroup {
 	}
 
-	@Reflect_Domain
 	interface InheritedGroup extends BasicGroup {
 	}
 }

@@ -23,13 +23,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
 @GroupSequence({ Minimal.class, C.class })
-@Reflect_Domain
 public class C {
 
 	public C() {

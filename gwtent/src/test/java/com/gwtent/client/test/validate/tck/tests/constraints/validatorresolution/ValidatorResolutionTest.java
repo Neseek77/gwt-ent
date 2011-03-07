@@ -32,7 +32,6 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 /**
  * Tests for constraint validator resolution.

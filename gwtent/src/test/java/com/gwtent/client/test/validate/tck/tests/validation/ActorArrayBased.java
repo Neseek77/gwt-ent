@@ -21,12 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class ActorArrayBased extends Actor {
 	public static final int MAX_ACTOR_SIZE = 100;
 

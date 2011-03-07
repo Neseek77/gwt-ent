@@ -22,14 +22,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Emmanuel Bernard
  */
 @GroupSequence({ Address.class, Address.HighLevelCoherence.class })
 @ZipCodeCoherenceChecker(groups = Address.HighLevelCoherence.class)
-@Reflect_Domain
 public class Address {
 	@NotNull(groups = Default.class)
 	@Size(max = 50, message = "Street names cannot have more than {max} characters.")

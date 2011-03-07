@@ -20,12 +20,9 @@ package com.gwtent.client.test.validate.tck.tests.constraints.validatorresolutio
 import java.io.Serializable;
 import javax.validation.constraints.Size;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Bar implements Serializable, Dummy {
 	// validating Bar actually raises an UnexpectedTypeException - @Size is not defined for Integer
 	@Size
