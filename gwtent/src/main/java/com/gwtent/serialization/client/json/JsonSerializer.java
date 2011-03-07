@@ -83,7 +83,7 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 	}
 	
 	private void deserializePureObject(JSONObject value, Object obj){
-		ClassType type = TypeOracle.Util.getInstance().getClassType(obj.getClass());
+		ClassType type = TypeOracle.Instance.getClassType(obj.getClass());
 		for (Field field : type.getFields()){
 			
 			if (value.containsKey(field.getName())){
@@ -138,7 +138,7 @@ public class JsonSerializer extends AbstractDataContractSerializer{
 		JSONArray result = new JSONArray();
 		int index = 0;
 		for (Object obj : objects){
-			result.set(index, serialize(obj, TypeOracle.Util.getInstance().getClassType(obj.getClass())));
+			result.set(index, serialize(obj, TypeOracle.Instance.getClassType(obj.getClass())));
 			index++;
 		}
 		return result;

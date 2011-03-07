@@ -28,9 +28,9 @@ public class ObjectReflectionFactory implements ObjectFactory<Object> {
 	public ObjectReflectionFactory(DataMember annotation){
 		ClassType type = null;
 		if (annotation.typeName() != null && annotation.typeName().length() > 0){
-			type = TypeOracle.Util.getInstance().getClassType(annotation.typeName());
+			type = TypeOracle.Instance.getClassType(annotation.typeName());
 		}else if (!annotation.type().equals(Object.class)){
-			type = TypeOracle.Util.getInstance().getClassType(annotation.type());
+			type = TypeOracle.Instance.getClassType(annotation.type());
 		}
 		
 	
@@ -43,7 +43,7 @@ public class ObjectReflectionFactory implements ObjectFactory<Object> {
 	public ObjectReflectionFactory(DataContract annotation){
 		ClassType type = null;
 		if (!annotation.type().equals(Object.class)){
-			type = TypeOracle.Util.getInstance().getClassType(annotation.type());
+			type = TypeOracle.Instance.getClassType(annotation.type());
 		}
 		
 		if (type != null)

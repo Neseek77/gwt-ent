@@ -32,7 +32,7 @@ public class ModelValueGWTImpl extends ModelValueImpl implements
 		this.fullPath = fullPath;
 		this.readOnly = readOnly;
 
-		instanceClassType = TypeOracle.Util.getInstance().getClassType(rootClass);
+		instanceClassType = TypeOracle.Instance.getClassType(rootClass);
 
 		lastLevelClassType = PathResolver.getLastClassTypeByPath(rootClass,
 				fullPath);

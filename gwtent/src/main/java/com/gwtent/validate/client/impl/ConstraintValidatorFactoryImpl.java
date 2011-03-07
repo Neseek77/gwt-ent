@@ -24,7 +24,7 @@ public class ConstraintValidatorFactoryImpl implements
   
 
 	public <T extends ConstraintValidator<?, ?>> T getInstance(Class<T> key) {
-		ClassType type = TypeOracle.Util.getInstance().getClassType(key);
+		ClassType type = TypeOracle.Instance.getClassType(key);
     
     Constructor constructor = type.findConstructor(new String[]{});
     return (T) constructor.newInstance();

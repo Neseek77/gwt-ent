@@ -22,12 +22,12 @@ package com.gwtent.reflection.client.impl;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.HasAnnotations;
 import com.gwtent.reflection.client.Method;
 import com.gwtent.reflection.client.Parameter;
 import com.gwtent.reflection.client.ReflectionRequiredException;
 import com.gwtent.reflection.client.Type;
+import com.gwtent.reflection.client.TypeOracle;
 
 public class ParameterImpl implements HasAnnotations, Parameter {
 	private final String name;
@@ -41,19 +41,19 @@ public class ParameterImpl implements HasAnnotations, Parameter {
 	private final Method enclosingMethod;
 
 
-	public ParameterImpl(MethodImpl enclosingMethod, String typeName,Type type, String name) {
+	public ParameterImpl(MethodImpl enclosingMethod, String typeName, String name) {
 		this.enclosingMethod = enclosingMethod;
 		this.typeName = typeName;
 		this.name = name;
-		this.type = type;
+
 		enclosingMethod.addParameter(this);
 	}
 	
-//	public ParameterImpl(MethodImpl enclosingMethod, TypeImpl type, String name) {
-//		this(enclosingMethod, getTypeName(type), name);
-//		
-//		this.type = type;
-//	}
+	public ParameterImpl(MethodImpl enclosingMethod, TypeImpl type, String name) {
+		this(enclosingMethod, getTypeName(type), name);
+		
+		this.type = type;
+	}
 	
 	public static String getTypeName(Type type){
 		if (type != null)
@@ -81,8 +81,8 @@ public class ParameterImpl implements HasAnnotations, Parameter {
 	 * @see com.gwtent.client.reflection.Parameter#getType()
 	 */
 	public Type getType() throws ReflectionRequiredException {
-//		if (type == null)
-//			type = TypeOracle.Instance.getType(typeName);
+		if (type == null)
+			type = TypeOracle.Instance.getType(typeName);
 		
 		return type;
 	}
@@ -133,8 +133,7 @@ public class ParameterImpl implements HasAnnotations, Parameter {
     return annotations.getDeclaredAnnotations();
   }
   
-	public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
-		annotations.addAnnotation(type,ann);
+	public void addAnnotation(Annotation ann) {
+		annotations.addAnnotation(ann);
 	}
-
 }

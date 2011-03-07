@@ -153,7 +153,7 @@ public class MetaConstraint<T, A extends Annotation> {
 		Type t = null;
 		switch ( getElementType() ) {
 			case TYPE: {
-				t =  TypeOracle.Util.getInstance().getClassType(beanClass);
+				t =  TypeOracle.Instance.getClassType(beanClass);
 				break;
 			}
 			default: {
@@ -162,7 +162,7 @@ public class MetaConstraint<T, A extends Annotation> {
 //					t = ReflectionHelper.boxedType( t );
 //				}
 				if (t.isPrimitive() != null) {
-					t = TypeOracle.Util.getInstance().getClassType(ReflectionHelper.boxedType( t ));
+					t = TypeOracle.Instance.getClassType(ReflectionHelper.boxedType( t ));
 				}
 			}
 		}

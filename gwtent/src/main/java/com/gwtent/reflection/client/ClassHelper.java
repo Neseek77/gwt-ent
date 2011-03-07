@@ -41,7 +41,7 @@ public class ClassHelper<T> implements AnnotatedElement {
 	 * @return
 	 */
 	public static <T> ClassHelper<T> AsClass(Class<T> clazz) {
-		ClassType<T> classType = TypeOracle.Util.getInstance().getClassType(clazz);
+		ClassType<T> classType = TypeOracle.Instance.getClassType(clazz);
 
 		if (classType == null) {
 			ReflectionUtils.checkReflection(clazz);
@@ -259,7 +259,7 @@ public class ClassHelper<T> implements AnnotatedElement {
 	public static Class<?> forName(String className)
 			throws ClassNotFoundException {
 		try {
-			ClassType type = TypeOracle.Util.getInstance().getClassType(className);
+			ClassType type = TypeOracle.Instance.getClassType(className);
 			return type.getDeclaringClass();
 		} catch (ReflectionRequiredException e1) {
 			throw new ClassNotFoundException("Class not found: " + className + e1.getMessage(), e1);
