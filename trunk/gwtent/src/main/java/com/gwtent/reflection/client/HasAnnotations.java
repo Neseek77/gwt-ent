@@ -21,7 +21,6 @@ package com.gwtent.reflection.client;
 
 import java.lang.annotation.Annotation;
 
-import com.gwtent.reflection.client.impl.AnnotationValues;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
 
 /**
@@ -33,6 +32,6 @@ import com.gwtent.reflection.client.impl.TypeOracleImpl;
  */
 public interface HasAnnotations extends AnnotatedElement{
 	
-	public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann);
+	public void addAnnotation(Annotation ann);
 
 }

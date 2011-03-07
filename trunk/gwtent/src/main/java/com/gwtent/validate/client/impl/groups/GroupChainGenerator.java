@@ -67,7 +67,7 @@ public class GroupChainGenerator {
 	}
 
 	private void insertInheritedGroups(Class<?> clazz, GroupChain chain) {
-		ClassType type = TypeOracle.Util.getInstance().getClassType(clazz);
+		ClassType type = TypeOracle.Instance.getClassType(clazz);
 		
 		for (ClassType interf : type.getImplementedInterfaces()){
 			Class<?> extendedInterface = interf.getDeclaringClass();

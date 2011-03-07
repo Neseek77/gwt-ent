@@ -37,7 +37,7 @@ public class AnnotationFactory {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Annotation> T create(AnnotationDescriptor<T> descriptor) {
-		ClassType<T> type = TypeOracle.Util.getInstance().getClassType(descriptor.type());
+		ClassType<T> type = TypeOracle.Instance.getClassType(descriptor.type());
 		
 		if (type != null){
 			if ( type.isAnnotation() != null){

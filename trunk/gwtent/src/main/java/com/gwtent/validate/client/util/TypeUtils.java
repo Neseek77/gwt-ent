@@ -18,7 +18,7 @@ public class TypeUtils {
 			type = type.isParameterized().getRawType();
 		
 		if (type.isPrimitive() != null)
-			type = TypeOracle.Util.getInstance().getType(type.isPrimitive().getQualifiedBoxedSourceName());
+			type = TypeOracle.Instance.getType(type.isPrimitive().getQualifiedBoxedSourceName());
 		
 		if (type.isClassOrInterface() != null && supertype.isClassOrInterface() != null)
 			return ReflectionHelper.extendsOrImplements(type.isClassOrInterface().getDeclaringClass(), type.isClassOrInterface().getDeclaringClass());

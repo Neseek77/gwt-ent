@@ -21,21 +21,7 @@ package com.gwtent.reflection.client;
 import com.google.gwt.core.client.GWT;
 
 public interface TypeOracle {
-	
-	
-	public static class Util {
-		static TypeOracle instance = null;
-		public static TypeOracle getInstance() {
-			//在同一个项目中,TypeOracle与splittedTypeOralce只能选用一个
-			if(SplittedTypeOracle.Util.instance!=null){
-				throw new RuntimeException("SplittedTypeOracle used!");
-			}
-			if(instance == null){
-				instance=(TypeOracle) GWT.create(TypeOracle.class);
-			}
-			return instance;
-		}
-	}
+	public static TypeOracle Instance = (TypeOracle) GWT.create(TypeOracle.class);
 
 	/**
    * Parses the string form of a type to produce the corresponding type object.

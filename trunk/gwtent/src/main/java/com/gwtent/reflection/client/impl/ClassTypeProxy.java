@@ -92,7 +92,7 @@ public abstract class ClassTypeProxy<T> implements ClassType<T> {
 	}
 
 	public void addAnnotation(ClassType<? extends Annotation> type,AnnotationValues ann) {
-		classType.addAnnotation(type,ann);
+		//classType.addAnnotation(type,ann);
 	}
 	public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 		return classType.getAnnotation(annotationClass);

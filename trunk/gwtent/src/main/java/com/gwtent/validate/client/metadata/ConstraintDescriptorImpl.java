@@ -356,7 +356,7 @@ public class ConstraintDescriptorImpl<T extends Annotation> implements Constrain
 		Set<ConstraintDescriptor<?>> composingConstraintsSet = new HashSet<ConstraintDescriptor<?>>();
 		Map<ClassIndexWrapper, Map<String, Object>> overrideParameters = parseOverrideParameters();
 
-		ClassType type = TypeOracle.Util.getInstance().getClassType(annotation.annotationType());
+		ClassType type = TypeOracle.Instance.getClassType(annotation.annotationType());
 		if (type == null)
 			ReflectionUtils.checkReflection(annotation.annotationType());
 		
