@@ -9,11 +9,7 @@
 	<inherits name="com.gwtent.widget.Widget" />
 	
 	<inherits name="com.gwtent.reflection.Reflection" />
-	<inherits name="com.gwtent.uibinder.UIBinder" />
-	<inherits name="com.gwtent.validate.Validate" />
 	<inherits name="com.gwtent.serialization.Serialization" />
-	
-	<inherits name="com.gwtent.htmltemplate.HTMLTemplate" />
 	
 	<inherits name="com.gwtent.aop.AOP" />
 	
