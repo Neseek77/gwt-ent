@@ -17,13 +17,10 @@
 */
 package com.gwtent.client.test.validate.tck.tests.metadata;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * Empty un-constraint test class.
  *
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class UnconstraintEntity {
 }

@@ -19,12 +19,9 @@ package com.gwtent.client.test.validate.tck.tests.validation.graphnavigation;
 
 import javax.validation.Valid;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class SingleCage {
 	@Valid
 	private Animal containAnimal;

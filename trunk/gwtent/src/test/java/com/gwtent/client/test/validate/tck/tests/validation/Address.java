@@ -21,12 +21,9 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Address {
 
 	@NotEmpty(groups = Minimal.class)

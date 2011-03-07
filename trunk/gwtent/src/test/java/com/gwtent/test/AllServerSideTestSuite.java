@@ -30,12 +30,6 @@
 
 package com.gwtent.test;
 
-import javax.validation.spi.ValidationProvider;
-
-import com.gwtent.client.test.validate.tck.util.TestUtil;
-import com.gwtent.client.test.validate.tck.util.TestUtil.ValidationProviderHandler;
-import com.gwtent.test.validate.bootstrap.ValidationTest;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -45,42 +39,7 @@ public class AllServerSideTestSuite extends TestCase{
   public static Test suite() {
     TestSuite suite = new TestSuite("Test for com.gwtent.client");
     //$JUnit-BEGIN$
-    TestUtil.setValidationProviderHandler(new ValidationProviderHandler(){
-
-			public ValidationProvider<?> instantiateValidationProviderUnderTest() {
-				
-				String validatorProviderClassName = "org.hibernate.validator.HibernateValidator";//System.getProperty( VALIDATION_PROVIDER_TEST_CLASS );
-				if ( validatorProviderClassName == null ) {
-					throw new RuntimeException(
-							"The test harness must specify the class name of the validation provider under test. Set system property org.hibernate.validator.HibernateValidator"
-					);
-				}
-
-				Class<?> providerClass;
-				try {
-					@SuppressWarnings("unchecked")
-					Class<?> tmpClazz = ( Class<?> ) TestUtil.class.getClassLoader().loadClass( validatorProviderClassName );
-					providerClass = tmpClazz;
-				}
-				catch ( ClassNotFoundException e ) {
-					throw new RuntimeException( "Unable to load " + validatorProviderClassName );
-				}
-
-				try {
-					Object validationProviderUnderTest = providerClass.newInstance();
-					return (ValidationProvider<?>) validationProviderUnderTest;
-				}
-				catch ( Exception e ) {
-					throw new RuntimeException( "Unable to instantiate " + validatorProviderClassName );
-				}
-			}});
     
-    suite.addTestSuite(com.gwtent.test.validate.constraints.application.ValidationRequirementTest.class);
-    
-    suite.addTestSuite(ValidationTest.class);
-    suite.addTestSuite(com.gwtent.test.validate.constraints.ClassValidatorWithTypeVariableTest.class);
-    suite.addTestSuite(com.gwtent.test.validate.constraints.ConstraintValidatorContextTest.class);
-    suite.addTestSuite(com.gwtent.test.validate.constraints.ValidatorResolutionTest.class);
     
     //$JUnit-END$
     return suite;

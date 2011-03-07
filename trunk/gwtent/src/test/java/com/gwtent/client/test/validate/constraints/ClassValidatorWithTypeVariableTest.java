@@ -30,7 +30,6 @@ import org.junit.Test;
 
 import com.gwtent.client.test.validate.VTestCase;
 import com.gwtent.client.test.validate.util.TestUtil;
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 import static com.gwtent.client.test.validate.util.TestUtil.assertNumberOfViolations;
 import static com.gwtent.client.test.validate.util.TestUtil.assertCorrectPropertyPaths;
@@ -84,7 +83,6 @@ public class ClassValidatorWithTypeVariableTest extends VTestCase{
 		assertCorrectConstraintTypes( violations, NotNull.class );
 	}
 
-	@Reflect_Domain
 	private class Batch {
 		@NotNull
 		@Valid
@@ -95,7 +93,6 @@ public class ClassValidatorWithTypeVariableTest extends VTestCase{
 		}
 	}
 
-	@Reflect_Domain
 	private abstract class Item {
 		@NotNull
 		private Date date;
@@ -105,7 +102,6 @@ public class ClassValidatorWithTypeVariableTest extends VTestCase{
 		}
 	}
 
-	@Reflect_Domain
 	private abstract class ItemOffer<T extends Item> {
 		@NotNull
 		@Valid
@@ -116,14 +112,12 @@ public class ClassValidatorWithTypeVariableTest extends VTestCase{
 		}
 	}
 
-	@Reflect_Domain
 	private class ItemA extends Item {
 		public ItemA(Date date) {
 			super( date );
 		}
 	}
 
-	@Reflect_Domain
 	private class ItemAOffer extends ItemOffer<ItemA> {
 		public ItemAOffer(ItemA item) {
 			super( item );

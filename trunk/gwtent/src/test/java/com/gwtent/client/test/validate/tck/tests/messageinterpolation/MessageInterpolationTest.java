@@ -40,7 +40,6 @@ import com.gwtent.client.test.validate.tck.SpecAssertion;
 import com.gwtent.client.test.validate.tck.SpecAssertions;
 import com.gwtent.client.test.validate.tck.Test;
 import com.gwtent.client.test.validate.tck.util.TestUtil;
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
 
 import static com.gwtent.client.test.validate.VTestCase.assertEquals;
 import static com.gwtent.client.test.validate.VTestCase.assertTrue;
@@ -257,7 +256,6 @@ public class MessageInterpolationTest extends AbstractTest {
 		}
 	}
 
-	@Reflect_Domain
 	public class DummyEntity {
 		@NotNull
 		String foo;
@@ -272,7 +270,6 @@ public class MessageInterpolationTest extends AbstractTest {
 		String snafu;
 	}
 
-	@Reflect_Domain
 	public class Person {
 
 		String name;

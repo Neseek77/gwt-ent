@@ -19,13 +19,10 @@ package com.gwtent.client.test.validate.tck.tests.validation;
 
 import javax.validation.constraints.Pattern;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Engine {
 	@Pattern.List({
 			@Pattern(regexp = "^[A-Z0-9-]+$",

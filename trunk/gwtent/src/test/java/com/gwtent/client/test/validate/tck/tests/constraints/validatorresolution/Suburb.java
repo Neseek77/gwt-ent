@@ -23,12 +23,9 @@ import java.util.Map;
 import java.util.Set;
 import javax.validation.constraints.Size;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Suburb {
 	public enum Facility {
 		SHOPPING_MALL, BUS_TERMINAL

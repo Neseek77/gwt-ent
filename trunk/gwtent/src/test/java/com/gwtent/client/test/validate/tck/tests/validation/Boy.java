@@ -19,13 +19,10 @@ package com.gwtent.client.test.validate.tck.tests.validation;
 
 import javax.validation.constraints.NotNull;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Boy implements Person {
 
 	private String firstName;

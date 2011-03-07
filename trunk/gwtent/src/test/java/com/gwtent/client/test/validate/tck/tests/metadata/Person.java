@@ -17,12 +17,9 @@
 */
 package com.gwtent.client.test.validate.tck.tests.metadata;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public interface Person {
 	@NotEmpty(groups = PersonValidation.class, payload = Severity.Info.class)
 	String getFirstName();

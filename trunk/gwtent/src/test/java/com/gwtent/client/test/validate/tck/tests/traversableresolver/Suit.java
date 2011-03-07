@@ -21,12 +21,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Emmanuel Bernard
  */
-@Reflect_Domain
 public class Suit {
 	@Max(value = 50)
 	@Min(1)

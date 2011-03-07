@@ -21,12 +21,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.gwtent.reflection.client.annotations.Reflect_Domain;
-
 /**
  * @author Hardy Ferentschik
  */
-@Reflect_Domain
 public class Herd<T extends Animal> implements Iterable<T> {
 	List<T> animals = new ArrayList<T>();
 

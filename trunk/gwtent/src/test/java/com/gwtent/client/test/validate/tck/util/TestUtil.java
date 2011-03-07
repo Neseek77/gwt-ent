@@ -252,21 +252,8 @@ public final class TestUtil {
 //		return inputStream;
 //	}
 
-	public static void setValidationProviderHandler(ValidationProviderHandler handler){
-		validationProviderHandler = handler;
-	}
 
-	public static interface ValidationProviderHandler{
-		ValidationProvider<?> instantiateValidationProviderUnderTest();
-	}
-	private static ValidationProviderHandler validationProviderHandler = null;
-	
 	private static <U extends ValidationProvider<?>> void instantiateValidationProviderUnderTest() {
-		if (validationProviderHandler != null){
-			validationProviderUnderTest = validationProviderHandler.instantiateValidationProviderUnderTest();
-			return;
-		}
-		
 		//String validatorProviderClassName = System.getProperty( VALIDATION_PROVIDER_TEST_CLASS );
 		String validatorProviderClassName = "com.gwtent.validate.client.GWTEntValidatorProvider";
 		if ( validatorProviderClassName == null ) {
