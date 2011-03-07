@@ -1,1 +1,0 @@
-Sorry, This folder here because IE6 support, Once fixed this issue, this folder will be removed.
