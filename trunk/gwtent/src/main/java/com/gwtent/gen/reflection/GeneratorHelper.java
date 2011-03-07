@@ -40,7 +40,6 @@ import com.gwtent.reflection.client.ClassType;
 import com.gwtent.reflection.client.ReflectionTarget;
 import com.gwtent.reflection.client.ReflectionUtils;
 import com.gwtent.reflection.client.impl.TypeOracleImpl;
-import com.gwtent.uibinder.client.DataBinder;
 
 public class GeneratorHelper {
 	
