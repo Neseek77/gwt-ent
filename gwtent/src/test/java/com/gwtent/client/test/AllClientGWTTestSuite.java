@@ -42,9 +42,6 @@ import com.gwtent.client.test.i18n.I18NTestCase;
 import com.gwtent.client.test.json.SerializationTestCase;
 import com.gwtent.client.test.reflection.ClassTypeGenTestCase;
 import com.gwtent.client.test.reflection.ReflectionTestCase;
-import com.gwtent.client.test.template.TemplateTestCase;
-import com.gwtent.client.test.uibinder.DataBinderTestCase;
-import com.gwtent.client.test.uibinder.UIBinderTestCase;
 
 public class AllClientGWTTestSuite extends GWTTestSuite {
 
@@ -54,22 +51,13 @@ public class AllClientGWTTestSuite extends GWTTestSuite {
     suite.addTestSuite(ClassTypeGenTestCase.class);
     suite.addTestSuite(ReflectionTestCase.class);
     
-     
-    
-    //suite.addTest(ValidationTestSuite.suite());   
-    
-    
-    
     suite.addTestSuite(CommonTestCase.class);
-    suite.addTestSuite(DataBinderTestCase.class);
     suite.addTestSuite(I18NTestCase.class);
     suite.addTestSuite(AnnotationTestCase.class);
-    suite.addTestSuite(UIBinderTestCase.class);
     suite.addTestSuite(SerializationTestCase.class);
     
     
     suite.addTestSuite(AOPTestCase.class);
-    suite.addTestSuite(TemplateTestCase.class);
     suite.addTestSuite(AllModulesTestCase.class);
     //$JUnit-END$
     return suite;
