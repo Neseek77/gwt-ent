@@ -23,14 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
 import com.gwtent.client.test.common.annotations.Entity;
 import com.gwtent.client.test.common.annotations.Id;
 import com.gwtent.client.test.common.annotations.Table;
 import com.gwtent.reflection.client.HasReflect;
 import com.gwtent.reflection.client.Reflectable;
-import com.gwtent.validate.client.constraints.Regular;
 
 
 @Entity(name="TestReflection")
@@ -61,7 +58,6 @@ public class ReflectionSaveSize<T> extends ReflectParent{
 	private Date date;
 	
 	@HasReflect
-	@Regular(regex="[0-9]\\.[0-9]")
 	private String string;
 	private boolean bool;
 	private List<String> names;

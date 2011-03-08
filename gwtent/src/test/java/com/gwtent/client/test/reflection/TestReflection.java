@@ -23,14 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
 import com.gwtent.client.test.common.annotations.Entity;
 import com.gwtent.client.test.common.annotations.Id;
 import com.gwtent.client.test.common.annotations.Table;
 import com.gwtent.client.test.reflection.TestAnnotationInAnnotation.MyMethodAnn;
 import com.gwtent.reflection.client.Reflection;
-import com.gwtent.validate.client.constraints.Regular;
 
 
 @Entity(name="TestReflection")
@@ -38,7 +35,6 @@ import com.gwtent.validate.client.constraints.Regular;
 public class TestReflection<T> implements Reflection {
 	private Date date;
 	
-	@Regular(regex="[0-9]\\.[0-9]")
 	private String string;
 	private boolean bool;
 	private List<String> names;
