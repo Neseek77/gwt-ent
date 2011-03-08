@@ -3,8 +3,6 @@
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.xml.XML" />
 	
-	<inherits name="com.gwtent.validate.Validate" />
-	
 	<inherits name="com.gwtent.reflection.Reflection" />
 	
 	<inherits name="com.gwtent.client.test.common.Common" />

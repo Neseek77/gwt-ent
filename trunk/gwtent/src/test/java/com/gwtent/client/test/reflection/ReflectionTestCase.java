@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.gwtent.client.test.common.annotations.Entity;
@@ -119,7 +118,7 @@ public class ReflectionTestCase extends GWTTestCase {
 //    assertTrue(annotation.annotationType() == null);
     
     new AnnotationStoreImpl(Entity.class, null);
-    new AnnotationStoreImpl(javax.validation.constraints.NotNull.class, null);
+    new AnnotationStoreImpl(NotNull.class, null);
     
     TestReflection test = new TestReflection();
     test.setString("username");
