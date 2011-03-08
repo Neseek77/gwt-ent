@@ -5,8 +5,6 @@
 
 	<inherits name="com.gwtent.aop.AOP" />
 	
-	<inherits name="com.gwtent.htmltemplate.HTMLTemplate" />
-	
 	<inherits name="com.gwtent.client.test.common.Common" />
 
 	<source path="" />
