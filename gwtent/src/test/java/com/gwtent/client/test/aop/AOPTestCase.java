@@ -55,9 +55,9 @@ public class AOPTestCase extends GWTTestCase {
 	}
 	
 	public void testHTMLTemplate(){
-		AOPWithHTMLTemplate template = GWT.create(AOPWithHTMLTemplate.class);
-		template.doLinkHanldByGWT();
-		System.out.println(template);
+//		AOPWithHTMLTemplate template = GWT.create(AOPWithHTMLTemplate.class);
+//		template.doLinkHanldByGWT();
+//		System.out.println(template);
 	}
 	
 	
