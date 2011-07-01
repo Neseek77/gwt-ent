@@ -221,7 +221,8 @@ public class GeneratorHelper {
   		sb.append("\"" + classType.getQualifiedSourceName() + "\", new Object[]{");
   		
   		JAnnotationType annoType = classType.isAnnotation();
-  		JAnnotationMethod[] methods = annoType.getMethods();
+  		// JAnnotationMethod[] methods = annoType.getMethods();
+  		JAnnotationMethod[] methods = (JAnnotationMethod[]) annoType.getMethods();
   		int index = 0;
 			for (JAnnotationMethod method : methods) {
 			  Object value = null;

@@ -163,4 +163,19 @@ public class SourceWriterLogDecorator implements SourceWriter {
 		
 	}
 
+	public void indentln(String s, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void print(String s, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void println(String s, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

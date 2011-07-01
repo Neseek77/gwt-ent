@@ -46,6 +46,7 @@ import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
 
 public class ReflectionCreator extends LogableSourceCreator {
 
+	@SuppressWarnings("unused")
 	private final boolean isUseLog = true;
 
 	static final String SUFFIX = "__Reflection";
@@ -625,7 +626,8 @@ public class ReflectionCreator extends LogableSourceCreator {
 							+ " implements "
 							+ annotation.getQualifiedSourceName() + "{");
 			sourceWriter.indent();
-			JAnnotationMethod[] methods = annotation.getMethods();
+			// JAnnotationMethod[] methods = annotation.getMethods();
+			JAnnotationMethod[] methods = (JAnnotationMethod[]) annotation.getMethods();
 			// declare variable
 			for (JAnnotationMethod method : methods) {
 				sourceWriter.println("private final "
