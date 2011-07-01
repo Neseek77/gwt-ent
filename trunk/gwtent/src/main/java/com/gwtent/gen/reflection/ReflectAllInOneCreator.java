@@ -335,7 +335,8 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	     
 	     //Go through all annotation methods, if has class, add that class to reflection as well
        JAnnotationType annoType = classType.isAnnotation();
-       JAnnotationMethod[] methods = annoType.getMethods();
+       // JAnnotationMethod[] methods = annoType.getMethods();
+       JAnnotationMethod[] methods = (JAnnotationMethod[]) annoType.getMethods();
        for (JAnnotationMethod method : methods) {
          Object value = null;
          try {
