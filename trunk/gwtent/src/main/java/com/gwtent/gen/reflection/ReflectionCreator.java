@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
 import com.google.gwt.core.ext.typeinfo.JAnnotationType;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -34,6 +33,7 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.gen.GenUtils;
@@ -46,7 +46,6 @@ import com.gwtent.reflection.client.impl.PrimitiveTypeImpl;
 
 public class ReflectionCreator extends LogableSourceCreator {
 
-	@SuppressWarnings("unused")
 	private final boolean isUseLog = true;
 
 	static final String SUFFIX = "__Reflection";
@@ -626,10 +625,9 @@ public class ReflectionCreator extends LogableSourceCreator {
 							+ " implements "
 							+ annotation.getQualifiedSourceName() + "{");
 			sourceWriter.indent();
-			// JAnnotationMethod[] methods = annotation.getMethods();
-			JAnnotationMethod[] methods = (JAnnotationMethod[]) annotation.getMethods();
+			JMethod[] methods = annotation.getMethods();
 			// declare variable
-			for (JAnnotationMethod method : methods) {
+			for (JMethod method : methods) {
 				sourceWriter.println("private final "
 						+ method.getReturnType().getQualifiedSourceName() + " "
 						+ method.getName() + ";");
@@ -645,7 +643,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			// sb.append(", ").append(method.getReturnType().getQualifiedSourceName()).append(" ").append(method.getName());
 			// }
 			int i = 0;
-			for (JAnnotationMethod method : methods) {
+			for (JMethod method : methods) {
 				sourceWriter.println("  this."
 						+ method.getName()
 						+ " = "
@@ -657,7 +655,7 @@ public class ReflectionCreator extends LogableSourceCreator {
 			sourceWriter.println("}");
 
 			// Methods
-			for (JAnnotationMethod method : methods) {
+			for (JMethod method : methods) {
 				sourceWriter.println("public "
 						+ method.getReturnType().getQualifiedSourceName() + " "
 						+ method.getName() + "() {");
