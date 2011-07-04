@@ -35,7 +35,6 @@ import java.util.Set;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.core.ext.typeinfo.HasAnnotations;
 import com.google.gwt.core.ext.typeinfo.JAnnotationMethod;
 import com.google.gwt.core.ext.typeinfo.JAnnotationType;
@@ -45,6 +44,7 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.AnnotationsHelper;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.gwtent.common.client.CheckedExceptionWrapper;
@@ -335,6 +335,7 @@ public class ReflectAllInOneCreator extends LogableSourceCreator {
 	     
 	     //Go through all annotation methods, if has class, add that class to reflection as well
        JAnnotationType annoType = classType.isAnnotation();
+
        // JAnnotationMethod[] methods = annoType.getMethods();
        JAnnotationMethod[] methods = (JAnnotationMethod[]) annoType.getMethods();
        for (JAnnotationMethod method : methods) {
